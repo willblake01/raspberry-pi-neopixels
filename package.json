@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "canvas": "^3.1.0",
     "prompts": "^2.4.2",
     "rpi-ws281x": "^1.0.37"
   }
