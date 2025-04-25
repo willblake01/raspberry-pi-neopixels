@@ -4,37 +4,57 @@ const { setTimeout } = require('timers/promises');
 
 const questions = [
   {
-    type: 'text',
+    type: 'select',
     name: 'command',
-    message: 'Enter a command (on, off)'
+    message: 'Enter a command',
+    choices: [
+      {
+        title: 'On',
+        value: 1
+      },
+      {
+        title: 'Off',
+        value: 0
+      }
+    ]
   },
   {
-    type: 'text',
+    type: 'select',
     name: 'mode',
-    message: 'Enter the mode (solid, walk pixel)'
+    message: 'Enter the mode',
+    choices: [
+      {
+        title: 'Solid',
+        value: 'solid'
+      },
+      {
+        title: 'Walk pixel',
+        value: 'walk pixel'
+      }
+    ]
   },
   {
-    type: 'text',
+    type: 'number',
     name: 'leds',
     message: 'Enter the number of LEDs (1-100)',
   },
   {
-    type: 'text',
+    type: 'number',
     name: 'brightness',
     message: 'Enter the brightness (0-255)',
   },
   {
-    type: 'text',
+    type: 'number',
     name: 'red',
     message: 'Enter the red value (0-255)',
   },
   {
-    type: 'text',
+    type: 'number',
     name: 'green',
     message: 'Enter the green value (0-255)',
   },
   {
-    type: 'text',
+    type: 'number',
     name: 'blue',
     message: 'Enter the blue value (0-255)',
   }
@@ -43,7 +63,6 @@ const questions = [
 (async () => {
   const response = await prompts(questions);
   const { command, mode, leds, brightness, red, green, blue } = response;
-
   const pixelCount = parseInt(leds, 10);
   const brightnessValue = parseInt(brightness, 10);
   let redValue = parseInt(red, 10);
@@ -121,7 +140,7 @@ const questions = [
     };
   };
 
-  if (command === 'on') {
+  if (command === 1) {
     if (mode === 'solid') {
       await setTimeout(timeout);
       const solidColor = new SolidColor();
@@ -135,7 +154,7 @@ const questions = [
     };
   };
 
-  if (command === 'off') {
+  if (command === 0) {
     await setTimeout(timeout);
     const turnOff = new TurnOff();
     turnOff.run();
