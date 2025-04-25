@@ -19,7 +19,7 @@ const questions = [
     ]
   },
   {
-    type: 'select',
+    type: (prev, values) => values.command == 0 ? null : 'select',
     name: 'mode',
     message: 'Enter the mode',
     choices: [
@@ -41,28 +41,28 @@ const questions = [
     max: 100
   },
   {
-    type: 'number',
+    type: (prev, values) => values.command == 0 ? null : 'number',
     name: 'brightness',
     message: 'Enter the brightness (0-255)',
     min: 0,
     max: 255
   },
   {
-    type: 'number',
+    type: (prev, values) => values.command == 0 ? null : 'number',
     name: 'red',
     message: 'Enter the red value (0-255)',
     min: 0,
     max: 255
   },
   {
-    type: 'number',
+    type: (prev, values) => values.command == 0 ? null : 'number',
     name: 'green',
     message: 'Enter the green value (0-255)',
     min: 0,
     max: 255
   },
   {
-    type: 'number',
+    type: (prev, values) => values.command == 0 ? null : 'number',
     name: 'blue',
     message: 'Enter the blue value (0-255)',
     min: 0,
@@ -73,6 +73,7 @@ const questions = [
 (async () => {
   const response = await prompts(questions);
   const { command, mode, leds, brightness, red, green, blue } = response;
+
   const pixelCount = parseInt(leds, 10);
   const brightnessValue = parseInt(brightness, 10);
   let redValue = parseInt(red, 10);
