@@ -37,26 +37,36 @@ const questions = [
     type: 'number',
     name: 'leds',
     message: 'Enter the number of LEDs (1-100)',
+    min: 1,
+    max: 100
   },
   {
     type: 'number',
     name: 'brightness',
     message: 'Enter the brightness (0-255)',
+    min: 0,
+    max: 255
   },
   {
     type: 'number',
     name: 'red',
     message: 'Enter the red value (0-255)',
+    min: 0,
+    max: 255
   },
   {
     type: 'number',
     name: 'green',
     message: 'Enter the green value (0-255)',
+    min: 0,
+    max: 255
   },
   {
     type: 'number',
     name: 'blue',
     message: 'Enter the blue value (0-255)',
+    min: 0,
+    max: 255
   }
 ];
 
