@@ -10,8 +10,13 @@ const questions = [
   },
   {
     type: 'text',
+    name: 'mode',
+    message: 'Enter the mode (solid, walk pixel)'
+  },
+  {
+    type: 'text',
     name: 'leds',
-    message: 'Enter the number of LEDs (1-50)',
+    message: 'Enter the number of LEDs (1-100)',
   },
   {
     type: 'text',
@@ -37,7 +42,7 @@ const questions = [
 
 (async () => {
   const response = await prompts(questions);
-  const { command, leds, brightness, red, green, blue } = response;
+  const { command, mode, leds, brightness, red, green, blue } = response;
 
   const pixelCount = parseInt(leds, 10);
   const brightnessValue = parseInt(brightness, 10);
@@ -53,6 +58,9 @@ const questions = [
     stripType: 'rgb'
   };
 
+  // Set delay
+  const timeout = 1000;
+
   class SolidColor {
     constructor() {
       ws281x.configure(config)
@@ -61,7 +69,7 @@ const questions = [
     run() {
       const pixels = new Uint32Array(config.leds);
 
-      const red = redValue, green = greenValue, blue=blueValue;
+      const red = redValue, green = greenValue, blue = blueValue;
       const color = (red << 16) | (green << 8) | blue;
 
       for (let i = 0; i < pixelCount; i++) {
@@ -69,6 +77,28 @@ const questions = [
       };
 
       ws281x.render(pixels);
+    };
+  };
+
+  class WalkPixel {
+    constructor() {
+      this.offset = 0;
+
+      ws281x.configure(config);
+    };
+
+    loop() {
+      const pixels = new Uint32Array(config.leds);
+
+      pixels[this.offset] = 0xFFBF00
+
+      this.offset = (this.offset + 1) % leds;
+
+      ws281x.render(pixels);
+    };
+
+    run() {
+      setInterval(this.loop.bind(this), 100);
     };
   };
 
@@ -92,13 +122,22 @@ const questions = [
   };
 
   if (command === 'on') {
-    await setTimeout(1000);
-    const solidColor = new SolidColor();
-    solidColor.run();
-  } else if (command === 'off') {
-    await setTimeout(1000);
+    if (mode === 'solid') {
+      await setTimeout(timeout);
+      const solidColor = new SolidColor();
+      solidColor.run();
+    };
+
+    if (mode === 'walk pixel') {
+      await setTimeout(timeout);
+      const walkPixel = new WalkPixel();
+      walkPixel.run();
+    };
+  };
+
+  if (command === 'off') {
+    await setTimeout(timeout);
     const turnOff = new TurnOff();
-    redValue = 0, greenValue = 0, blueValue = 0;
     turnOff.run();
-  }
+  };
 })()
