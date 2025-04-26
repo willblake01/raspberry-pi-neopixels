@@ -1,9 +1,9 @@
 import prompts from 'prompts';
 import { setTimeout } from 'timers/promises';
-import { questions } from './prompts/questions';
-import { SolidColor } from './modes/solidColor';
-import { WalkPixel } from './modes/walkPixel';
-import { TurnOff } from './modes/turnOff';
+import { questions } from './prompts/questions.js';
+import { SolidColor } from './modes/solidColor.js';
+import { WalkPixel } from './modes/walkPixel.js';
+import { TurnOff } from './modes/turnOff.js';
 
 (async () => {
   const response = await prompts(questions);
