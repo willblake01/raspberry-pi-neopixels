@@ -1,10 +1,9 @@
-const ws281x = require('rpi-ws281x');
-const prompts = require('prompts');
-const { setTimeout } = require('timers/promises');
-const { questions } = require('./prompts/questions');
-const { SolidColor } = require('./modes/solidColor');
-const { WalkPixel } = require('./modes/walkPixel');
-const { TurnOff } = require('./modes/turnOff');
+import prompts from 'prompts';
+import { setTimeout } from 'timers/promises';
+import { questions } from './prompts/questions';
+import { SolidColor } from './modes/solidColor';
+import { WalkPixel } from './modes/walkPixel';
+import { TurnOff } from './modes/turnOff';
 
 (async () => {
   const response = await prompts(questions);

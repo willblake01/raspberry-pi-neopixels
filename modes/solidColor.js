@@ -1,10 +1,12 @@
+import ws281x from 'rpi-ws281x';
+
 export class SolidColor {
     constructor(config, redValue, greenValue, blueValue) {
       this.config = config;
       this.redValue = redValue;
       this.greenValue = greenValue;
       this.blueValue = blueValue;
-      
+
       ws281x.configure(config)
     };
 

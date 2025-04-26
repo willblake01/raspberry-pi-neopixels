@@ -1,3 +1,5 @@
+import ws281x from 'rpi-ws281x';
+
 export class TurnOff {
     constructor(config) {
       this.config = config;

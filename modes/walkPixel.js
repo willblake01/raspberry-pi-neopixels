@@ -1,3 +1,5 @@
+import ws281x from 'rpi-ws281x';
+
 export class WalkPixel {
     constructor(config, redValue, greenValue, blueValue) {
       this.config = config;
