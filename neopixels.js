@@ -1,5 +1,5 @@
 const ws281x = require('rpi-ws281x');
-const questions = require('prompts');
+const prompts = require('prompts');
 const { setTimeout } = require('timers/promises');
 const { questions } = require('./prompts/questions');
 const { SolidColor } = require('./modes/solidColor');
