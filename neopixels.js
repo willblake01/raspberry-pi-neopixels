@@ -120,7 +120,10 @@ const questions = [
     loop() {
       const pixels = new Uint32Array(config.leds);
 
-      pixels[this.offset] = 0xFFBF00
+      const red = redValue, green = greenValue, blue = blueValue;
+      const color = (red << 16) | (green << 8) | blue;
+
+      pixels[this.offset] = color;
 
       this.offset = (this.offset + 1) % leds;
 
