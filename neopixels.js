@@ -1,74 +1,10 @@
 const ws281x = require('rpi-ws281x');
-const prompts = require('prompts');
+const questions = require('prompts');
 const { setTimeout } = require('timers/promises');
-
-const questions = [
-  {
-    type: 'select',
-    name: 'command',
-    message: 'Enter a command',
-    choices: [
-      {
-        title: 'On',
-        value: 1
-      },
-      {
-        title: 'Off',
-        value: 0
-      }
-    ]
-  },
-  {
-    type: (prev, values) => values.command == 0 ? null : 'select',
-    name: 'mode',
-    message: 'Enter the mode',
-    choices: [
-      {
-        title: 'Solid',
-        value: 'solid'
-      },
-      {
-        title: 'Walk pixel',
-        value: 'walk pixel'
-      }
-    ]
-  },
-  {
-    type: 'number',
-    name: 'leds',
-    message: 'Enter the number of LEDs (1-100)',
-    min: 1,
-    max: 100
-  },
-  {
-    type: (prev, values) => values.command == 0 ? null : 'number',
-    name: 'brightness',
-    message: 'Enter the brightness (0-255)',
-    min: 0,
-    max: 255
-  },
-  {
-    type: (prev, values) => values.command == 0 ? null : 'number',
-    name: 'red',
-    message: 'Enter the red value (0-255)',
-    min: 0,
-    max: 255
-  },
-  {
-    type: (prev, values) => values.command == 0 ? null : 'number',
-    name: 'green',
-    message: 'Enter the green value (0-255)',
-    min: 0,
-    max: 255
-  },
-  {
-    type: (prev, values) => values.command == 0 ? null : 'number',
-    name: 'blue',
-    message: 'Enter the blue value (0-255)',
-    min: 0,
-    max: 255
-  }
-];
+const { questions } = require('./prompts/questions');
+const { SolidColor } = require('./modes/solidColor');
+const { WalkPixel } = require('./modes/walkPixel');
+const { TurnOff } = require('./modes/turnOff');
 
 (async () => {
   const response = await prompts(questions);
@@ -91,86 +27,23 @@ const questions = [
   // Set delay
   const timeout = 1000;
 
-  class SolidColor {
-    constructor() {
-      ws281x.configure(config)
-    };
-
-    run() {
-      const pixels = new Uint32Array(config.leds);
-
-      const red = redValue, green = greenValue, blue = blueValue;
-      const color = (red << 16) | (green << 8) | blue;
-
-      for (let i = 0; i < pixelCount; i++) {
-        pixels[i] = color;
-      };
-
-      ws281x.render(pixels);
-    };
-  };
-
-  class WalkPixel {
-    constructor() {
-      this.offset = 0;
-
-      ws281x.configure(config);
-    };
-
-    loop() {
-      const pixels = new Uint32Array(config.leds);
-
-      const red = redValue, green = greenValue, blue = blueValue;
-      const color = (red << 16) | (green << 8) | blue;
-
-      pixels[this.offset] = color;
-
-      this.offset = (this.offset + 1) % leds;
-
-      ws281x.render(pixels);
-    };
-
-    run() {
-      setInterval(this.loop.bind(this), 100);
-    };
-  };
-
-  class TurnOff {
-    constructor() {
-      ws281x.configure(config);
-    };
-
-    run() {
-      const pixels = new Uint32Array(config.leds);
-
-      const red = 0, green = 0, blue = 0;
-      const color = (red << 16) | (green << 8) | blue;
-
-      for (let i = 0; i < pixelCount; i++) {
-        pixels[i] = color;
-      };
-
-      ws281x.render(pixels);
-    };
-  };
-
   if (command === 1) {
     if (mode === 'solid') {
       await setTimeout(timeout);
-      const solidColor = new SolidColor();
+      const solidColor = new SolidColor(config, redValue, greenValue, blueValue);
       solidColor.run();
     };
 
     if (mode === 'walk pixel') {
       await setTimeout(timeout);
-      const walkPixel = new WalkPixel();
+      const walkPixel = new WalkPixel(config, redValue, greenValue, blueValue);
       walkPixel.run();
     };
   };
 
   if (command === 0) {
     await setTimeout(timeout);
-    const turnOff = new TurnOff();
+    const turnOff = new TurnOff(config);
     turnOff.run();
   };
 })()
