@@ -27,7 +27,7 @@ import { TurnOff } from './modes/turnOff.js';
   const timeout = 1000;
 
   if (command === 1) {
-    if (mode === 'solid') {
+    if (mode === 'solid color') {
       await setTimeout(timeout);
       const solidColor = new SolidColor(config, redValue, greenValue, blueValue);
       solidColor.run();

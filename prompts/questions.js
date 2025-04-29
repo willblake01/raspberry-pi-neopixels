@@ -20,8 +20,8 @@ export const questions = [
     message: 'Enter the mode',
     choices: [
       {
-        title: 'Solid',
-        value: 'solid'
+        title: 'Solid Color',
+        value: 'solid color'
       },
       {
         title: 'Walk pixel',
