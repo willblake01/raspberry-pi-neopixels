@@ -19,7 +19,7 @@ export class WalkPixel {
 
       pixels[this.offset] = color;
 
-      this.offset = (this.offset + 1) % leds;
+      this.offset = (this.offset + 1) % this.config.leds;
 
       ws281x.render(pixels);
     };
