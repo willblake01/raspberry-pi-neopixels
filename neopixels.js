@@ -25,22 +25,24 @@ import { SolidColor, RandomColor, WalkPixel, TurnOff } from './modes/index.js';
   const timeout = 1000;
 
   if (command === 1) {
-    if (mode === 'solid color') {
-      await setTimeout(timeout);
-      const solidColor = new SolidColor(config, redValue, greenValue, blueValue);
-      solidColor.run();
-    };
-
-    if (mode === 'random color') {
-      await setTimeout(timeout);
-      const randomColor = new RandomColor(config);
-      randomColor.run();
-    };
-
-    if (mode === 'walk pixel') {
-      await setTimeout(timeout);
-      const walkPixel = new WalkPixel(config, redValue, greenValue, blueValue);
-      walkPixel.run();
+    switch (mode) {
+      case 'solid color':
+        await setTimeout(timeout);
+        const solidColor = new SolidColor(config, redValue, greenValue, blueValue);
+        solidColor.run();
+        break;
+      case 'random color':
+        await setTimeout(timeout);
+        const randomColor = new RandomColor(config);
+        randomColor.run();
+        break;
+      case 'walk pixel':
+        await setTimeout(timeout);
+        const walkPixel = new WalkPixel(config, redValue, greenValue, blueValue);
+        walkPixel.run();
+        break;
+      default:
+        console.log(`Error: Mode '${mode}' is invalid`);
     };
   };
 
