@@ -1,9 +1,7 @@
 import prompts from 'prompts';
 import { setTimeout } from 'timers/promises';
 import { questions } from './prompts/questions.js';
-import { SolidColor } from './modes/solidColor.js';
-import { WalkPixel } from './modes/walkPixel.js';
-import { TurnOff } from './modes/turnOff.js';
+import { SolidColor, RandomColor, WalkPixel, TurnOff } from './modes/index.js';
 
 (async () => {
   const response = await prompts(questions);
@@ -31,6 +29,12 @@ import { TurnOff } from './modes/turnOff.js';
       await setTimeout(timeout);
       const solidColor = new SolidColor(config, redValue, greenValue, blueValue);
       solidColor.run();
+    };
+
+    if (mode === 'random color') {
+      await setTimeout(timeout);
+      const randomColor = new RandomColor(config);
+      randomColor.run();
     };
 
     if (mode === 'walk pixel') {
