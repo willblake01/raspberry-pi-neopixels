@@ -34,6 +34,21 @@ export const questions = [
     ]
   },
   {
+    type: (prev, values) => values.command == 1 && values.mode == 'walk pixel' ? 'select' : null,
+    name: 'pixel',
+    message: 'Set pixel',
+    choices: [
+      {
+        title: 'On',
+        value: 1
+      },
+      {
+        title: 'Off',
+        value: 0
+      }
+    ]
+  },
+  {
     type: (prev, values) => values.command == 1 && values.mode != 'solid' ? 'number' : null,
     name: 'interval',
     message: 'Enter interval (milliseconds)',
