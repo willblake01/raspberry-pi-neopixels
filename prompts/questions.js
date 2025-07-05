@@ -20,12 +20,12 @@ export const questions = [
     message: 'Enter the mode',
     choices: [
       {
-        title: 'Solid Color',
-        value: 'solid color'
+        title: 'Solid',
+        value: 'solid'
       },
       {
-        title: 'Random Color',
-        value: 'random color'
+        title: 'Blink',
+        value: 'blink'
       },
       {
         title: 'Walk pixel',
@@ -34,10 +34,15 @@ export const questions = [
     ]
   },
   {
+    type: (prev, values) => values.command == 1 && values.mode != 'solid' ? 'number' : null,
+    name: 'interval',
+    message: 'Enter interval (milliseconds)',
+  },
+  {
     type: 'number',
     name: 'leds',
-    message: 'Enter the number of LEDs (1-100)',
-    min: 1,
+    message: 'Enter the number of LEDs (0-100)',
+    min: 0,
     max: 100
   },
   {
@@ -48,21 +53,36 @@ export const questions = [
     max: 255
   },
   {
-    type: (prev, values) => values.command == 1 && values.mode != 'random color' ? 'number' : null,
+    type: (prev, values) => values.command == 1 ? 'select' : null,
+    name: 'color',
+    message: 'Enter the color',
+    choices: [
+      {
+        title: 'Custom',
+        value: 'custom'
+      },
+      {
+        title: 'Random',
+        value: 'random'
+      }
+    ]
+  },
+  {
+    type: (prev, values) => values.command == 1 && values.color == 'custom' ? 'number' : null,
     name: 'red',
     message: 'Enter the red value (0-255)',
     min: 0,
     max: 255
   },
   {
-    type: (prev, values) => values.command == 1 && values.mode != 'random color' ? 'number' : null,
+    type: (prev, values) => values.command == 1 && values.color == 'custom' ? 'number' : null,
     name: 'green',
     message: 'Enter the green value (0-255)',
     min: 0,
     max: 255
   },
   {
-    type: (prev, values) => values.command == 1 && values.mode != 'random color' ? 'number' : null,
+    type: (prev, values) => values.command == 1 && values.color == 'custom' ? 'number' : null,
     name: 'blue',
     message: 'Enter the blue value (0-255)',
     min: 0,

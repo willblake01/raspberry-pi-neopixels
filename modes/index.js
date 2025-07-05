@@ -1,4 +1,4 @@
-export { SolidColor } from './solidColor.js';
-export { RandomColor } from './randomColor.js';
-export { WalkPixel } from './walkPixel.js';
+export { BlinkCustomColor, BlinkRandomColor } from './blink.js';
+export { SolidCustomColor, SolidRandomColor } from './solid.js';
+export { WalkPixelCustomColor, WalkPixelRandomColor } from './walkPixel.js';
 export { TurnOff } from './turnOff.js';
