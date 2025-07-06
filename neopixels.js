@@ -1,7 +1,7 @@
 import prompts from 'prompts';
 import { setInterval, setTimeout } from 'timers/promises';
 import { questions } from './prompts/questions.js';
-import { BlinkCustomColor, BlinkRandomColor, SolidCustomColor, SolidRandomColor, WalkSingleOffPixelCustomColor, WalkSingleOffPixelRandomColor, WalkSinglePixelCustomColor, WalkSinglePixelRandomColor, TurnOff } from './modes/index.js';
+import { BlinkCustomColor, BlinkRandomColor, SolidCustomColor, SolidRandomColor, WalkOffPixelCustomColor, WalkOffPixelRandomColor, WalkPixelCustomColor, WalkPixelRandomColor, TurnOff } from './modes/index.js';
 
 (async () => {
   const response = await prompts(questions);
@@ -50,23 +50,23 @@ import { BlinkCustomColor, BlinkRandomColor, SolidCustomColor, SolidRandomColor,
     };
 
     if (mode === 'walk pixel' && pixelState === 1 && color === 'custom') {
-      const walkSinglePixelCustomColor = new WalkSinglePixelCustomColor(config, intervalValue, redValue, greenValue, blueValue);
-      walkSinglePixelCustomColor.run();
+      const walkPixelCustomColor = new WalkPixelCustomColor(config, intervalValue, redValue, greenValue, blueValue);
+      walkPixelCustomColor.run();
     };
 
     if (mode === 'walk pixel' && pixelState === 1 && color === 'random') {
-      const walkSinglePixelRandomColor = new WalkSinglePixelRandomColor(config, intervalValue);
-      walkSinglePixelRandomColor.run();
+      const walkPixelRandomColor = new WalkPixelRandomColor(config, intervalValue);
+      walkPixelRandomColor.run();
     };
 
     if (mode === 'walk pixel' && pixelState === 0 && color === 'custom') {
-      const walkSingleOffPixelCustomColor = new WalkSingleOffPixelCustomColor(config, intervalValue, redValue, greenValue, blueValue);
-      walkSingleOffPixelCustomColor.run();
+      const walkOffPixelCustomColor = new WalkOffPixelCustomColor(config, intervalValue, redValue, greenValue, blueValue);
+      walkOffPixelCustomColor.run();
     };
 
     if (mode === 'walk pixel' && pixelState === 0 && color === 'random') {
-      const walkSingleOffPixelRandomColor = new WalkSingleOffPixelRandomColor(config, intervalValue);
-      walkSingleOffPixelRandomColor.run();
+      const walkOffPixelRandomColor = new WalkOffPixelRandomColor(config, intervalValue);
+      walkOffPixelRandomColor.run();
     };
   };
 

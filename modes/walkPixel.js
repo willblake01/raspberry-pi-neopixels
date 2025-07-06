@@ -1,7 +1,7 @@
 import ws281x from 'rpi-ws281x';
 import { randomColorValue } from '../utils/index.js';
 
-export class WalkSinglePixelCustomColor {
+export class WalkPixelCustomColor {
     constructor(config, interval, redValue, greenValue, blueValue) {
       this.config = config;
       this.interval = interval;
@@ -31,7 +31,7 @@ export class WalkSinglePixelCustomColor {
     };
   };
 
-export class WalkSinglePixelRandomColor {
+export class WalkPixelRandomColor {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -58,7 +58,7 @@ export class WalkSinglePixelRandomColor {
   };
 };
 
-export class WalkSingleOffPixelCustomColor {
+export class WalkOffPixelCustomColor {
   constructor(config, interval, redValue, greenValue, blueValue) {
     this.config = config;
     this.interval = interval;
@@ -77,10 +77,12 @@ export class WalkSingleOffPixelCustomColor {
     const color = (red << 16) | (green << 8) | blue;
 
     for (let i = 0; i < this.config.leds; i++) {
-      pixels[i] = color;
+      if (i === this.offset) {
+        pixels[this.offset] = 0;
+      } else {
+        pixels[i] = color;
+      };
     };
-
-    pixels[this.offset] = 0;
 
     this.offset = (this.offset + 1) % this.config.leds;
 
@@ -92,7 +94,7 @@ export class WalkSingleOffPixelCustomColor {
   };
 };
 
-export class WalkSingleOffPixelRandomColor {
+export class WalkOffPixelRandomColor {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -107,10 +109,12 @@ export class WalkSingleOffPixelRandomColor {
     const color = (red << 16) | (green << 8) | blue;
 
     for (let i = 0; i < this.config.leds; i++) {
-      pixels[i] = color;
+      if (i === this.offset) {
+        pixels[this.offset] = 0;
+      } else {
+        pixels[i] = color;
+      };
     };
-
-    pixels[this.offset] = 0;
 
     this.offset = (this.offset + 1) % this.config.leds;
 
