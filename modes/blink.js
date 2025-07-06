@@ -20,10 +20,8 @@ export class BlinkCustomColor {
 
     if (!this.on) {
       red = this.redValue, green = this.greenValue, blue = this.blueValue;
-      this.on = true;
     } else {
       red = 0, green = 0, blue = 0;
-      this.on = false;
     };
 
     const color = (red << 16) | (green << 8) | blue;
@@ -33,6 +31,7 @@ export class BlinkCustomColor {
     };
 
     ws281x.render(pixels);
+    this.on = !this.on;
   };
 
   run() {
@@ -55,10 +54,8 @@ export class BlinkRandomColor {
 
     if (!this.on) {
       red = randomColorValue(255), green = randomColorValue(255), blue = randomColorValue(255);
-      this.on = true;
     } else {
       red = 0, green = 0, blue = 0;
-      this.on = false
     };
 
     const color = (red << 16) | (green << 8) | blue;
@@ -68,6 +65,7 @@ export class BlinkRandomColor {
     };
 
     ws281x.render(pixels);
+    this.on = !this.on;
   };
 
   run() {
