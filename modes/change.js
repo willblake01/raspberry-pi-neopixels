@@ -23,6 +23,7 @@ export class ChangeColor {
   };
 
   run() {
+    this.loop();
     setInterval(this.loop.bind(this), this.interval);
   };
 };
