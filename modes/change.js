@@ -1,7 +1,7 @@
 import ws281x from 'rpi-ws281x';
 import { randomColorValue } from '../utils/index.js';
 
-export class ChangeColor {
+export class Change {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;

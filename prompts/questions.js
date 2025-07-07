@@ -28,6 +28,10 @@ export const questions = [
         value: 'change'
       },
       {
+        title: 'Creep',
+        value: 'creep'
+      },
+      {
         title: 'Blink',
         value: 'blink'
       },
@@ -72,7 +76,7 @@ export const questions = [
     max: 255
   },
   {
-    type: (prev, values) => values.command == 1 && values.mode != 'change' ? 'select' : null,
+    type: (prev, values) => values.command == 1 && values.mode != 'change' && values.mode != 'creep' ? 'select' : null,
     name: 'color',
     message: 'Enter the color',
     choices: [

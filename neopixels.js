@@ -1,7 +1,7 @@
 import prompts from 'prompts';
 import { setInterval, setTimeout } from 'timers/promises';
 import { questions } from './prompts/questions.js';
-import { BlinkCustomColor, BlinkRandomColor, ChangeColor, SolidCustomColor, SolidRandomColor, WalkOffPixelCustomColor, WalkOffPixelRandomColor, WalkPixelCustomColor, WalkPixelRandomColor, TurnOff } from './modes/index.js';
+import { BlinkCustomColor, BlinkRandomColor, Change, Creep, SolidCustomColor, SolidRandomColor, WalkOffPixelCustomColor, WalkOffPixelRandomColor, WalkPixelCustomColor, WalkPixelRandomColor, TurnOff } from './modes/index.js';
 
 (async () => {
   const response = await prompts(questions);
@@ -40,8 +40,13 @@ import { BlinkCustomColor, BlinkRandomColor, ChangeColor, SolidCustomColor, Soli
     };
 
     if (mode === 'change') {
-      const changeColor = new ChangeColor(config, intervalValue);
-      changeColor.run();
+      const change = new Change(config, intervalValue);
+      change.run();
+    };
+
+    if (mode === 'creep') {
+      const creep = new Creep(config, intervalValue);
+      creep.run();
     };
 
     if (mode === 'blink' && color === 'custom') {
