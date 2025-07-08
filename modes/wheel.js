@@ -5,10 +5,15 @@ export class Wheel {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
-    this.pixelIndex = 0;
-    this.red = randomColorValue(255);
-    this.green = randomColorValue(255);
-    this.blue = randomColorValue(255);
+    this.offset = 0;
+    this.red = randomNumber(255);
+    this.green = randomNumber(255);
+    this.blue = randomNumber(255);
+    this.red2 = 0;
+    this.green2 = 0;
+    this.blue2 = 0;
+    this.color1 = (this.red << 16) | (this.green << 8) | this.blue;
+    this.color2 = (this.red2 << 16) | (this.green2 << 8) | this.blue2;
 
     ws281x.configure(config);
   };
@@ -16,25 +21,28 @@ export class Wheel {
   loop() {
     const pixels = new Uint32Array(this.config.leds);
 
-    const color = (this.red << 16) | (this.green) | this.blue;
-
-    for (let i = 0; i < this.pixelIndex; i++) {
-      pixels[i] = color;
+    for (let i = 0; i < this.offset; i++) {
+      pixels[i] = this.color1;
     };
 
-    for (let i = 0; i < this.config.leds; i++) {
-      if (this.pixelIndex === this.config.leds) {
-        this.pixelIndex = 0;
-
-        this.red = randomNumber(255);
-        this.green = randomNumber(255);
-        this.blue = randomNumber(255);
-      };
-
-      pixels[this.pixelIndex] = color;
+    for (let i = this.offset; i < this.config.leds; i++) {
+      pixels[i] = this.color2;
     };
 
-    this.pixelIndex++;
+    pixels[this.offset] = this.color1;
+
+    if (this.offset === this.config.leds - 1) {
+      this.color2 = this.color1;
+
+      this.red = randomNumber(255);
+      this.green = randomNumber(255);
+      this.blue = randomNumber(255);
+
+      this.color1 = (this.red << 16) | (this.green << 8) | this.blue;
+    };
+
+    this.offset = (this.offset + 1) % this.config.leds;
+
     ws281x.render(pixels);
   };
 
