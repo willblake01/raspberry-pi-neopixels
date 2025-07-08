@@ -1,5 +1,5 @@
 import ws281x from 'rpi-ws281x';
-import { randomColorValue } from '../utils/index.js';
+import { randomNumber } from '../utils/index.js';
 
 export class BlinkCustomColor {
   constructor(config, interval, redValue, greenValue, blueValue) {
@@ -54,7 +54,7 @@ export class BlinkRandomColor {
     let red, green, blue;
 
     if (!this.on) {
-      red = randomColorValue(255), green = randomColorValue(255), blue = randomColorValue(255);
+      red = randomNumber(255), green = randomNumber(255), blue = randomNumber(255);
     } else {
       red = 0, green = 0, blue = 0;
     };

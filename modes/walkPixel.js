@@ -1,5 +1,5 @@
 import ws281x from 'rpi-ws281x';
-import { randomColorValue } from '../utils/index.js';
+import { randomNumber } from '../utils/index.js';
 
 export class WalkPixelCustomColor {
     constructor(config, interval, redValue, greenValue, blueValue) {
@@ -44,7 +44,7 @@ export class WalkPixelRandomColor {
   loop() {
     const pixels = new Uint32Array(this.config.leds);
 
-    const red = randomColorValue(255), green = randomColorValue(255), blue = randomColorValue(255);
+    const red = randomNumber(255), green = randomNumber(255), blue = randomNumber(255);
     const color = (red << 16) | (green << 8) | blue;
 
     pixels[this.offset] = color;
@@ -108,7 +108,7 @@ export class WalkOffPixelRandomColor {
 
   loop() {
     const pixels = new Uint32Array(this.config.leds);
-    const red = randomColorValue(255), green = randomColorValue(255), blue = randomColorValue(255);
+    const red = randomNumber(255), green = randomNumber(255), blue = randomNumber(255);
     const color = (red << 16) | (green << 8) | blue;
 
     for (let i = 0; i < this.config.leds; i++) {

@@ -38,6 +38,10 @@ export const questions = [
       {
         title: 'Walk pixel',
         value: 'walk pixel'
+      },
+      {
+        title: 'Wheel',
+        value: 'wheel'
       }
     ]
   },
@@ -76,7 +80,7 @@ export const questions = [
     max: 255
   },
   {
-    type: (prev, values) => values.command == 1 && values.mode != 'change' && values.mode != 'creep' ? 'select' : null,
+    type: (prev, values) => values.command == 1 && values.mode != 'change' && values.mode != 'creep' && values.mode != 'wheel' ? 'select' : null,
     name: 'color',
     message: 'Enter the color',
     choices: [

@@ -1,7 +1,7 @@
 import prompts from 'prompts';
 import { setInterval, setTimeout } from 'timers/promises';
 import { questions } from './prompts/questions.js';
-import { BlinkCustomColor, BlinkRandomColor, Change, Creep, SolidCustomColor, SolidRandomColor, WalkOffPixelCustomColor, WalkOffPixelRandomColor, WalkPixelCustomColor, WalkPixelRandomColor, TurnOff } from './modes/index.js';
+import { BlinkCustomColor, BlinkRandomColor, Change, Creep, SolidCustomColor, SolidRandomColor, WalkOffPixelCustomColor, WalkOffPixelRandomColor, WalkPixelCustomColor, WalkPixelRandomColor, Wheel, TurnOff } from './modes/index.js';
 
 (async () => {
   const response = await prompts(questions);
@@ -77,6 +77,11 @@ import { BlinkCustomColor, BlinkRandomColor, Change, Creep, SolidCustomColor, So
     if (mode === 'walk pixel' && pixelState === 0 && color === 'random') {
       const walkOffPixelRandomColor = new WalkOffPixelRandomColor(config, intervalValue);
       walkOffPixelRandomColor.run();
+    };
+
+    if (mode === 'wheel') {
+      const wheel = new Wheel(config, intervalValue);
+      wheel.run();
     };
   };
 

@@ -1,1 +1,1 @@
-export { randomColorValue } from './randomColorValue.js';
+export { randomNumber } from './randomNumber.js';
