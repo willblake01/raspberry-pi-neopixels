@@ -1,6 +1,6 @@
 export { BlinkCustomColor, BlinkRandomColor } from './blink.js';
 export { Change } from './change.js';
-export { Creep } from './creep.js';
+export { CreepCustomColor, CreepRandomColor } from './creep.js';
 export { SolidCustomColor, SolidRandomColor } from './solid.js';
 export { Sparkle } from './sparkle.js';
 export { WalkOffPixelCustomColor, WalkOffPixelRandomColor, WalkPixelCustomColor, WalkPixelRandomColor } from './walkPixel.js';

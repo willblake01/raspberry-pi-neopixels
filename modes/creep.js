@@ -1,11 +1,48 @@
 import ws281x from 'rpi-ws281x';
 import { randomNumber } from '../utils/index.js';
 
-export class Creep {
+export class CreepCustomColor {
+  constructor(config, interval, redValue, greenValue, blueValue) {
+    this.config = config;
+    this.interval = interval;
+    this.redValue = redValue;
+    this.greenValue = greenValue;
+    this.blueValue = blueValue;
+    this.offset = 0;
+
+    ws281x.configure(config);
+  };
+
+  loop() {
+    const pixels = new Uint32Array(this.config.leds);
+
+    const red = this.redValue, green = this.greenValue, blue = this.blueValue;
+    const color = (red << 16) | (green << 8) | blue;
+
+    for (let i = 0; i < this.offset; i++) {
+      pixels[i] = color;
+    };
+
+    for (let i = 0; i < this.config.leds; i++) {
+      pixels[this.offset] = color;
+    };
+
+    this.offset = (this.offset + 1) % this.config.leds;
+
+    ws281x.render(pixels);
+  };
+
+  run() {
+    this.loop();
+    setInterval(this.loop.bind(this), this.interval);
+  };
+};
+
+export class CreepRandomColor {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
-    this.pixelIndex = 0;
+    this.offset = 0;
     this.red = randomNumber(255);
     this.green = randomNumber(255);
     this.blue = randomNumber(255);
@@ -16,25 +53,25 @@ export class Creep {
   loop() {
     const pixels = new Uint32Array(this.config.leds);
 
-    const color = (this.red << 16) | (this.green << 8) | this.blue;
+    const red = this.red, green = this.green, blue = this.blue;
+    const color = (red << 16) | (green << 8) | blue;
 
-    for (let i = 0; i < this.pixelIndex; i++) {
+    for (let i = 0; i < this.offset; i++) {
       pixels[i] = color;
     };
 
     for (let i = 0; i < this.config.leds; i++) {
-      if (this.pixelIndex === this.config.leds) {
-        this.pixelIndex = 0;
-
+      if (this.offset === this.config.leds - 1) {
         this.red = randomNumber(255);
         this.green = randomNumber(255);
         this.blue = randomNumber(255);
       };
 
-      pixels[this.pixelIndex] = color;
+      pixels[this.offset] = color;
     };
 
-    this.pixelIndex++;
+    this.offset = (this.offset + 1) % this.config.leds;
+
     ws281x.render(pixels);
   };
 
