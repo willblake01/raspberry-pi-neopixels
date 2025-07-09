@@ -65,6 +65,25 @@ export const questions = [
     ]
   },
   {
+    type: (prev, values) => values.command == 1 && values.mode == 'sparkle' ? 'select' : null,
+    name: 'sparkleMode',
+    message: 'Set sparkle mode',
+    choices: [
+      {
+        title: 'Strand',
+        value: 'strand'
+      },
+      {
+        title: 'Creep',
+        value: 'creep'
+      },
+      {
+        title: 'Walk Off Pixel',
+        value: 'walk off pixel'
+      }
+    ]
+  },
+  {
     type: (prev, values) => values.command == 1 && values.mode != 'solid' ? 'number' : null,
     name: 'interval',
     message: 'Enter interval (milliseconds)',
