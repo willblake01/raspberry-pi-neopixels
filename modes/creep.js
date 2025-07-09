@@ -38,7 +38,7 @@ export class CreepCustomColor {
   };
 };
 
-export class CreepRandomColorPixel {
+export class CreepRandomColorChangePixel {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -70,7 +70,7 @@ export class CreepRandomColorPixel {
   };
 };
 
-export class CreepRandomColorStrand {
+export class CreepRandomColorChangeStrand {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -100,6 +100,39 @@ export class CreepRandomColorStrand {
       };
 
       pixels[this.offset] = color;
+    };
+
+    this.offset = (this.offset + 1) % this.config.leds;
+
+    ws281x.render(pixels);
+  };
+
+  run() {
+    this.loop();
+    setInterval(this.loop.bind(this), this.interval);
+  };
+};
+
+export class CreepRandomColorStatic {
+  constructor(config, interval) {
+    this.config = config;
+    this.interval = interval;
+    this.offset = 0;
+    this.red = randomNumber(255);
+    this.green = randomNumber(255);
+    this.blue = randomNumber(255);
+
+    ws281x.configure(config);
+  };
+
+  loop() {
+    const pixels = new Uint32Array(this.config.leds);
+
+    const red = this.red, green = this.green, blue = this.blue;
+    const color = (red << 16) | (green << 8) | blue;
+
+    for (let i = 0; i < this.offset; i++) {
+      pixels[i] = color;
     };
 
     this.offset = (this.offset + 1) % this.config.leds;

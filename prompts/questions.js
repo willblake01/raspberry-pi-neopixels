@@ -28,20 +28,20 @@ export const questions = [
         value: 'change'
       },
       {
-        title: 'Creep',
-        value: 'creep'
-      },
-      {
         title: 'Blink',
         value: 'blink'
       },
       {
-        title: 'Walk Pixel',
-        value: 'walk pixel'
+        title: 'Creep',
+        value: 'creep'
       },
       {
         title: 'Wheel',
         value: 'wheel'
+      },
+      {
+        title: 'Walk Pixel',
+        value: 'walk pixel'
       }
     ]
   },
@@ -57,21 +57,6 @@ export const questions = [
       {
         title: 'Off',
         value: 0
-      }
-    ]
-  },
-  {
-    type: (prev, values) => values.command == 1 && values.mode == 'sparkle' ? 'select' : null,
-    name: 'sparkleMode',
-    message: 'Set sparkle mode',
-    choices: [
-      {
-        title: 'Creep',
-        value: 'creep'
-      },
-      {
-        title: 'Walk Off Pixel',
-        value: 'walk off pixel'
       }
     ]
   },
@@ -97,7 +82,7 @@ export const questions = [
   {
     type: (prev, values) => values.command == 1 && values.mode != 'change' && values.mode != 'wheel' && values.mode != 'sparkle' ? 'select' : null,
     name: 'color',
-    message: 'Enter the color',
+    message: 'Enter the color mode',
     choices: [
       {
         title: 'Custom',
@@ -110,7 +95,22 @@ export const questions = [
     ]
   },
   {
-    type: (prev, values) => values.command == 1 && values.color == 'random' && values.mode != 'change' ? 'select' : null,
+    type: (prev, values) => values.command == 1 && values.color == 'random' && values.mode != 'solid' && values.mode != 'change' ? 'select' : null,
+    name: 'randomColorMode',
+    message: 'Set random color mode',
+    choices: [
+      {
+        title: 'Static',
+        value: 'static'
+      },
+      {
+        title: 'Change',
+        value: 'change'
+      }
+    ]
+  },
+  {
+    type: (prev, values) => values.command == 1 && values.color == 'random' && values.randomColorMode === 'change' && values.mode !== 'blink' ? 'select' : null,
     name: 'colorChangeInterval',
     message: 'Set color change interval',
     choices: [
