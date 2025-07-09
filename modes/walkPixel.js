@@ -36,6 +36,9 @@ export class WalkPixelRandomColor {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
+    this.red = 0;
+    this.green = 0;
+    this.blue = 0;
     this.offset = 0;
 
     ws281x.configure(config);
@@ -44,7 +47,13 @@ export class WalkPixelRandomColor {
   loop() {
     const pixels = new Uint32Array(this.config.leds);
 
-    const red = randomNumber(255), green = randomNumber(255), blue = randomNumber(255);
+    if (this.offset === 0) {
+      this.red = randomNumber(255);
+      this.green = randomNumber(255);
+      this.blue = randomNumber(255);
+    };
+
+    const red = this.red, green = this.green, blue = this.blue;
     const color = (red << 16) | (green << 8) | blue;
 
     pixels[this.offset] = color;
@@ -101,6 +110,9 @@ export class WalkOffPixelRandomColor {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
+    this.red = 0;
+    this.green = 0;
+    this.blue = 0;
     this.offset = 0;
 
     ws281x.configure(config);
@@ -108,7 +120,14 @@ export class WalkOffPixelRandomColor {
 
   loop() {
     const pixels = new Uint32Array(this.config.leds);
-    const red = randomNumber(255), green = randomNumber(255), blue = randomNumber(255);
+
+    if (this.offset === 0) {
+      this.red = randomNumber(255);
+      this.green = randomNumber(255);
+      this.blue = randomNumber(255);
+    };
+
+    const red = this.red, green = this.green, blue = this.blue;
     const color = (red << 16) | (green << 8) | blue;
 
     for (let i = 0; i < this.config.leds; i++) {
