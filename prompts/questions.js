@@ -36,7 +36,7 @@ export const questions = [
         value: 'blink'
       },
       {
-        title: 'Walk pixel',
+        title: 'Walk Pixel',
         value: 'walk pixel'
       },
       {
