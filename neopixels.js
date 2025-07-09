@@ -1,7 +1,7 @@
 import prompts from 'prompts';
 import { setInterval, setTimeout } from 'timers/promises';
 import { questions } from './prompts/questions.js';
-import { BlinkCustomColor, BlinkRandomColor, Change, CreepCustomColor, CreepRandomColor, SolidCustomColor, SolidRandomColor, SparkleCreep, SparkleOffPixel, SparkleStrand, WalkOffPixelCustomColor, WalkOffPixelRandomColor, WalkPixelCustomColor, WalkPixelRandomColor, Wheel, TurnOff } from './modes/index.js';
+import { BlinkCustomColor, BlinkRandomColor, Change, CreepCustomColor, CreepRandomColor, SolidCustomColor, SolidRandomColor, SparkleCreep, SparkleOffPixel, WalkOffPixelCustomColor, WalkOffPixelRandomColor, WalkPixelCustomColor, WalkPixelRandomColor, Wheel, TurnOff } from './modes/index.js';
 
 (async () => {
   const response = await prompts(questions);
@@ -87,11 +87,6 @@ import { BlinkCustomColor, BlinkRandomColor, Change, CreepCustomColor, CreepRand
     if (mode === 'wheel') {
       const wheel = new Wheel(config, intervalValue);
       wheel.run();
-    };
-
-    if (mode === 'sparkle' && sparkleMode === 'strand') {
-      const sparkleStrand = new SparkleStrand(config, intervalValue);
-      sparkleStrand.run();
     };
 
     if (mode === 'sparkle' && sparkleMode === 'creep') {

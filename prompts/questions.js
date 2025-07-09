@@ -70,10 +70,6 @@ export const questions = [
     message: 'Set sparkle mode',
     choices: [
       {
-        title: 'Strand',
-        value: 'strand'
-      },
-      {
         title: 'Creep',
         value: 'creep'
       },
