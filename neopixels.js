@@ -1,11 +1,11 @@
 import prompts from 'prompts';
 import { setInterval, setTimeout } from 'timers/promises';
 import { questions } from './prompts/questions.js';
-import { BlinkCustomColor, BlinkRandomColor, Change, CreepCustomColor, CreepRandomColor, SolidCustomColor, SolidRandomColor, SparkleCreep, SparkleOffPixel, WalkOffPixelCustomColor, WalkOffPixelRandomColor, WalkPixelCustomColor, WalkPixelRandomColor, Wheel, TurnOff } from './modes/index.js';
+import { BlinkCustomColor, BlinkRandomColor, Change, CreepCustomColor, CreepRandomColorPixel, CreepRandomColorStrand, SolidCustomColor, SolidRandomColor, WalkOffPixelCustomColor, WalkOffPixelRandomColorPixel, WalkOffPixelRandomColorStrand, WalkPixelCustomColor, WalkPixelRandomColorPixel, WalkPixelRandomColorStrand, Wheel, TurnOff } from './modes/index.js';
 
 (async () => {
   const response = await prompts(questions);
-  const { blue, brightness, color, command, green, interval, leds, mode, pixel, red, sparkleMode } = response;
+  const { blue, brightness, color, colorChangeInterval, command, green, interval, leds, mode, pixel, red } = response;
 
   const pixelState = parseInt(pixel, 10);
   const pixelCount = parseInt(leds, 10);
@@ -49,9 +49,14 @@ import { BlinkCustomColor, BlinkRandomColor, Change, CreepCustomColor, CreepRand
       creepCustomColor.run();
     };
 
-    if (mode === 'creep' && color === 'random') {
-      const creepRandomColor = new CreepRandomColor(config, intervalValue);
-      creepRandomColor.run();
+    if (mode === 'creep' && color === 'random' && colorChangeInterval === 'everyPixel') {
+      const creepRandomColorPixel = new CreepRandomColorPixel(config, intervalValue);
+      creepRandomColorPixel.run();
+    };
+
+    if (mode === 'creep' && color === 'random' && colorChangeInterval === 'everyLoop') {
+      const creepRandomColorStrand = new CreepRandomColorStrand(config, interval);
+      creepRandomColorStrand.run();
     };
 
     if (mode === 'blink' && color === 'custom') {
@@ -69,9 +74,14 @@ import { BlinkCustomColor, BlinkRandomColor, Change, CreepCustomColor, CreepRand
       walkPixelCustomColor.run();
     };
 
-    if (mode === 'walk pixel' && pixelState === 1 && color === 'random') {
-      const walkPixelRandomColor = new WalkPixelRandomColor(config, intervalValue);
-      walkPixelRandomColor.run();
+    if (mode === 'walk pixel' && pixelState === 1 && color === 'random' && colorChangeInterval === 'everyPixel') {
+      const walkPixelRandomColorPixel = new WalkPixelRandomColorPixel(config, intervalValue);
+      walkPixelRandomColorPixel.run();
+    };
+
+    if (mode === 'walk pixel' && pixelState === 1 && color === 'random' && colorChangeInterval === 'everyLoop') {
+      const walkPixelRandomColorStrand = new WalkPixelRandomColorStrand(config, intervalValue);
+      walkPixelRandomColorStrand.run();
     };
 
     if (mode === 'walk pixel' && pixelState === 0 && color === 'custom') {
@@ -79,9 +89,14 @@ import { BlinkCustomColor, BlinkRandomColor, Change, CreepCustomColor, CreepRand
       walkOffPixelCustomColor.run();
     };
 
-    if (mode === 'walk pixel' && pixelState === 0 && color === 'random') {
-      const walkOffPixelRandomColor = new WalkOffPixelRandomColor(config, intervalValue);
-      walkOffPixelRandomColor.run();
+    if (mode === 'walk pixel' && pixelState === 0 && color === 'random' && colorChangeInterval === 'everyPixel') {
+      const walkOffPixelRandomColorPixel = new WalkOffPixelRandomColorPixel(config, intervalValue);
+      walkOffPixelRandomColorPixel.run();
+    };
+
+    if (mode === 'walk pixel' && pixelState === 0 && color === 'random' && colorChangeInterval === 'everyLoop') {
+      const walkOffPixelRandomColorStrand = new WalkOffPixelRandomColorStrand(config, intervalValue);
+      walkOffPixelRandomColorStrand.run();
     };
 
     if (mode === 'wheel') {

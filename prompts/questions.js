@@ -42,10 +42,6 @@ export const questions = [
       {
         title: 'Wheel',
         value: 'wheel'
-      },
-      {
-        title: 'Sparkle',
-        value: 'sparkle'
       }
     ]
   },
@@ -110,6 +106,21 @@ export const questions = [
       {
         title: 'Random',
         value: 'random'
+      }
+    ]
+  },
+  {
+    type: (prev, values) => values.command == 1 && values.color == 'random' && values.mode != 'change' ? 'select' : null,
+    name: 'colorChangeInterval',
+    message: 'Set color change interval',
+    choices: [
+      {
+        title: 'After every pixel',
+        value: 'everyPixel'
+      },
+      {
+        title: 'At end of strand',
+        value: 'everyLoop'
       }
     ]
   },
