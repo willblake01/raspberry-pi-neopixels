@@ -2,7 +2,7 @@ export const questions = [
   {
     type: 'select',
     name: 'command',
-    message: 'Enter a command',
+    message: 'Enter command',
     choices: [
       {
         title: 'On',
@@ -17,7 +17,7 @@ export const questions = [
   {
     type: (prev, values) => values.command == 1 ? 'select' : null,
     name: 'mode',
-    message: 'Enter the mode',
+    message: 'Set mode',
     choices: [
       {
         title: 'Solid',
@@ -68,21 +68,21 @@ export const questions = [
   {
     type: 'number',
     name: 'leds',
-    message: 'Enter the number of LEDs (0-100)',
+    message: 'Enter number of LEDs (0-100)',
     min: 0,
     max: 100
   },
   {
     type: (prev, values) => values.command == 1 ? 'number' : null,
     name: 'brightness',
-    message: 'Enter the brightness (0-255)',
+    message: 'Enter brightness (0-255)',
     min: 0,
     max: 255
   },
   {
     type: (prev, values) => values.command == 1 && values.mode != 'change' && values.mode != 'wheel' && values.mode != 'sparkle' ? 'select' : null,
     name: 'color',
-    message: 'Enter the color mode',
+    message: 'Set color mode',
     choices: [
       {
         title: 'Custom',
@@ -127,21 +127,21 @@ export const questions = [
   {
     type: (prev, values) => values.command == 1 && values.color == 'custom' ? 'number' : null,
     name: 'red',
-    message: 'Enter the red value (0-255)',
+    message: 'Enter red value (0-255)',
     min: 0,
     max: 255
   },
   {
     type: (prev, values) => values.command == 1 && values.color == 'custom' ? 'number' : null,
     name: 'green',
-    message: 'Enter the green value (0-255)',
+    message: 'Enter green value (0-255)',
     min: 0,
     max: 255
   },
   {
     type: (prev, values) => values.command == 1 && values.color == 'custom' ? 'number' : null,
     name: 'blue',
-    message: 'Enter the blue value (0-255)',
+    message: 'Enter blue value (0-255)',
     min: 0,
     max: 255
   }
