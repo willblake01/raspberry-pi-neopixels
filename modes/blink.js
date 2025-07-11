@@ -55,14 +55,13 @@ export class BlinkRandomColorChange {
   loop() {
     const pixels = new Uint32Array(this.config.leds);
 
-    let red, green, blue;
-
     if (!this.on) {
       this.red = randomNumber(255), this.green = randomNumber(255), this.blue = randomNumber(255);
     } else {
       this.red = 0, this.green = 0, this.blue = 0;
     };
 
+    let red = this.red, green = this.green, blue = this.blue;
     const color = (red << 16) | (green << 8) | blue;
 
     for (let i = 0; i < this.config.leds; i++) {
