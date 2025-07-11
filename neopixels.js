@@ -47,7 +47,7 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Chang
 
     if (mode === 'blink' && color === 'custom') {
       await setTimeout(timeout);
-      const blinkCustomColor = new BlinkCustomColor(config, intervalValue);
+      const blinkCustomColor = new BlinkCustomColor(config, intervalValue, redValue, greenValue, blueValue);
       blinkCustomColor.run();
     };
 

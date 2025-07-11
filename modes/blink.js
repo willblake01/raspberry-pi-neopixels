@@ -44,6 +44,9 @@ export class BlinkRandomColorChange {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
+    this.red = 0;
+    this.green = 0;
+    this.blue = 0;
     this.on = false;
 
     ws281x.configure(config);
@@ -55,9 +58,9 @@ export class BlinkRandomColorChange {
     let red, green, blue;
 
     if (!this.on) {
-      red = randomNumber(255), green = randomNumber(255), blue = randomNumber(255);
+      this.red = randomNumber(255), this.green = randomNumber(255), this.blue = randomNumber(255);
     } else {
-      red = 0, green = 0, blue = 0;
+      this.red = 0, this.green = 0, this.blue = 0;
     };
 
     const color = (red << 16) | (green << 8) | blue;
@@ -80,10 +83,10 @@ export class BlinkRandomColorStatic {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
-    this.on = false;
     this.red = randomNumber(255);
     this.green = randomNumber(255);
     this.blue = randomNumber(255);
+    this.on = false;
 
     ws281x.configure(config);
   };
