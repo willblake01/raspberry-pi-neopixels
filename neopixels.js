@@ -147,5 +147,5 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Chang
     };
   };
 
-  setTimeout(handleCommand, timeout);
+  setTimeout(handleCommand, 2000);
 })()
