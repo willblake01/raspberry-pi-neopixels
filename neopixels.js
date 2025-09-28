@@ -131,7 +131,7 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Chang
   };
 
   if (turnOn) {
-    await setTimeout(handleMode, timeout);
+    await setTimeout(handleMode(), timeout);
   };
 
   if (turnOff) {
