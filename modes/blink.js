@@ -17,19 +17,17 @@ export class BlinkCustomColor {
     this.red = this.on ? this.red : 0, this.green = this.on ? this.green : 0, this.blue = this.on ? this.blue : 0;
   };
 
-  setColor = () => {
+  loop() {
+    const pixels = new Uint32Array(this.config.leds);
+    this.handlePixelState();
+    
     let red = this.red, green = this.green, blue = this.blue;
     const color = (red << 16) | (green << 8) | blue;
 
     for (let i = 0; i < this.config.leds; i++) {
       pixels[i] = color;
     };
-  };
 
-  loop() {
-    const pixels = new Uint32Array(this.config.leds);
-    this.handlePixelState();
-    this.setColor();
     ws281x.render(pixels);
     this.on = !this.on;
   };
@@ -56,19 +54,17 @@ export class BlinkRandomColorChange {
     this.red = this.on ? randomNumber(255) : 0, this.green = this.on ? randomNumber(255) : 0, this.blue = this.on ? randomNumber(255) : 0;
   };
 
-  setColor = () => {
+  loop() {
+    const pixels = new Uint32Array(this.config.leds);
+    this.handlePixelState();
+    
     let red = this.red, green = this.green, blue = this.blue;
     const color = (red << 16) | (green << 8) | blue;
 
     for (let i = 0; i < this.config.leds; i++) {
       pixels[i] = color;
     };
-  };
 
-  loop() {
-    const pixels = new Uint32Array(this.config.leds);
-    this.handlePixelState();
-    this.setColor();
     ws281x.render(pixels);
     this.on = !this.on;
   };
@@ -95,19 +91,17 @@ export class BlinkRandomColorStatic {
     this.red = this.on ? this.red : 0, this.green = this.on ? this.green : 0, this.blue = this.on ? this.blue : 0;
   };
 
-  setColor = () => {
+  loop() {
+    const pixels = new Uint32Array(this.config.leds);
+    this.handlePixelState();
+
     let red = this.red, green = this.green, blue = this.blue;
     const color = (red << 16) | (green << 8) | blue;
 
     for (let i = 0; i < this.config.leds; i++) {
       pixels[i] = color;
     };
-  };
 
-  loop() {
-    const pixels = new Uint32Array(this.config.leds);
-    this.handlePixelState();
-    this.setColor();
     ws281x.render(pixels);
     this.on = !this.on;
   };
