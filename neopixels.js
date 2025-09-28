@@ -44,6 +44,7 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Chang
   const pixelOff = pixelState === 0;
 
   const handleMode = () => {
+    // Solid Mode
     if (solidMode && customColor) {
       const solidCustomColor = new SolidCustomColor(config, redValue, greenValue, blueValue);
       solidCustomColor.run();
@@ -54,11 +55,13 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Chang
       solidRandomColor.run();
     };
 
+    // Change Mode
     if (changeMode) {
       const change = new Change(config, intervalValue);
       change.run();
     };
 
+    // Blink Mode
     if (blinkMode && customColor) {
       const blinkCustomColor = new BlinkCustomColor(config, intervalValue, redValue, greenValue, blueValue);
       blinkCustomColor.run();
@@ -74,6 +77,7 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Chang
       blinkRandomColorChange.run();
     };
 
+    // Creep Mode
     if (creepMode && customColor) {
       const creepCustomColor = new CreepCustomColor(config, intervalValue, redValue, greenValue, blueValue);
       creepCustomColor.run();
@@ -94,11 +98,13 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Chang
       creepRandomColorChangeStrand.run();
     };
 
+    // Wheel Mode
     if (wheelMode) {
       const wheel = new Wheel(config, intervalValue);
       wheel.run();
     };
 
+    // Walk Pixel Mode
     if (walkPixelMode && pixelOn && customColor) {
       const walkPixelCustomColor = new WalkPixelCustomColor(config, intervalValue, redValue, greenValue, blueValue);
       walkPixelCustomColor.run();
@@ -141,5 +147,5 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Chang
     };
   };
 
-  await setTimeout(() => handleCommand(), timeout);
+  setTimeout(handleCommand, timeout);
 })()
