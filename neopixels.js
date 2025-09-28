@@ -137,11 +137,13 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Chang
   };
 
   if (turnOn) {
-    setTimeout(handleMode, timeout);
+    setTimeout(timeout);
+    handleMode();
   };
 
   if (turnOff) {
     const turnOff = new TurnOff(config);
-    setTimeout(turnOff.run, timeout);
+    setTimeout(timeout);
+    turnOff.run();
   };
 })();
