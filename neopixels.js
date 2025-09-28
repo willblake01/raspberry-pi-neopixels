@@ -26,111 +26,116 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Chang
   // Set delay
   const timeout = 1000;
 
-  if (command === 1) {
-    if (mode === 'solid' && color === 'custom') {
-      await setTimeout(timeout);
+  const turnOn = command === 1;
+  const turnOff = command === 0;
+  const solidMode = mode === 'solid';
+  const changeMode = mode === 'change';
+  const blinkMode = mode === 'blink';
+  const creepMode = mode === 'creep';
+  const wheelMode = mode === 'wheel';
+  const walkPixelMode = mode === 'walk pixel';
+  const staticRandomColorMode = randomColorMode === 'static';
+  const changeRandomColorMode = randomColorMode === 'change';
+  const customColor = color === 'custom';
+  const randomColor = color === 'random';
+  const everyPixelChangeInterval = colorChangeInterval === 'everyPixel';
+  const everyLoopChangeInterval = colorChangeInterval === 'everyLoop'
+  const pixelOn = pixelState === 1;
+  const pixelOff = pixelState === 0;
+
+  const handleMode = () => {
+    if (solidMode && customColor) {
       const solidCustomColor = new SolidCustomColor(config, redValue, greenValue, blueValue);
       solidCustomColor.run();
     };
 
-    if (mode === 'solid' && color === 'random') {
-      await setTimeout(timeout);
+    if (solidMode && randomColor) {
       const solidRandomColor = new SolidRandomColor(config);
       solidRandomColor.run();
     };
 
-    if (mode === 'change') {
-      await setTimeout(timeout);
+    if (changeMode) {
       const change = new Change(config, intervalValue);
       change.run();
     };
 
-    if (mode === 'blink' && color === 'custom') {
-      await setTimeout(timeout);
+    if (blinkMode && customColor) {
       const blinkCustomColor = new BlinkCustomColor(config, intervalValue, redValue, greenValue, blueValue);
       blinkCustomColor.run();
     };
 
-    if (mode === 'blink' && color === 'random' && randomColorMode === 'static') {
-      await setTimeout(timeout);
+    if (blinkMode && randomColor && staticRandomColorMode) {
       const blinkRandomColorStatic = new BlinkRandomColorStatic(config, intervalValue);
       blinkRandomColorStatic.run();
     };
 
-    if (mode === 'blink' && color === 'random' && randomColorMode === 'change') {
-      await setTimeout(timeout);
+    if (blinkMode && randomColor && changeRandomColorMode) {
       const blinkRandomColorChange = new BlinkRandomColorChange(config, intervalValue);
       blinkRandomColorChange.run();
     };
 
-    if (mode === 'creep' && color === 'custom') {
-      await setTimeout(timeout);
+    if (creepMode && customColor) {
       const creepCustomColor = new CreepCustomColor(config, intervalValue, redValue, greenValue, blueValue);
       creepCustomColor.run();
     };
 
-    if (mode === 'creep' && color === 'random' && randomColorMode === 'static') {
-      await setTimeout(timeout);
+    if (creepMode && randomColor && staticRandomColorMode) {
       const creepRandomColorStatic = new CreepRandomColorStatic(config, intervalValue);
       creepRandomColorStatic.run();
     };
 
-    if (mode === 'creep' && color === 'random' && randomColorMode === 'change' && colorChangeInterval === 'everyPixel') {
-      await setTimeout(timeout);
+    if (creepMode && randomColor && changeRandomColorMode && everyPixelChangeInterval) {
       const creepRandomColorChangePixel = new CreepRandomColorChangePixel(config, intervalValue);
       creepRandomColorChangePixel.run();
     };
 
-    if (mode === 'creep' && color === 'random' && randomColorMode === 'change' && colorChangeInterval === 'everyLoop') {
-      await setTimeout(timeout);
+    if (creepMode && randomColor && changeRandomColorMode && everyLoopChangeInterval) {
       const creepRandomColorChangeStrand = new CreepRandomColorChangeStrand(config, interval);
       creepRandomColorChangeStrand.run();
     };
 
-    if (mode === 'wheel') {
-      await setTimeout(timeout);
+    if (wheelMode) {
       const wheel = new Wheel(config, intervalValue);
       wheel.run();
     };
 
-    if (mode === 'walk pixel' && pixelState === 1 && color === 'custom') {
-      await setTimeout(timeout);
+    if (walkPixelMode && pixelOn && customColor) {
       const walkPixelCustomColor = new WalkPixelCustomColor(config, intervalValue, redValue, greenValue, blueValue);
       walkPixelCustomColor.run();
     };
 
-    if (mode === 'walk pixel' && pixelState === 1 && color === 'random' && colorChangeInterval === 'everyPixel') {
-      await setTimeout(timeout);
+    if (walkPixelMode && pixelOn && randomColor && everyLoopChangeInterval) {
       const walkPixelRandomColorPixel = new WalkPixelRandomColorPixel(config, intervalValue);
       walkPixelRandomColorPixel.run();
     };
 
-    if (mode === 'walk pixel' && pixelState === 1 && color === 'random' && colorChangeInterval === 'everyLoop') {
-      await setTimeout(timeout);
+    if (walkPixelMode && pixelOn && randomColor && everyLoopChangeInterval) {
       const walkPixelRandomColorStrand = new WalkPixelRandomColorStrand(config, intervalValue);
       walkPixelRandomColorStrand.run();
     };
 
-    if (mode === 'walk pixel' && pixelState === 0 && color === 'custom') {
-      await setTimeout(timeout);
+    if (walkPixelMode && pixelOff && customColor) {
       const walkOffPixelCustomColor = new WalkOffPixelCustomColor(config, intervalValue, redValue, greenValue, blueValue);
       walkOffPixelCustomColor.run();
     };
 
-    if (mode === 'walk pixel' && pixelState === 0 && color === 'random' && colorChangeInterval === 'everyPixel') {
-      await setTimeout(timeout);
+    if (walkPixelMode && pixelOff && randomColor && everyPixelChangeInterval) {
       const walkOffPixelRandomColorPixel = new WalkOffPixelRandomColorPixel(config, intervalValue);
       walkOffPixelRandomColorPixel.run();
     };
 
-    if (mode === 'walk pixel' && pixelState === 0 && color === 'random' && colorChangeInterval === 'everyLoop') {
-      await setTimeout(timeout);
+    if (walkPixelMode && pixelOff && randomColor && everyLoopChangeInterval) {
       const walkOffPixelRandomColorStrand = new WalkOffPixelRandomColorStrand(config, intervalValue);
       walkOffPixelRandomColorStrand.run();
     };
   };
 
-  if (command === 0) {
+  if (turnOn) {
+    await setTimeout(timeout);
+    handleMode();
+  };
+
+  if (turnOff) {
     await setTimeout(timeout);
     const turnOff = new TurnOff(config);
     turnOff.run();
