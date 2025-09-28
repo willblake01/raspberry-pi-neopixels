@@ -1,13 +1,21 @@
 import ws281x from 'rpi-ws281x';
 import { randomNumber } from '../utils/index.js';
 
+const setColor = (red, green, blue, leds, pixels) => {
+  const color = (red << 16) | (green << 8) | blue;
+
+  for (let i = 0; i < leds; i++) {
+    pixels[i] = color;
+  };
+};
+
 export class BlinkCustomColor {
   constructor(config, interval, redValue, greenValue, blueValue) {
     this.config = config;
     this.interval = interval;
-    this.redValue = redValue;
-    this.greenValue = greenValue;
-    this.blueValue = blueValue;
+    this.redValue = this.on ? redValue : 0;
+    this.greenValue = this.on ? greenValue : 0;
+    this.blueValue = this.on ? blueValue : 0;
     this.on = false;
 
     ws281x.configure(config);
@@ -15,21 +23,7 @@ export class BlinkCustomColor {
 
   loop() {
     const pixels = new Uint32Array(this.config.leds);
-
-    let red, green, blue;
-
-    if (!this.on) {
-      red = this.redValue, green = this.greenValue, blue = this.blueValue;
-    } else {
-      red = 0, green = 0, blue = 0;
-    };
-
-    const color = (red << 16) | (green << 8) | blue;
-
-    for (let i = 0; i < this.config.leds; i++) {
-      pixels[i] = color;
-    };
-
+    setColor(this.red, this.green, this.blue, this.config.leds, pixels);
     ws281x.render(pixels);
     this.on = !this.on;
   };
@@ -44,9 +38,6 @@ export class BlinkRandomColorChange {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
-    this.red = 0;
-    this.green = 0;
-    this.blue = 0;
     this.on = false;
 
     ws281x.configure(config);
@@ -54,20 +45,8 @@ export class BlinkRandomColorChange {
 
   loop() {
     const pixels = new Uint32Array(this.config.leds);
-
-    if (!this.on) {
-      this.red = randomNumber(255), this.green = randomNumber(255), this.blue = randomNumber(255);
-    } else {
-      this.red = 0, this.green = 0, this.blue = 0;
-    };
-
-    let red = this.red, green = this.green, blue = this.blue;
-    const color = (red << 16) | (green << 8) | blue;
-
-    for (let i = 0; i < this.config.leds; i++) {
-      pixels[i] = color;
-    };
-
+    let red = this.on ? randomNumber(255) : 0, green = this.on ? randomNumber(255) : 0, blue = this.on ? randomNumber(255) : 0;
+    setColor(red, green, blue, this.config.leds, pixels);
     ws281x.render(pixels);
     this.on = !this.on;
   };
@@ -82,9 +61,9 @@ export class BlinkRandomColorStatic {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
-    this.red = randomNumber(255);
-    this.green = randomNumber(255);
-    this.blue = randomNumber(255);
+    this.red = this.on ? randomNumber(255) : 0;
+    this.green = this.on ? randomNumber(255) : 0;
+    this.blue = this.on ? randomNumber(255) : 0;
     this.on = false;
 
     ws281x.configure(config);
@@ -92,21 +71,7 @@ export class BlinkRandomColorStatic {
 
   loop() {
     const pixels = new Uint32Array(this.config.leds);
-
-    let red, green, blue;
-
-    if (!this.on) {
-      red = this.red, green = this.green, blue = this.blue;
-    } else {
-      red = 0, green = 0, blue = 0;
-    };
-
-    const color = (red << 16) | (green << 8) | blue;
-
-    for (let i = 0; i < this.config.leds; i++) {
-      pixels[i] = color;
-    };
-
+    setColor(this.red, this.green, this.blue, this.config.leds, pixels);
     ws281x.render(pixels);
     this.on = !this.on;
   };
