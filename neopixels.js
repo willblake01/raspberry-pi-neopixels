@@ -141,5 +141,5 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Chang
     };
   };
 
-  await setTimeout(() => handleCommand, timeout);
+  await setTimeout(handleCommand(), timeout);
 })()
