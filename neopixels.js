@@ -142,6 +142,6 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Chang
 
   if (turnOff) {
     const turnOff = new TurnOff(config);
-    setTimeout(turnOff.run);
+    setTimeout(turnOff.run, timeout);
   };
 })();
