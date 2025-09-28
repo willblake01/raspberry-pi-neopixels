@@ -21,7 +21,7 @@ export class BlinkCustomColor {
     let red = this.red, green = this.green, blue = this.blue;
     const color = (red << 16) | (green << 8) | blue;
 
-    for (let i = 0; i < leds; i++) {
+    for (let i = 0; i < this.config.leds; i++) {
       pixels[i] = color;
     };
   };
@@ -60,7 +60,7 @@ export class BlinkRandomColorChange {
     let red = this.red, green = this.green, blue = this.blue;
     const color = (red << 16) | (green << 8) | blue;
 
-    for (let i = 0; i < leds; i++) {
+    for (let i = 0; i < this.config.leds; i++) {
       pixels[i] = color;
     };
   };
@@ -99,7 +99,7 @@ export class BlinkRandomColorStatic {
     let red = this.red, green = this.green, blue = this.blue;
     const color = (red << 16) | (green << 8) | blue;
 
-    for (let i = 0; i < leds; i++) {
+    for (let i = 0; i < this.config.leds; i++) {
       pixels[i] = color;
     };
   };
