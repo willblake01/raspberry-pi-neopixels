@@ -16,7 +16,7 @@ export class BlinkCustomColor {
   loop() {
     const pixels = new Uint32Array(this.config.leds);
 
-    let red = this.on ? this.red: 0, green = this.on ? this.green : 0, blue = this.on ? this.blue : 0;
+    const red = this.on ? this.red : 0, green = this.on ? this.green : 0, blue = this.on ? this.blue : 0;
     const color = (red << 16) | (green << 8) | blue;
 
     for (let i = 0; i < this.config.leds; i++) {
