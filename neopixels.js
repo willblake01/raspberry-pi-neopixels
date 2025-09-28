@@ -1,5 +1,4 @@
 import prompts from 'prompts';
-import { setInterval, setTimeout } from 'timers/promises';
 import { questions } from './prompts/questions.js';
 import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Change, CreepCustomColor, CreepRandomColorChangePixel, CreepRandomColorChangeStrand, CreepRandomColorStatic, SolidCustomColor, SolidRandomColor, WalkOffPixelCustomColor, WalkOffPixelRandomColorPixel, WalkOffPixelRandomColorStrand, WalkPixelCustomColor, WalkPixelRandomColorPixel, WalkPixelRandomColorStrand, Wheel, TurnOff } from './modes/index.js';
 
@@ -136,14 +135,16 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Chang
     };
   };
 
-  if (turnOn) {
-    setTimeout(timeout);
-    handleMode();
+  const handleCommand = () => {
+    if (turnOn) {
+      handleMode();
+    };
+
+    if (turnOff) {
+      const turnOff = new TurnOff(config);
+      turnOff.run();
+    };
   };
 
-  if (turnOff) {
-    const turnOff = new TurnOff(config);
-    setTimeout(timeout);
-    turnOff.run();
-  };
+  setTimeout(handleCommand, timeout);
 })();
