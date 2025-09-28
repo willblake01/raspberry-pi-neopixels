@@ -8,20 +8,15 @@ export class BlinkCustomColor {
     this.redValue = redValue;
     this.greenValue = greenValue;
     this.blueValue = blueValue;
-    this.on = false;
+    this.on = true;
 
     ws281x.configure(config);
   };
 
-  handlePixelState = () => {
-    this.red = this.on ? this.red : 0, this.green = this.on ? this.green : 0, this.blue = this.on ? this.blue : 0;
-  };
-
   loop() {
     const pixels = new Uint32Array(this.config.leds);
-    this.handlePixelState();
-    
-    let red = this.red, green = this.green, blue = this.blue;
+
+    let red = this.on ? this.red: 0, green = this.on ? this.green : 0, blue = this.on ? this.blue : 0;
     const color = (red << 16) | (green << 8) | blue;
 
     for (let i = 0; i < this.config.leds; i++) {
@@ -42,23 +37,15 @@ export class BlinkRandomColorChange {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
-    this.red = randomNumber(255);
-    this.green = randomNumber(255);
-    this.blue = randomNumber(255);
-    this.on = false;
+    this.on = true;
 
     ws281x.configure(config);
   };
 
-  handlePixelState = () => {
-    this.red = this.on ? randomNumber(255) : 0, this.green = this.on ? randomNumber(255) : 0, this.blue = this.on ? randomNumber(255) : 0;
-  };
-
   loop() {
     const pixels = new Uint32Array(this.config.leds);
-    this.handlePixelState();
     
-    let red = this.red, green = this.green, blue = this.blue;
+    const red = this.on ? randomNumber(255) : 0, green = this.on ? randomNumber(255) : 0, blue = this.on ? randomNumber(255) : 0;
     const color = (red << 16) | (green << 8) | blue;
 
     for (let i = 0; i < this.config.leds; i++) {
@@ -82,20 +69,15 @@ export class BlinkRandomColorStatic {
     this.red = randomNumber(255);
     this.green = randomNumber(255);
     this.blue = randomNumber(255);
-    this.on = false;
+    this.on = true;
 
     ws281x.configure(config);
   };
 
-  handlePixelState = () => {
-    this.red = this.on ? this.red : 0, this.green = this.on ? this.green : 0, this.blue = this.on ? this.blue : 0;
-  };
-
   loop() {
     const pixels = new Uint32Array(this.config.leds);
-    this.handlePixelState();
 
-    let red = this.red, green = this.green, blue = this.blue;
+    const red = this.on ? this.red : 0, green = this.on ? this.green : 0, blue = this.on ? this.blue : 0;
     const color = (red << 16) | (green << 8) | blue;
 
     for (let i = 0; i < this.config.leds; i++) {
