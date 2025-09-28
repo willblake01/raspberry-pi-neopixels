@@ -8,22 +8,21 @@ export class BlinkCustomColor {
     this.redValue = redValue;
     this.greenValue = greenValue;
     this.blueValue = blueValue;
+    this.pixels = new Uint32Array(this.config.leds);
     this.on = true;
 
     ws281x.configure(config);
   };
 
   loop() {
-    const pixels = new Uint32Array(this.config.leds);
-
     const red = this.on ? this.redValue : 0, green = this.on ? this.greenValue : 0, blue = this.on ? this.blueValue : 0;
     const color = (red << 16) | (green << 8) | blue;
 
     for (let i = 0; i < this.config.leds; i++) {
-      pixels[i] = color;
+      this.pixels[i] = color;
     };
 
-    ws281x.render(pixels);
+    ws281x.render(this.pixels);
     this.on = !this.on;
   };
 
