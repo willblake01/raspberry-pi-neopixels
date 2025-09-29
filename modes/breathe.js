@@ -13,7 +13,29 @@ export class BreatheCustomColor {
     ws281x.configure(config);
   };
 
+  setInitialState() {
+    this.config.brightness = 0;
+  };
+
   loop() {
+    const setNextState = () => {
+      if (this.config.brightness === 0) {
+        this.config.brightness = this.maxBrightness;
+      };
+
+      if (this.config.brightness === 0 || this.config.brightness === this.maxBrightness) {
+        this.isIncreasingBrightness = !this.isIncreasingBrightness;
+      };
+
+      if (this.isIncreasingBrightness) {
+        this.config.brightness++;
+      }
+      
+      if (!this.isIncreasingBrightness) {
+        this.config.brightness--;
+      };
+    };
+
     const pixels = new Uint32Array(this.config.leds);
 
     const red = this.redValue, green = this.greenValue, blue = this.blueValue;
@@ -24,26 +46,11 @@ export class BreatheCustomColor {
     };
 
     ws281x.render(pixels);
-
-    if (this.config.brightness === 0) {
-      this.config.brightness = this.maxBrightness;
-    };
-
-    if (this.config.brightness === 0 || this.config.brightness === this.maxBrightness) {
-      this.isIncreasingBrightness = !this.isIncreasingBrightness;
-    };
-
-    if (this.isIncreasingBrightness) {
-      this.config.brightness++;
-    }
-    
-    if (!this.isIncreasingBrightness) {
-      this.config.brightness--;
-    };
+    setNextState();
   };
 
   run() {
-    this.loop();
+    this.setInitialState();
     setInterval(this.loop.bind(this), this.interval);
   };
 };
