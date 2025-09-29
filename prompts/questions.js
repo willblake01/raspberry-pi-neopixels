@@ -32,6 +32,10 @@ export const questions = [
         value: 'blink'
       },
       {
+        title: 'Breathe',
+        value: 'breathe'
+      },
+      {
         title: 'Creep',
         value: 'creep'
       },

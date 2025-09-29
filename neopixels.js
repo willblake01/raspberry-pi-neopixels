@@ -1,6 +1,6 @@
 import prompts from 'prompts';
 import { questions } from './prompts/questions.js';
-import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Change, CreepCustomColor, CreepRandomColorChangePixel, CreepRandomColorChangeStrand, CreepRandomColorStatic, SolidCustomColor, SolidRandomColor, WalkOffPixelCustomColor, WalkOffPixelRandomColorPixel, WalkOffPixelRandomColorStrand, WalkPixelCustomColor, WalkPixelRandomColorPixel, WalkPixelRandomColorStrand, Wheel, TurnOff } from './modes/index.js';
+import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, BreatheCustomColor, Change, CreepCustomColor, CreepRandomColorChangePixel, CreepRandomColorChangeStrand, CreepRandomColorStatic, SolidCustomColor, SolidRandomColor, WalkOffPixelCustomColor, WalkOffPixelRandomColorPixel, WalkOffPixelRandomColorStrand, WalkPixelCustomColor, WalkPixelRandomColorPixel, WalkPixelRandomColorStrand, Wheel, TurnOff } from './modes/index.js';
 
 (async () => {
   const response = await prompts(questions);
@@ -30,6 +30,7 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Chang
   const solidMode = mode === 'solid';
   const changeMode = mode === 'change';
   const blinkMode = mode === 'blink';
+  const breatheMode = mode === 'breathe';
   const creepMode = mode === 'creep';
   const wheelMode = mode === 'wheel';
   const walkPixelMode = mode === 'walk pixel';
@@ -74,6 +75,12 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Chang
     if (blinkMode && randomColor && changeRandomColorMode) {
       const blinkRandomColorChange = new BlinkRandomColorChange(config, intervalValue);
       blinkRandomColorChange.run();
+    };
+
+    // Breathe Mode
+    if (breatheMode && customColor) {
+      const breatheCustomColor = new BreatheCustomColor(config, intervalValue, redValue, greenValue, blueValue);
+      breatheCustomColor.run();
     };
 
     // Creep Mode

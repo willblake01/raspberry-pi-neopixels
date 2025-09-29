@@ -1,4 +1,5 @@
 export { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic } from './blink.js';
+export { BreatheCustomColor } from './breathe.js'
 export { Change } from './change.js';
 export { CreepCustomColor, CreepRandomColorChangePixel, CreepRandomColorChangeStrand, CreepRandomColorStatic } from './creep.js';
 export { SolidCustomColor, SolidRandomColor } from './solid.js';
