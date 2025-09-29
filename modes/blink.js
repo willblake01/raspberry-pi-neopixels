@@ -28,7 +28,6 @@ export class BlinkCustomColor {
   };
 
   run() {
-    this.loop();
     setInterval(this.loop.bind(this), this.interval);
   };
 };
@@ -57,7 +56,6 @@ export class BlinkRandomColorChange {
   };
 
   run() {
-    this.loop();
     setInterval(this.loop.bind(this), this.interval);
   };
 };
@@ -89,7 +87,6 @@ export class BlinkRandomColorStatic {
   };
 
   run() {
-    this.loop();
     setInterval(this.loop.bind(this), this.interval);
   };
 };
