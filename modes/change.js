@@ -23,7 +23,6 @@ export class Change {
   };
 
   run() {
-    this.loop();
     setInterval(this.loop.bind(this), this.interval);
   };
 };
