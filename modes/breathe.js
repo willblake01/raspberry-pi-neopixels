@@ -13,7 +13,7 @@ export class BreatheCustomColor {
     ws281x.configure(config);
   };
 
-  setColor() {
+  loop() {
     const pixels = new Uint32Array(this.config.leds);
 
     const red = this.redValue, green = this.greenValue, blue = this.blueValue;
@@ -22,29 +22,27 @@ export class BreatheCustomColor {
     for (let i = 0; i < this.config.leds; i++) {
       pixels[i] = color;
     };
-  };
 
-  loop() {
     ws281x.render(pixels);
 
     if (this.config.brightness === 0) {
       this.config.brightness = this.maxBrightness;
     };
 
-    const gettingBrighter = this.config.brightness < this.maxBrightness && this.isIncreasingBrightness;
-    const gettingDimmer = this.config.brightness < this.maxBrightness && !this.isIncreasingBrightness;
+    if (this.config.brightness === 0 || this.config.brightness === this.maxBrightness) {
+      this.isIncreasingBrightness = !this.isIncreasingBrightness;
+    };
 
-    if (gettingBrighter) {
+    if (this.isIncreasingBrightness) {
       this.config.brightness++;
     }
     
-    if (gettingDimmer) {
+    if (!this.isIncreasingBrightness) {
       this.config.brightness--;
     };
   };
 
   run() {
-    this.setColor();
     this.loop();
     setInterval(this.loop.bind(this), this.interval);
   };
