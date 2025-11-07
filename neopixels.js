@@ -5,18 +5,10 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Breat
 
 (async () => {
   const response = await prompts(questions);
-  const { blue, brightness, color, colorChangeInterval, command, green, interval, leds, mode, pixel, randomColorMode, red } = response;
-
-  const pixelState = parseInt(pixel, 10);
-  const pixelCount = parseInt(leds, 10);
-  const brightnessValue = parseInt(brightness, 10);
-  const intervalValue = parseInt(interval, 10);
-  const redValue = parseInt(red, 10);
-  const greenValue = parseInt(green, 10);
-  const blueValue = parseInt(blue, 10);
+  const { blueValue, brightnessValue, color, colorChangeInterval, command, greenValue, intervalValue, mode, numLeds, pixelState, randomColorMode, redValue } = response;
 
   const config = {
-    numPixels: pixelCount,
+    numPixels: numLeds,
     dma: 10,
     brightness: brightnessValue,
     gpio: 18,

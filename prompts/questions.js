@@ -51,7 +51,7 @@ export const questions = [
   },
   {
     type: (prev, values) => values.command == 1 && values.mode == 'walk pixel' ? 'select' : null,
-    name: 'pixel',
+    name: 'pixelState',
     message: 'Set pixel',
     choices: [
       {
@@ -71,14 +71,14 @@ export const questions = [
   },
   {
     type: 'number',
-    name: 'leds',
+    name: 'numLeds',
     message: 'Enter number of LEDs (0-100)',
     min: 0,
     max: 100
   },
   {
     type: (prev, values) => values.command == 1 ? 'number' : null,
-    name: 'brightness',
+    name: 'brightnessValue',
     message: 'Enter brightness (0-255)',
     min: 0,
     max: 255
