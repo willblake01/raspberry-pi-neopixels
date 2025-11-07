@@ -22,6 +22,13 @@ export class SolidCustomColor {
     };
 
     ws281x.render(pixels);
+
+    process.on('SIGINT', () => {
+      ws281x.reset();
+      process.nextTick(() => {
+        process.exit(0);
+      });
+    });
   };
 };
 
@@ -43,5 +50,12 @@ export class SolidRandomColor {
     };
 
     ws281x.render(pixels);
+
+    process.on('SIGINT', () => {
+      ws281x.reset();
+      process.nextTick(() => {
+        process.exit(0);
+      });
+    });
   };
 };
