@@ -11,7 +11,7 @@ export class EffectManager {
   start(effect) {
     this.stop();
     this.current = effect;
-    effect.run(config);
+    effect.run(this.config);
   }
 
   stop() {
