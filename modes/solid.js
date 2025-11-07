@@ -25,6 +25,8 @@ export class SolidCustomColor {
 
     process.on('SIGINT', () => {
       ws281x.reset();
+      ws281x.finalize();
+
       process.nextTick(() => {
         process.exit(0);
       });
@@ -53,6 +55,8 @@ export class SolidRandomColor {
 
     process.on('SIGINT', () => {
       ws281x.reset();
+      ws281x.finalize();
+
       process.nextTick(() => {
         process.exit(0);
       });
