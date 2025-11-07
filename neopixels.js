@@ -16,7 +16,7 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Breat
   const blueValue = parseInt(blue, 10);
 
   const config = {
-    leds: pixelCount,
+    numPixels: pixelCount,
     dma: 10,
     brightness: brightnessValue,
     gpio: 18,
@@ -49,12 +49,11 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Breat
   const handleMode = () => {
     // Solid Mode
     if (solidMode && customColor) {
-      manager.start(new SolidCustomColor(config.leds, redValue, greenValue, blueValue));
+      manager.start(new SolidCustomColor(config.numPixels, redValue, greenValue, blueValue));
     };
 
     if (solidMode && randomColor) {
-      const solidRandomColor = new SolidRandomColor(config);
-      solidRandomColor.run();
+      manager.start(new SolidRandomColor(config.numPixels));
     };
 
     // Change Mode

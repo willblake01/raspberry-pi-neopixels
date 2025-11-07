@@ -33,19 +33,17 @@ export class SolidCustomColor {
 };
 
 export class SolidRandomColor {
-  constructor(config) {
-    this.config = config;
-
-    ws281x.configure(config);
+  constructor(numPixels) {
+    this.numPixels = numPixels;
   };
 
   run() {
-    const pixels = new Uint32Array(this.config.leds);
+    const pixels = new Uint32Array(this.numPixels);
 
     const red = randomNumber(255), green = randomNumber(255), blue = randomNumber(255);
     const color = (red << 16) | (green << 8) | blue;
 
-    for (let i = 0; i < this.config.leds; i++) {
+    for (let i = 0; i < this.numPixels; i++) {
       pixels[i] = color;
     };
 
