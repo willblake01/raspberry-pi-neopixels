@@ -16,8 +16,7 @@ export class BlinkCustomColor {
   loop() {
     const pixels = new Uint32Array(this.config.leds);
 
-    const red = this.redValue, green = this.greenValue, blue = this.blueValue;
-
+    const red = this.on ? this.redValue : 0, green = this.on ? this.greenValue : 0, blue = this.on ? this.blueValue : 0;
     const color = (red << 16) | (green << 8) | blue;
 
     for (let i = 0; i < this.config.leds; i++) {
@@ -25,19 +24,7 @@ export class BlinkCustomColor {
     };
 
     ws281x.render(pixels);
-
     this.on = !this.on;
-
-    process.on('SIGINT', () => {
-      ws281x.reset();
-      process.nextTick(() => {
-        process.exit(0);
-      });
-    });
-
-    if (!this.on) {
-      ws281x.reset();
-    };
   };
 
   run() {
