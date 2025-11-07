@@ -44,7 +44,7 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Breat
   const pixelOn = pixelState === 1;
   const pixelOff = pixelState === 0;
 
-  const manager = new EffectManager({ config });
+  const manager = new EffectManager(config);
 
   const handleMode = () => {
     // Solid Mode
