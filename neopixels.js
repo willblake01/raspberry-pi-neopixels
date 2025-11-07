@@ -49,7 +49,7 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Breat
   const handleMode = () => {
     // Solid Mode
     if (solidMode && customColor) {
-      manager.start(new SolidCustomColor(config, redValue, greenValue, blueValue));
+      manager.start(new SolidCustomColor(config.leds, redValue, greenValue, blueValue));
     };
 
     if (solidMode && randomColor) {
