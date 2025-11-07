@@ -8,13 +8,6 @@ export class TurnOff {
     };
 
     run() {
-      process.on('SIGINT', () => {
-        ws281x.reset();
-        process.nextTick(() => {
-          process.exit(0);
-        });
-      });
-
       ws281x.reset();
       process.exit(0);
     };
