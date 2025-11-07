@@ -25,7 +25,11 @@ export class BlinkCustomColor {
 
     ws281x.render(pixels);
     this.on = !this.on;
+  };
 
+  run() {
+    setInterval(this.loop.bind(this), this.interval);
+    
     process.on('SIGINT', () => {
       ws281x.reset();
       ws281x.finalize();
@@ -34,10 +38,6 @@ export class BlinkCustomColor {
         process.exit(0);
       });
     });
-  };
-
-  run() {
-    setInterval(this.loop.bind(this), this.interval);
   };
 };
 
