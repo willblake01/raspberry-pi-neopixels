@@ -28,6 +28,15 @@ export class BlinkCustomColor {
   };
 
   run() {
+    process.on('SIGINT', () => {
+      ws281x.reset();
+      ws281x.finalize();
+
+      process.nextTick(() => {
+        process.exit(0);
+      });
+    });
+
     setInterval(this.loop.bind(this), this.interval);
   };
 };
@@ -56,6 +65,15 @@ export class BlinkRandomColorChange {
   };
 
   run() {
+    process.on('SIGINT', () => {
+      ws281x.reset();
+      ws281x.finalize();
+
+      process.nextTick(() => {
+        process.exit(0);
+      });
+    });
+
     setInterval(this.loop.bind(this), this.interval);
   };
 };
@@ -87,6 +105,15 @@ export class BlinkRandomColorStatic {
   };
 
   run() {
+    process.on('SIGINT', () => {
+      ws281x.reset();
+      ws281x.finalize();
+
+      process.nextTick(() => {
+        process.exit(0);
+      });
+    });
+    
     setInterval(this.loop.bind(this), this.interval);
   };
 };
