@@ -14,5 +14,8 @@ export class TurnOff {
           process.exit(0);
         });
       });
+
+      ws281x.reset();
+      process.exit(0);
     };
   };
