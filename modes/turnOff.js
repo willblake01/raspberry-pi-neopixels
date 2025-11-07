@@ -9,6 +9,5 @@ export class TurnOff {
 
     run() {
       ws281x.reset();
-      process.exit(0);
     };
   };
