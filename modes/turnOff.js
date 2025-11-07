@@ -8,15 +8,11 @@ export class TurnOff {
     };
 
     run() {
-      const pixels = new Uint32Array(this.config.leds);
-
-      const red = 0, green = 0, blue = 0;
-      const color = (red << 16) | (green << 8) | blue;
-
-      for (let i = 0; i < this.config.leds; i++) {
-        pixels[i] = color;
-      };
-
-      ws281x.render(pixels);
+      process.on('SIGINT', () => {
+        ws281x.reset();
+        process.nextTick(() => {
+          process.exit(0);
+        });
+      });
     };
   };
