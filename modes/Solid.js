@@ -15,7 +15,7 @@ export class SolidCustomColor {
     const red = this.redValue, green = this.greenValue, blue = this.blueValue;
     const color = (red << 16) | (green << 8) | blue;
 
-    for (let i = 0; i < this.config.leds; i++) {
+    for (let i = 0; i < this.numPixels; i++) {
       pixels[i] = color;
     };
 
