@@ -1,4 +1,5 @@
 import prompts from 'prompts';
+import { EffectManager } from './EffectManager.js';
 import { questions } from './prompts/questions.js';
 import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, BreatheCustomColor, Change, CreepCustomColor, CreepRandomColorChangePixel, CreepRandomColorChangeStrand, CreepRandomColorStatic, SolidCustomColor, SolidRandomColor, WalkOffPixelCustomColor, WalkOffPixelRandomColorPixel, WalkOffPixelRandomColorStrand, WalkPixelCustomColor, WalkPixelRandomColorPixel, WalkPixelRandomColorStrand, Wheel, TurnOff } from './modes/index.js';
 
@@ -43,11 +44,12 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Breat
   const pixelOn = pixelState === 1;
   const pixelOff = pixelState === 0;
 
+  const manager = new EffectManager({ config });
+
   const handleMode = () => {
     // Solid Mode
     if (solidMode && customColor) {
-      const solidCustomColor = new SolidCustomColor(config, redValue, greenValue, blueValue);
-      solidCustomColor.run();
+      manager.start(new SolidCustomColor(config, redValue, greenValue, blueValue));
     };
 
     if (solidMode && randomColor) {
