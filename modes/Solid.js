@@ -2,13 +2,10 @@ import ws281x from 'rpi-ws281x';
 import { randomNumber } from '../utils/index.js';
 
 export class SolidCustomColor {
-  constructor(config, redValue, greenValue, blueValue) {
-    this.config = config;
+  constructor(redValue, greenValue, blueValue) {
     this.redValue = redValue;
     this.greenValue = greenValue;
     this.blueValue = blueValue;
-
-    ws281x.configure(config)
   };
 
   run() {
