@@ -9,9 +9,15 @@ export class BreatheCustomColor {
     this.green = green;
     this.blueValue = blueValue;
     this.isIncreasingBrightness = true;
+    this._intervalID = null;
+    this._stopped = false;
+    this._rendering = false;
   };
 
   loop() {
+    if (this._stopped) return;
+    this._rendering = true;
+
     const setNextState = () => {
       if (this.brightness === 0) {
         this.brightness = this.config.brightness;
@@ -39,12 +45,27 @@ export class BreatheCustomColor {
       pixels[i] = color;
     };
 
-    ws281x.render(pixels);
+    try {
+      ws281x.render(pixels);
+    } finally {
+      this._rendering = false;
+    };
+
     setNextState();
   };
 
   run() {
+    if (this._intervalID) return;
     this.loop();
-    setInterval(this.loop.bind(this), this.interval);
+    this._intervalID = setInterval(() => this.loop(), this.interval);
+  };
+
+  stop() {
+    if (this._stopped) return;
+    this._stopped = true;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
   };
 };

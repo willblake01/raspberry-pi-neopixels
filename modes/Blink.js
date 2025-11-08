@@ -40,6 +40,15 @@ export class BlinkCustomColor {
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
+
+  stop() {
+    if (this._stopped) return;
+    this._stopped = true;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
+  };
 };
 
 export class BlinkRandomColorChange {
@@ -78,6 +87,15 @@ export class BlinkRandomColorChange {
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
+
+  stop() {
+    if (this._stopped) return;
+    this._stopped = true;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
+  };
 };
 
 export class BlinkRandomColorStatic {
@@ -100,7 +118,7 @@ export class BlinkRandomColorStatic {
     const pixels = new Uint32Array(this.config.leds);
 
     const red = this.on ? this.red : 0, green = this.on ? this.green : 0, blue = this.on ? this.blue : 0;
-    
+
     const color = (red << 16) | (green << 8) | blue;
 
     for (let i = 0; i < this.config.leds; i++) {
@@ -119,5 +137,14 @@ export class BlinkRandomColorStatic {
     if (this._intervalID) return;
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
+  };
+
+  stop() {
+    if (this._stopped) return;
+    this._stopped = true;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
   };
 };
