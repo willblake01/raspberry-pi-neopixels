@@ -1,8 +1,8 @@
 import ws281x from 'rpi-ws281x';
 
 export class BreatheCustomColor {
-  constructor(numPixels, brightness, interval, redValue, greenValue, blueValue) {
-    this.numPixels = numPixels;
+  constructor(leds, brightness, interval, redValue, greenValue, blueValue) {
+    this.leds = leds;
     this.brightness = brightness;
     this.interval = interval;
     this.redValue = redValue;
@@ -35,12 +35,12 @@ export class BreatheCustomColor {
       };
     };
 
-    const pixels = new Uint32Array(this.numPixels);
+    const pixels = new Uint32Array(this.leds);
 
     const red = this.redValue, green = this.greenValue, blue = this.blueValue;
     const color = (red << 16) | (green << 8) | blue;
 
-    for (let i = 0; i < this.numPixels; i++) {
+    for (let i = 0; i < this.leds; i++) {
       pixels[i] = color;
     };
 

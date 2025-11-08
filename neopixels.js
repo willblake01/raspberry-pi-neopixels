@@ -5,10 +5,11 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Breat
 
 (async () => {
   const response = await prompts(questions);
+
   const { blueValue, brightnessValue, color, colorChangeInterval, command, greenValue, interval, mode, numLeds, pixelState, randomColorMode, redValue } = response;
 
   const config = {
-    numPixels: numLeds,
+    leds: numLeds,
     dma: 10,
     brightness: brightnessValue,
     gpio: 18,
@@ -41,98 +42,98 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Breat
   const handleMode = () => {
     // Solid Mode
     if (solidMode && customColor) {
-      const solidCustomColor = new SolidCustomColor(config.numPixels, redValue, greenValue, blueValue);
+      const solidCustomColor = new SolidCustomColor(config.leds, redValue, greenValue, blueValue);
       manager.start(solidCustomColor);
     };
 
     if (solidMode && randomColor) {
-      const solidRandomColor = new SolidRandomColor(config.numPixels);
+      const solidRandomColor = new SolidRandomColor(config.leds);
       manager.start(solidRandomColor);
     };
 
     // Change Mode
     if (changeMode) {
-      const change = new Change(config.numPixels, interval);
+      const change = new Change(config.leds, interval);
       manager.start(change);
     };
 
     // Blink Mode
     if (blinkMode && customColor) {
-      const blinkCustomColor = new BlinkCustomColor(config.numPixels, interval, redValue, greenValue, blueValue);
+      const blinkCustomColor = new BlinkCustomColor(config.leds, interval, redValue, greenValue, blueValue);
       manager.start(blinkCustomColor);
     };
 
     if (blinkMode && randomColor && staticRandomColorMode) {
-      const blinkRandomColorStatic = new BlinkRandomColorStatic(config.numPixels, interval);
+      const blinkRandomColorStatic = new BlinkRandomColorStatic(config.leds, interval);
       manager.start(blinkRandomColorStatic);
     };
 
     if (blinkMode && randomColor && changeRandomColorMode) {
-      const blinkRandomColorChange = new BlinkRandomColorChange(config.numPixels, interval);
+      const blinkRandomColorChange = new BlinkRandomColorChange(config.leds, interval);
       manager.start(blinkRandomColorChange);
     };
 
     // Breathe Mode
     if (breatheMode && customColor) {
-      const breatheCustomColor = new BreatheCustomColor(config.numPixels, config.brightness, redValue, greenValue, blueValue, interval);
+      const breatheCustomColor = new BreatheCustomColor(config.leds, config.brightness, redValue, greenValue, blueValue, interval);
       manager.start(breatheCustomColor);
     };
 
     // Creep Mode
     if (creepMode && customColor) {
-      const creepCustomColor = new CreepCustomColor(config.numPixels, interval, redValue, greenValue, blueValue);
+      const creepCustomColor = new CreepCustomColor(config.leds, interval, redValue, greenValue, blueValue);
       manager.start(creepCustomColor);
     };
 
     if (creepMode && randomColor && staticRandomColorMode) {
-      const creepRandomColorStatic = new CreepRandomColorStatic(config.numPixels, interval);
+      const creepRandomColorStatic = new CreepRandomColorStatic(config.leds, interval);
       manager.start(creepRandomColorStatic);
     };
 
     if (creepMode && randomColor && changeRandomColorMode && everyPixelChangeInterval) {
-      const creepRandomColorChangePixel = new CreepRandomColorChangePixel(config.numPixels, interval);
+      const creepRandomColorChangePixel = new CreepRandomColorChangePixel(config.leds, interval);
       manager.start(creepRandomColorChangePixel);
     };
 
     if (creepMode && randomColor && changeRandomColorMode && everyLoopChangeInterval) {
-      const creepRandomColorChangeStrand = new CreepRandomColorChangeStrand(config.numPixels, interval);
+      const creepRandomColorChangeStrand = new CreepRandomColorChangeStrand(config.leds, interval);
       manager.start(creepRandomColorChangeStrand);
     };
 
     // Wheel Mode
     if (wheelMode) {
-      const wheel = new Wheel(config.numPixels, interval);
+      const wheel = new Wheel(config.leds, interval);
       manager.start(wheel);
     };
 
     // Walk Pixel Mode
     if (walkPixelMode && pixelOn && customColor) {
-      const walkPixelCustomColor = new WalkPixelCustomColor(config.numPixels, interval, redValue, greenValue, blueValue);
+      const walkPixelCustomColor = new WalkPixelCustomColor(config.leds, interval, redValue, greenValue, blueValue);
       manager.start(walkPixelCustomColor);
     };
 
     if (walkPixelMode && pixelOn && randomColor && everyLoopChangeInterval) {
-      const walkPixelRandomColorPixel = new WalkPixelRandomColorPixel(config.numPixels, interval);
+      const walkPixelRandomColorPixel = new WalkPixelRandomColorPixel(config.leds, interval);
       manager.start(walkPixelRandomColorPixel);
     };
 
     if (walkPixelMode && pixelOn && randomColor && everyLoopChangeInterval) {
-      const walkPixelRandomColorStrand = new WalkPixelRandomColorStrand(config.numPixels, interval);
+      const walkPixelRandomColorStrand = new WalkPixelRandomColorStrand(config.leds, interval);
       manager.start(walkPixelRandomColorStrand);
     };
 
     if (walkPixelMode && pixelOff && customColor) {
-      const walkOffPixelCustomColor = new WalkOffPixelCustomColor(config.numPixels, interval, redValue, greenValue, blueValue);
+      const walkOffPixelCustomColor = new WalkOffPixelCustomColor(config.leds, interval, redValue, greenValue, blueValue);
       manager.start(walkOffPixelCustomColor);
     };
 
     if (walkPixelMode && pixelOff && randomColor && everyPixelChangeInterval) {
-      const walkOffPixelRandomColorPixel = new WalkOffPixelRandomColorPixel(config.numPixels, interval);
+      const walkOffPixelRandomColorPixel = new WalkOffPixelRandomColorPixel(config.leds, interval);
       manager.start(walkOffPixelRandomColorPixel);
     };
 
     if (walkPixelMode && pixelOff && randomColor && everyLoopChangeInterval) {
-      const walkOffPixelRandomColorStrand = new WalkOffPixelRandomColorStrand(config.numPixels, interval);
+      const walkOffPixelRandomColorStrand = new WalkOffPixelRandomColorStrand(config.leds, interval);
       manager.start(walkOffPixelRandomColorStrand);
     };
   };
