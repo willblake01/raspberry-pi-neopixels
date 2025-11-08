@@ -5,7 +5,7 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Breat
 
 (async () => {
   const response = await prompts(questions);
-  const { blueValue, brightnessValue, color, colorChangeInterval, command, greenValue, intervalValue, mode, numLeds, pixelState, randomColorMode, redValue } = response;
+  const { blueValue, brightnessValue, color, colorChangeInterval, command, greenValue, interval, mode, numLeds, pixelState, randomColorMode, redValue } = response;
 
   const config = {
     numPixels: numLeds,
@@ -41,97 +41,99 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Breat
   const handleMode = () => {
     // Solid Mode
     if (solidMode && customColor) {
-      manager.start(new SolidCustomColor(config.numPixels, redValue, greenValue, blueValue));
+      const solidCustomColor = new SolidCustomColor(config.numPixels, redValue, greenValue, blueValue);
+      manager.start(solidCustomColor);
     };
 
     if (solidMode && randomColor) {
-      manager.start(new SolidRandomColor(config.numPixels));
+      const solidRandomColor = new SolidRandomColor(config.numPixels);
+      manager.start(solidRandomColor);
     };
 
     // Change Mode
     if (changeMode) {
-      const change = new Change(config, intervalValue);
-      change.run();
+      const change = new Change(config.numPixels, interval);
+      manager.start(change);
     };
 
     // Blink Mode
     if (blinkMode && customColor) {
-      const blinkCustomColor = new BlinkCustomColor(config, intervalValue, redValue, greenValue, blueValue);
-      blinkCustomColor.run();
+      const blinkCustomColor = new BlinkCustomColor(config.numPixels, interval, redValue, greenValue, blueValue);
+      manager.start(blinkCustomColor);
     };
 
     if (blinkMode && randomColor && staticRandomColorMode) {
-      const blinkRandomColorStatic = new BlinkRandomColorStatic(config, intervalValue);
-      blinkRandomColorStatic.run();
+      const blinkRandomColorStatic = new BlinkRandomColorStatic(config.numPixels, interval);
+      manager.start(blinkRandomColorStatic);
     };
 
     if (blinkMode && randomColor && changeRandomColorMode) {
-      const blinkRandomColorChange = new BlinkRandomColorChange(config, intervalValue);
-      blinkRandomColorChange.run();
+      const blinkRandomColorChange = new BlinkRandomColorChange(config.numPixels, interval);
+      manager.start(blinkRandomColorChange);
     };
 
     // Breathe Mode
     if (breatheMode && customColor) {
-      const breatheCustomColor = new BreatheCustomColor(config, intervalValue, redValue, greenValue, blueValue);
-      breatheCustomColor.run();
+      const breatheCustomColor = new BreatheCustomColor(config.numPixels, config.brightness, redValue, greenValue, blueValue, interval);
+      manager.start(breatheCustomColor);
     };
 
     // Creep Mode
     if (creepMode && customColor) {
-      const creepCustomColor = new CreepCustomColor(config, intervalValue, redValue, greenValue, blueValue);
-      creepCustomColor.run();
+      const creepCustomColor = new CreepCustomColor(config.numPixels, interval, redValue, greenValue, blueValue);
+      manager.start(creepCustomColor);
     };
 
     if (creepMode && randomColor && staticRandomColorMode) {
-      const creepRandomColorStatic = new CreepRandomColorStatic(config, intervalValue);
-      creepRandomColorStatic.run();
+      const creepRandomColorStatic = new CreepRandomColorStatic(config.numPixels, interval);
+      manager.start(creepRandomColorStatic);
     };
 
     if (creepMode && randomColor && changeRandomColorMode && everyPixelChangeInterval) {
-      const creepRandomColorChangePixel = new CreepRandomColorChangePixel(config, intervalValue);
-      creepRandomColorChangePixel.run();
+      const creepRandomColorChangePixel = new CreepRandomColorChangePixel(config.numPixels, interval);
+      manager.start(creepRandomColorChangePixel);
     };
 
     if (creepMode && randomColor && changeRandomColorMode && everyLoopChangeInterval) {
-      const creepRandomColorChangeStrand = new CreepRandomColorChangeStrand(config, interval);
-      creepRandomColorChangeStrand.run();
+      const creepRandomColorChangeStrand = new CreepRandomColorChangeStrand(config.numPixels, interval);
+      manager.start(creepRandomColorChangeStrand);
     };
 
     // Wheel Mode
     if (wheelMode) {
-      const wheel = new Wheel(config, intervalValue);
-      wheel.run();
+      const wheel = new Wheel(config.numPixels, interval);
+      manager.start(wheel);
     };
 
     // Walk Pixel Mode
     if (walkPixelMode && pixelOn && customColor) {
-      const walkPixelCustomColor = new WalkPixelCustomColor(config, intervalValue, redValue, greenValue, blueValue);
-      walkPixelCustomColor.run();
+      const walkPixelCustomColor = new WalkPixelCustomColor(config.numPixels, interval, redValue, greenValue, blueValue);
+      manager.start(walkPixelCustomColor);
     };
 
     if (walkPixelMode && pixelOn && randomColor && everyLoopChangeInterval) {
-      const walkPixelRandomColorPixel = new WalkPixelRandomColorPixel(config, intervalValue);
-      walkPixelRandomColorPixel.run();
+      const walkPixelRandomColorPixel = new WalkPixelRandomColorPixel(config.numPixels, interval);
+      manager.start(walkPixelRandomColorPixel);
     };
 
     if (walkPixelMode && pixelOn && randomColor && everyLoopChangeInterval) {
-      const walkPixelRandomColorStrand = new WalkPixelRandomColorStrand(config, intervalValue);
-      walkPixelRandomColorStrand.run();
+      const walkPixelRandomColorStrand = new WalkPixelRandomColorStrand(config.numPixels, interval);
+      manager.start(walkPixelRandomColorStrand);
     };
 
     if (walkPixelMode && pixelOff && customColor) {
-      const walkOffPixelCustomColor = new WalkOffPixelCustomColor(config, intervalValue, redValue, greenValue, blueValue);
-      walkOffPixelCustomColor.run();
+      const walkOffPixelCustomColor = new WalkOffPixelCustomColor(config.numPixels, interval, redValue, greenValue, blueValue);
+      manager.start(walkOffPixelCustomColor);
     };
 
     if (walkPixelMode && pixelOff && randomColor && everyPixelChangeInterval) {
-      const walkOffPixelRandomColorPixel = new WalkOffPixelRandomColorPixel(config, intervalValue);
-      walkOffPixelRandomColorPixel.run();
+      const walkOffPixelRandomColorPixel = new WalkOffPixelRandomColorPixel(config.numPixels, interval);
+      manager.start(walkOffPixelRandomColorPixel);
     };
 
     if (walkPixelMode && pixelOff && randomColor && everyLoopChangeInterval) {
-      const walkOffPixelRandomColorStrand = new WalkOffPixelRandomColorStrand(config, intervalValue);
-      walkOffPixelRandomColorStrand.run();
+      const walkOffPixelRandomColorStrand = new WalkOffPixelRandomColorStrand(config.numPixels, interval);
+      manager.start(walkOffPixelRandomColorStrand);
     };
   };
 
@@ -142,7 +144,7 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Breat
 
     if (turnOff) {
       const turnOff = new TurnOff(config);
-      turnOff.run();
+      manager.start(turnOff);
     };
   };
 

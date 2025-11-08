@@ -23,6 +23,10 @@ export class EffectManager {
 
   dispose() {
     this.stop();
-    try { ws281x.reset(); } catch {}
+    
+    try { 
+      ws281x.reset();
+      ws281x.finalize();
+    } catch {}
   }
 }
