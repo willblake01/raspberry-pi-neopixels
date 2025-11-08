@@ -16,7 +16,11 @@ export class EffectManager {
 
   stop() {
     if (this.current?.stop) {
-      try { this.current.stop(); } catch {}
+      try { 
+        this.current.stop();
+      } catch (error) {
+        console.error('An error occurred: ', error.message);
+      }
       this.current = null;
     }
   }
@@ -27,6 +31,8 @@ export class EffectManager {
     try { 
       ws281x.reset();
       ws281x.finalize();
-    } catch {}
+    } catch (error) {
+      console.error('An error occurred: ', error.message);
+    }
   }
 }
