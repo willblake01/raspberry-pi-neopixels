@@ -149,5 +149,27 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Breat
     };
   };
 
+  // Graceful exit hooks
+  let shuttingDown = false;
+
+  const shutDown = (reason, err) => {
+    if (shuttingDown) return;
+    shuttingDown = true;
+    try {
+      manager.dispose();
+    } finally {
+      if (err) {
+        console.error(`[shutdown ${reason}]`, err);
+        process.exitCode = 1;
+      };
+      setTimeout(() => process.exit(), 10);
+    };
+  };
+
+  process.once('SIGINT', () => shutDown('SIGINT'));
+  process.once('SIGTERM', () => shutDown('SIGTERM'));
+  process.once('uncaughtException', (err) => shutDown('uncaughtException', err));
+  process.once('unhandledRejection', (err) => shutDown('unhandledRejection', err));
+
   setTimeout(handleCommand, timeout);
 })();
