@@ -75,7 +75,7 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Breat
 
     // Breathe Mode
     if (breatheMode && customColor) {
-      const breatheCustomColor = new BreatheCustomColor(manager.config, config.brightness, red, green, blue, interval);
+      const breatheCustomColor = new BreatheCustomColor(manager.config, red, green, blue, interval);
       manager.start(breatheCustomColor);
     };
 
