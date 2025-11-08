@@ -4,7 +4,6 @@ export class EffectManager {
   constructor(config) {
     this.config = config;
     this.current = null;
-    this._disposed = false;
 
     ws281x.configure(config);
   };
@@ -27,8 +26,6 @@ export class EffectManager {
   };
 
   dispose() {
-    if (this._disposed)  return;
-    this._disposed = true;
     this.stop();
     try { 
       ws281x.reset();
