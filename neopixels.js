@@ -155,15 +155,15 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Breat
   const shutDown = (reason, err) => {
     if (shuttingDown) return;
     shuttingDown = true;
-    try {
+    try { 
       manager.dispose();
     } finally {
-      if (err) {
-        console.error(`[shutdown ${reason}]`, err);
-        process.exitCode = 1;
-      };
-      setTimeout(() => process.exit(), 10);
-    };
+    if (err) { 
+      console.error(`[shutdown ${reason}]`, err);
+      process.exitCode = 1;
+    }
+      // setTimeout(() => process.exit(), 10);
+    }
   };
 
   process.once('SIGINT', () => shutDown('SIGINT'));

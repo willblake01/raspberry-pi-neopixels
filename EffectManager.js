@@ -28,7 +28,7 @@ export class EffectManager {
   dispose() {
     this.stop();
     try { 
-      // ws281x.reset();
+      ws281x.reset();
     } catch (error) {
       console.error('An error occurred: ', error.message);
     }
