@@ -27,7 +27,7 @@ export class BlinkCustomColor {
 
   run() {
     this.loop.bind(this);
-    setInterval(loop, this.interval);
+    setInterval(this.loop, this.interval);
   };
 };
 
