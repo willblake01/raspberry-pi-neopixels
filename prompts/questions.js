@@ -78,14 +78,14 @@ export const questions = [
   },
   {
     type: (prev, values) => values.command == 1 ? 'number' : null,
-    name: 'brightnessValue',
+    name: 'brightness',
     message: 'Enter brightness (0-255)',
     min: 0,
     max: 255
   },
   {
     type: (prev, values) => values.command == 1 && values.mode != 'change' && values.mode != 'wheel' && values.mode != 'sparkle' ? 'select' : null,
-    name: 'color',
+    name: 'colorMode',
     message: 'Set color mode',
     choices: [
       {

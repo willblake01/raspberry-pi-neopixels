@@ -2,17 +2,17 @@ import ws281x from 'rpi-ws281x';
 import { randomNumber } from '../utils/index.js';
 
 export class SolidCustomColor {
-  constructor(leds, redValue, greenValue, blueValue) {
+  constructor(leds, red, green, blue) {
     this.leds = leds;
-    this.redValue = redValue;
-    this.greenValue = greenValue;
-    this.blueValue = blueValue;
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
   };
 
   run() {
     const pixels = new Uint32Array(this.leds);
 
-    const red = this.redValue, green = this.greenValue, blue = this.blueValue;
+    const red = this.red, green = this.green, blue = this.blue;
     const color = (red << 16) | (green << 8) | blue;
 
     for (let i = 0; i < this.leds; i++) {

@@ -2,11 +2,11 @@ import ws281x from 'rpi-ws281x';
 import { randomNumber } from '../utils/index.js';
 
 export class BlinkCustomColor {
-  constructor(leds, interval, redValue, greenValue, blueValue) {
+  constructor(leds, interval, red, green, blueValue) {
     this.leds = leds;
     this.interval = interval;
-    this.redValue = redValue;
-    this.greenValue = greenValue;
+    this.red = red;
+    this.green = green;
     this.blueValue = blueValue;
     this.on = true;
   };
@@ -14,7 +14,7 @@ export class BlinkCustomColor {
   loop() {
     const pixels = new Uint32Array(this.leds);
 
-    const red = this.on ? this.redValue : 0, green = this.on ? this.greenValue : 0, blue = this.on ? this.blueValue : 0;
+    const red = this.on ? this.red : 0, green = this.on ? this.green : 0, blue = this.on ? this.blueValue : 0;
     const color = (red << 16) | (green << 8) | blue;
 
     for (let i = 0; i < this.leds; i++) {
