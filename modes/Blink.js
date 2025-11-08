@@ -9,9 +9,15 @@ export class BlinkCustomColor {
     this.green = green;
     this.blueValue = blueValue;
     this.on = true;
+    this._intervalID = null;
+    this._stopped = false;
+    this._rendering = false;
   };
 
   loop() {
+    if (this._stopped) return;
+    this._rendering = true;
+
     const pixels = new Uint32Array(this.config.leds);
 
     const red = this.on ? this.red : 0, green = this.on ? this.green : 0, blue = this.on ? this.blueValue : 0;
@@ -21,13 +27,18 @@ export class BlinkCustomColor {
       pixels[i] = color;
     };
 
-    ws281x.render(pixels);
-    this.on = !this.on;
+    try {
+      ws281x.render(pixels);
+      this.on = !this.on
+    } finally {
+      this._rendering = false;
+    };
   };
 
   run() {
+    if (this._intervalID) return;
     this.loop();
-    setInterval(this.loop.bind(this), this.interval);
+    this._intervalID = setInterval(() => this.loop(), this.interval);
   };
 };
 
@@ -36,9 +47,15 @@ export class BlinkRandomColorChange {
     this.config = config;
     this.interval = interval;
     this.on = true;
+    this._intervalID = null;
+    this._stopped = false;
+    this._rendering = false;
   };
 
   loop() {
+    if (this._stopped) return;
+    this._rendering = true;
+
     const pixels = new Uint32Array(this.config.leds);
     
     const red = this.on ? randomNumber(255) : 0, green = this.on ? randomNumber(255) : 0, blue = this.on ? randomNumber(255) : 0;
@@ -48,13 +65,18 @@ export class BlinkRandomColorChange {
       pixels[i] = color;
     };
 
-    ws281x.render(pixels);
-    this.on = !this.on;
+    try {
+      ws281x.render(pixels);
+      this.on = !this.on
+    } finally {
+      this._rendering = false;
+    };
   };
 
   run() {
+    if (this._intervalID) return;
     this.loop();
-    setInterval(this.loop.bind(this), this.interval);
+    this._intervalID = setInterval(() => this.loop(), this.interval);
   };
 };
 
@@ -66,24 +88,36 @@ export class BlinkRandomColorStatic {
     this.green = randomNumber(255);
     this.blue = randomNumber(255);
     this.on = true;
+    this._intervalID = null;
+    this._stopped = false;
+    this._rendering = false;
   };
 
   loop() {
+    if (this._stopped) return;
+    this._rendering = true;
+
     const pixels = new Uint32Array(this.config.leds);
 
     const red = this.on ? this.red : 0, green = this.on ? this.green : 0, blue = this.on ? this.blue : 0;
+    
     const color = (red << 16) | (green << 8) | blue;
 
     for (let i = 0; i < this.config.leds; i++) {
       pixels[i] = color;
     };
 
-    ws281x.render(pixels);
-    this.on = !this.on;
+    try {
+      ws281x.render(pixels);
+      this.on = !this.on
+    } finally {
+      this._rendering = false;
+    };
   };
 
   run() {
+    if (this._intervalID) return;
     this.loop();
-    setInterval(this.loop.bind(this), this.interval);
+    this._intervalID = setInterval(() => this.loop(), this.interval);
   };
 };
