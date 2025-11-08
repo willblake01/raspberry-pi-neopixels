@@ -2,8 +2,8 @@ import ws281x from 'rpi-ws281x';
 import { randomNumber } from '../utils/index.js';
 
 export class Wheel {
-  constructor(leds, interval) {
-    this.leds = leds;
+  constructor(config, interval) {
+    this.config = config;
     this.interval = interval;
     this.offset = 0;
     this.red = randomNumber(255);
@@ -17,19 +17,19 @@ export class Wheel {
   };
 
   loop() {
-    const pixels = new Uint32Array(this.leds);
+    const pixels = new Uint32Array(this.config.leds);
 
     for (let i = 0; i < this.offset; i++) {
       pixels[i] = this.color1;
     };
 
-    for (let i = this.offset; i < this.leds; i++) {
+    for (let i = this.offset; i < this.config.leds; i++) {
       pixels[i] = this.color2;
     };
 
     pixels[this.offset] = this.color1;
 
-    if (this.offset === this.leds - 1) {
+    if (this.offset === this.config.leds - 1) {
       this.color2 = this.color1;
 
       this.red = randomNumber(255);
@@ -39,7 +39,7 @@ export class Wheel {
       this.color1 = (this.red << 16) | (this.green << 8) | this.blue;
     };
 
-    this.offset = (this.offset + 1) % this.leds;
+    this.offset = (this.offset + 1) % this.config.leds;
 
     ws281x.render(pixels);
   };

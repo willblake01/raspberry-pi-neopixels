@@ -1,12 +1,12 @@
 import ws281x from 'rpi-ws281x';
 
 export class TurnOff {
-    constructor(leds) {
-      this.leds = leds;
+    constructor(config) {
+      this.config = config;
     };
 
     run() {
-      const pixels = new Uint32Array(this.leds);
+      const pixels = new Uint32Array(this.config.leds);
 
       ws281x.render(pixels);
 

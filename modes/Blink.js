@@ -2,8 +2,8 @@ import ws281x from 'rpi-ws281x';
 import { randomNumber } from '../utils/index.js';
 
 export class BlinkCustomColor {
-  constructor(leds, interval, red, green, blueValue) {
-    this.leds = leds;
+  constructor(config, interval, red, green, blueValue) {
+    this.config = config;
     this.interval = interval;
     this.red = red;
     this.green = green;
@@ -12,12 +12,12 @@ export class BlinkCustomColor {
   };
 
   loop() {
-    const pixels = new Uint32Array(this.leds);
+    const pixels = new Uint32Array(this.config.leds);
 
     const red = this.on ? this.red : 0, green = this.on ? this.green : 0, blue = this.on ? this.blueValue : 0;
     const color = (red << 16) | (green << 8) | blue;
 
-    for (let i = 0; i < this.leds; i++) {
+    for (let i = 0; i < this.config.leds; i++) {
       pixels[i] = color;
     };
 
@@ -31,19 +31,19 @@ export class BlinkCustomColor {
 };
 
 export class BlinkRandomColorChange {
-  constructor(leds, interval) {
-    this.leds = leds;
+  constructor(config, interval) {
+    this.config = config;
     this.interval = interval;
     this.on = true;
   };
 
   loop() {
-    const pixels = new Uint32Array(this.leds);
+    const pixels = new Uint32Array(this.config.leds);
     
     const red = this.on ? randomNumber(255) : 0, green = this.on ? randomNumber(255) : 0, blue = this.on ? randomNumber(255) : 0;
     const color = (red << 16) | (green << 8) | blue;
 
-    for (let i = 0; i < this.leds; i++) {
+    for (let i = 0; i < this.config.leds; i++) {
       pixels[i] = color;
     };
 
@@ -57,23 +57,22 @@ export class BlinkRandomColorChange {
 };
 
 export class BlinkRandomColorStatic {
-  constructor(leds, interval) {
-    this.leds = leds;
+  constructor(config, interval) {
+    this.config = config;
     this.interval = interval;
     this.red = randomNumber(255);
     this.green = randomNumber(255);
     this.blue = randomNumber(255);
     this.on = true;
-
   };
 
   loop() {
-    const pixels = new Uint32Array(this.leds);
+    const pixels = new Uint32Array(this.config.leds);
 
     const red = this.on ? this.red : 0, green = this.on ? this.green : 0, blue = this.on ? this.blue : 0;
     const color = (red << 16) | (green << 8) | blue;
 
-    for (let i = 0; i < this.leds; i++) {
+    for (let i = 0; i < this.config.leds; i++) {
       pixels[i] = color;
     };
 

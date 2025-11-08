@@ -2,18 +2,18 @@ import ws281x from 'rpi-ws281x';
 import { randomNumber } from '../utils/index.js';
 
 export class Change {
-  constructor(leds, interval) {
-    this.leds = leds;
+  constructor(config, interval) {
+    this.config = config;
     this.interval = interval;
   };
 
   loop() {
-    const pixels = new Uint32Array(this.leds);
+    const pixels = new Uint32Array(this.config.leds);
 
     const red = randomNumber(255), green = randomNumber(255), blue = randomNumber(255);
     const color = (red << 16) | (green << 8) | blue;
 
-    for (let i = 0; i < this.leds; i++) {
+    for (let i = 0; i < this.config.leds; i++) {
       pixels[i] = color;
     };
 
