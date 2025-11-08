@@ -99,7 +99,7 @@ export const questions = [
     ]
   },
   {
-    type: (prev, values) => values.command == 1 && values.color == 'random' && values.mode != 'solid' && values.mode != 'change' ? 'select' : null,
+    type: (prev, values) => values.command == 1 && values.colorMode == 'random' && values.mode != 'solid' && values.mode != 'change' ? 'select' : null,
     name: 'randomColorMode',
     message: 'Set random color mode',
     choices: [
@@ -114,7 +114,7 @@ export const questions = [
     ]
   },
   {
-    type: (prev, values) => values.command == 1 && values.color == 'random' && values.randomColorMode === 'change' && values.mode !== 'blink' ? 'select' : null,
+    type: (prev, values) => values.command == 1 && values.colorMode == 'random' && values.randomColorMode === 'change' && values.mode !== 'blink' ? 'select' : null,
     name: 'colorChangeInterval',
     message: 'Set color change interval',
     choices: [
@@ -129,21 +129,21 @@ export const questions = [
     ]
   },
   {
-    type: (prev, values) => values.command == 1 && values.color == 'custom' ? 'number' : null,
+    type: (prev, values) => values.command == 1 && values.colorMode == 'custom' ? 'number' : null,
     name: 'red',
     message: 'Enter red value (0-255)',
     min: 0,
     max: 255
   },
   {
-    type: (prev, values) => values.command == 1 && values.color == 'custom' ? 'number' : null,
+    type: (prev, values) => values.command == 1 && values.colorMode == 'custom' ? 'number' : null,
     name: 'green',
     message: 'Enter green value (0-255)',
     min: 0,
     max: 255
   },
   {
-    type: (prev, values) => values.command == 1 && values.color == 'custom' ? 'number' : null,
+    type: (prev, values) => values.command == 1 && values.colorMode == 'custom' ? 'number' : null,
     name: 'blue',
     message: 'Enter blue value (0-255)',
     min: 0,
