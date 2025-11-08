@@ -44,7 +44,7 @@ export class BreatheCustomColor {
   };
 
   run() {
-    this.setInitialState();
+    this.loop();
     setInterval(this.loop.bind(this), this.interval);
   };
 };

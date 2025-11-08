@@ -25,6 +25,7 @@ export class WalkPixelCustomColor {
     };
 
     run() {
+      this.loop();
       setInterval(this.loop.bind(this), this.interval);
     };
   };
@@ -50,6 +51,7 @@ export class WalkPixelRandomColorPixel {
   };
 
   run() {
+    this.loop();
     setInterval(this.loop.bind(this), this.interval);
   };
 };
@@ -84,6 +86,7 @@ export class WalkPixelRandomColorStrand {
   };
 
   run() {
+    this.loop();
     setInterval(this.loop.bind(this), this.interval);
   };
 };
@@ -118,6 +121,7 @@ export class WalkOffPixelCustomColor {
   };
 
   run() {
+    this.loop();
     setInterval(this.loop.bind(this), this.interval);
   };
 };
@@ -149,6 +153,7 @@ export class WalkOffPixelRandomColorPixel {
   };
 
   run() {
+    this.loop();
     setInterval(this.loop.bind(this), this.interval);
   };
 };
@@ -189,6 +194,7 @@ export class WalkOffPixelRandomColorStrand {
   };
 
   run() {
+    this.loop();
     setInterval(this.loop.bind(this), this.interval);
   };
 };

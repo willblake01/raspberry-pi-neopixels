@@ -31,6 +31,7 @@ export class CreepCustomColor {
   };
 
   run() {
+    this.loop();
     setInterval(this.loop.bind(this), this.interval);
   };
 };
@@ -60,6 +61,7 @@ export class CreepRandomColorChangePixel {
   };
 
   run() {
+    this.loop();
     setInterval(this.loop.bind(this), this.interval);
   };
 };
@@ -100,6 +102,7 @@ export class CreepRandomColorChangeStrand {
   };
 
   run() {
+    this.loop();
     setInterval(this.loop.bind(this), this.interval);
   };
 };
@@ -130,6 +133,7 @@ export class CreepRandomColorStatic {
   };
 
   run() {
+    this.loop();
     setInterval(this.loop.bind(this), this.interval);
   };
 };
