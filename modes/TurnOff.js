@@ -10,12 +10,12 @@ export class TurnOff {
 
       ws281x.render(pixels);
 
-      process.on('SIGINT', () => {
-        ws281x.reset();
+      // process.on('SIGINT', () => {
+      //   ws281x.reset();
 
-        process.nextTick(() => {
-          process.exit(0);
-        });
-      });
+      //   process.nextTick(() => {
+      //     process.exit(0);
+      //   });
+      // });
     };
   };
