@@ -112,7 +112,7 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Breat
       manager.start(walkPixelCustomColor);
     };
 
-    if (walkPixelMode && pixelOn && randomColor && everyLoopChangeInterval) {
+    if (walkPixelMode && pixelOn && randomColor && everyPixelChangeInterval) {
       const walkPixelRandomColorPixel = new WalkPixelRandomColorPixel(manager.config, interval);
       manager.start(walkPixelRandomColorPixel);
     };
