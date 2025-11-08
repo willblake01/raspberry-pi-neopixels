@@ -144,7 +144,7 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Breat
     };
 
     if (turnOff) {
-      const turnOff = new TurnOff(config);
+      const turnOff = new TurnOff(config.leds);
       manager.start(turnOff);
     };
   };
