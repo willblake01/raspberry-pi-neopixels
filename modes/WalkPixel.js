@@ -9,9 +9,15 @@ export class WalkPixelCustomColor {
       this.green = green;
       this.blueValue = blueValue;
       this.offset = 0;
+      this._intervalID = null;
+      this._stopped = false;
+      this._rendering = false;
     };
 
     loop() {
+      if (this._stopped) return;
+      this._rendering = true;
+
       const pixels = new Uint32Array(this.config.leds);
 
       const red = this.red, green = this.green, blue = this.blueValue;
@@ -21,12 +27,26 @@ export class WalkPixelCustomColor {
 
       this.offset = (this.offset + 1) % this.config.leds;
 
-      ws281x.render(pixels);
+      try {
+        ws281x.render(pixels);
+      } finally {
+        this._rendering = false;
+      };
     };
 
     run() {
+      if (this._intervalID) return;
       this.loop();
-      setInterval(this.loop.bind(this), this.interval);
+      this._intervalID = setInterval(() => this.loop(), this.interval);
+    };
+
+    stop() {
+      if (this._stopped) return;
+      this._stopped = true;
+      if (this._intervalID) {
+        clearInterval(this._intervalID);
+        this._intervalID = null;
+      };
     };
   };
 
@@ -35,9 +55,15 @@ export class WalkPixelRandomColorPixel {
     this.config = config;
     this.interval = interval;
     this.offset = 0;
+    this._intervalID = null;
+    this._stopped = false;
+    this._rendering = false;
   };
 
   loop() {
+    if (this._stopped) return;
+    this._rendering = true;
+
     const pixels = new Uint32Array(this.config.leds);
 
     const red = randomNumber(255), green = randomNumber(255), blue = randomNumber(255);
@@ -47,12 +73,26 @@ export class WalkPixelRandomColorPixel {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    ws281x.render(pixels);
+    try {
+      ws281x.render(pixels);
+    } finally {
+      this._rendering = false;
+    };
   };
 
   run() {
+    if (this._intervalID) return;
     this.loop();
-    setInterval(this.loop.bind(this), this.interval);
+    this._intervalID = setInterval(() => this.loop(), this.interval);
+  };
+
+  stop() {
+    if (this._stopped) return;
+    this._stopped = true;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
   };
 };
 
@@ -64,9 +104,15 @@ export class WalkPixelRandomColorStrand {
     this.green = 0;
     this.blue = 0;
     this.offset = 0;
+    this._intervalID = null;
+    this._stopped = false;
+    this._rendering = false;
   };
 
   loop() {
+    if (this._stopped) return;
+    this._rendering = true;
+
     const pixels = new Uint32Array(this.config.leds);
 
     if (this.offset === 0) {
@@ -82,12 +128,26 @@ export class WalkPixelRandomColorStrand {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    ws281x.render(pixels);
+    try {
+      ws281x.render(pixels);
+    } finally {
+      this._rendering = false;
+    };
   };
 
   run() {
+    if (this._intervalID) return;
     this.loop();
-    setInterval(this.loop.bind(this), this.interval);
+    this._intervalID = setInterval(() => this.loop(), this.interval);
+  };
+
+  stop() {
+    if (this._stopped) return;
+    this._stopped = true;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
   };
 };
 
@@ -99,9 +159,15 @@ export class WalkOffPixelCustomColor {
     this.green = green;
     this.blueValue = blueValue;
     this.offset = 0;
+    this._intervalID = null;
+    this._stopped = false;
+    this._rendering = false;
   };
 
   loop() {
+    if (this._stopped) return;
+    this._rendering = true;
+
     const pixels = new Uint32Array(this.config.leds);
 
     const red = this.red, green = this.green, blue = this.blueValue;
@@ -117,12 +183,26 @@ export class WalkOffPixelCustomColor {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    ws281x.render(pixels);
+    try {
+      ws281x.render(pixels);
+    } finally {
+      this._rendering = false;
+    };
   };
 
   run() {
+    if (this._intervalID) return;
     this.loop();
-    setInterval(this.loop.bind(this), this.interval);
+    this._intervalID = setInterval(() => this.loop(), this.interval);
+  };
+
+  stop() {
+    if (this._stopped) return;
+    this._stopped = true;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
   };
 };
 
@@ -131,9 +211,15 @@ export class WalkOffPixelRandomColorPixel {
     this.config = config;
     this.interval = interval;
     this.offset = 0;
+    this._intervalID = null;
+    this._stopped = false;
+    this._rendering = false;
   };
 
   loop() {
+    if (this._stopped) return;
+    this._rendering = true;
+
     const pixels = new Uint32Array(this.config.leds);
 
     const red = randomNumber(255), green = randomNumber(255) , blue = randomNumber(255);
@@ -149,12 +235,26 @@ export class WalkOffPixelRandomColorPixel {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    ws281x.render(pixels);
+    try {
+      ws281x.render(pixels);
+    } finally {
+      this._rendering = false;
+    };
   };
 
   run() {
+    if (this._intervalID) return;
     this.loop();
-    setInterval(this.loop.bind(this), this.interval);
+    this._intervalID = setInterval(() => this.loop(), this.interval);
+  };
+
+  stop() {
+    if (this._stopped) return;
+    this._stopped = true;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
   };
 };
 
@@ -166,9 +266,15 @@ export class WalkOffPixelRandomColorStrand {
     this.green = 0;
     this.blue = 0;
     this.offset = 0;
+    this._intervalID = null;
+    this._stopped = false;
+    this._rendering = false;
   };
 
   loop() {
+    if (this._stopped) return;
+    this._rendering = true;
+
     const pixels = new Uint32Array(this.config.leds);
 
     if (this.offset === 0) {
@@ -190,11 +296,25 @@ export class WalkOffPixelRandomColorStrand {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    ws281x.render(pixels);
+    try {
+      ws281x.render(pixels);
+    } finally {
+      this._rendering = false;
+    };
   };
 
   run() {
+    if (this._intervalID) return;
     this.loop();
-    setInterval(this.loop.bind(this), this.interval);
+    this._intervalID = setInterval(() => this.loop(), this.interval);
+  };
+
+  stop() {
+    if (this._stopped) return;
+    this._stopped = true;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
   };
 };
