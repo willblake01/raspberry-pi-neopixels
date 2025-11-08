@@ -14,9 +14,15 @@ export class Wheel {
     this.blue2 = 0;
     this.color1 = (this.red << 16) | (this.green << 8) | this.blue;
     this.color2 = (this.red2 << 16) | (this.green2 << 8) | this.blue2;
+    this._intervalID = null;
+    this._stopped = false;
+    this._rendering = false;
   };
 
   loop() {
+    if (this._stopped) return;
+    this._rendering = true;
+
     const pixels = new Uint32Array(this.config.leds);
 
     for (let i = 0; i < this.offset; i++) {
@@ -41,11 +47,25 @@ export class Wheel {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    ws281x.render(pixels);
+    try {
+      ws281x.render(pixels);
+    } finally {
+      this._rendering = false;
+    };
   };
 
   run() {
+    if (this._intervalID) return;
     this.loop();
-    setInterval(this.loop.bind(this), this.interval);
+    this._intervalID = setInterval(() => this.loop(), this.interval);
+  };
+
+  stop() {
+    if (this._stopped) return;
+    this._stopped = true;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
   };
 };
