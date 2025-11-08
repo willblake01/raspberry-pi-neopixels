@@ -9,9 +9,15 @@ export class CreepCustomColor {
     this.green = green;
     this.blueValue = blueValue;
     this.offset = 0;
+    this._intervalID = null;
+    this._stopped = false;
+    this._rendering = false;
   };
 
   loop() {
+    if (this._stopped) return;
+    this._rendering = true;
+
     const pixels = new Uint32Array(this.config.leds);
 
     const red = this.red, green = this.green, blue = this.blueValue;
@@ -27,12 +33,26 @@ export class CreepCustomColor {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    ws281x.render(pixels);
+    try {
+      ws281x.render(pixels);
+    } finally {
+      this._rendering = false;
+    };
   };
 
   run() {
+    if (this._intervalID) return;
     this.loop();
-    setInterval(this.loop.bind(this), this.interval);
+    this._intervalID = setInterval(() => this.loop(), this.interval);
+  };
+
+  stop() {
+    if (this._stopped) return;
+    this._stopped = true;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
   };
 };
 
@@ -41,9 +61,15 @@ export class CreepRandomColorChangePixel {
     this.config = config;
     this.interval = interval;
     this.offset = 0;
+    this._intervalID = null;
+    this._stopped = false;
+    this._rendering = false;
   };
 
   loop() {
+    if (this._stopped) return;
+    this._rendering = true;
+
     const pixels = new Uint32Array(this.config.leds);
 
     const red = randomNumber(255), green = randomNumber(255), blue = randomNumber(255);
@@ -57,12 +83,26 @@ export class CreepRandomColorChangePixel {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    ws281x.render(pixels);
+    try {
+      ws281x.render(pixels);
+    } finally {
+      this._rendering = false;
+    };
   };
 
   run() {
+    if (this._intervalID) return;
     this.loop();
-    setInterval(this.loop.bind(this), this.interval);
+    this._intervalID = setInterval(() => this.loop(), this.interval);
+  };
+
+  stop() {
+    if (this._stopped) return;
+    this._stopped = true;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
   };
 };
 
@@ -74,9 +114,15 @@ export class CreepRandomColorChangeStrand {
     this.red = randomNumber(255);
     this.green = randomNumber(255);
     this.blue = randomNumber(255);
+    this._intervalID = null;
+    this._stopped = false;
+    this._rendering = false;
   };
 
   loop() {
+    if (this._stopped) return;
+    this._rendering = true;
+
     const pixels = new Uint32Array(this.config.leds);
 
     const red = this.red, green = this.green, blue = this.blue;
@@ -98,12 +144,26 @@ export class CreepRandomColorChangeStrand {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    ws281x.render(pixels);
+    try {
+      ws281x.render(pixels);
+    } finally {
+      this._rendering = false;
+    };
   };
 
   run() {
+    if (this._intervalID) return;
     this.loop();
-    setInterval(this.loop.bind(this), this.interval);
+    this._intervalID = setInterval(() => this.loop(), this.interval);
+  };
+
+  stop() {
+    if (this._stopped) return;
+    this._stopped = true;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
   };
 };
 
@@ -115,9 +175,15 @@ export class CreepRandomColorStatic {
     this.red = randomNumber(255);
     this.green = randomNumber(255);
     this.blue = randomNumber(255);
+    this._intervalID = null;
+    this._stopped = false;
+    this._rendering = false;
   };
 
   loop() {
+    if (this._stopped) return;
+    this._rendering = true;
+
     const pixels = new Uint32Array(this.config.leds);
 
     const red = this.red, green = this.green, blue = this.blue;
@@ -129,11 +195,25 @@ export class CreepRandomColorStatic {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    ws281x.render(pixels);
+    try {
+      ws281x.render(pixels);
+    } finally {
+      this._rendering = false;
+    };
   };
 
   run() {
+    if (this._intervalID) return;
     this.loop();
-    setInterval(this.loop.bind(this), this.interval);
+    this._intervalID = setInterval(() => this.loop(), this.interval);
+  };
+
+  stop() {
+    if (this._stopped) return;
+    this._stopped = true;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
   };
 };
