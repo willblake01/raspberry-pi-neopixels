@@ -1,5 +1,5 @@
 import ws281x from 'rpi-ws281x';
-import { randomNumber } from '../utils/index.js';
+import { randomNumber } from '../utils';
 
 export class Change {
   constructor(config, interval) {
