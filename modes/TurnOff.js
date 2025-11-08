@@ -12,7 +12,6 @@ export class TurnOff {
 
       process.on('SIGINT', () => {
         ws281x.reset();
-        ws281x.finalize();
 
         process.nextTick(() => {
           process.exit(0);

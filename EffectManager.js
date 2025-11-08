@@ -30,7 +30,6 @@ export class EffectManager {
     
     try { 
       ws281x.reset();
-      ws281x.finalize();
     } catch (error) {
       console.error('An error occurred: ', error.message);
     }
