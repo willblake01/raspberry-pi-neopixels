@@ -6,6 +6,10 @@ export class TurnOff {
     };
 
     run() {
+      const pixels = new Uint32Array(this.config.leds);
+
+      ws281x.render(pixels);
+
       process.on('SIGINT', () => {
         ws281x.reset();
 
