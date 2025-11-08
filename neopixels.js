@@ -3,15 +3,6 @@ import { EffectManager } from './EffectManager.js';
 import { questions } from './prompts/questions.js';
 import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, BreatheCustomColor, Change, CreepCustomColor, CreepRandomColorChangePixel, CreepRandomColorChangeStrand, CreepRandomColorStatic, SolidCustomColor, SolidRandomColor, WalkOffPixelCustomColor, WalkOffPixelRandomColorPixel, WalkOffPixelRandomColorStrand, WalkPixelCustomColor, WalkPixelRandomColorPixel, WalkPixelRandomColorStrand, Wheel, TurnOff } from './modes/index.js';
 
-import ws281x from 'rpi-ws281x';
-const _realReset = ws281x.reset.bind(ws281x);
-let _resetCount = 0;
-ws281x.reset = () => {
-  _resetCount += 1;
-  console.trace(`[ws281x.reset] call #${_resetCount}`);
-  return _realReset();
-};
-
 (async () => {
   const response = await prompts(questions);
 
