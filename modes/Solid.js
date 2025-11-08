@@ -12,8 +12,7 @@ export class SolidCustomColor {
   run() {
     const pixels = new Uint32Array(this.leds);
 
-    const red = this.red, green = this.green, blue = this.blue;
-    const color = (red << 16) | (green << 8) | blue;
+    const color = (this.red << 16) | (this.green << 8) | this.blue;
 
     for (let i = 0; i < this.leds; i++) {
       pixels[i] = color;

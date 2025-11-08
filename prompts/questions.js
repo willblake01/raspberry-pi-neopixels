@@ -71,7 +71,7 @@ export const questions = [
   },
   {
     type: 'number',
-    name: 'numLeds',
+    name: 'leds',
     message: 'Enter number of LEDs (0-100)',
     min: 0,
     max: 100
