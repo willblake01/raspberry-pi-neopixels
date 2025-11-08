@@ -33,7 +33,7 @@ export class Change {
   run() {
     if (this._intervalID) return;
     this.loop();
-    this._intervalID = setInterval(this.loop.bind(this), this.interval);
+    this._intervalID = setInterval(() => this.loop(), this.interval);
   };
 
   stop() {
