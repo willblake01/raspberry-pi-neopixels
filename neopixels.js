@@ -162,7 +162,7 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Breat
       console.error(`[shutdown ${reason}]`, err);
       process.exitCode = 1;
     }
-      // setTimeout(() => process.exit(), 10);
+      setTimeout(() => process.exit(), 10);
     }
   };
 
