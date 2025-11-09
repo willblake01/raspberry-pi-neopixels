@@ -1,1 +1,1 @@
-export { RULES } from '../modes/utils/routingTable.js';
+export { RULES } from './routingTable.js';
