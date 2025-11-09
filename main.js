@@ -2,7 +2,7 @@ import prompts from 'prompts';
 import { EffectManager } from './EffectManager.js';
 import { questions } from './prompts/questions.js';
 import { TurnOff } from './modes/index.js';
-import { RULES } from './utils/index.js';
+import { RULES } from './modes/utils/index.js';
 import { normalizeAnswers } from './prompts/normalizeAnswers.js'; 
 
 const delay = (ms) => new Promise(r => setTimeout(r, ms));
