@@ -206,7 +206,7 @@ const main = async () => {
 
   await delay(1000);
 
-  const effect = selectEffect(manager.config, o);
+  const effect = selectEffect(manager.config, options);
   await manager.start(effect);
 };
 
