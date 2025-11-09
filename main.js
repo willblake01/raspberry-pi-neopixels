@@ -5,7 +5,7 @@ import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, Breat
 
 const delay = (ms) => new Promise(r => setTimeout(r, ms));
 
-const once = () => {
+const once = (fn) => {
   let called = false;
   return (...args) => { if (called) return; called = true; return fn(...args); };
 };
@@ -182,12 +182,7 @@ const main = async () => {
 
   const manager = new EffectManager(config);
 
-  // Graceful exit hooks
-  let shuttingDown = false;
-
   const shutDown = once(async (reason, err) => {
-    if (shuttingDown) return;
-    shuttingDown = true;
     try { 
       await manager.dispose();
     } finally {
