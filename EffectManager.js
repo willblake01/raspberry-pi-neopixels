@@ -1,4 +1,4 @@
-import { init, dispose } from './ledRuntime';
+import { init, dispose } from './ledRuntime.js';
 
 const tick = () => new Promise(r => setImmediate(r));
 
