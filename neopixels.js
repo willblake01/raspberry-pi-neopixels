@@ -50,7 +50,7 @@ const RULES = [
   // --- SOLID ---
   {
     name: 'solid-custom',
-    when: o.isSolid && o.isCustom,
+    when: o => o.isSolid && o.isCustom,
     make: (cfg, o) => new SolidCustomColor(cfg, o.red, o.green, o.blue),
   },
   {
