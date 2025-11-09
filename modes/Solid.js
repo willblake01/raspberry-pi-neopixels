@@ -1,4 +1,4 @@
-import { safeRender } from "../ledRuntime.js";
+import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
 
 export class SolidCustomColor {

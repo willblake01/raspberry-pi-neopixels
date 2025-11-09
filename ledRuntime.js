@@ -1,4 +1,4 @@
-import ws281x from "rpi-ws281x";
+import ws281x from 'rpi-ws281x';
 
 export const runtime = { alive: false };
 
