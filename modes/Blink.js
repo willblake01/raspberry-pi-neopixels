@@ -26,6 +26,7 @@ export class BlinkCustomColor {
     };
 
     safeRender(pixels);
+    this.on = !this.on;
   };
 
   run() {
@@ -66,6 +67,7 @@ export class BlinkRandomColorChange {
     };
 
     safeRender(pixels);
+    this.on = !this.on;
   };
 
   run() {
@@ -110,6 +112,7 @@ export class BlinkRandomColorStatic {
     };
 
     safeRender(pixels);
+    this.on = !this.on;
   };
 
   run() {

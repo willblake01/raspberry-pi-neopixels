@@ -170,12 +170,12 @@ const selectEffect = (config, opts) => {
 
 const main = async () => {
   const response = await prompts(questions);
-  const o = normalizeAnsers(response);
+  const options = normalizeAnsers(response);
 
   const config = {
-    leds:o.leds,
+    leds:options.leds,
     dma: 10,
-    brightness: o.brightness,
+    brightness: options.brightness,
     gpio: 18,
     stripType: 'rgb'
   };
