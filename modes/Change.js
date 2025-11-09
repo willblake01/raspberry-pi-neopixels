@@ -1,4 +1,4 @@
-import ws281x from 'rpi-ws281x';
+import { safeRender } from "../ledRuntime.js";
 import { randomNumber } from '../utils/index.js';
 
 export class Change {
@@ -7,12 +7,10 @@ export class Change {
     this.interval = interval;
     this._intervalID = null;
     this._stopped = false;
-    this._rendering = false;
   };
 
   loop() {
     if (this._stopped) return;
-    this._rendering = true;
 
     const pixels = new Uint32Array(this.config.leds);
 
@@ -23,15 +21,11 @@ export class Change {
       pixels[i] = color;
     };
 
-    try {
-      ws281x.render(pixels);
-    } finally {
-      this._rendering = false;
-    };
+    safeRender(pixels);
   };
 
   run() {
-    if (this._intervalID) return;
+    if (this._intervalID || this._stopped) return;
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };

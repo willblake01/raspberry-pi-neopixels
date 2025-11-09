@@ -185,11 +185,11 @@ const main = async () => {
   // Graceful exit hooks
   let shuttingDown = false;
 
-  const shutDown = once((reason, err) => {
+  const shutDown = once(async (reason, err) => {
     if (shuttingDown) return;
     shuttingDown = true;
     try { 
-      manager.dispose();
+      await manager.dispose();
     } finally {
       if (err) { 
         console.error(`[shutdown ${reason}]`, err);
@@ -207,7 +207,7 @@ const main = async () => {
   await delay(1000);
 
   const effect = selectEffect(manager.config, o);
-  manager.start(effect);
+  await manager.start(effect);
 };
 
 main().catch(err => {

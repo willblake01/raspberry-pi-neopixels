@@ -1,4 +1,4 @@
-import ws281x from 'rpi-ws281x';
+import { safeRender } from "../ledRuntime.js";
 import { randomNumber } from '../utils/index.js';
 
 export class WalkPixelCustomColor {
@@ -11,12 +11,10 @@ export class WalkPixelCustomColor {
       this.offset = 0;
       this._intervalID = null;
       this._stopped = false;
-      this._rendering = false;
     };
 
     loop() {
       if (this._stopped) return;
-      this._rendering = true;
 
       const pixels = new Uint32Array(this.config.leds);
 
@@ -27,11 +25,7 @@ export class WalkPixelCustomColor {
 
       this.offset = (this.offset + 1) % this.config.leds;
 
-      try {
-        ws281x.render(pixels);
-      } finally {
-        this._rendering = false;
-      };
+      safeRender(pixels);
     };
 
     run() {
@@ -57,12 +51,10 @@ export class WalkPixelRandomColorPixel {
     this.offset = 0;
     this._intervalID = null;
     this._stopped = false;
-    this._rendering = false;
   };
 
   loop() {
     if (this._stopped) return;
-    this._rendering = true;
 
     const pixels = new Uint32Array(this.config.leds);
 
@@ -73,11 +65,7 @@ export class WalkPixelRandomColorPixel {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    try {
-      ws281x.render(pixels);
-    } finally {
-      this._rendering = false;
-    };
+    safeRender(pixels);
   };
 
   run() {
@@ -106,12 +94,10 @@ export class WalkPixelRandomColorStrand {
     this.offset = 0;
     this._intervalID = null;
     this._stopped = false;
-    this._rendering = false;
   };
 
   loop() {
     if (this._stopped) return;
-    this._rendering = true;
 
     const pixels = new Uint32Array(this.config.leds);
 
@@ -128,11 +114,7 @@ export class WalkPixelRandomColorStrand {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    try {
-      ws281x.render(pixels);
-    } finally {
-      this._rendering = false;
-    };
+    safeRender(pixels);
   };
 
   run() {
@@ -161,12 +143,10 @@ export class WalkOffPixelCustomColor {
     this.offset = 0;
     this._intervalID = null;
     this._stopped = false;
-    this._rendering = false;
   };
 
   loop() {
     if (this._stopped) return;
-    this._rendering = true;
 
     const pixels = new Uint32Array(this.config.leds);
 
@@ -183,11 +163,7 @@ export class WalkOffPixelCustomColor {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    try {
-      ws281x.render(pixels);
-    } finally {
-      this._rendering = false;
-    };
+    safeRender(pixels);
   };
 
   run() {
@@ -213,7 +189,6 @@ export class WalkOffPixelRandomColorPixel {
     this.offset = 0;
     this._intervalID = null;
     this._stopped = false;
-    this._rendering = false;
   };
 
   loop() {
@@ -235,11 +210,7 @@ export class WalkOffPixelRandomColorPixel {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    try {
-      ws281x.render(pixels);
-    } finally {
-      this._rendering = false;
-    };
+    safeRender(pixels);
   };
 
   run() {
@@ -268,12 +239,10 @@ export class WalkOffPixelRandomColorStrand {
     this.offset = 0;
     this._intervalID = null;
     this._stopped = false;
-    this._rendering = false;
   };
 
   loop() {
     if (this._stopped) return;
-    this._rendering = true;
 
     const pixels = new Uint32Array(this.config.leds);
 
@@ -296,11 +265,7 @@ export class WalkOffPixelRandomColorStrand {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    try {
-      ws281x.render(pixels);
-    } finally {
-      this._rendering = false;
-    };
+    safeRender(pixels);
   };
 
   run() {

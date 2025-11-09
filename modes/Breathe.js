@@ -1,4 +1,4 @@
-import ws281x from 'rpi-ws281x';
+import { safeRender } from '../ledRuntime.js';
 
 export class BreatheCustomColor {
   constructor(config, interval, red, green, blueValue) {
@@ -11,12 +11,10 @@ export class BreatheCustomColor {
     this.isIncreasingBrightness = true;
     this._intervalID = null;
     this._stopped = false;
-    this._rendering = false;
   };
 
   loop() {
     if (this._stopped) return;
-    this._rendering = true;
 
     const setNextState = () => {
       if (this.brightness === 0) {
@@ -45,12 +43,7 @@ export class BreatheCustomColor {
       pixels[i] = color;
     };
 
-    try {
-      ws281x.render(pixels);
-    } finally {
-      this._rendering = false;
-    };
-
+    safeRender(pixels);
     setNextState();
   };
 

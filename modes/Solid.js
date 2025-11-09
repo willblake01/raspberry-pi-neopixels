@@ -1,4 +1,4 @@
-import ws281x from 'rpi-ws281x';
+import { safeRender } from "../ledRuntime.js";
 import { randomNumber } from '../utils/index.js';
 
 export class SolidCustomColor {
@@ -18,7 +18,7 @@ export class SolidCustomColor {
       pixels[i] = color;
     };
 
-    ws281x.render(pixels);
+    safeRender(pixels);
   };
 };
 
@@ -37,6 +37,6 @@ export class SolidRandomColor {
       pixels[i] = color;
     };
 
-    ws281x.render(pixels);
+    safeRender(pixels);
   };
 };

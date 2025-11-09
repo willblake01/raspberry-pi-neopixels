@@ -1,4 +1,4 @@
-import ws281x from 'rpi-ws281x';
+import { safeRender } from "../ledRuntime.js";
 import { randomNumber } from '../utils/index.js';
 
 export class Wheel {
@@ -16,12 +16,10 @@ export class Wheel {
     this.color2 = (this.red2 << 16) | (this.green2 << 8) | this.blue2;
     this._intervalID = null;
     this._stopped = false;
-    this._rendering = false;
   };
 
   loop() {
     if (this._stopped) return;
-    this._rendering = true;
 
     const pixels = new Uint32Array(this.config.leds);
 
@@ -47,11 +45,7 @@ export class Wheel {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    try {
-      ws281x.render(pixels);
-    } finally {
-      this._rendering = false;
-    };
+    safeRender(pixels);
   };
 
   run() {

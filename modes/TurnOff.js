@@ -1,4 +1,4 @@
-import ws281x from 'rpi-ws281x';
+import { safeRender } from "../ledRuntime.js";
 
 export class TurnOff {
     constructor(config) {
@@ -11,7 +11,7 @@ export class TurnOff {
       ws281x.render(pixels);
 
       process.on('SIGINT', () => {
-        ws281x.reset();
+        safeRender(pixels);
 
         process.nextTick(() => {
           process.exit(0);

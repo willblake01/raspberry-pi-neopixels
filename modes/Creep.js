@@ -1,4 +1,4 @@
-import ws281x from 'rpi-ws281x';
+import { safeRender } from "../ledRuntime.js";
 import { randomNumber } from '../utils/index.js';
 
 export class CreepCustomColor {
@@ -11,12 +11,10 @@ export class CreepCustomColor {
     this.offset = 0;
     this._intervalID = null;
     this._stopped = false;
-    this._rendering = false;
   };
 
   loop() {
     if (this._stopped) return;
-    this._rendering = true;
 
     const pixels = new Uint32Array(this.config.leds);
 
@@ -33,11 +31,7 @@ export class CreepCustomColor {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    try {
-      ws281x.render(pixels);
-    } finally {
-      this._rendering = false;
-    };
+    safeRender(pixels);
   };
 
   run() {
@@ -63,12 +57,10 @@ export class CreepRandomColorChangePixel {
     this.offset = 0;
     this._intervalID = null;
     this._stopped = false;
-    this._rendering = false;
   };
 
   loop() {
     if (this._stopped) return;
-    this._rendering = true;
 
     const pixels = new Uint32Array(this.config.leds);
 
@@ -83,11 +75,7 @@ export class CreepRandomColorChangePixel {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    try {
-      ws281x.render(pixels);
-    } finally {
-      this._rendering = false;
-    };
+    safeRender(pixels);
   };
 
   run() {
@@ -116,12 +104,10 @@ export class CreepRandomColorChangeStrand {
     this.blue = randomNumber(255);
     this._intervalID = null;
     this._stopped = false;
-    this._rendering = false;
   };
 
   loop() {
     if (this._stopped) return;
-    this._rendering = true;
 
     const pixels = new Uint32Array(this.config.leds);
 
@@ -144,11 +130,7 @@ export class CreepRandomColorChangeStrand {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    try {
-      ws281x.render(pixels);
-    } finally {
-      this._rendering = false;
-    };
+    safeRender(pixels);
   };
 
   run() {
@@ -177,12 +159,10 @@ export class CreepRandomColorStatic {
     this.blue = randomNumber(255);
     this._intervalID = null;
     this._stopped = false;
-    this._rendering = false;
   };
 
   loop() {
     if (this._stopped) return;
-    this._rendering = true;
 
     const pixels = new Uint32Array(this.config.leds);
 
@@ -195,11 +175,7 @@ export class CreepRandomColorStatic {
 
     this.offset = (this.offset + 1) % this.config.leds;
 
-    try {
-      ws281x.render(pixels);
-    } finally {
-      this._rendering = false;
-    };
+    safeRender(pixels);
   };
 
   run() {

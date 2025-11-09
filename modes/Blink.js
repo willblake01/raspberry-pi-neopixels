@@ -1,4 +1,4 @@
-import ws281x from 'rpi-ws281x';
+import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
 
 export class BlinkCustomColor {
@@ -11,12 +11,10 @@ export class BlinkCustomColor {
     this.on = true;
     this._intervalID = null;
     this._stopped = false;
-    this._rendering = false;
   };
 
   loop() {
     if (this._stopped) return;
-    this._rendering = true;
 
     const pixels = new Uint32Array(this.config.leds);
 
@@ -27,12 +25,7 @@ export class BlinkCustomColor {
       pixels[i] = color;
     };
 
-    try {
-      ws281x.render(pixels);
-      this.on = !this.on
-    } finally {
-      this._rendering = false;
-    };
+    safeRender(pixels);
   };
 
   run() {
@@ -58,12 +51,10 @@ export class BlinkRandomColorChange {
     this.on = true;
     this._intervalID = null;
     this._stopped = false;
-    this._rendering = false;
   };
 
   loop() {
     if (this._stopped) return;
-    this._rendering = true;
 
     const pixels = new Uint32Array(this.config.leds);
     
@@ -74,12 +65,7 @@ export class BlinkRandomColorChange {
       pixels[i] = color;
     };
 
-    try {
-      ws281x.render(pixels);
-      this.on = !this.on
-    } finally {
-      this._rendering = false;
-    };
+    safeRender(pixels);
   };
 
   run() {
@@ -108,12 +94,10 @@ export class BlinkRandomColorStatic {
     this.on = true;
     this._intervalID = null;
     this._stopped = false;
-    this._rendering = false;
   };
 
   loop() {
     if (this._stopped) return;
-    this._rendering = true;
 
     const pixels = new Uint32Array(this.config.leds);
 
@@ -125,12 +109,7 @@ export class BlinkRandomColorStatic {
       pixels[i] = color;
     };
 
-    try {
-      ws281x.render(pixels);
-      this.on = !this.on
-    } finally {
-      this._rendering = false;
-    };
+    safeRender(pixels);
   };
 
   run() {

@@ -1,4 +1,6 @@
-import ws281x from 'rpi-ws281x';
+import { init, dispose } from './ledRuntime';
+
+const tick = () => new Promise(r => setImmediate(r));
 
 export class EffectManager {
   constructor(config) {
@@ -6,39 +8,30 @@ export class EffectManager {
     this.current = null;
     this._disposed = false;
 
-    ws281x.configure(config);
+    init(config);
   };
 
-  start(effect) {
-    if (this._disposed) throw new Error('Manager disposed');
-    this.stop();
+  async start(effect) {
+    if (this._disposed) throw new Error('EffectManager already disposed');
+    await this.stop();
     this.current = effect;
     effect.run();
   };
 
-  stop() {
-    if (this.current?.stop) {
-      try { 
-        this.current.stop();
-      } catch (error) {
-        console.error('An error occurred: ', error.message);
-      }
+  async stop() {
+    const eff = this.current;
+    if (!eff) return;
+    try { eff.stop?.(); } finally {
       this.current = null;
-    };
+      await tick();
+    }; 
   };
 
-  dispose() {
+  async dispose() {
     if (this._disposed) return;
     this._disposed = true;
 
-    this.stop();
-
-    setImmediate(() => {
-      try { 
-      ws281x.reset();
-    } catch (error) {
-      console.error('An error occurred: ', error.message);
-    }
-    });
+    await this.stop();
+    await dispose();
   };
 };
