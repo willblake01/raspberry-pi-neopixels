@@ -3,14 +3,10 @@ import { EffectManager } from './EffectManager.js';
 import { questions } from './prompts/questions.js';
 import { TurnOff } from './modes/index.js';
 import { RULES } from './modes/utils/index.js';
-import { normalizeAnswers } from './prompts/normalizeAnswers.js'; 
+import { normalizeAnswers } from './prompts/normalizeAnswers.js';
+import { once } from './utils/index.js';
 
 const delay = (ms) => new Promise(r => setTimeout(r, ms));
-
-const once = (fn) => {
-  let called = false;
-  return (...args) => { if (called) return; called = true; return fn(...args); };
-};
 
 const selectEffect = (config, opts) => {
   if (opts.isOff) return new TurnOff(config);
