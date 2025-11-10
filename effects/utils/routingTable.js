@@ -1,4 +1,4 @@
-import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, BreatheCustomColor, Change, CreepCustomColor, CreepRandomColorChangePixel, CreepRandomColorChangeLoop, CreepRandomColorStatic, SolidCustomColor, SolidRandomColor, WalkOffPixelCustomColor, WalkOffPixelRandomColorPixel, CreepRandomColorChangeLoop, WalkPixelCustomColor, WalkPixelRandomColorPixel, WalkPixelRandomColorLoop, Wheel, TurnOff } from '../index.js';
+import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, BreatheCustomColor, Change, CreepCustomColor, CreepRandomColorChangePixel, CreepRandomColorChangeLoop, CreepRandomColorStatic, SolidCustomColor, SolidRandomColor, WalkOffPixelCustomColor, WalkOffPixelRandomColorLoop, WalkOffPixelRandomColorPixel, WalkPixelCustomColor, WalkPixelRandomColorPixel, WalkPixelRandomColorLoop, Wheel, TurnOff } from '../index.js';
 
 export const RULES = [
   // --- SOLID ---
@@ -104,7 +104,7 @@ export const RULES = [
   {
     name: 'walkPixel-off-random-everyLoop',
     when: o => o.isWalkPixel && o.pixelOff && o.isRandomColorMode && o.everyLoopColorChangeInterval,
-    make: (cfg, o) => new CreepRandomColorChangeLoop(cfg, o.interval),
+    make: (cfg, o) => new WalkOffPixelRandomColorLoop(cfg, o.interval),
   },
 
   // --- TURN OFF (explicit command) ---
