@@ -1,9 +1,8 @@
 import prompts from 'prompts';
 import { EffectManager } from './EffectManager.js';
-import { questions } from './prompts/questions.js';
+import { normalizeAnswers, questions } from './prompts/index.js';
 import { TurnOff } from './effects/index.js';
 import { RULES } from './effects/utils/index.js';
-import { normalizeAnswers } from './prompts/normalizeAnswers.js';
 import { once } from './utils/index.js';
 
 const delay = (ms) => new Promise(r => setTimeout(r, ms));
