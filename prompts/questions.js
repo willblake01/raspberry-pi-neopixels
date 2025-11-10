@@ -31,7 +31,7 @@ const EFFECT_ALLOWS_RANDOM_CHANGE_INTERVAL = new Set([
   EFFECTS.CREEP, EFFECTS.WALK_PIXEL, EFFECTS.SOLID
 ]);
 
-isOn = v => v.command === 1;
+const isOn = v => v.command === 1;
 const eqEffect = e => v => v.effect === e;
 
 const needsInterval = v => EFFECT_NEEDS_INTERVAL.has(v.effect);
