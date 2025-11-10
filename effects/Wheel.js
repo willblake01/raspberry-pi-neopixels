@@ -1,5 +1,6 @@
 import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
+import { setPixelColor } from './utils/index.js';
 
 export class Wheel {
   constructor(config, interval) {
@@ -21,17 +22,8 @@ export class Wheel {
   loop() {
     if (this._stopped) return;
 
-    const pixels = new Uint32Array(this.config.leds);
-
-    for (let i = 0; i < this.offset; i++) {
-      pixels[i] = this.color1;
-    };
-
-    for (let i = this.offset; i < this.config.leds; i++) {
-      pixels[i] = this.color2;
-    };
-
-    pixels[this.offset] = this.color1;
+    const pixels = setPixelColor(this.config.leds, color);
+    safeRender(pixels);
 
     if (this.offset === this.config.leds - 1) {
       this.color2 = this.color1;
@@ -44,8 +36,6 @@ export class Wheel {
     };
 
     this.offset = (this.offset + 1) % this.config.leds;
-
-    safeRender(pixels);
   };
 
   run() {
