@@ -94,7 +94,7 @@ export class CreepRandomColorChangePixel {
   };
 };
 
-export class CreepRandomColorChangeStrand {
+export class CreepRandomColorChangeLoop {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;

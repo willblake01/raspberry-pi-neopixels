@@ -16,8 +16,8 @@ export const questions = [
   },
   {
     type: (prev, values) => values.command == 1 ? 'select' : null,
-    name: 'mode',
-    message: 'Set mode',
+    name: 'effect',
+    message: 'Set effect',
     choices: [
       {
         title: 'Solid',
@@ -50,7 +50,7 @@ export const questions = [
     ]
   },
   {
-    type: (prev, values) => values.command == 1 && values.mode == 'walk pixel' ? 'select' : null,
+    type: (prev, values) => values.command == 1 && values.effect == 'walk pixel' ? 'select' : null,
     name: 'pixelState',
     message: 'Set pixel',
     choices: [
@@ -65,7 +65,7 @@ export const questions = [
     ]
   },
   {
-    type: (prev, values) => values.command == 1 && values.mode != 'solid' ? 'number' : null,
+    type: (prev, values) => values.command == 1 && values.effect != 'solid' ? 'number' : null,
     name: 'interval',
     message: 'Enter interval (milliseconds)',
   },
@@ -84,7 +84,7 @@ export const questions = [
     max: 255
   },
   {
-    type: (prev, values) => values.command == 1 && values.mode != 'change' && values.mode != 'wheel' ? 'select' : null,
+    type: (prev, values) => values.command == 1 && values.effect != 'change' && values.effect != 'wheel' ? 'select' : null,
     name: 'colorMode',
     message: 'Set color mode',
     choices: [
@@ -99,7 +99,7 @@ export const questions = [
     ]
   },
   {
-    type: (prev, values) => values.command == 1 && values.colorMode == 'random' && values.mode != 'solid' && values.mode != 'change' ? 'select' : null,
+    type: (prev, values) => values.command == 1 && values.colorMode == 'random' && values.effect != 'solid' && values.effect != 'change' ? 'select' : null,
     name: 'randomColorMode',
     message: 'Set random color mode',
     choices: [
@@ -114,7 +114,7 @@ export const questions = [
     ]
   },
   {
-    type: (prev, values) => values.command == 1 && values.colorMode == 'random' && values.randomColorMode === 'change' && values.mode !== 'blink' ? 'select' : null,
+    type: (prev, values) => values.command == 1 && values.colorMode == 'random' && values.randomColorMode === 'change' && values.effect !== 'blink' ? 'select' : null,
     name: 'colorChangeInterval',
     message: 'Set color change interval',
     choices: [
@@ -123,7 +123,7 @@ export const questions = [
         value: 'everyPixel'
       },
       {
-        title: 'At end of strand',
+        title: 'At end of loop',
         value: 'everyLoop'
       }
     ]

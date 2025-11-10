@@ -84,7 +84,7 @@ export class WalkPixelRandomColorPixel {
   };
 };
 
-export class WalkPixelRandomColorStrand {
+export class WalkPixelRandomColorLoop {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -229,7 +229,7 @@ export class WalkOffPixelRandomColorPixel {
   };
 };
 
-export class WalkOffPixelRandomColorStrand {
+export class WalkOffPixelRandomColorLoop {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;

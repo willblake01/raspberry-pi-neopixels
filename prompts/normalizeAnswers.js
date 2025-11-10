@@ -1,5 +1,5 @@
 export const normalizeAnswers = (res) => {
-  const {blue, brightness, colorMode, colorChangeInterval, command, green, interval, mode, leds, pixelState, randomColorMode, red} = res;
+  const {blue, brightness, colorMode, colorChangeInterval, command, effect, green, interval, leds, pixelState, randomColorMode, red} = res;
 
   return {
     leds,
@@ -9,26 +9,26 @@ export const normalizeAnswers = (res) => {
     green,
     blue,
     command,
-    mode,
+    effect,
     colorMode,
     randomColorMode,
     colorChangeInterval,
     pixelState,
     isOn: command === 1,
     isOff: command === 0,
-    isSolid: mode === 'solid',
-    isChange: mode === 'change',
-    isBlink: mode === 'blink',
-    isBreathe: mode === 'breathe',
-    isCreep: mode === 'creep',
-    isWheel: mode === 'wheel',
-    isWalkPixel: mode === 'walk pixel',
-    isCustom: colorMode === 'custom',
-    isRandom: colorMode === 'random',
-    isStaticRC: randomColorMode === 'static',
-    isChangeRC: randomColorMode === 'change',
-    everyPixel: colorChangeInterval === 'everyPixel',
-    everyLoop: colorChangeInterval === 'everyLoop',
+    isSolid: effect === 'solid',
+    isChange: effect === 'change',
+    isBlink: effect === 'blink',
+    isBreathe: effect === 'breathe',
+    isCreep: effect === 'creep',
+    isWheel: effect === 'wheel',
+    isWalkPixel: effect === 'walk pixel',
+    isCustomColorMode: colorMode === 'custom',
+    isRandomColorMode: colorMode === 'random',
+    isStaticRandomColorMode: randomColorMode === 'static',
+    isChangeRandomColorMode: randomColorMode === 'change',
+    everyPixelColorChangeInterval: colorChangeInterval === 'everyPixel',
+    everyLoopColorChangeInterval: colorChangeInterval === 'everyLoop',
     pixelOn: pixelState === 1,
     pixelOff: pixelState === 0 
   };
