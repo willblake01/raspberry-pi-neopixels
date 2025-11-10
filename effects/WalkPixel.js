@@ -1,7 +1,7 @@
 import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
 
-export class WalkPixelCustomColor {
+export class WalkPixelOnCustomColor {
     constructor(config, interval, red, green, blueValue) {
       this.config = config;
       this.interval = interval;
@@ -44,7 +44,7 @@ export class WalkPixelCustomColor {
     };
   };
 
-export class WalkPixelRandomColorPixel {
+export class WalkPixelOnRandomColorPixel {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -84,7 +84,7 @@ export class WalkPixelRandomColorPixel {
   };
 };
 
-export class WalkPixelRandomColorLoop {
+export class WalkPixelOnRandomColorLoop {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -133,7 +133,7 @@ export class WalkPixelRandomColorLoop {
   };
 };
 
-export class WalkOffPixelCustomColor {
+export class WalkPixelOffCustomColor {
   constructor(config, interval, red, green, blueValue) {
     this.config = config;
     this.interval = interval;
@@ -182,7 +182,7 @@ export class WalkOffPixelCustomColor {
   };
 };
 
-export class WalkOffPixelRandomColorPixel {
+export class WalkPixelOffRandomColorPixel {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -229,7 +229,7 @@ export class WalkOffPixelRandomColorPixel {
   };
 };
 
-export class WalkOffPixelRandomColorLoop {
+export class WalkPixelOffRandomColorLoop {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
