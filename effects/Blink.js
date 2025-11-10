@@ -1,5 +1,6 @@
 import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
+import { setPixelColor } from './utils/index.js';
 
 export class BlinkCustomColor {
   constructor(config, interval, red, green, blueValue) {
@@ -16,14 +17,10 @@ export class BlinkCustomColor {
   loop() {
     if (this._stopped) return;
 
-    const pixels = new Uint32Array(this.config.leds);
-
     const red = this.on ? this.red : 0, green = this.on ? this.green : 0, blue = this.on ? this.blueValue : 0;
     const color = (red << 16) | (green << 8) | blue;
 
-    for (let i = 0; i < this.config.leds; i++) {
-      pixels[i] = color;
-    };
+    const pixels = setPixelColor(this.config.leds, color);
 
     safeRender(pixels);
     this.on = !this.on;
