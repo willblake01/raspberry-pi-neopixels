@@ -84,7 +84,7 @@ export const questions = [
     max: 255
   },
   {
-    type: (prev, values) => values.command == 1 && values.mode != 'change' && values.mode != 'wheel' && values.mode != 'sparkle' ? 'select' : null,
+    type: (prev, values) => values.command == 1 && values.mode != 'change' && values.mode != 'wheel' ? 'select' : null,
     name: 'colorMode',
     message: 'Set color mode',
     choices: [

@@ -30,7 +30,7 @@ export class BlinkCustomColor {
   };
 
   run() {
-    if (this._intervalID) return;
+    if (this._intervalID || this._stopped) return;
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
@@ -71,7 +71,7 @@ export class BlinkRandomColorChange {
   };
 
   run() {
-    if (this._intervalID) return;
+    if (this._intervalID || this._stopped) return;
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
@@ -116,7 +116,7 @@ export class BlinkRandomColorStatic {
   };
 
   run() {
-    if (this._intervalID) return;
+    if (this._intervalID || this._stopped) return;
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };

@@ -48,7 +48,7 @@ export class BreatheCustomColor {
   };
 
   run() {
-    if (this._intervalID) return;
+    if (this._intervalID || this._stopped) return;
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };

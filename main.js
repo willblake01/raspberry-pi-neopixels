@@ -11,8 +11,7 @@ const delay = (ms) => new Promise(r => setTimeout(r, ms));
 const selectEffect = (config, opts) => {
   if (opts.isOff) return new TurnOff(config);
   const rule = RULES.find(r => r.when(opts));
-  if (!rule) return new TurnOff(config);
-  return rule.make(config, opts);
+  return rule ? rule.make(config, opts) : new TurnOff(config);
 };
 
 const main = async () => {

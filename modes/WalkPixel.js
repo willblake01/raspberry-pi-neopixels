@@ -29,7 +29,7 @@ export class WalkPixelCustomColor {
     };
 
     run() {
-      if (this._intervalID) return;
+      if (this._intervalID || this._stopped) return;
       this.loop();
       this._intervalID = setInterval(() => this.loop(), this.interval);
     };
@@ -69,7 +69,7 @@ export class WalkPixelRandomColorPixel {
   };
 
   run() {
-    if (this._intervalID) return;
+    if (this._intervalID || this._stopped) return;
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
@@ -118,7 +118,7 @@ export class WalkPixelRandomColorStrand {
   };
 
   run() {
-    if (this._intervalID) return;
+    if (this._intervalID || this._stopped) return;
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
@@ -167,7 +167,7 @@ export class WalkOffPixelCustomColor {
   };
 
   run() {
-    if (this._intervalID) return;
+    if (this._intervalID || this._stopped) return;
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
@@ -214,7 +214,7 @@ export class WalkOffPixelRandomColorPixel {
   };
 
   run() {
-    if (this._intervalID) return;
+    if (this._intervalID || this._stopped) return;
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
@@ -269,7 +269,7 @@ export class WalkOffPixelRandomColorStrand {
   };
 
   run() {
-    if (this._intervalID) return;
+    if (this._intervalID || this._stopped) return;
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };

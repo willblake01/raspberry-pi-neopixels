@@ -35,7 +35,7 @@ export class CreepCustomColor {
   };
 
   run() {
-    if (this._intervalID) return;
+    if (this._intervalID || this._stopped) return;
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
@@ -79,7 +79,7 @@ export class CreepRandomColorChangePixel {
   };
 
   run() {
-    if (this._intervalID) return;
+    if (this._intervalID || this._stopped) return;
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
@@ -134,7 +134,7 @@ export class CreepRandomColorChangeStrand {
   };
 
   run() {
-    if (this._intervalID) return;
+    if (this._intervalID || this._stopped) return;
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
@@ -179,7 +179,7 @@ export class CreepRandomColorStatic {
   };
 
   run() {
-    if (this._intervalID) return;
+    if (this._intervalID || this._stopped) return;
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
