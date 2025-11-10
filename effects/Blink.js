@@ -21,8 +21,8 @@ export class BlinkCustomColor {
     const color = (red << 16) | (green << 8) | blue;
 
     const pixels = setPixelColor(this.config.leds, color);
-
     safeRender(pixels);
+    
     this.on = !this.on;
   };
 
@@ -53,17 +53,13 @@ export class BlinkRandomColorChange {
 
   loop() {
     if (this._stopped) return;
-
-    const pixels = new Uint32Array(this.config.leds);
     
     const red = this.on ? randomNumber(255) : 0, green = this.on ? randomNumber(255) : 0, blue = this.on ? randomNumber(255) : 0;
     const color = (red << 16) | (green << 8) | blue;
 
-    for (let i = 0; i < this.config.leds; i++) {
-      pixels[i] = color;
-    };
-
+    const pixels = setPixelColor(this.config.leds, color);
     safeRender(pixels);
+
     this.on = !this.on;
   };
 
@@ -98,15 +94,10 @@ export class BlinkRandomColorStatic {
   loop() {
     if (this._stopped) return;
 
-    const pixels = new Uint32Array(this.config.leds);
-
     const red = this.on ? this.red : 0, green = this.on ? this.green : 0, blue = this.on ? this.blue : 0;
 
     const color = (red << 16) | (green << 8) | blue;
-
-    for (let i = 0; i < this.config.leds; i++) {
-      pixels[i] = color;
-    };
+    const pixels = setPixelColor(this.config.leds, color);
 
     safeRender(pixels);
     this.on = !this.on;
