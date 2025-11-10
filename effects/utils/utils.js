@@ -1,7 +1,7 @@
-export const setPixelColor = (pixelCount, offset, color1, color2) => {
+export const setPixelColor = (pixelCount, color1, offset, color2) => {
   const pixels = new Uint32Array(pixelCount);
 
-    if (offset !== undefined) {
+    if (typeof offset !== 'undefined') {
       for (let i = 0; i < offset; i++) {
         pixels[i] = color1;
       };
