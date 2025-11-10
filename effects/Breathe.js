@@ -1,4 +1,5 @@
 import { safeRender } from '../ledRuntime.js';
+import { setPixelColor } from './utils/index.js';
 
 export class BreatheCustomColor {
   constructor(config, interval, red, green, blueValue) {
@@ -34,15 +35,10 @@ export class BreatheCustomColor {
       };
     };
 
-    const pixels = new Uint32Array(this.config.leds);
-
     const red = this.red, green = this.green, blue = this.blueValue;
     const color = (red << 16) | (green << 8) | blue;
 
-    for (let i = 0; i < this.config.leds; i++) {
-      pixels[i] = color;
-    };
-
+    const pixels = setPixelColor(this.config.leds, color);
     safeRender(pixels);
     setNextState();
   };

@@ -1,5 +1,6 @@
 import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
+import { setPixelColor } from './utils/index.js';
 
 export class Change {
   constructor(config, interval) {
@@ -12,15 +13,10 @@ export class Change {
   loop() {
     if (this._stopped) return;
 
-    const pixels = new Uint32Array(this.config.leds);
-
     const red = randomNumber(255), green = randomNumber(255), blue = randomNumber(255);
     const color = (red << 16) | (green << 8) | blue;
 
-    for (let i = 0; i < this.config.leds; i++) {
-      pixels[i] = color;
-    };
-
+    const pixels = setPixelColor(this.config.leds, color);
     safeRender(pixels);
   };
 

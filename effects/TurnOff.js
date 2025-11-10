@@ -8,7 +8,6 @@ export class TurnOff {
 
     run() {
       const pixels = new Uint32Array(this.config.leds);
-
       safeRender(pixels);
 
       process.on('SIGINT', () => {
