@@ -54,6 +54,7 @@ const qNumber = (name, message, { min, max, initial, when }) => ({
 });
 
 export const questions = [
+  // Command
   qSelect('command', 'Enter command', [
     { title: 'On', value: 1 },
     { title: 'Off', value: 0 }
@@ -75,7 +76,7 @@ export const questions = [
 
   // LED count (always asked)
   qNumber('leds', 'Enter number of LEDs (0-100)', {
-    min: 0, max: 100, initial: 30
+    min: 0, max: 100, initial: 100
   }),
 
   // Brightness (only when on)
@@ -99,7 +100,7 @@ export const questions = [
   qSelect('colorChangeInterval', 'Set color change interval', [
     { title: 'After every pixel', value: 'everyPixel' },
     { title: 'At end of loop', value: 'everyLoop' }
-  ], and(isOn, v => v.colorMode === 'random' && v.randomColorMode === 'change' && v.effect !== EFFECTS.BLINK && allowsRandomChangeInterval)),
+  ], and(isOn, v => v.colorMode === 'random' && v.randomColorMode === 'change' && v.effect !== EFFECTS.BLINK && allowsRandomChangeInterval(v))),
 
   // Custom RGB (only when custom is allowed)
   qNumber('red', 'Enter a red value (0-255)', { min: 0, max: 255, initial: 0, when: and(isOn, v => v.colorMode === 'custom' && allowsCustom(v)) }),
