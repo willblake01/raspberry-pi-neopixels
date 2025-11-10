@@ -1,4 +1,4 @@
-import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, BreatheCustomColor, Change, CreepCustomColor, CreepRandomColorChangePixel, CreepRandomColorChangeLoop, CreepRandomColorStatic, SolidCustomColor, SolidRandomColor, WalkOffPixelCustomColor, WalkOffPixelRandomColorLoop, WalkOffPixelRandomColorPixel, WalkPixelCustomColor, WalkPixelRandomColorPixel, WalkPixelRandomColorLoop, Wheel, TurnOff } from '../index.js';
+import { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic, BreatheCustomColor, Change, CreepCustomColor, CreepRandomColorChangePixel, CreepRandomColorChangeLoop, CreepRandomColorStatic, SolidCustomColor, SolidRandomColor, WalkPixelOffCustomColor, WalkPixelOffRandomColorLoop, WalkPixelOffRandomColorPixel, WalkPixelOnCustomColor, WalkPixelOnRandomColorPixel, WalkPixelOnRandomColorLoop, Wheel, TurnOff } from '../index.js';
 
 export const RULES = [
   // --- SOLID ---
@@ -77,34 +77,34 @@ export const RULES = [
   {
     name: 'walkPixel-on-custom',
     when: o => o.isWalkPixel && o.pixelOn && o.isCustomColorMode,
-    make: (cfg, o) => new WalkPixelCustomColor(cfg, o.interval, o.red, o.green, o.blue),
+    make: (cfg, o) => new WalkPixelOnCustomColor(cfg, o.interval, o.red, o.green, o.blue),
   },
   {
     name: 'walkPixel-on-random-everyPixel',
     when: o => o.isWalkPixel && o.pixelOn && o.isRandomColorMode && o.everyPixelColorChangeInterval,
-    make: (cfg, o) => new WalkPixelRandomColorPixel(cfg, o.interval),
+    make: (cfg, o) => new WalkPixelOnRandomColorPixel(cfg, o.interval),
   },
   {
     name: 'walkPixel-on-random-everyLoop',
     when: o => o.isWalkPixel && o.pixelOn && o.isRandomColorMode && o.everyLoopColorChangeInterval,
-    make: (cfg, o) => new WalkPixelRandomColorLoop(cfg, o.interval),
+    make: (cfg, o) => new WalkPixelOnRandomColorLoop(cfg, o.interval),
   },
 
   // --- WALK PIXEL (pixel OFF) ---
   {
     name: 'walkPixel-off-custom',
     when: o => o.isWalkPixel && o.pixelOff && o.isCustomColorMode,
-    make: (cfg, o) => new WalkOffPixelCustomColor(cfg, o.interval, o.red, o.green, o.blue),
+    make: (cfg, o) => new WalkPixelOffCustomColor(cfg, o.interval, o.red, o.green, o.blue),
   },
   {
     name: 'walkPixel-off-random-everyPixel',
     when: o => o.isWalkPixel && o.pixelOff && o.isRandomColorMode && o.everyPixelColorChangeInterval,
-    make: (cfg, o) => new WalkOffPixelRandomColorPixel(cfg, o.interval),
+    make: (cfg, o) => new WalkPixelOffRandomColorPixel(cfg, o.interval),
   },
   {
     name: 'walkPixel-off-random-everyLoop',
     when: o => o.isWalkPixel && o.pixelOff && o.isRandomColorMode && o.everyLoopColorChangeInterval,
-    make: (cfg, o) => new WalkOffPixelRandomColorLoop(cfg, o.interval),
+    make: (cfg, o) => new WalkPixelOffRandomColorLoop(cfg, o.interval),
   },
 
   // --- TURN OFF (explicit command) ---
