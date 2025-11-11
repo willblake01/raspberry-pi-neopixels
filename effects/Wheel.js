@@ -7,13 +7,13 @@ export class Wheel {
     this.config = config;
     this.interval = interval;
     this.offset = 0;
-    this.red = 0
-    this.green = 0
-    this.blue = 0
-    this.red2 = randomNumber(255);
-    this.green2 = randomNumber(255);
-    this.blue2 = randomNumber(255);
-    this.color1 = (this.red << 16) | (this.green << 8) | this.blue;
+    this.red1 = randomNumber(255);
+    this.green1 = randomNumber(255);
+    this.blue1 = randomNumber(255);
+    this.red2 = 0;
+    this.green2 = 0;
+    this.blue2 = 0;
+    this.color1 = (this.red1 << 16) | (this.green1 << 8) | this.blue1;
     this.color2 = (this.red2 << 16) | (this.green2 << 8) | this.blue2;
     this._intervalID = null;
     this._stopped = false;
@@ -28,11 +28,11 @@ export class Wheel {
     if (this.offset === this.config.leds - 1) {
       this.color2 = this.color1;
 
-      this.red = randomNumber(255);
-      this.green = randomNumber(255);
-      this.blue = randomNumber(255);
+      this.red1 = randomNumber(255);
+      this.green1 = randomNumber(255);
+      this.blue1 = randomNumber(255);
 
-      this.color1 = (this.red << 16) | (this.green << 8) | this.blue;
+      this.color1 = (this.red1 << 16) | (this.green1 << 8) | this.blue1;
     };
 
     this.offset = (this.offset + 1) % this.config.leds;
