@@ -22,7 +22,7 @@ export class Wheel {
   loop() {
     if (this._stopped) return;
 
-    const pixels = setPixelColor(this.config.leds, this.offset, this.color1, this.color2);
+    const pixels = setPixelColor(this.config.leds, this.color1, this.offset, this.color2);
     safeRender(pixels);
 
     if (this.offset === this.config.leds - 1) {
