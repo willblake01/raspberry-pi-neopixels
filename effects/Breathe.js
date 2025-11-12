@@ -44,7 +44,7 @@ export class BreatheCustom {
       color1: color
     };
 
-    const pixels = setPixelColor(...args);
+    const pixels = setPixelColor({...args});
     
     safeRender(pixels);
     setNextState();

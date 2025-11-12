@@ -19,7 +19,7 @@ export class SolidCustom {
       color1: color
     };
 
-    const pixels = setPixelColor(...args);
+    const pixels = setPixelColor({...args});
 
     safeRender(pixels);
   };
@@ -42,7 +42,7 @@ export class SolidRandom {
       color1: color
     };
 
-    const pixels = setPixelColor(...args);
+    const pixels = setPixelColor({...args});
     safeRender(pixels);
   };
 };

@@ -31,7 +31,7 @@ export class Wheel {
       color2: color2
     };
 
-    const pixels = setPixelColor(...args);
+    const pixels = setPixelColor({...args});
     safeRender(pixels);
 
     if (this._offset === this.config.leds - 1) {

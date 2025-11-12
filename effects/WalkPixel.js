@@ -30,7 +30,7 @@ export class WalkPixelOnCustom {
         offset: this._offset
       };
 
-      const pixels = setPixelColor(...args);
+      const pixels = setPixelColor({...args});
 
       safeRender(pixels);
       setNextState();
@@ -80,7 +80,7 @@ export class WalkPixelOnRandomStatic {
       offset: this._offset
     };
 
-    const pixels = setPixelColor(...args);
+    const pixels = setPixelColor({...args});
 
     safeRender(pixels);
     setNextState();
@@ -134,7 +134,7 @@ export class WalkPixelOnRandomChangePixel {
       color1: color
     };
 
-    const pixels = setPixelColor(...args);
+    const pixels = setPixelColor({...args});
 
     safeRender(pixels);
     setNextState();
@@ -190,7 +190,7 @@ export class WalkPixelOnRandomChangeLoop {
       color1: color
     };
 
-    const pixels = setPixelColor(...args);
+    const pixels = setPixelColor({...args});
 
     safeRender(pixels);
     setNextState();

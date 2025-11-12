@@ -31,7 +31,7 @@ export class BlinkCustom {
       color1: color
     };
 
-    const pixels = setPixelColor(...args);
+    const pixels = setPixelColor({...args});
 
     safeRender(pixels);
     setNextState();
@@ -82,7 +82,7 @@ export class BlinkRandomStatic {
       color1: color
     };
 
-    const pixels = setPixelColor(...args);
+    const pixels = setPixelColor({...args});
 
     safeRender(pixels);
     setNextState();
@@ -133,7 +133,7 @@ export class BlinkRandomChange {
       color1: color
     };
 
-    const pixels = setPixelColor(...args);
+    const pixels = setPixelColor({...args});
 
     safeRender(pixels);
     setNextState();
