@@ -73,8 +73,7 @@ export class CreepRandomStatic {
     };
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
-    const pixelCount = this._offset;
-    const pixels = setPixelColor(pixelCount, color);
+    const pixels = setPixelColor(this.config.leds, color, this._offset);
 
     safeRender(pixels);
     setNextState();
@@ -121,8 +120,7 @@ export class CreepRandomChangePixel {
     };
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
-    const pixelCount = this._offset;
-    const pixels = setPixelColor(pixelCount, color);
+    const pixels = setPixelColor(this.config.leds, color, this._offset);
 
     safeRender(pixels);
     setNextState();
@@ -171,8 +169,7 @@ export class CreepRandomChangeLoop {
     };
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
-    const pixelCount = this._offset;
-    const pixels = setPixelColor(pixelCount, color);
+    const pixels = setPixelColor(this.config, color, this._offset);
 
     safeRender(pixels);
     setNextState();
