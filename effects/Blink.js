@@ -2,7 +2,7 @@ import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
 import { setPixelColor } from './utils/index.js';
 
-export class BlinkCustomColor {
+export class BlinkCustom {
   constructor(config, interval, red, green, blueValue) {
     this.config = config;
     this.interval = interval;
@@ -46,7 +46,7 @@ export class BlinkCustomColor {
   };
 };
 
-export class BlinkRandomColorStatic {
+export class BlinkRandomStatic {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -90,7 +90,7 @@ export class BlinkRandomColorStatic {
   };
 };
 
-export class BlinkRandomColorChange {
+export class BlinkRandomChange {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
