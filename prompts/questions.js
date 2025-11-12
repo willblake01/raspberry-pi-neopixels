@@ -105,7 +105,7 @@ export const questions = [
   ], and(isOn, v => v.colorMode === 'random' && v.effect !== EFFECTS.SOLID && v.effect !== EFFECTS.CHANGE)),
 
   // Random 'change' interval (every pixel vs end of loop)
-  qSelect('colorcolorChangeInterval', 'Set color change interval', [
+  qSelect('colorChangeInterval', 'Set color change interval', [
     { title: 'After every pixel', value: 'everyPixel' },
     { title: 'At end of loop', value: 'everyLoop' }
   ], and(isOn, v => v.colorMode === 'random' && v.randomColorMode === 'change' && v.effect !== EFFECTS.BLINK && allowsRandomcolorChangeInterval(v))),

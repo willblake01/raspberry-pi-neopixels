@@ -57,12 +57,12 @@ export const RULES = [
   },
   {
     name: 'creep-random-change-everyPixel',
-    when: o => o.isCreep && o.isRandomColorMode && o.isChangeRandomColorMode && o.everyPixelColorcolorChangeInterval,
+    when: o => o.isCreep && o.isRandomColorMode && o.isChangeRandomColorMode && o.everyPixelcolorChangeInterval,
     make: (cfg, o) => new CreepRandomChangePixel(cfg, o.interval),
   },
   {
     name: 'creep-random-change-everyLoop',
-    when: o => o.isCreep && o.isRandomColorMode && o.isChangeRandomColorMode && o.everyLoopColorcolorChangeInterval,
+    when: o => o.isCreep && o.isRandomColorMode && o.isChangeRandomColorMode && o.everyLoopcolorChangeInterval,
     make: (cfg, o) => new CreepRandomChangeLoop(cfg, o.interval),
   },
 
@@ -86,12 +86,12 @@ export const RULES = [
   },
   {
     name: 'walkPixel-on-random-change-everyPixel',
-    when: o => o.isWalkPixel && o.pixelOn && o.isRandomColorMode && o.everyPixelColorcolorChangeInterval,
+    when: o => o.isWalkPixel && o.pixelOn && o.isRandomColorMode && o.everyPixelcolorChangeInterval,
     make: (cfg, o) => new WalkPixelOnRandomChangePixel(cfg, o.interval),
   },
   {
     name: 'walkPixel-on-random-change-everyLoop',
-    when: o => o.isWalkPixel && o.pixelOn && o.isRandomColorMode && o.everyLoopColorcolorChangeInterval,
+    when: o => o.isWalkPixel && o.pixelOn && o.isRandomColorMode && o.everyLoopcolorChangeInterval,
     make: (cfg, o) => new WalkPixelOnRandomChangeLoop(cfg, o.interval),
   },
 
@@ -103,12 +103,12 @@ export const RULES = [
   },
   {
     name: 'walkPixel-off-random-change-everyPixel',
-    when: o => o.isWalkPixel && o.pixelOff && o.isRandomColorMode && o.everyPixelColorcolorChangeInterval,
+    when: o => o.isWalkPixel && o.pixelOff && o.isRandomColorMode && o.everyPixelcolorChangeInterval,
     make: (cfg, o) => new WalkPixelOffRandomChangePixel(cfg, o.interval),
   },
   {
     name: 'walkPixel-off-random-change-everyLoop',
-    when: o => o.isWalkPixel && o.pixelOff && o.isRandomColorMode && o.everyLoopColorcolorChangeInterval,
+    when: o => o.isWalkPixel && o.pixelOff && o.isRandomColorMode && o.everyLoopcolorChangeInterval,
     make: (cfg, o) => new WalkPixelOffRandomChangeLoop(cfg, o.interval),
   },
 
