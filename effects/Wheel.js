@@ -6,15 +6,13 @@ export class Wheel {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
-    this.offset = 0;
-    this.red1 = randomNumber(255);
-    this.green1 = randomNumber(255);
-    this.blue1 = randomNumber(255);
-    this.red2 = 0;
-    this.green2 = 0;
-    this.blue2 = 0;
-    this.color1 = (this.red1 << 16) | (this.green1 << 8) | this.blue1;
-    this.color2 = (this.red2 << 16) | (this.green2 << 8) | this.blue2;
+    this._offset = 0;
+    this._red1 = randomNumber(255);
+    this._green1 = randomNumber(255);
+    this._blue1 = randomNumber(255);
+    this._red2 = 0;
+    this._green2 = 0;
+    this._blue2 = 0;
     this._intervalID = null;
     this._stopped = false;
   };
@@ -22,20 +20,21 @@ export class Wheel {
   loop() {
     if (this._stopped) return;
 
-    const pixels = setPixelColor(this.config.leds, this.color1, this.offset, this.color2);
+    let color1 = (this._red1 << 16) | (this._green1 << 8) | this._blue1;
+    let color2 = (this._red2 << 16) | (this._green2 << 8) | this._blue2;
+
+    const pixels = setPixelColor(this.config.leds, color1, this._offset, color2);
     safeRender(pixels);
 
-    if (this.offset === this.config.leds - 1) {
-      this.color2 = this.color1;
+    if (this._offset === this.config.leds - 1) {
+      color2 = color1;
 
-      this.red1 = randomNumber(255);
-      this.green1 = randomNumber(255);
-      this.blue1 = randomNumber(255);
-
-      this.color1 = (this.red1 << 16) | (this.green1 << 8) | this.blue1;
+      this._red1 = randomNumber(255);
+      this._green1 = randomNumber(255);
+      this._blue1 = randomNumber(255);
     };
 
-    this.offset = (this.offset + 1) % this.config.leds;
+    this._offset = (this._offset + 1) % this.config.leds;
   };
 
   run() {

@@ -6,17 +6,17 @@ export class Change {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
+    this._red = randomNumber(255);
+    this._green = randomNumber(255);
+    this._blue = randomNumber(255);
     this._intervalID = null;
-    this.red = randomNumber(255);
-    this.green = randomNumber(255);
-    this.blue = randomNumber(255);
     this._stopped = false;
   };
 
   loop() {
     if (this._stopped) return;
 
-    const color = (red << 16) | (green << 8) | blue;
+    const color = (this._red << 16) | (this._green << 8) | this._blue;
     const pixels = setPixelColor(this.config.leds, color);
     
     safeRender(pixels);
