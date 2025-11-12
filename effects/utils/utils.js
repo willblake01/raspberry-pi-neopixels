@@ -20,11 +20,11 @@ export const setPixelColor = ({ pixelCount, type, color1, offset, color2 }) => {
   };
 
   if (type === 'wheel') {
-    for (let i = 0; i < offset; i++) {
+    for (let i = 0; i <= offset; i++) {
       pixels[i] = color1;
     };
 
-    for (let i = offset; i < pixelCount; i++) {
+    for (let i = offset + 1; i < pixelCount; i++) {
       pixels[i] = color2;
     };
   };
