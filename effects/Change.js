@@ -17,7 +17,14 @@ export class Change {
     if (this._stopped) return;
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
-    const pixels = setPixelColor(this.config.leds, color);
+
+    const args = {
+      pixelCount: this.config.leds,
+      type: 'change',
+      color1: color
+    };
+
+    const pixels = setPixelColor(...args);
     
     safeRender(pixels);
   };

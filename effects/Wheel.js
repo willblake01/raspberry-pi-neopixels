@@ -23,7 +23,15 @@ export class Wheel {
     let color1 = (this._red1 << 16) | (this._green1 << 8) | this._blue1;
     let color2 = (this._red2 << 16) | (this._green2 << 8) | this._blue2;
 
-    const pixels = setPixelColor(this.config.leds, color1, this._offset, color2);
+    const args = {
+      pixelCount: this.config.leds,
+      type: 'blink',
+      color1: color1,
+      offset: this._offset,
+      color2: color2
+    };
+
+    const pixels = setPixelColor(...args);
     safeRender(pixels);
 
     if (this._offset === this.config.leds - 1) {

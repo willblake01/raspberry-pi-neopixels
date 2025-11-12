@@ -24,7 +24,14 @@ export class BlinkCustom {
     const red = this._on ? this.red : 0, green = this._on ? this.green : 0, blue = this._on ? this.blueValue : 0;
 
     const color = (red << 16) | (green << 8) | blue;
-    const pixels = setPixelColor(this.config.leds, color);
+
+    const args = {
+      pixelCount: this.config.leds,
+      type: 'blink',
+      color1: color
+    };
+
+    const pixels = setPixelColor(...args);
 
     safeRender(pixels);
     setNextState();
@@ -68,7 +75,14 @@ export class BlinkRandomStatic {
     const red = this._on ? this._red : 0, green = this._on ? this._green : 0, blue = this._on ? this._blue : 0;
 
     const color = (red << 16) | (green << 8) | blue;
-    const pixels = setPixelColor(this.config.leds, color);
+
+    const args = {
+      pixelCount: this.config.leds,
+      type: 'blink',
+      color1: color
+    };
+
+    const pixels = setPixelColor(...args);
 
     safeRender(pixels);
     setNextState();
@@ -112,7 +126,14 @@ export class BlinkRandomChange {
     const red = this._on ? this._red : 0, green = this._on ? this._green : 0, blue = this._on ? this._blue : 0;
 
     const color = (red << 16) | (green << 8) | blue;
-    const pixels = setPixelColor(this.config.leds, color);
+
+    const args = {
+      pixelCount: this.config.leds,
+      type: 'blink',
+      color1: color
+    };
+
+    const pixels = setPixelColor(...args);
 
     safeRender(pixels);
     setNextState();

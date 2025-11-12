@@ -12,7 +12,14 @@ export class SolidCustom {
 
   run() {
     const color = (this.red << 16) | (this.green << 8) | this.blue;
-    const pixels = setPixelColor(this.config.leds, color);
+
+    const args = {
+      pixelCount: this.config.leds,
+      type: 'solid',
+      color1: color
+    };
+
+    const pixels = setPixelColor(...args);
 
     safeRender(pixels);
   };
@@ -21,13 +28,21 @@ export class SolidCustom {
 export class SolidRandom {
   constructor(config) {
     this.config = config;
+    this._red = randomNumber(255);
+    this._green = randomNumber(255);
+    this._blue = randomNumber(255);
   };
 
   run() {
-    const red = randomNumber(255), green = randomNumber(255), blue = randomNumber(255);
-    const color = (red << 16) | (green << 8) | blue;
+    const color = (this._red << 16) | (this._green << 8) | this._blue;
 
-    const pixels = setPixelColor(this.config.leds, color);
+    const args = {
+      pixelCount: this.config.leds,
+      type: 'solid',
+      color1: color
+    };
+
+    const pixels = setPixelColor(...args);
     safeRender(pixels);
   };
 };

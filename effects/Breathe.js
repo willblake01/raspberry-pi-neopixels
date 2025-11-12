@@ -38,7 +38,13 @@ export class BreatheCustom {
     const red = this.red, green = this.green, blue = this.blueValue;
     const color = (red << 16) | (green << 8) | blue;
 
-    const pixels = setPixelColor(this.config.leds, color);
+    const args = {
+      pixelCount: this.config.leds,
+      type: 'breathe',
+      color1: color
+    };
+
+    const pixels = setPixelColor(...args);
     
     safeRender(pixels);
     setNextState();

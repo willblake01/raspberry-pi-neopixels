@@ -22,7 +22,15 @@ export class WalkPixelOnCustom {
       };
 
       const color = (this.red << 16) | (this.green << 8) | this.blue;
-      const pixels = setPixelColor(this.config.leds, color, this._offset);
+
+      const args = {
+        pixelCount: this.config.leds,
+        type: 'walk pixel',
+        color1: color,
+        offset: this._offset
+      };
+
+      const pixels = setPixelColor(...args);
 
       safeRender(pixels);
       setNextState();
@@ -64,7 +72,15 @@ export class WalkPixelOnRandomStatic {
     };
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
-    const pixels = setPixelColor(this.config.leds, color, this._offset);
+
+    const args = {
+      pixelCount: this.config.leds,
+      type: 'walk pixel',
+      color1: color,
+      offset: this._offset
+    };
+
+    const pixels = setPixelColor(...args);
 
     safeRender(pixels);
     setNextState();
@@ -111,7 +127,14 @@ export class WalkPixelOnRandomChangePixel {
     };
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
-    const pixels = setPixelColor(this.config.leds, color, this._offset);
+
+    const args = {
+      pixelCount: this.config.leds,
+      type: 'walk pixel',
+      color1: color
+    };
+
+    const pixels = setPixelColor(...args);
 
     safeRender(pixels);
     setNextState();
@@ -160,7 +183,14 @@ export class WalkPixelOnRandomChangeLoop {
     };
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
-    const pixels = setPixelColor(this.config.leds, color, this._offset);
+
+    const args = {
+      pixelCount: this.config.leds,
+      type: 'walk pixel',
+      color1: color
+    };
+
+    const pixels = setPixelColor(...args);
 
     safeRender(pixels);
     setNextState();
