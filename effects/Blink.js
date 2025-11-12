@@ -46,7 +46,7 @@ export class BlinkCustomColor {
   };
 };
 
-export class BlinkRandomColorChange {
+export class BlinkRandomColorStatic {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -64,7 +64,7 @@ export class BlinkRandomColorChange {
     const setNextState = () => {
       this._on = !this._on;
     };
-    
+
     const red = this._on ? this._red : 0, green = this._on ? this._green : 0, blue = this._on ? this._blue : 0;
 
     const color = (red << 16) | (green << 8) | blue;
@@ -90,7 +90,7 @@ export class BlinkRandomColorChange {
   };
 };
 
-export class BlinkRandomColorStatic {
+export class BlinkRandomColorChange {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -108,7 +108,7 @@ export class BlinkRandomColorStatic {
     const setNextState = () => {
       this._on = !this._on;
     };
-
+    
     const red = this._on ? this._red : 0, green = this._on ? this._green : 0, blue = this._on ? this._blue : 0;
 
     const color = (red << 16) | (green << 8) | blue;

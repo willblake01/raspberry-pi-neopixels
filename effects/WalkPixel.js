@@ -60,8 +60,12 @@ export class WalkPixelOnRandomColorPixel {
     if (this._stopped) return;
 
     const setNextState = () => {
-        this._offset = (this._offset + 1) % this.config.leds;
-      };
+      this._offset = (this._offset + 1) % this.config.leds;
+
+      this._red = randomNumber(255);
+      this._green = randomNumber(255);
+      this._blue = randomNumber(255);
+    };
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
     const pixels = setPixelColor(this.config.leds, color, this._offset);
@@ -102,13 +106,13 @@ export class WalkPixelOnRandomColorLoop {
     if (this._stopped) return;
 
     const setNextState = () => {
-        this._offset = (this._offset + 1) % this.config.leds;
-      };
+      this._offset = (this._offset + 1) % this.config.leds;
 
-    if (this._offset === 0) {
-      this._red = randomNumber(255);
-      this._green = randomNumber(255);
-      this._blue = randomNumber(255);
+      if (this._offset === 0) {
+        this._red = randomNumber(255);
+        this._green = randomNumber(255);
+        this._blue = randomNumber(255);
+      };
     };
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
@@ -150,8 +154,8 @@ export class WalkPixelOffCustomColor {
     if (this._stopped) return;
 
     const setNextState = () => {
-        this._offset = (this._offset + 1) % this.config.leds;
-      };
+      this._offset = (this._offset + 1) % this.config.leds;
+    };
 
     const pixels = new Uint32Array(this.config.leds);
 
@@ -201,8 +205,12 @@ export class WalkPixelOffRandomColorPixel {
     if (this._stopped) return;
   
     const setNextState = () => {
-        this._offset = (this._offset + 1) % this.config.leds;
-      };
+      this._offset = (this._offset + 1) % this.config.leds;
+
+      this._red = randomNumber(255);
+      this._green = randomNumber(255);
+      this._blue = randomNumber(255);
+    };
 
     const pixels = new Uint32Array(this.config.leds);
 
@@ -240,9 +248,9 @@ export class WalkPixelOffRandomColorLoop {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
-    this._red = 0;
-    this._green = 0;
-    this._blue = 0;
+    this._red = randomNumber(255);
+    this._green = randomNumber(255);
+    this._blue = randomNumber(255);
     this._offset = 0;
     this._intervalID = null;
     this._stopped = false;
@@ -252,16 +260,16 @@ export class WalkPixelOffRandomColorLoop {
     if (this._stopped) return;
 
     const setNextState = () => {
-        this._offset = (this._offset + 1) % this.config.leds;
+      this._offset = (this._offset + 1) % this.config.leds;
+
+      if (this._offset === 0) {
+        this._red = randomNumber(255);
+        this._green = randomNumber(255);
+        this._blue = randomNumber(255);
       };
+    };
 
     const pixels = new Uint32Array(this.config.leds);
-
-    if (this._offset === 0) {
-      this._red = randomNumber(255);
-      this._green = randomNumber(255);
-      this._blue = randomNumber(255);
-    };
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
 
