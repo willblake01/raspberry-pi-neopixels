@@ -121,6 +121,13 @@ export class BlinkRandomChange {
 
     const setNextState = () => {
       this._on = !this._on;
+
+      if (this._on) {
+        // Change color every cycle
+        this._red = randomNumber(255);
+        this._green = randomNumber(255)
+        this._blue = randomNumber(255);
+      };
     };
     
     const red = this._on ? this._red : 0, green = this._on ? this._green : 0, blue = this._on ? this._blue : 0;
