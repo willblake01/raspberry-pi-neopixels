@@ -7,16 +7,18 @@ export class Change {
     this.config = config;
     this.interval = interval;
     this._intervalID = null;
+    this.red = randomNumber(255);
+    this.green = randomNumber(255);
+    this.blue = randomNumber(255);
     this._stopped = false;
   };
 
   loop() {
     if (this._stopped) return;
 
-    const red = randomNumber(255), green = randomNumber(255), blue = randomNumber(255);
     const color = (red << 16) | (green << 8) | blue;
-
     const pixels = setPixelColor(this.config.leds, color);
+    
     safeRender(pixels);
   };
 

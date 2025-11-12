@@ -12,8 +12,8 @@ export class SolidCustomColor {
 
   run() {
     const color = (this.red << 16) | (this.green << 8) | this.blue;
-    
     const pixels = setPixelColor(this.config.leds, color);
+
     safeRender(pixels);
   };
 };

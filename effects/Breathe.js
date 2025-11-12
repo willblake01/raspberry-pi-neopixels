@@ -9,7 +9,7 @@ export class BreatheCustomColor {
     this.red = red;
     this.green = green;
     this.blueValue = blueValue;
-    this.isIncreasingBrightness = true;
+    this._isIncreasingBrightness = true;
     this._intervalID = null;
     this._stopped = false;
   };
@@ -23,14 +23,14 @@ export class BreatheCustomColor {
       };
 
       if (this.brightness === 0 || this.config.brightness === this.config.brightness) {
-        this.isIncreasingBrightness = !this.isIncreasingBrightness;
+        this._isIncreasingBrightness = !this._isIncreasingBrightness;
       };
 
-      if (this.isIncreasingBrightness) {
+      if (this._isIncreasingBrightness) {
         this.brightness++;
       }
       
-      if (!this.isIncreasingBrightness) {
+      if (!this._isIncreasingBrightness) {
         this.brightness--;
       };
     };
@@ -39,6 +39,7 @@ export class BreatheCustomColor {
     const color = (red << 16) | (green << 8) | blue;
 
     const pixels = setPixelColor(this.config.leds, color);
+    
     safeRender(pixels);
     setNextState();
   };

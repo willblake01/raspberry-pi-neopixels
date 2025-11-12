@@ -16,10 +16,13 @@ export class CreepCustomColor {
   loop() {
     if (this._stopped) return;
 
+    const setNextState = () => {
+      this.offset = (this.offset + 1) % this.config.leds;
+    };
+
     const pixels = new Uint32Array(this.config.leds);
 
-    const red = this.red, green = this.green, blue = this.blueValue;
-    const color = (red << 16) | (green << 8) | blue;
+    const color = (this.red << 16) | (this.green << 8) | this.blue;
 
     for (let i = 0; i < this.offset; i++) {
       pixels[i] = color;
@@ -29,9 +32,8 @@ export class CreepCustomColor {
       pixels[this.offset] = color;
     };
 
-    this.offset = (this.offset + 1) % this.config.leds;
-
     safeRender(pixels);
+    setNextState();
   };
 
   run() {
@@ -62,6 +64,10 @@ export class CreepRandomColorChangePixel {
   loop() {
     if (this._stopped) return;
 
+    const setNextState = () => {
+      this.offset = (this.offset + 1) % this.config.leds;
+    };
+
     const pixels = new Uint32Array(this.config.leds);
 
     const red = randomNumber(255), green = randomNumber(255), blue = randomNumber(255);
@@ -73,9 +79,8 @@ export class CreepRandomColorChangePixel {
 
     pixels[this.offset] = color;
 
-    this.offset = (this.offset + 1) % this.config.leds;
-
     safeRender(pixels);
+    setNextState();
   };
 
   run() {
@@ -109,6 +114,10 @@ export class CreepRandomColorChangeLoop {
   loop() {
     if (this._stopped) return;
 
+    const setNextState = () => {
+      this.offset = (this.offset + 1) % this.config.leds;
+    };
+
     const pixels = new Uint32Array(this.config.leds);
 
     const red = this.red, green = this.green, blue = this.blue;
@@ -128,9 +137,8 @@ export class CreepRandomColorChangeLoop {
       pixels[this.offset] = color;
     };
 
-    this.offset = (this.offset + 1) % this.config.leds;
-
     safeRender(pixels);
+    setNextState();
   };
 
   run() {
@@ -164,6 +172,10 @@ export class CreepRandomColorStatic {
   loop() {
     if (this._stopped) return;
 
+    const setNextState = () => {
+      this.offset = (this.offset + 1) % this.config.leds;
+    };
+
     const pixels = new Uint32Array(this.config.leds);
 
     const red = this.red, green = this.green, blue = this.blue;
@@ -173,9 +185,8 @@ export class CreepRandomColorStatic {
       pixels[i] = color;
     };
 
-    this.offset = (this.offset + 1) % this.config.leds;
-
     safeRender(pixels);
+    setNextState();
   };
 
   run() {
