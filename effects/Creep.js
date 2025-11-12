@@ -169,7 +169,7 @@ export class CreepRandomChangeLoop {
     };
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
-    const pixels = setPixelColor(this.config, color, this._offset);
+    const pixels = setPixelColor(this.config.leds, color, this._offset);
 
     safeRender(pixels);
     setNextState();
