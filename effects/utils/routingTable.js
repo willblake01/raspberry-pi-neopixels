@@ -82,7 +82,7 @@ export const RULES = [
   {
     name: 'walkPixel-on-random-static',
     when: o => o.isWalkPixel && o.pixelOn && o.isRandomColorMode && o.isStaticRandomColorMode,
-    make: (cfg, o) = new WalkPixelOnRandomStatic(cfg, o.interval),
+    make: (cfg, o) => new WalkPixelOnRandomStatic(cfg, o.interval),
   },
   {
     name: 'walkPixel-on-random-change-everyPixel',
