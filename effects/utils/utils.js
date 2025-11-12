@@ -3,7 +3,7 @@ export const setPixelColor = (pixelCount, color1, offset, color2) => {
 
     if (offset !== undefined) {
       if (color2 === undefined) {
-        pixels[this.offset] = color1;
+        pixels[offset] = color1;
         return;
       };
 
