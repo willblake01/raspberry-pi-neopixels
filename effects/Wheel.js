@@ -20,6 +20,18 @@ export class Wheel {
   loop() {
     if (this._stopped) return;
 
+    const setNextState = () => {
+      this._offset = (this._offset + 1) % this.config.leds;
+
+      if (this._offset === this.config.leds - 1) {
+        color2 = color1;
+
+        this._red1 = randomNumber(255);
+        this._green1 = randomNumber(255);
+        this._blue1 = randomNumber(255);
+      };
+    };
+
     let color1 = (this._red1 << 16) | (this._green1 << 8) | this._blue1;
     let color2 = (this._red2 << 16) | (this._green2 << 8) | this._blue2;
 
@@ -32,17 +44,9 @@ export class Wheel {
     };
 
     const pixels = setPixelColor({...args});
+
     safeRender(pixels);
-
-    if (this._offset === this.config.leds - 1) {
-      color2 = color1;
-
-      this._red1 = randomNumber(255);
-      this._green1 = randomNumber(255);
-      this._blue1 = randomNumber(255);
-    };
-
-    this._offset = (this._offset + 1) % this.config.leds;
+    setNextState();
   };
 
   run() {
