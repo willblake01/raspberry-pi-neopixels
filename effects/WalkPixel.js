@@ -58,9 +58,10 @@ export class WalkPixelOnRandomColorPixel {
 
     const color = (this.red << 16) | (this.green << 8) | this.blue;
     const pixels = setPixelColor(this.config.leds, color, this.offset);
-    safeRender(pixels);
 
     this.offset = (this.offset + 1) % this.config.leds;
+
+    safeRender(pixels);
   };
 
   run() {
@@ -102,9 +103,10 @@ export class WalkPixelOnRandomColorLoop {
 
     const color = (this.red << 16) | (this.green << 8) | this.blue;
     const pixels = setPixelColor(this.config.leds, color, this.offset);
-    safeRender(pixels);
 
     this.offset = (this.offset + 1) % this.config.leds;
+
+    safeRender(pixels);
   };
 
   run() {
@@ -150,9 +152,9 @@ export class WalkPixelOffCustomColor {
       };
     };
 
-    safeRender(pixels);
-
     this.offset = (this.offset + 1) % this.config.leds;
+
+    safeRender(pixels);
   };
 
   run() {
@@ -199,9 +201,9 @@ export class WalkPixelOffRandomColorPixel {
       };
     };
 
-    safeRender(pixels);
-
     this.offset = (this.offset + 1) % this.config.leds;
+
+    safeRender(pixels);
   };
 
   run() {
@@ -253,9 +255,9 @@ export class WalkPixelOffRandomColorLoop {
       };
     };
 
-    safeRender(pixels);
-    
     this.offset = (this.offset + 1) % this.config.leds;
+
+    safeRender(pixels);
   };
 
   run() {
