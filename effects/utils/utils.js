@@ -1,4 +1,4 @@
-export const setPixelColor = (pixelCount, type, color1, offset, color2) => {
+export const setPixelColor = ({ pixelCount, type, color1, offset, color2 }) => {
   const pixels = new Uint32Array(pixelCount);
 
   const setStrand = type === 'solid' || 'change' || 'blink' || 'breathe';
