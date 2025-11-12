@@ -43,7 +43,7 @@ const eqEffect = e => v => v.effect === e;
 const needsInterval = v => EFFECT_NEEDS_INTERVAL.has(v.effect);
 const allowsCustom = v => EFFECT_ALLOWS_CUSTOM.has(v.effect);
 const allowsRandom = v => EFFECT_ALLOWS_RANDOM.has(v.effect);
-const allowsRandomChangeInterval = v => EFFECT_ALLOWS_RANDOM_CHANGE_INTERVAL.has(v.effect);
+const allowsRandomcolorChangeInterval = v => EFFECT_ALLOWS_RANDOM_CHANGE_INTERVAL.has(v.effect);
 
 const show = (type, pred) => (_prev, values) => (pred(values) ? type : null);
 const and = (...fns) => v => fns.every(f => f(v));
@@ -105,10 +105,10 @@ export const questions = [
   ], and(isOn, v => v.colorMode === 'random' && v.effect !== EFFECTS.SOLID && v.effect !== EFFECTS.CHANGE)),
 
   // Random 'change' interval (every pixel vs end of loop)
-  qSelect('colorChangeInterval', 'Set color change interval', [
+  qSelect('colorcolorChangeInterval', 'Set color change interval', [
     { title: 'After every pixel', value: 'everyPixel' },
     { title: 'At end of loop', value: 'everyLoop' }
-  ], and(isOn, v => v.colorMode === 'random' && v.randomColorMode === 'change' && v.effect !== EFFECTS.BLINK && allowsRandomChangeInterval(v))),
+  ], and(isOn, v => v.colorMode === 'random' && v.randomColorMode === 'change' && v.effect !== EFFECTS.BLINK && allowsRandomcolorChangeInterval(v))),
 
   // Custom RGB (only when custom is allowed)
   qNumber('red', 'Enter a red value (0-255)', { min: 0, max: 255, initial: 0, when: and(isOn, v => v.colorMode === 'custom' && allowsCustom(v)) }),

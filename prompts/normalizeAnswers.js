@@ -1,5 +1,5 @@
 export const normalizeAnswers = (res) => {
-  const {blue, brightness, colorMode, colorChangeInterval, command, effect, green, interval, leds, pixelState, randomColorMode, red} = res;
+  const {blue, brightness, colorMode, colorcolorChangeInterval, command, effect, green, interval, leds, pixelState, randomColorMode, red} = res;
 
   return {
     leds,
@@ -12,7 +12,7 @@ export const normalizeAnswers = (res) => {
     effect,
     colorMode,
     randomColorMode,
-    colorChangeInterval,
+    colorcolorChangeInterval,
     pixelState,
     isOn: command === 1,
     isOff: command === 0,
@@ -27,8 +27,8 @@ export const normalizeAnswers = (res) => {
     isRandomColorMode: colorMode === 'random',
     isStaticRandomColorMode: randomColorMode === 'static',
     isChangeRandomColorMode: randomColorMode === 'change',
-    everyPixelColorChangeInterval: colorChangeInterval === 'everyPixel',
-    everyLoopColorChangeInterval: colorChangeInterval === 'everyLoop',
+    everyPixelColorcolorChangeInterval: colorcolorChangeInterval === 'everyPixel',
+    everyLoopColorcolorChangeInterval: colorcolorChangeInterval === 'everyLoop',
     pixelOn: pixelState === 1,
     pixelOff: pixelState === 0 
   };

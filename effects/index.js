@@ -1,8 +1,8 @@
-export { BlinkCustomColor, BlinkRandomColorChange, BlinkRandomColorStatic } from './Blink.js';
-export { BreatheCustomColor } from './Breathe.js'
+export { BlinkCustom, BlinkRandomChange, BlinkRandomStatic } from './Blink.js';
+export { BreatheCustom } from './Breathe.js'
 export { Change } from './Change.js';
-export { CreepCustomColor, CreepRandomColorChangePixel, CreepRandomColorChangeLoop, CreepRandomColorStatic } from './Creep.js';
-export { SolidCustomColor, SolidRandomColor } from './Solid.js';
-export { WalkPixelOffCustomColor, WalkPixelOffRandomColorPixel, WalkPixelOffRandomColorLoop, WalkPixelOnCustomColor, WalkPixelOnRandomColorPixel, WalkPixelOnRandomColorLoop } from './WalkPixel.js';
+export { CreepCustom, CreepRandomChangePixel, CreepRandomChangeLoop, CreepRandomStatic } from './Creep.js';
+export { SolidCustom, SolidRandom } from './Solid.js';
+export { WalkPixelOffCustomStatic, WalkPixelOffRandomChangePixel, WalkPixelOffRandomChangeLoop, WalkPixelOnCustom, WalkPixelOnRandomChangePixel, WalkPixelOnRandomChangeLoop, WalkPixelOnRandomStatic } from './WalkPixel.js';
 export { Wheel } from './Wheel.js';
 export { TurnOff } from './TurnOff.js';

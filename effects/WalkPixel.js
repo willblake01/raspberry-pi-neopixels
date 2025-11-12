@@ -2,7 +2,7 @@ import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
 import { setPixelColor } from './utils/index.js';
 
-export class WalkPixelOnCustomColor {
+export class WalkPixelOnCustomStatic {
     constructor(config, interval, red, green, blueValue) {
       this.config = config;
       this.interval = interval;
@@ -44,7 +44,49 @@ export class WalkPixelOnCustomColor {
     };
   };
 
-export class WalkPixelOnRandomColorPixel {
+export class WalkPixelOnRandomStatic {
+  constructor(config, interval) {
+    this.config = config;
+    this.interval = interval;
+    this._red = randomNumber(255);
+    this._green = randomNumber(255);
+    this._blue = randomNumber(255);
+    this._offset = 0;
+    this._intervalID = null;
+    this._stopped = false;
+  };
+
+  loop() {
+    if (this._stopped) return;
+
+    const setNextState = () => {
+      this._offset = (this._offset + 1) % this.config.leds;
+    };
+
+    const color = (this._red << 16) | (this._green << 8) | this._blue;
+    const pixels = setPixelColor(this.config.leds, color, this._offset);
+
+    safeRender(pixels);
+    setNextState();
+  };
+
+  run() {
+    if (this._intervalID || this._stopped) return;
+    this.loop();
+    this._intervalID = setInterval(() => this.loop(), this.interval);
+  };
+
+  stop() {
+    if (this._stopped) return;
+    this._stopped = true;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
+  };
+};
+
+export class WalkPixelOnRandomChangePixel {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -62,6 +104,7 @@ export class WalkPixelOnRandomColorPixel {
     const setNextState = () => {
       this._offset = (this._offset + 1) % this.config.leds;
 
+      // Change color every pixel
       this._red = randomNumber(255);
       this._green = randomNumber(255);
       this._blue = randomNumber(255);
@@ -90,7 +133,7 @@ export class WalkPixelOnRandomColorPixel {
   };
 };
 
-export class WalkPixelOnRandomColorLoop {
+export class WalkPixelOnRandomChangeLoop {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -108,6 +151,7 @@ export class WalkPixelOnRandomColorLoop {
     const setNextState = () => {
       this._offset = (this._offset + 1) % this.config.leds;
 
+      // Change color every loop
       if (this._offset === 0) {
         this._red = randomNumber(255);
         this._green = randomNumber(255);
@@ -138,7 +182,7 @@ export class WalkPixelOnRandomColorLoop {
   };
 };
 
-export class WalkPixelOffCustomColor {
+export class WalkPixelOffCustomStatic {
   constructor(config, interval, red, green, blueValue) {
     this.config = config;
     this.interval = interval;
@@ -189,7 +233,7 @@ export class WalkPixelOffCustomColor {
   };
 };
 
-export class WalkPixelOffRandomColorPixel {
+export class WalkPixelOffRandomChangePixel {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -244,7 +288,7 @@ export class WalkPixelOffRandomColorPixel {
   };
 };
 
-export class WalkPixelOffRandomColorLoop {
+export class WalkPixelOffRandomChangeLoop {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
