@@ -18,7 +18,7 @@ export class BlinkCustomColor {
     if (this._stopped) return;
 
     const setNextState = () => {
-      this.on = !this.on;
+      this._on = !this._on;
     };
 
     const red = this._on ? this.red : 0, green = this._on ? this.green : 0, blue = this._on ? this.blueValue : 0;
@@ -62,7 +62,7 @@ export class BlinkRandomColorChange {
     if (this._stopped) return;
 
     const setNextState = () => {
-      this.on = !this.on;
+      this._on = !this._on;
     };
     
     const red = this._on ? this._red : 0, green = this._on ? this._green : 0, blue = this._on ? this._blue : 0;
@@ -106,7 +106,7 @@ export class BlinkRandomColorStatic {
     if (this._stopped) return;
 
     const setNextState = () => {
-      this.on = !this.on;
+      this._on = !this._on;
     };
 
     const red = this._on ? this._red : 0, green = this._on ? this._green : 0, blue = this._on ? this._blue : 0;
