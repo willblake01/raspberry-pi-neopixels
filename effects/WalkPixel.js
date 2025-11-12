@@ -2,7 +2,7 @@ import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
 import { setPixelColor } from './utils/index.js';
 
-export class WalkPixelOnCustomStatic {
+export class WalkPixelOnCustom {
     constructor(config, interval, red, green, blueValue) {
       this.config = config;
       this.interval = interval;

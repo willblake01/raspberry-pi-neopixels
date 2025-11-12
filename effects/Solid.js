@@ -2,7 +2,7 @@ import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
 import { setPixelColor } from './utils/index.js';
 
-export class SolidCustomColor {
+export class SolidCustom {
   constructor(config, red, green, blue) {
     this.config = config;
     this.red = red;
@@ -18,7 +18,7 @@ export class SolidCustomColor {
   };
 };
 
-export class SolidRandomColor {
+export class SolidRandom {
   constructor(config) {
     this.config = config;
   };

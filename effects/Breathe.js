@@ -1,7 +1,7 @@
 import { safeRender } from '../ledRuntime.js';
 import { setPixelColor } from './utils/index.js';
 
-export class BreatheCustomColor {
+export class BreatheCustom {
   constructor(config, interval, red, green, blueValue) {
     this.config = config;
     this.brightness = 0;

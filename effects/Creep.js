@@ -1,7 +1,7 @@
 import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
 
-export class CreepCustomColor {
+export class CreepCustom {
   constructor(config, interval, red, green, blueValue) {
     this.config = config;
     this.interval = interval;
@@ -52,7 +52,7 @@ export class CreepCustomColor {
   };
 };
 
-export class CreepRandomColorChangePixel {
+export class CreepRandomChangePixel {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -101,7 +101,7 @@ export class CreepRandomColorChangePixel {
   };
 };
 
-export class CreepRandomColorChangeLoop {
+export class CreepRandomChangeLoop {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -158,7 +158,7 @@ export class CreepRandomColorChangeLoop {
   };
 };
 
-export class CreepRandomColorStatic {
+export class CreepRandomStatic {
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
