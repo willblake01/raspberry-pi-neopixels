@@ -4,7 +4,7 @@ import { setPixelColor } from './utils/index.js';
 export class BreatheCustom {
   /**
    * @param {object} config { leds, ... }
-   * @param {number} periodMs full in+out cycle duration (e.g., 2000)
+   * @param {number} interval full in+out cycle duration (e.g., 2000)
    * @param {number} red 0..255
    * @param {number} green 0..255
    * @param {number} blue 0..255
@@ -58,7 +58,7 @@ export class BreatheCustom {
   run() {
     if (this._intervalID || this._stopped) return;
 
-    const frameMs = Math.max(5, Math.round(1000 / fps));
+    const frameMs = Math.max(5, Math.round(1000 / this.fps));
 
     this.loop();
     this._intervalID = setInterval(() => this.loop(), frameMs);
