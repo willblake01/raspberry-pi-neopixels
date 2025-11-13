@@ -230,10 +230,6 @@ export class WalkPixelOffCustomStatic {
 
     const setNextState = () => {
       this._offset = (this._offset + 1) % this.config.leds;
-
-      if (this._offset === this.config.leds - 1) {
-        this._offset = 0;
-      };
     };
 
     const pixels = new Uint32Array(this.config.leds);
@@ -341,8 +337,7 @@ export class WalkPixelOffRandomChangeLoop {
 
     // Update offset and change color every loop
     const setNextState = () => {
-      if (this._offset === this.config.leds - 1) {
-
+      if (this._offset === 0) {
         this._red = randomNumber(255);
         this._green = randomNumber(255);
         this._blue = randomNumber(255);
