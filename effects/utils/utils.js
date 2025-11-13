@@ -18,7 +18,7 @@ export const setPixelColor = ({ pixelCount, effect, color1, offset, color2 }) =>
       break;
     case EFFECTS.WHEEL:
 
-      // Set pixels up to and including offset to color1 and offset to pixelCount to color2
+      // Set pixels up to and including offset to color1 and rest of strand to color2
       for (let i = 0; i <= offset; i++) {
         pixels[i] = color1;
       };

@@ -18,24 +18,25 @@ export class BreatheCustom {
     if (this._stopped) return;
 
     const setNextState = () => {
-      if (this.brightness === 0) {
-        this.brightness = this.config.brightness;
-      };
 
-      if (this.brightness === 0 || this.config.brightness === this.config.brightness) {
-        this._isIncreasingBrightness = !this._isIncreasingBrightness;
-      };
+    };
 
-      if (this._isIncreasingBrightness) {
-        this.brightness++;
-      }
-      
-      if (!this._isIncreasingBrightness) {
-        this.brightness--;
+    const makeScalar = () => {
+      const t0 = Date.now();
+
+      return () => {
+        const t = (Date.now() - t0) / this.interval;
+        const phase = t - Math.floow(t);
+        const eased = (1 - Math.cost(2 * Math.PI * phase)) / 2;
+        const perceptual = Math.pow(eased, gama);
+
+        return floor + (1 - floor) * perceptual;
       };
     };
 
-    const red = this.red, green = this.green, blue = this.blueValue;
+    const scale = makeScalar(this.interval);
+
+    const red = (this.red * scale()) & 0xFF, green = (this.green * scale()) & 0xFF, blue = (this.blueValue * scale()) & 0xFF;
     const color = (red << 16) | (green << 8) | blue;
 
     const args = {
@@ -52,8 +53,12 @@ export class BreatheCustom {
 
   run() {
     if (this._intervalID || this._stopped) return;
+    
+    const fps = 60;
+    const frameMs = Math.max(5, Math.round(1000 / fps));
+
     this.loop();
-    this._intervalID = setInterval(() => this.loop(), this.interval);
+    this._intervalID = setInterval(() => this.loop(), frameMs);
   };
 
   stop() {
