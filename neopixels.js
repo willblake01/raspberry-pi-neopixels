@@ -13,7 +13,7 @@ const selectEffect = (config, opts) => {
   return rule ? rule.make(config, opts) : new TurnOff(config);
 };
 
-const main = async () => {
+const neopixels = async () => {
   const response = await prompts(promptsConfig);
   const options = normalizeAnswers(response);
 
@@ -50,7 +50,7 @@ const main = async () => {
   await manager.start(effect);
 };
 
-main().catch(err => {
+neopixels().catch(err => {
   console.error('[fatal]', err);
   process.exitCode = 1;
 });
