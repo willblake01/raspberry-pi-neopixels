@@ -1,4 +1,4 @@
-import { EFFECTS } from '.../constants/index.js'
+import { EFFECTS } from '../../constants/index.js'
 
 export const setPixelColor = ({ pixelCount, effect, color1, offset, color2 }) => {
   const pixels = new Uint32Array(pixelCount);
