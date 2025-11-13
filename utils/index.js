@@ -1,2 +1,1 @@
-export { randomNumber } from './math.js';
-export { once } from './utils.js';
+export { and, once, randomNumber, show } from './utils.js';

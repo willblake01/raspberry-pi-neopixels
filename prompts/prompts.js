@@ -1,4 +1,5 @@
 import { EFFECTS } from "../constants/index.js";
+import { and, integerBetween, show } from '../utils/index.js';
 
 const EFFECT_CHOICES = [
   { title: 'Solid', value: EFFECTS.SOLID },
@@ -37,10 +38,6 @@ const allowsCustom = v => EFFECT_ALLOWS_CUSTOM.has(v.effect);
 const allowsRandom = v => EFFECT_ALLOWS_RANDOM.has(v.effect);
 const allowsRandomcolorChangeInterval = v => EFFECT_ALLOWS_RANDOM_CHANGE_INTERVAL.has(v.effect);
 
-const show = (type, pred) => (_prev, values) => (pred(values) ? type : null);
-const and = (...fns) => v => fns.every(f => f(v));
-const integerBetween = (min, max) => x => (Number.isInteger(x) && x >= min && x <= max) || `Enter an integer ${min}-${max}`;
-
 // --- Small factories ---
 const promptSelect = (name, message, choices, when) => ({ type: show('select', when ?? (() => true)), name, message, choices });
 
@@ -54,6 +51,7 @@ const promptNumber = (name, message, { min, max, initial, when }) => ({
 
 // --- final prompts ---
 export const promptsConfig = [
+
   // Command
   promptSelect('command', 'Enter command', [
     { title: 'On', value: 1 },
@@ -102,7 +100,7 @@ export const promptsConfig = [
     { title: 'At end of loop', value: 'everyLoop' }
   ], and(isOn, v => v.colorMode === 'random' && v.randomColorMode === 'change' && v.effect !== EFFECTS.BLINK && allowsRandomcolorChangeInterval(v))),
 
-  // Custom RGB (only when custom is allowed)
+  // Custom RGB (only when custom color is allowed)
   promptNumber('red', 'Enter a red value (0-255)', { min: 0, max: 255, initial: 0, when: and(isOn, v => v.colorMode === 'custom' && allowsCustom(v)) }),
   promptNumber('green', 'Enter a green value (0-255)', { min: 0, max: 255, initial: 0, when: and(isOn, v => v.colorMode === 'custom' && allowsCustom(v)) }),
   promptNumber('blue', 'Enter a blue value (0-255)', { min: 0, max: 255, initial: 0, when: and(isOn, v => v.colorMode === 'custom' && allowsCustom(v)) })
