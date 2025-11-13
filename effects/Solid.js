@@ -3,6 +3,13 @@ import { randomNumber } from '../utils/index.js';
 import { setPixelColor } from './utils/index.js';
 
 export class SolidCustom {
+  /**
+   * @param {object} config { leds, ... }
+   * @param {number} red 0..255
+   * @param {number} green 0..255
+   * @param {number} blue 0..255
+   */
+
   constructor(config, red, green, blue) {
     this.config = config;
     this.red = red;

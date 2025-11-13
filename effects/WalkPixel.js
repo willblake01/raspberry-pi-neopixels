@@ -3,6 +3,14 @@ import { randomNumber } from '../utils/index.js';
 import { setPixelColor } from './utils/index.js';
 
 export class WalkPixelOnCustom {
+  /**
+   * @param {object} config { leds, ... }
+   * @param {number} interval full in+out cycle duration (e.g., 2000)
+   * @param {number} red 0..255
+   * @param {number} green 0..255
+   * @param {number} blue 0..255
+   */
+
     constructor(config, interval, red, green, blueValue) {
       this.config = config;
       this.interval = interval;
@@ -53,6 +61,11 @@ export class WalkPixelOnCustom {
   };
 
 export class WalkPixelOnRandomStatic {
+  /**
+   * @param {object} config { leds, ... }
+   * @param {number} interval full in+out cycle duration (e.g., 2000)
+   */
+
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -103,6 +116,11 @@ export class WalkPixelOnRandomStatic {
 };
 
 export class WalkPixelOnRandomChangePixel {
+  /**
+   * @param {object} config { leds, ... }
+   * @param {number} interval full in+out cycle duration (e.g., 2000)
+   */
+
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -157,6 +175,11 @@ export class WalkPixelOnRandomChangePixel {
 };
 
 export class WalkPixelOnRandomChangeLoop {
+  /**
+   * @param {object} config { leds, ... }
+   * @param {number} interval full in+out cycle duration (e.g., 2000)
+   */
+
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -214,6 +237,14 @@ export class WalkPixelOnRandomChangeLoop {
 };
 
 export class WalkPixelOffCustomStatic {
+  /**
+   * @param {object} config { leds, ... }
+   * @param {number} interval full in+out cycle duration (e.g., 2000)
+   * @param {number} red 0..255
+   * @param {number} green 0..255
+   * @param {number} blue 0..255
+   */
+
   constructor(config, interval, red, green, blueValue) {
     this.config = config;
     this.interval = interval;
@@ -265,6 +296,11 @@ export class WalkPixelOffCustomStatic {
 };
 
 export class WalkPixelOffRandomChangePixel {
+  /**
+   * @param {object} config { leds, ... }
+   * @param {number} interval full in+out cycle duration (e.g., 2000)
+   */
+
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -321,6 +357,11 @@ export class WalkPixelOffRandomChangePixel {
 };
 
 export class WalkPixelOffRandomChangeLoop {
+  /**
+   * @param {object} config { leds, ... }
+   * @param {number} interval full in+out cycle duration (e.g., 2000)
+   */
+
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;

@@ -3,6 +3,14 @@ import { randomNumber } from '../utils/index.js';
 import { setPixelColor } from './utils/index.js';
 
 export class BlinkCustom {
+  /**
+   * @param {object} config { leds, ... }
+   * @param {number} interval full in+out cycle duration (e.g., 2000)
+   * @param {number} red 0..255
+   * @param {number} green 0..255
+   * @param {number} blue 0..255
+   */
+
   constructor(config, interval, red, green, blue) {
     this.config = config;
     this.interval = interval;
@@ -54,6 +62,11 @@ export class BlinkCustom {
 };
 
 export class BlinkRandomStatic {
+  /**
+   * @param {object} config { leds, ... }
+   * @param {number} interval full in+out cycle duration (e.g., 2000)
+   */
+
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -105,6 +118,11 @@ export class BlinkRandomStatic {
 };
 
 export class BlinkRandomChange {
+  /**
+   * @param {object} config { leds, ... }
+   * @param {number} interval full in+out cycle duration (e.g., 2000)
+   */
+
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;

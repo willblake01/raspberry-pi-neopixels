@@ -3,6 +3,15 @@ import { safeRender } from '../ledRuntime.js';
 import { setPixelColor } from './utils/index.js';
 
 export class CreepCustom {
+
+  /**
+   * @param {object} config { leds, ... }
+   * @param {number} interval full in+out cycle duration (e.g., 2000)
+   * @param {number} red 0..255
+   * @param {number} green 0..255
+   * @param {number} blue 0..255
+   */
+
   constructor(config, interval, red, green, blueValue) {
     this.config = config;
     this.interval = interval;
@@ -54,6 +63,11 @@ export class CreepCustom {
 };
 
 export class CreepRandomStatic {
+  /**
+   * @param {object} config { leds, ... }
+   * @param {number} interval full in+out cycle duration (e.g., 2000)
+   */
+
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -104,6 +118,11 @@ export class CreepRandomStatic {
 };
 
 export class CreepRandomChangePixel {
+  /**
+   * @param {object} config { leds, ... }
+   * @param {number} interval full in+out cycle duration (e.g., 2000)
+   */
+
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
@@ -159,6 +178,11 @@ export class CreepRandomChangePixel {
 };
 
 export class CreepRandomChangeLoop {
+  /**
+   * @param {object} config { leds, ... }
+   * @param {number} interval full in+out cycle duration (e.g., 2000)
+   */
+
   constructor(config, interval) {
     this.config = config;
     this.interval = interval;
