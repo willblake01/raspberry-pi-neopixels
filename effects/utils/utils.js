@@ -23,7 +23,7 @@ export const setPixelColor = ({ pixelCount, effect, color1, offset, color2 }) =>
         pixels[i] = color1;
       };
 
-      for (let i = offset; i < pixelCount; i++) {
+      for (let i = offset + 1; i < pixelCount; i++) {
         pixels[i] = color2;
       };
       break;
