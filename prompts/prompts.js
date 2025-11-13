@@ -1,5 +1,5 @@
 import { EFFECTS } from "../constants/index.js";
-import { and, integerBetween, show } from '../utils/index.js';
+import { and, integerBetween } from '../utils/index.js';
 
 const EFFECT_CHOICES = [
   { title: 'Solid', value: EFFECTS.SOLID },
@@ -31,12 +31,14 @@ const EFFECT_ALLOWS_RANDOM_CHANGE_INTERVAL = new Set([
 
 // --- Helpers ---
 const isOn = v => v.command === 1;
-const equalsEffect = e => v => v.effect === e;
+const effectEquals = e => v => v.effect === e;
 
 const needsInterval = v => EFFECT_NEEDS_INTERVAL.has(v.effect);
 const allowsCustom = v => EFFECT_ALLOWS_CUSTOM.has(v.effect);
 const allowsRandom = v => EFFECT_ALLOWS_RANDOM.has(v.effect);
 const allowsRandomcolorChangeInterval = v => EFFECT_ALLOWS_RANDOM_CHANGE_INTERVAL.has(v.effect);
+
+const show = (type, pred) => (_prev, values) => (pred(values) ? type : null);
 
 // --- Small factories ---
 const promptSelect = (name, message, choices, when) => ({ type: show('select', when ?? (() => true)), name, message, choices });
@@ -65,7 +67,7 @@ export const promptsConfig = [
   promptSelect('pixelState', 'Set pixel', [
     { title: 'On', value: 1 },
     { title: 'Off', value: 0 }
-  ], and(isOn, equalsEffect(EFFECTS.WALK_PIXEL))),
+  ], and(isOn, effectEquals(EFFECTS.WALK_PIXEL))),
 
   // Interval (for all effects except Solid)
   promptNumber('interval', 'Enter interval (milliseconds)', {

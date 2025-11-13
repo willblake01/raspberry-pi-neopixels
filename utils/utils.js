@@ -8,5 +8,3 @@ export const once = (fn) => {
 };
 
 export const randomNumber = (max) => Math.floor(Math.random() * (max + 1));
-
-export const show = (type, pred) => (_prev, values) => (pred(values) ? type : null);

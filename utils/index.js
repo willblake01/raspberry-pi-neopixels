@@ -1,1 +1,1 @@
-export { and, integerBetween, once, randomNumber, show } from './utils.js';
+export { and, integerBetween, once, randomNumber } from './utils.js';
