@@ -16,6 +16,12 @@ export class Change {
   loop() {
     if (this._stopped) return;
 
+    const setNextState = () => {
+      this._red = randomNumber(255);
+      this._green = randomNumber(255);
+      this._blue = randomNumber(255);
+    };
+
     const color = (this._red << 16) | (this._green << 8) | this._blue;
 
     const args = {
@@ -27,6 +33,7 @@ export class Change {
     const pixels = setPixelColor({...args});
     
     safeRender(pixels);
+    setNextState();
   };
 
   run() {
