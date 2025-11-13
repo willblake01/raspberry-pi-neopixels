@@ -39,7 +39,7 @@ const allowsRandomcolorChangeInterval = v => EFFECT_ALLOWS_RANDOM_CHANGE_INTERVA
 
 const show = (type, pred) => (_prev, values) => (pred(values) ? type : null);
 const and = (...fns) => v => fns.every(f => f(v));
-const intIn = (min, max) => x => (Number.isInteger(x) && x >= min && x <= max) || `Enter an integer ${min}-${max}`;
+const integerBetween = (min, max) => x => (Number.isInteger(x) && x >= min && x <= max) || `Enter an integer ${min}-${max}`;
 
 // --- Small factories ---
 const promptSelect = (name, message, choices, when) => ({ type: show('select', when ?? (() => true)), name, message, choices });
@@ -49,7 +49,7 @@ const promptNumber = (name, message, { min, max, initial, when }) => ({
   name,
   message,
   initial,
-  validate: intIn(min, max),
+  validate: integerBetween(min, max),
 });
 
 // --- final prompts ---
