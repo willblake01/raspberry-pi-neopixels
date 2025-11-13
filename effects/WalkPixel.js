@@ -25,7 +25,7 @@ export class WalkPixelOnCustom {
 
       const args = {
         pixelCount: this.config.leds,
-        type: 'walk pixel',
+        effect: 'walk pixel',
         color1: color,
         offset: this._offset
       };
@@ -75,7 +75,7 @@ export class WalkPixelOnRandomStatic {
 
     const args = {
       pixelCount: this.config.leds,
-      type: 'walk pixel',
+      effect: 'walk pixel',
       color1: color,
       offset: this._offset
     };
@@ -130,7 +130,7 @@ export class WalkPixelOnRandomChangePixel {
 
     const args = {
       pixelCount: this.config.leds,
-      type: 'walk pixel',
+      effect: 'walk pixel',
       color1: color
     };
 
@@ -174,7 +174,7 @@ export class WalkPixelOnRandomChangeLoop {
     const setNextState = () => {
       this._offset = (this._offset + 1) % this.config.leds;
 
-      // Change color every loop
+      // Reset offset and change color every loop
       if (this._offset === this.config.leds - 1) {
         this._offset = 0;
         this._red = randomNumber(255);
@@ -187,7 +187,7 @@ export class WalkPixelOnRandomChangeLoop {
 
     const args = {
       pixelCount: this.config.leds,
-      type: 'walk pixel',
+      effect: 'walk pixel',
       color1: color
     };
 
@@ -284,10 +284,6 @@ export class WalkPixelOffRandomChangePixel {
     if (this._stopped) return;
   
     const setNextState = () => {
-      if (this._offset === this.config.leds) {
-        this._offset = 0;
-      };
-
       this._offset = (this._offset + 1) % this.config.leds;
 
       // Change color every pixel
@@ -343,11 +339,10 @@ export class WalkPixelOffRandomChangeLoop {
   loop() {
     if (this._stopped) return;
 
+    // Update offset and change color every loop
     const setNextState = () => {
       if (this._offset === this.config.leds - 1) {
-        this._offset = 0;
 
-        // Change color every loop
         this._red = randomNumber(255);
         this._green = randomNumber(255);
         this._blue = randomNumber(255);

@@ -1,32 +1,38 @@
-export const setPixelColor = ({ pixelCount, type, color1, offset, color2 }) => {
+import { EFFECTS } from '.../constants/index.js'
+
+export const setPixelColor = ({ pixelCount, effect, color1, offset, color2 }) => {
   const pixels = new Uint32Array(pixelCount);
 
-  const setStrand = type === 'solid' || 'change' || 'blink' || 'breathe';
+  switch (effect) {
+    case EFFECTS.CREEP:
 
-  if (setStrand) {
-    for (let i = 0; i < pixelCount; i++) {
-      pixels[i] = color1;
-    };
-  };
+      // Set pixels up to and including offset to color
+      for (let i = 0; i <= offset; i++) {
+        pixels[i] = color1;
+      };
+      break;
+    case EFFECTS.WALK_PIXEL:
 
-  if (type === 'creep') {
-    for (let i = 0; i <= offset; i++) {
-      pixels[i] = color1;
-    };
-  };
+      // Set pixel at offset to color
+      pixels[offset] = color1;
+      break;
+    case EFFECTS.WHEEL:
 
-  if (type === 'walk pixel') {
-    pixels[offset] = color1;
-  };
+      // Set pixels up to and including offset to color1 and offset to pixelCount to color2
+      for (let i = 0; i < offset; i++) {
+        pixels[i] = color1;
+      };
 
-  if (type === 'wheel') {
-    for (let i = 0; i <= offset; i++) {
-      pixels[i] = color1;
-    };
+      for (let i = offset; i < pixelCount; i++) {
+        pixels[i] = color2;
+      };
+      break;
+    default:
 
-    for (let i = offset + 1; i < pixelCount; i++) {
-      pixels[i] = color2;
-    };
+      // Set strand to color i.g., Solid, Change, Blink, Breathe
+      for (let i = 0; i < pixelCount; i++) {
+        pixels[i] = color1;
+      };
   };
 
     return pixels;

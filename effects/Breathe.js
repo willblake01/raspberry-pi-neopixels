@@ -40,7 +40,7 @@ export class BreatheCustom {
 
     const args = {
       pixelCount: this.config.leds,
-      type: 'breathe',
+      effect: 'breathe',
       color1: color
     };
 

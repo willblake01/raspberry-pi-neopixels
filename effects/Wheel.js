@@ -26,6 +26,7 @@ export class Wheel {
       if (this._offset === this.config.leds - 1) {
         color2 = color1;
 
+        // Change color every loop
         this._red1 = randomNumber(255);
         this._green1 = randomNumber(255);
         this._blue1 = randomNumber(255);
@@ -37,7 +38,7 @@ export class Wheel {
 
     const args = {
       pixelCount: this.config.leds,
-      type: 'blink',
+      effect: 'blink',
       color1: color1,
       offset: this._offset,
       color2: color2

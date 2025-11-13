@@ -27,7 +27,7 @@ export class BlinkCustom {
 
     const args = {
       pixelCount: this.config.leds,
-      type: 'blink',
+      effect: 'blink',
       color1: color
     };
 
@@ -78,7 +78,7 @@ export class BlinkRandomStatic {
 
     const args = {
       pixelCount: this.config.leds,
-      type: 'blink',
+      effect: 'blink',
       color1: color
     };
 
@@ -136,7 +136,7 @@ export class BlinkRandomChange {
 
     const args = {
       pixelCount: this.config.leds,
-      type: 'blink',
+      effect: 'blink',
       color1: color
     };
 
