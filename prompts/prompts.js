@@ -53,7 +53,7 @@ const promptNumber = (name, message, { min, max, initial, when }) => ({
 });
 
 // --- final prompts ---
-export const prompts = [
+export const promptsConfig = [
   // Command
   promptSelect('command', 'Enter command', [
     { title: 'On', value: 1 },

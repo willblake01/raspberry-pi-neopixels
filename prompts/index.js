@@ -1,2 +1,2 @@
 export { normalizeAnswers } from './normalizeAnswers.js';
-export { prompts } from './prompts.js';
+export { promptsConfig } from './prompts.js';
