@@ -41,7 +41,7 @@ export const RULES = [
   {
     name: 'breathe-custom',
     when: o => o.isBreathe && o.isCustomColorMode,
-    make: (cfg, o) => new BreatheCustom(cfg, o.red, o.green, o.blue, o.interval),
+    make: (cfg, o) => new BreatheCustom(cfg, o.interval, o.red, o.green, o.blue),
   },
 
   // --- CREEP ---
