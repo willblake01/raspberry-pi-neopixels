@@ -21,14 +21,14 @@ export class BreatheCustom {
 
     };
 
-    const makeScalar = () => {
+    const makeScalar = (floor = 0.08, gamma = 2.2) => {
       const t0 = Date.now();
 
       return () => {
         const t = (Date.now() - t0) / this.interval;
         const phase = t - Math.floor(t);
         const eased = (1 - Math.cos(2 * Math.PI * phase)) / 2;
-        const perceptual = Math.pow(eased, gama);
+        const perceptual = Math.pow(eased, gamma);
 
         return floor + (1 - floor) * perceptual;
       };
