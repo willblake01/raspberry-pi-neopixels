@@ -44,7 +44,7 @@ export class BreatheCustom {
     const red = Math.round(this.red | 0) * scale & 0xFF;
     const green = Math.round(this.green | 0) * scale & 0xFF;
     const blue = Math.round(this.blue | 0) * scale & 0xFF;
-    
+
     const color = (red << 16) | (green << 8) | blue;
 
     const args = {

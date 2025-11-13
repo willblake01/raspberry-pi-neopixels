@@ -5,7 +5,7 @@ import { setPixelColor } from './utils/index.js';
 export class Change {
   /**
    * @param {object} config { leds, ... }
-   * @param {number} interval full in+out cycle duration (e.g., 2000)
+   * @param {number} interval Effect loop interval
    */
 
   constructor(config, interval) {

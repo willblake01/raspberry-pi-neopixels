@@ -6,7 +6,7 @@ export class CreepCustom {
 
   /**
    * @param {object} config { leds, ... }
-   * @param {number} interval full in+out cycle duration (e.g., 2000)
+   * @param {number} interval Effect loop interval
    * @param {number} red 0..255
    * @param {number} green 0..255
    * @param {number} blue 0..255
@@ -65,7 +65,7 @@ export class CreepCustom {
 export class CreepRandomStatic {
   /**
    * @param {object} config { leds, ... }
-   * @param {number} interval full in+out cycle duration (e.g., 2000)
+   * @param {number} interval Effect loop interval
    */
 
   constructor(config, interval) {
@@ -120,7 +120,7 @@ export class CreepRandomStatic {
 export class CreepRandomChangePixel {
   /**
    * @param {object} config { leds, ... }
-   * @param {number} interval full in+out cycle duration (e.g., 2000)
+   * @param {number} interval Effect loop interval
    */
 
   constructor(config, interval) {
@@ -180,7 +180,7 @@ export class CreepRandomChangePixel {
 export class CreepRandomChangeLoop {
   /**
    * @param {object} config { leds, ... }
-   * @param {number} interval full in+out cycle duration (e.g., 2000)
+   * @param {number} interval Effect loop interval
    */
 
   constructor(config, interval) {
