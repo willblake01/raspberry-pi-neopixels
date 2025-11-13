@@ -27,7 +27,7 @@ export class BreatheCustom {
       return () => {
         const t = (Date.now() - t0) / this.interval;
         const phase = t - Math.floor(t);
-        const eased = (1 - Math.cost(2 * Math.PI * phase)) / 2;
+        const eased = (1 - Math.cos(2 * Math.PI * phase)) / 2;
         const perceptual = Math.pow(eased, gama);
 
         return floor + (1 - floor) * perceptual;
