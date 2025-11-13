@@ -3,12 +3,12 @@ import { randomNumber } from '../utils/index.js';
 import { setPixelColor } from './utils/index.js';
 
 export class BlinkCustom {
-  constructor(config, interval, red, green, blueValue) {
+  constructor(config, interval, red, green, blue) {
     this.config = config;
     this.interval = interval;
     this.red = red;
     this.green = green;
-    this.blueValue = blueValue;
+    this.blue = blue;
     this._on = true;
     this._intervalID = null;
     this._stopped = false;
@@ -21,7 +21,7 @@ export class BlinkCustom {
       this._on = !this._on;
     };
 
-    const red = this._on ? this.red : 0, green = this._on ? this.green : 0, blue = this._on ? this.blueValue : 0;
+    const red = this._on ? this.red : 0, green = this._on ? this.green : 0, blue = this._on ? this.blue : 0;
 
     const color = (red << 16) | (green << 8) | blue;
 

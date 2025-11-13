@@ -13,16 +13,16 @@ export class BreatheCustom {
    * @param {number} fps frames per second
    */
 
-  constructor(config, interval, red, green, blueValue, floor = 0.08, gamma = 2, fps = 60) {
+  constructor(config, interval, red, green, blue, floor = 0.08, gamma = 2, fps = 60) {
     this.config = config;
     this.interval = interval;
     this.red = red;
     this.green = green;
-    this.blueValue = blueValue;
+    this.blue = blue;
     this.floor = Math.min(Math.max(floor, 0), 1);
     this.gamma = gamma;
     this.fps = fps;
-    this._t0;
+    this._t0 = Date.now();
     this._intervalID = null;
     this._stopped = false;
   };
@@ -41,7 +41,7 @@ export class BreatheCustom {
 
     const scale = this._scalar(Date.now());
 
-    const red = (Math.round(this.red|0 * scale)) & 0xFF, green = (Math.round(this.green|0 * scale)) & 0xFF, blue = (Math.round(this.blueValue|0 * scale)) & 0xFF;
+    const red = (Math.round(this.red|0 * scale)) & 0xFF, green = (Math.round(this.green|0 * scale)) & 0xFF, blue = (Math.round(this.blue|0 * scale)) & 0xFF;
     const color = (red << 16) | (green << 8) | blue;
 
     const args = {
@@ -58,7 +58,6 @@ export class BreatheCustom {
   run() {
     if (this._intervalID || this._stopped) return;
 
-    const fps = 60;
     const frameMs = Math.max(5, Math.round(1000 / fps));
 
     this.loop();
