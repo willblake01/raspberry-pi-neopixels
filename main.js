@@ -1,6 +1,6 @@
 import prompts from 'prompts';
 import { EffectManager } from './EffectManager.js';
-import { normalizeAnswers, questions } from './prompts/index.js';
+import { normalizeAnswers, prompts } from './prompts/index.js';
 import { TurnOff } from './effects/index.js';
 import { RULES } from './effects/utils/index.js';
 import { once } from './utils/index.js';
@@ -14,7 +14,7 @@ const selectEffect = (config, opts) => {
 };
 
 const main = async () => {
-  const response = await prompts(questions);
+  const response = await prompts(prompts);
   const options = normalizeAnswers(response);
 
   const config = {

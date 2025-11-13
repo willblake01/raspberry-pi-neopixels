@@ -52,8 +52,8 @@ const promptNumber = (name, message, { min, max, initial, when }) => ({
   validate: intIn(min, max),
 });
 
-// --- final questions ---
-export const questions = [
+// --- final prompts ---
+export const prompts = [
   // Command
   promptSelect('command', 'Enter command', [
     { title: 'On', value: 1 },
