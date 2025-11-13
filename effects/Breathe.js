@@ -41,7 +41,7 @@ export class BreatheCustom {
 
     const scale = this._scalar(Date.now());
 
-    const red = (Math.round(this.red|0 * scale)) & 0xFF, green = (Math.round(this.green|0 * scale)) & 0xFF, blue = (Math.round(this.blue|0 * scale)) & 0xFF;
+    const red = Math.round(this.red | 0) * scale & 0xFF, green = Math.round(this.green | 0) * scale & 0xFF, blue = Math.round(this.blue | 0) * scale & 0xFF;
     const color = (red << 16) | (green << 8) | blue;
 
     const args = {
