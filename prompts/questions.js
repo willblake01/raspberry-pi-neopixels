@@ -1,4 +1,4 @@
-import { EFFECTS } from "../constants";
+import { EFFECTS } from "../constants/index.js";
 
 const EFFECT_CHOICES = [
   { title: 'Solid', value: EFFECTS.SOLID },
