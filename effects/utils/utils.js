@@ -15,7 +15,7 @@ export const setPixelColor = ({ pixelCount, type, color1, offset, color2 }) => {
     };
   };
 
-  if (type === 'walkPixel') {
+  if (type === 'walk pixel') {
     pixels[offset] = color1;
   };
 
