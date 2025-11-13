@@ -38,7 +38,7 @@ export class Wheel {
 
     const args = {
       pixelCount: this.config.leds,
-      effect: 'blink',
+      effect: 'wheel',
       color1: color1,
       offset: this._offset,
       color2: color2
