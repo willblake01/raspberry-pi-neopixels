@@ -4,118 +4,118 @@ export const RULES = [
   // --- SOLID ---
   {
     name: 'solid-custom',
-    when: o => o.isSolid && o.isCustomColorMode,
-    make: (cfg, o) => new SolidCustom(cfg, o.red, o.green, o.blue),
+    when: options => options.isSolid && options.isCustomColorMode,
+    make: (config, options) => new SolidCustom(config, options.red, options.green, options.blue),
   },
   {
     name: 'solid-random',
-    when: o => o.isSolid && o.isRandomColorMode,
-    make: (cfg) => new SolidRandom(cfg),
+    when: options => options.isSolid && options.isRandomColorMode,
+    make: (config) => new SolidRandom(config),
   },
 
   // --- CHANGE ---
   {
     name: 'change',
-    when: o => o.isChange,
-    make: (cfg, o) => new Change(cfg, o.interval),
+    when: options => options.isChange,
+    make: (config, options) => new Change(config, options.interval),
   },
 
   // --- BLINK ---
   {
     name: 'blink-custom',
-    when: o => o.isBlink && o.isCustomColorMode,
-    make: (cfg, o) => new BlinkCustom(cfg, o.interval, o.red, o.green, o.blue),
+    when: options => options.isBlink && options.isCustomColorMode,
+    make: (config, options) => new BlinkCustom(config, options.interval, options.red, options.green, options.blue),
   },
   {
     name: 'blink-random-static',
-    when: o => o.isBlink && o.isRandomColorMode && o.isStaticRandomColorMode,
-    make: (cfg, o) => new BlinkRandomStatic(cfg, o.interval),
+    when: options => options.isBlink && options.isRandomColorMode && options.isStaticRandomColorMode,
+    make: (config, options) => new BlinkRandomStatic(config, options.interval),
   },
   {
     name: 'blink-random-change',
-    when: o => o.isBlink && o.isRandomColorMode && o.isChangeRandomColorMode,
-    make: (cfg, o) => new BlinkRandomChange(cfg, o.interval),
+    when: options => options.isBlink && options.isRandomColorMode && options.isChangeRandomColorMode,
+    make: (config, options) => new BlinkRandomChange(config, options.interval),
   },
 
   // --- BREATHE ---
   {
     name: 'breathe-custom',
-    when: o => o.isBreathe && o.isCustomColorMode,
-    make: (cfg, o) => new BreatheCustom(cfg, o.interval, o.red, o.green, o.blue),
+    when: options => options.isBreathe && options.isCustomColorMode,
+    make: (config, options) => new BreatheCustom(config, options.interval, options.red, options.green, options.blue),
   },
 
   // --- CREEP ---
   {
     name: 'creep-custom',
-    when: o => o.isCreep && o.isCustomColorMode,
-    make: (cfg, o) => new CreepCustom(cfg, o.interval, o.red, o.green, o.blue),
+    when: options => options.isCreep && options.isCustomColorMode,
+    make: (config, options) => new CreepCustom(config, options.interval, options.red, options.green, options.blue),
   },
   {
     name: 'creep-random-static',
-    when: o => o.isCreep && o.isRandomColorMode && o.isStaticRandomColorMode,
-    make: (cfg, o) => new CreepRandomStatic(cfg, o.interval),
+    when: options => options.isCreep && options.isRandomColorMode && options.isStaticRandomColorMode,
+    make: (config, options) => new CreepRandomStatic(config, options.interval),
   },
   {
     name: 'creep-random-change-everyPixel',
-    when: o => o.isCreep && o.isRandomColorMode && o.isChangeRandomColorMode && o.everyPixelcolorChangeInterval,
-    make: (cfg, o) => new CreepRandomChangePixel(cfg, o.interval),
+    when: options => options.isCreep && options.isRandomColorMode && options.isChangeRandomColorMode && options.everyPixelcolorChangeInterval,
+    make: (config, options) => new CreepRandomChangePixel(config, options.interval),
   },
   {
     name: 'creep-random-change-everyLoop',
-    when: o => o.isCreep && o.isRandomColorMode && o.isChangeRandomColorMode && o.everyLoopcolorChangeInterval,
-    make: (cfg, o) => new CreepRandomChangeLoop(cfg, o.interval),
+    when: options => options.isCreep && options.isRandomColorMode && options.isChangeRandomColorMode && options.everyLoopcolorChangeInterval,
+    make: (config, options) => new CreepRandomChangeLoop(config, options.interval),
   },
 
   // --- WHEEL ---
   {
     name: 'wheel',
-    when: o => o.isWheel,
-    make: (cfg, o) => new Wheel(cfg, o.interval),
+    when: options => options.isWheel,
+    make: (config, options) => new Wheel(config, options.interval),
   },
 
   // --- WALK PIXEL (pixel ON) ---
   {
     name: 'walkPixel-on-custom',
-    when: o => o.isWalkPixel && o.pixelOn && o.isCustomColorMode,
-    make: (cfg, o) => new WalkPixelOnCustom(cfg, o.interval, o.red, o.green, o.blue),
+    when: options => options.isWalkPixel && options.pixelOn && options.isCustomColorMode,
+    make: (config, options) => new WalkPixelOnCustom(config, options.interval, options.red, options.green, options.blue),
   },
   {
     name: 'walkPixel-on-random-static',
-    when: o => o.isWalkPixel && o.pixelOn && o.isRandomColorMode && o.isStaticRandomColorMode,
-    make: (cfg, o) => new WalkPixelOnRandomStatic(cfg, o.interval),
+    when: options => options.isWalkPixel && options.pixelOn && options.isRandomColorMode && options.isStaticRandomColorMode,
+    make: (config, options) => new WalkPixelOnRandomStatic(config, options.interval),
   },
   {
     name: 'walkPixel-on-random-change-everyPixel',
-    when: o => o.isWalkPixel && o.pixelOn && o.isRandomColorMode && o.everyPixelcolorChangeInterval,
-    make: (cfg, o) => new WalkPixelOnRandomChangePixel(cfg, o.interval),
+    when: options => options.isWalkPixel && options.pixelOn && options.isRandomColorMode && options.everyPixelcolorChangeInterval,
+    make: (config, options) => new WalkPixelOnRandomChangePixel(config, options.interval),
   },
   {
     name: 'walkPixel-on-random-change-everyLoop',
-    when: o => o.isWalkPixel && o.pixelOn && o.isRandomColorMode && o.everyLoopcolorChangeInterval,
-    make: (cfg, o) => new WalkPixelOnRandomChangeLoop(cfg, o.interval),
+    when: options => options.isWalkPixel && options.pixelOn && options.isRandomColorMode && options.everyLoopcolorChangeInterval,
+    make: (config, options) => new WalkPixelOnRandomChangeLoop(config, options.interval),
   },
 
   // --- WALK PIXEL (pixel OFF) ---
   {
     name: 'walkPixel-off-custom',
-    when: o => o.isWalkPixel && o.pixelOff && o.isCustomColorMode,
-    make: (cfg, o) => new WalkPixelOffCustomStatic(cfg, o.interval, o.red, o.green, o.blue),
+    when: options => options.isWalkPixel && options.pixelOff && options.isCustomColorMode,
+    make: (config, options) => new WalkPixelOffCustomStatic(config, options.interval, options.red, options.green, options.blue),
   },
   {
     name: 'walkPixel-off-random-change-everyPixel',
-    when: o => o.isWalkPixel && o.pixelOff && o.isRandomColorMode && o.everyPixelcolorChangeInterval,
-    make: (cfg, o) => new WalkPixelOffRandomChangePixel(cfg, o.interval),
+    when: options => options.isWalkPixel && options.pixelOff && options.isRandomColorMode && options.everyPixelcolorChangeInterval,
+    make: (config, options) => new WalkPixelOffRandomChangePixel(config, options.interval),
   },
   {
     name: 'walkPixel-off-random-change-everyLoop',
-    when: o => o.isWalkPixel && o.pixelOff && o.isRandomColorMode && o.everyLoopcolorChangeInterval,
-    make: (cfg, o) => new WalkPixelOffRandomChangeLoop(cfg, o.interval),
+    when: options => options.isWalkPixel && options.pixelOff && options.isRandomColorMode && options.everyLoopcolorChangeInterval,
+    make: (config, options) => new WalkPixelOffRandomChangeLoop(config, options.interval),
   },
 
   // --- TURN OFF (explicit command) ---
   {
     name: 'turnOff',
-    when: o => o.isOff,
-    make: (cfg) => new TurnOff(cfg),
+    when: options => options.isOff,
+    make: (config) => new TurnOff(config),
   },
 ];
