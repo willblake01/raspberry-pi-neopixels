@@ -2,31 +2,31 @@ import { EFFECTS } from "../constants/index.js";
 import { and, integerBetween } from '../utils/index.js';
 
 const EFFECT_CHOICES = [
-  { title: 'Solid', value: EFFECTS.SOLID },
-  { title: 'Change', value: EFFECTS.CHANGE },
-  { title: 'Blink', value: EFFECTS.BLINK },
-  { title: 'Breathe', value: EFFECTS.BREATHE },
-  { title: 'Creep', value: EFFECTS.CREEP },
-  { title: 'Wheel', value: EFFECTS.WHEEL },
-  { title: 'Walk Pixel', value: EFFECTS.WALK_PIXEL }
+  { title: 'Solid', value: EFFECTS.SOLID.NAME },
+  { title: 'Change', value: EFFECTS.CHANGE.NAME },
+  { title: 'Blink', value: EFFECTS.BLINK.NAME },
+  { title: 'Breathe', value: EFFECTS.BREATHE.NAME },
+  { title: 'Creep', value: EFFECTS.CREEP.NAME },
+  { title: 'Wheel', value: EFFECTS.WHEEL.NAME },
+  { title: 'Walk Pixel', value: EFFECTS.WALK_PIXEL.NAME }
 ];
 
 // Capabilities
 const EFFECT_NEEDS_INTERVAL = new Set([
-  EFFECTS.CHANGE, EFFECTS.BLINK, EFFECTS.BREATHE, EFFECTS.CREEP, EFFECTS.WHEEL, EFFECTS.WALK_PIXEL
+  EFFECTS.CHANGE.NAME, EFFECTS.BLINK.NAME, EFFECTS.BREATHE.NAME, EFFECTS.CREEP.NAME, EFFECTS.WHEEL.NAME, EFFECTS.WALK_PIXEL.NAME
 ]);
 const EFFECT_ALLOWS_CUSTOM = new Set([
-  EFFECTS.SOLID, EFFECTS.BLINK, EFFECTS.BREATHE, EFFECTS.CREEP, EFFECTS.WALK_PIXEL
+  EFFECTS.SOLID.NAME, EFFECTS.BLINK.NAME, EFFECTS.BREATHE.NAME, EFFECTS.CREEP.NAME, EFFECTS.WALK_PIXEL.NAME
 ]);
 
 // Random color is *not allowed for Change or Wheel
 const EFFECT_ALLOWS_RANDOM = new Set([
-  EFFECTS.SOLID, EFFECTS.BLINK, EFFECTS.CREEP, EFFECTS.WALK_PIXEL
+  EFFECTS.SOLID.NAME, EFFECTS.BLINK.NAME, EFFECTS.CREEP.NAME, EFFECTS.WALK_PIXEL.NAME
 ]);
 
 // For random 'change' (interval choice), exclude Blink
 const EFFECT_ALLOWS_RANDOM_CHANGE_INTERVAL = new Set([
-  EFFECTS.CREEP, EFFECTS.WALK_PIXEL
+  EFFECTS.CREEP.NAME, EFFECTS.WALK_PIXEL.NAME
 ]);
 
 // --- Helpers ---
@@ -67,7 +67,7 @@ export const promptsConfig = [
   promptSelect('pixelState', 'Set pixel', [
     { title: 'On', value: 1 },
     { title: 'Off', value: 0 }
-  ], and(isOn, effectEquals(EFFECTS.WALK_PIXEL))),
+  ], and(isOn, effectEquals(EFFECTS.WALK_PIXEL.NAME))),
 
   // Interval (for all effects except Solid)
   promptNumber('interval', 'Enter interval (milliseconds)', {
@@ -94,13 +94,13 @@ export const promptsConfig = [
   promptSelect('randomColorMode', 'Set random color mode', [
     { title: 'Static', value: 'static' },
     { title: 'Change', value: 'change' }
-  ], and(isOn, v => v.colorMode === 'random' && v.effect !== EFFECTS.SOLID && v.effect !== EFFECTS.CHANGE)),
+  ], and(isOn, v => v.colorMode === 'random' && v.effect !== EFFECTS.SOLID.NAME && v.effect !== EFFECTS.CHANGE.NAME)),
 
   // Random 'change' interval (every pixel vs end of loop)
   promptSelect('colorChangeInterval', 'Set color change interval', [
     { title: 'After every pixel', value: 'everyPixel' },
     { title: 'At end of loop', value: 'everyLoop' }
-  ], and(isOn, v => v.colorMode === 'random' && v.randomColorMode === 'change' && v.effect !== EFFECTS.BLINK && allowsRandomcolorChangeInterval(v))),
+  ], and(isOn, v => v.colorMode === 'random' && v.randomColorMode === 'change' && v.effect !== EFFECTS.BLINK.NAME && allowsRandomcolorChangeInterval(v))),
 
   // Custom RGB (only when custom color is allowed)
   promptNumber('red', 'Enter a red value (0-255)', { min: 0, max: 255, initial: 0, when: and(isOn, v => v.colorMode === 'custom' && allowsCustom(v)) }),

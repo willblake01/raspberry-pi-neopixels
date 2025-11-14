@@ -1,7 +1,5 @@
 import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
-import { setPixelColor } from './utils/index.js';
-import { EFFECTS } from '../constants/index.js';
 
 export class BlinkCustom {
   /**
@@ -30,17 +28,18 @@ export class BlinkCustom {
       this._on = !this._on;
     };
 
-    const red = this._on ? this.red : 0, green = this._on ? this.green : 0, blue = this._on ? this.blue : 0;
+    const red = this._on ? this.red : 0;
+    const green = this._on ? this.green : 0;
+    const blue = this._on ? this.blue : 0;
 
     const color = (red << 16) | (green << 8) | blue;
 
-    const args = {
-      pixelCount: this.config.leds,
-      effect: EFFECTS.BLINK,
-      color1: color
-    };
+    const pixels = new Uint32Array(this.config.leds);
 
-    const pixels = setPixelColor({...args});
+    // Set strand to color
+    for (let i = 0; i < this.config.leds; i++) {
+      pixels[i] = color;
+    };
 
     safeRender(pixels);
     setNextState();
@@ -86,17 +85,18 @@ export class BlinkRandomStatic {
       this._on = !this._on;
     };
 
-    const red = this._on ? this._red : 0, green = this._on ? this._green : 0, blue = this._on ? this._blue : 0;
+    const red = this._on ? this._red : 0;
+    const green = this._on ? this._green : 0;
+    const blue = this._on ? this._blue : 0;
 
     const color = (red << 16) | (green << 8) | blue;
 
-    const args = {
-      pixelCount: this.config.leds,
-      effect: EFFECTS.BLINK,
-      color1: color
-    };
+    const pixels = new Uint32Array(this.config.leds);
 
-    const pixels = setPixelColor({...args});
+    // Set strand to color
+    for (let i = 0; i < this.config.leds; i++) {
+      pixels[i] = color;
+    };
 
     safeRender(pixels);
     setNextState();
@@ -149,17 +149,18 @@ export class BlinkRandomChange {
       };
     };
     
-    const red = this._on ? this._red : 0, green = this._on ? this._green : 0, blue = this._on ? this._blue : 0;
+    const red = this._on ? this._red : 0;
+    const green = this._on ? this._green : 0;
+    const blue = this._on ? this._blue : 0;
 
     const color = (red << 16) | (green << 8) | blue;
 
-    const args = {
-      pixelCount: this.config.leds,
-      effect: EFFECTS.BLINK,
-      color1: color
-    };
+    const pixels = new Uint32Array(this.config.leds);
 
-    const pixels = setPixelColor({...args});
+    // Set strand to color
+    for (let i = 0; i < this.config.leds; i++) {
+      pixels[i] = color;
+    };
 
     safeRender(pixels);
     setNextState();

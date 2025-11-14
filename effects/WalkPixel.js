@@ -1,7 +1,5 @@
 import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
-import { setPixelColor } from './utils/index.js';
-import { EFFECTS } from '../constants/index.js';
 
 export class WalkPixelOnCustom {
   /**
@@ -32,15 +30,10 @@ export class WalkPixelOnCustom {
 
       const color = (this.red << 16) | (this.green << 8) | this.blue;
 
-      const args = {
-        pixelCount: this.config.leds,
-        effect: EFFECTS.WALK_PIXEL,
-        color1: color,
-        offset: this._offset,
-        pixelState: 1
-      };
+      const pixels = new Uint32Array(this.config.leds);
 
-      const pixels = setPixelColor({...args});
+      // Set pixel at offset to color
+      pixels[this._offset] = color;
 
       safeRender(pixels);
       setNextState();
@@ -88,15 +81,10 @@ export class WalkPixelOnRandomStatic {
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
 
-    const args = {
-      pixelCount: this.config.leds,
-      effect: EFFECTS.WALK_PIXEL,
-      color1: color,
-      offset: this._offset,
-      pixelState: 1
-    };
+    const pixels = new Uint32Array(this.config.leds);
 
-    const pixels = setPixelColor({...args});
+    // Set pixel at offset to color
+    pixels[this._offset] = color;
 
     safeRender(pixels);
     setNextState();
@@ -149,14 +137,10 @@ export class WalkPixelOnRandomChangePixel {
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
 
-    const args = {
-      pixelCount: this.config.leds,
-      effect: EFFECTS.WALK_PIXEL,
-      color1: color,
-      pixelState: 1
-    };
+    const pixels = new Uint32Array(this.config.leds);
 
-    const pixels = setPixelColor({...args});
+    // Set pixel at offset to color
+    pixels[this._offset] = color;
 
     safeRender(pixels);
     setNextState();
@@ -212,14 +196,10 @@ export class WalkPixelOnRandomChangeLoop {
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
 
-    const args = {
-      pixelCount: this.config.leds,
-      effect: EFFECTS.WALK_PIXEL,
-      color1: color,
-      pixelState: 1
-    };
+    const pixels = new Uint32Array(this.config.leds);
 
-    const pixels = setPixelColor({...args});
+    // Set pixel at offset to color
+    pixels[this._offset] = color;
 
     safeRender(pixels);
     setNextState();
@@ -270,15 +250,16 @@ export class WalkPixelOffCustomStatic {
 
     const color = (this.red << 16) | (this.green << 8) | this.blue;
 
-    const args = {
-      pixelCount: this.config.leds,
-      effect: EFFECTS.WALK_PIXEL,
-      color1: color,
-      offset: this._offset,
-      pixelState: 0
-    };
+    const pixels = new Uint32Array(this.config.leds);
 
-    const pixels = setPixelColor({ ...args });
+    // Set pixel at index to 0 and rest of strand to color
+    for (let i = 0; i < this.config.leds; i++) {
+      if (i === this._offset) {
+        pixels[this._offset] = 0;
+      } else {
+        pixels[i] = color;
+      };
+    };
 
     safeRender(pixels);
     setNextState();
@@ -331,15 +312,16 @@ export class WalkPixelOffRandomChangePixel {
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
 
-    const args = {
-      pixelCount: this.config.leds,
-      effect: EFFECTS.WALK_PIXEL,
-      color1: color,
-      offset: this._offset,
-      pixelState: 0
-    };
+    const pixels = new Uint32Array(this.config.leds);
 
-    const pixels = setPixelColor({ ...args });
+    // Set pixel at index to 0 and rest of strand to color
+    for (let i = 0; i < this.config.leds; i++) {
+      if (i === this._offset) {
+        pixels[this._offset] = 0;
+      } else {
+        pixels[i] = color;
+      };
+    };
 
     safeRender(pixels);
     setNextState();
@@ -394,15 +376,16 @@ export class WalkPixelOffRandomChangeLoop {
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
 
-    const args = {
-      pixelCount: this.config.leds,
-      effect: EFFECTS.WALK_PIXEL,
-      color1: color,
-      offset: this._offset,
-      pixelState: 0
-    };
+    const pixels = new Uint32Array(this.config.leds);
 
-    const pixels = setPixelColor({ ...args });
+    // Set pixel at index to 0 and rest of strand to color
+    for (let i = 0; i < this.config.leds; i++) {
+      if (i === this._offset) {
+        pixels[this._offset] = 0;
+      } else {
+        pixels[i] = color;
+      };
+    };
 
     safeRender(pixels);
     setNextState();

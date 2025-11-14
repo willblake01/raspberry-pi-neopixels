@@ -1,9 +1,7 @@
 import { randomNumber } from '../utils/index.js';
 import { safeRender } from '../ledRuntime.js';
-import { setPixelColor } from './utils/index.js';
 
 export class CreepCustom {
-
   /**
    * @param {object} config { leds, ... }
    * @param {number} interval Effect loop interval
@@ -30,9 +28,9 @@ export class CreepCustom {
       this._offset = (this._offset + 1) % this.config.leds;
     };
 
-    const pixels = new Uint32Array(this.config.leds);
-
     const color = (this.red << 16) | (this.green << 8) | this.blue;
+
+    const pixels = new Uint32Array(this.config.leds);
 
     for (let i = 0; i < this._offset; i++) {
       pixels[i] = color;
@@ -88,14 +86,12 @@ export class CreepRandomStatic {
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
 
-    const args = {
-      pixelCount: this.config.leds,
-      effect: EFFECTS.CREEP,
-      color1: color,
-      offset: this._offset
-    };
+    const pixels = new Uint32Array(this.config.leds);
 
-    const pixels = setPixelColor({...args});
+    // Set pixels up to and including offset to color
+    for (let i = 0; i <= this._offset; i++) {
+      pixels[i] = color;
+    };
 
     safeRender(pixels);
     setNextState();
@@ -147,15 +143,13 @@ export class CreepRandomChangePixel {
     };
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
-    
-    const args = {
-      pixelCount: this.config.leds,
-      effect: EFFECTS.CREEP,
-      color1: color,
-      offset: this._offset
-    };
 
-    const pixels = setPixelColor({...args});
+    const pixels = new Uint32Array(this.config.leds);
+    
+    // Set pixels up to and including offset to color
+    for (let i = 0; i <= offset; i++) {
+      pixels[i] = color;
+    };
 
     safeRender(pixels);
     setNextState();
@@ -210,14 +204,12 @@ export class CreepRandomChangeLoop {
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
 
-    const args = {
-      pixelCount: this.config.leds,
-      effect: EFFECTS.CREEP,
-      color1: color,
-      offset: this._offset
-    };
+    const pixels = new Uint32Array(this.config.leds);
 
-    const pixels = setPixelColor({...args});
+    // Set pixels up to and including offset to color
+    for (let i = 0; i <= offset; i++) {
+      pixels[i] = color;
+    };
 
     safeRender(pixels);
     setNextState();

@@ -1,6 +1,5 @@
 import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
-import { setPixelColor } from './utils/index.js';
 
 export class Change {
   /**
@@ -29,13 +28,12 @@ export class Change {
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
 
-    const args = {
-      pixelCount: this.config.leds,
-      effect: EFFECTS.CHANGE,
-      color1: color
-    };
+    const pixels = new Uint32Array(this.config.leds);
 
-    const pixels = setPixelColor({...args});
+    // Set strand to color
+    for (let i = 0; i < this.config.leds; i++) {
+      pixels[i] = color;
+    };
     
     safeRender(pixels);
     setNextState();

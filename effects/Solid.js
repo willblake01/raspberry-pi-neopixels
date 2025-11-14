@@ -1,6 +1,5 @@
 import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
-import { setPixelColor } from './utils/index.js';
 
 export class SolidCustom {
   /**
@@ -20,13 +19,12 @@ export class SolidCustom {
   run() {
     const color = (this.red << 16) | (this.green << 8) | this.blue;
 
-    const args = {
-      pixelCount: this.config.leds,
-      effect: EFFECTS.SOLID,
-      color1: color
-    };
+    const pixels = new Uint32Array(this.config.leds);
 
-    const pixels = setPixelColor({...args});
+    // Set strand to color
+    for (let i = 0; i < this.config.leds; i++) {
+      pixels[i] = color;
+    };
 
     safeRender(pixels);
   };
@@ -43,13 +41,13 @@ export class SolidRandom {
   run() {
     const color = (this._red << 16) | (this._green << 8) | this._blue;
 
-    const args = {
-      pixelCount: this.config.leds,
-      effect: EFFECTS.SOLID,
-      color1: color
+    const pixels = new Uint32Array(this.config.leds);
+
+    // Set strand to color
+    for (let i = 0; i < this.config.leds; i++) {
+      pixels[i] = color;
     };
 
-    const pixels = setPixelColor({...args});
     safeRender(pixels);
   };
 };
