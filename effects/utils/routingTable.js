@@ -24,7 +24,7 @@ export const RULES = [
   {
     name: 'blink-custom',
     when: options => options.isBlink && options.isCustomColorMode,
-    make: (config, options) => new BlinkCustom(config, options.interval, options.red, options.green, options.blue),
+    make: (config, options) => new BlinkCustom(config, ...options),
   },
   {
     name: 'blink-random-static',
