@@ -27,9 +27,7 @@ export const normalizeAnswers = (res) => {
     isRandomColorMode: colorMode === 'random',
     isStaticRandomColorMode: randomColorMode === 'static',
     isChangeRandomColorMode: randomColorMode === 'change',
-    everyPixelcolorChangeInterval: colorChangeInterval === 'everyPixel',
-    everyLoopcolorChangeInterval: colorChangeInterval === 'everyLoop',
-    pixelOn: pixelState === 1,
-    pixelOff: pixelState === 0 
+    everyPixelColorChangeInterval: colorChangeInterval === 'everyPixel',
+    everyLoopcolorChangeInterval: colorChangeInterval === 'everyLoop'
   };
 };

@@ -1,6 +1,51 @@
 import { BlinkCustom, BlinkRandomChange, BlinkRandomStatic, BreatheCustom, Change, CreepCustom, CreepRandomChangePixel, CreepRandomChangeLoop, CreepRandomStatic, SolidCustom, SolidRandom, WalkPixelOffCustomStatic, WalkPixelOffRandomChangeLoop, WalkPixelOffRandomChangePixel, WalkPixelOnCustom, WalkPixelOnRandomChangePixel, WalkPixelOnRandomChangeLoop, WalkPixelOnRandomStatic, Wheel, TurnOff } from '../index.js';
 
-export const RULES = [
+interface Options {
+  // Base config
+  leds: number;
+  brightness: number;
+  interval: number;
+  red: number;
+  green: number;
+  blue: number;
+  command: number;
+  effect: string;
+
+  // Color mode
+  colorMode: 'custom' | 'random';
+  randomColorMode: 'static' | 'change';
+  colorChangeInterval: number;
+
+  // Pixel state
+  pixelState: 0 | 1;
+
+  // Effect flags
+  isSolid: boolean;
+  isChange: boolean;
+  isBlink: boolean;
+  isBreathe: boolean;
+  isCreep: boolean;
+  isWheel: boolean;
+  isWalkPixel: boolean;
+  isOff: boolean;
+
+  // Derived color-mode flags used in 'when'
+  isCustomColorMode: boolean;
+  isRandomColorMode: boolean;
+  isStaticRandomColorMode: boolean;
+  isChangeRandomColorMode: boolean;
+
+  everyPixelColorChangeInterval: boolean;
+  everyLoopColorChangeInterval: boolean;
+};
+
+interface Rule {
+  name: string;
+  when: (options: Options) => boolean;
+  make: (config: any, options: Options) => any;
+};
+
+export const RULES: Rule[] = [
   // --- SOLID ---
   {
     name: 'solid-custom',
@@ -57,12 +102,12 @@ export const RULES = [
   },
   {
     name: 'creep-random-change-everyPixel',
-    when: options => options.isCreep && options.isRandomColorMode && options.isChangeRandomColorMode && options.everyPixelcolorChangeInterval,
+    when: options => options.isCreep && options.isRandomColorMode && options.isChangeRandomColorMode && options.everyPixelColorChangeInterval,
     make: (config, options) => new CreepRandomChangePixel(config, options.interval),
   },
   {
     name: 'creep-random-change-everyLoop',
-    when: options => options.isCreep && options.isRandomColorMode && options.isChangeRandomColorMode && options.everyLoopcolorChangeInterval,
+    when: options => options.isCreep && options.isRandomColorMode && options.isChangeRandomColorMode && options.everyLoopColorChangeInterval,
     make: (config, options) => new CreepRandomChangeLoop(config, options.interval),
   },
 
@@ -76,39 +121,39 @@ export const RULES = [
   // --- WALK PIXEL (pixel ON) ---
   {
     name: 'walkPixel-on-custom',
-    when: options => options.isWalkPixel && options.pixelOn && options.isCustomColorMode,
+    when: options => options.isWalkPixel && options.pixelState === 1 && options.isCustomColorMode,
     make: (config, options) => new WalkPixelOnCustom(config, options.interval, options.red, options.green, options.blue),
   },
   {
     name: 'walkPixel-on-random-static',
-    when: options => options.isWalkPixel && options.pixelOn && options.isRandomColorMode && options.isStaticRandomColorMode,
+    when: options => options.isWalkPixel && options.pixelState === 1 && options.isRandomColorMode && options.isStaticRandomColorMode,
     make: (config, options) => new WalkPixelOnRandomStatic(config, options.interval),
   },
   {
     name: 'walkPixel-on-random-change-everyPixel',
-    when: options => options.isWalkPixel && options.pixelOn && options.isRandomColorMode && options.everyPixelcolorChangeInterval,
+    when: options => options.isWalkPixel && options.pixelState === 1 && options.isRandomColorMode && options.everyPixelColorChangeInterval,
     make: (config, options) => new WalkPixelOnRandomChangePixel(config, options.interval),
   },
   {
     name: 'walkPixel-on-random-change-everyLoop',
-    when: options => options.isWalkPixel && options.pixelOn && options.isRandomColorMode && options.everyLoopcolorChangeInterval,
+    when: options => options.isWalkPixel && options.pixelState === 1 && options.isRandomColorMode && options.everyLoopColorChangeInterval,
     make: (config, options) => new WalkPixelOnRandomChangeLoop(config, options.interval),
   },
 
   // --- WALK PIXEL (pixel OFF) ---
   {
     name: 'walkPixel-off-custom',
-    when: options => options.isWalkPixel && options.pixelOff && options.isCustomColorMode,
+    when: options => options.isWalkPixel && options.pixelState === 0 && options.isCustomColorMode,
     make: (config, options) => new WalkPixelOffCustomStatic(config, options.interval, options.red, options.green, options.blue),
   },
   {
     name: 'walkPixel-off-random-change-everyPixel',
-    when: options => options.isWalkPixel && options.pixelOff && options.isRandomColorMode && options.everyPixelcolorChangeInterval,
+    when: options => options.isWalkPixel && options.pixelState === 0 && options.isRandomColorMode && options.everyPixelColorChangeInterval,
     make: (config, options) => new WalkPixelOffRandomChangePixel(config, options.interval),
   },
   {
     name: 'walkPixel-off-random-change-everyLoop',
-    when: options => options.isWalkPixel && options.pixelOff && options.isRandomColorMode && options.everyLoopcolorChangeInterval,
+    when: options => options.isWalkPixel && options.pixelState === 0 && options.isRandomColorMode && options.everyLoopColorChangeInterval,
     make: (config, options) => new WalkPixelOffRandomChangeLoop(config, options.interval),
   },
 
