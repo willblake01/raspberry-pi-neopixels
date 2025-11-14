@@ -1,5 +1,5 @@
-import { EFFECTS } from "../constants/index.js";
-import { and, integerBetween } from '../utils/index.js';
+import { EFFECTS } from "../constants/index.ts";
+import { and, integerBetween } from '../utils/index.ts';
 
 const EFFECT_CHOICES = [
   { title: 'Solid', value: EFFECTS.SOLID },
