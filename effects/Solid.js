@@ -22,7 +22,7 @@ export class SolidCustom {
 
     const args = {
       pixelCount: this.config.leds,
-      effect: 'solid',
+      effect: EFFECTS.SOLID,
       color1: color
     };
 
@@ -45,7 +45,7 @@ export class SolidRandom {
 
     const args = {
       pixelCount: this.config.leds,
-      effect: 'solid',
+      effect: EFFECTS.SOLID,
       color1: color
     };
 

@@ -13,8 +13,21 @@ export const setPixelColor = ({ pixelCount, effect, color1, offset, color2 }) =>
       break;
     case EFFECTS.WALK_PIXEL:
 
-      // Set pixel at offset to color
-      pixels[offset] = color1;
+      if (EFFECTS.WALK_PIXEL.PIXEL_STATE === 0) {
+
+        // Set pixel at index to 0 and rest of strand to color
+        for (let i = 0; i < pixelCount; i++) {
+          if (i === offset) {
+            pixels[offset] = 0;
+          } else {
+            pixels[i] = color1;
+          };
+        };
+      } else {
+
+        // Set pixel at offset to color
+        pixels[offset] = color1;
+      };
       break;
     case EFFECTS.WHEEL:
 

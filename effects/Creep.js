@@ -90,7 +90,7 @@ export class CreepRandomStatic {
 
     const args = {
       pixelCount: this.config.leds,
-      effect: 'creep',
+      effect: EFFECTS.CREEP,
       color1: color,
       offset: this._offset
     };
@@ -150,7 +150,7 @@ export class CreepRandomChangePixel {
     
     const args = {
       pixelCount: this.config.leds,
-      effect: 'creep',
+      effect: EFFECTS.CREEP,
       color1: color,
       offset: this._offset
     };
@@ -212,7 +212,7 @@ export class CreepRandomChangeLoop {
 
     const args = {
       pixelCount: this.config.leds,
-      effect: 'creep',
+      effect: EFFECTS.CREEP,
       color1: color,
       offset: this._offset
     };

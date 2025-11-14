@@ -31,7 +31,7 @@ export class Change {
 
     const args = {
       pixelCount: this.config.leds,
-      effect: 'change',
+      effect: EFFECTS.CHANGE,
       color1: color
     };
 

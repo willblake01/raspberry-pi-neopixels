@@ -1,6 +1,7 @@
 import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
 import { setPixelColor } from './utils/index.js';
+import { EFFECTS } from '../constants/index.js';
 
 export class BlinkCustom {
   /**
@@ -35,7 +36,7 @@ export class BlinkCustom {
 
     const args = {
       pixelCount: this.config.leds,
-      effect: 'blink',
+      effect: EFFECTS.BLINK,
       color1: color
     };
 
@@ -91,7 +92,7 @@ export class BlinkRandomStatic {
 
     const args = {
       pixelCount: this.config.leds,
-      effect: 'blink',
+      effect: EFFECTS.BLINK,
       color1: color
     };
 
@@ -154,7 +155,7 @@ export class BlinkRandomChange {
 
     const args = {
       pixelCount: this.config.leds,
-      effect: 'blink',
+      effect: EFFECTS.BLINK,
       color1: color
     };
 
