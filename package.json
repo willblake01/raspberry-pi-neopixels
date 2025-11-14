@@ -2,6 +2,7 @@
   "type": "module",
   "dependencies": {
     "prompts": "^2.4.2",
-    "rpi-ws281x": "^1.0.37"
+    "rpi-ws281x": "^1.0.37",
+    "typescript": "^5.9.3"
   }
 }

@@ -33,6 +33,7 @@ export class SolidCustom {
 export class SolidRandom {
   constructor(config) {
     this.config = config;
+    
     this._red = randomNumber(255);
     this._green = randomNumber(255);
     this._blue = randomNumber(255);
