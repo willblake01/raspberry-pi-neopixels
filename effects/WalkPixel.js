@@ -36,7 +36,8 @@ export class WalkPixelOnCustom {
         pixelCount: this.config.leds,
         effect: EFFECTS.WALK_PIXEL,
         color1: color,
-        offset: this._offset
+        offset: this._offset,
+        pixelState: 1
       };
 
       const pixels = setPixelColor({...args});
@@ -91,7 +92,8 @@ export class WalkPixelOnRandomStatic {
       pixelCount: this.config.leds,
       effect: EFFECTS.WALK_PIXEL,
       color1: color,
-      offset: this._offset
+      offset: this._offset,
+      pixelState: 1
     };
 
     const pixels = setPixelColor({...args});
@@ -150,7 +152,8 @@ export class WalkPixelOnRandomChangePixel {
     const args = {
       pixelCount: this.config.leds,
       effect: EFFECTS.WALK_PIXEL,
-      color1: color
+      color1: color,
+      pixelState: 1
     };
 
     const pixels = setPixelColor({...args});
@@ -212,7 +215,8 @@ export class WalkPixelOnRandomChangeLoop {
     const args = {
       pixelCount: this.config.leds,
       effect: EFFECTS.WALK_PIXEL,
-      color1: color
+      color1: color,
+      pixelState: 1
     };
 
     const pixels = setPixelColor({...args});
@@ -266,13 +270,12 @@ export class WalkPixelOffCustomStatic {
 
     const color = (this.red << 16) | (this.green << 8) | this.blue;
 
-    EFFECTS.WALK_PIXEL.PIXEL_STATE = 0;
-
     const args = {
       pixelCount: this.config.leds,
       effect: EFFECTS.WALK_PIXEL,
       color1: color,
-      offset: this._offset
+      offset: this._offset,
+      pixelState: 0
     };
 
     const pixels = setPixelColor({ ...args });
@@ -328,13 +331,12 @@ export class WalkPixelOffRandomChangePixel {
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
 
-    EFFECTS.WALK_PIXEL.PIXEL_STATE = 0;
-
     const args = {
       pixelCount: this.config.leds,
       effect: EFFECTS.WALK_PIXEL,
       color1: color,
-      offset: this._offset
+      offset: this._offset,
+      pixelState: 0
     };
 
     const pixels = setPixelColor({ ...args });
@@ -392,13 +394,12 @@ export class WalkPixelOffRandomChangeLoop {
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
 
-    EFFECTS.WALK_PIXEL.PIXEL_STATE = 0;
-
     const args = {
       pixelCount: this.config.leds,
       effect: EFFECTS.WALK_PIXEL,
       color1: color,
-      offset: this._offset
+      offset: this._offset,
+      pixelState: 0
     };
 
     const pixels = setPixelColor({ ...args });
