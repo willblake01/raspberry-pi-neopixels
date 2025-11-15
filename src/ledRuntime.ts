@@ -1,6 +1,6 @@
 // @ts-ignore
 import ws281x from 'rpi-ws281x';
-import { Config, Pixels } from './types';
+import { Config, Pixels } from './types/index.js';
 
 export const runtime = { alive: false };
 

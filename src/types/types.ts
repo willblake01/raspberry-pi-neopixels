@@ -1,4 +1,4 @@
-import { EFFECTS } from "../constants";  
+import { EFFECTS } from "../constants/index.js";  
 
 export interface Config {
   leds: number;
