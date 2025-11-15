@@ -21,7 +21,7 @@ const selectEffect = (config: Config, options: Options) => {
 const neopixels = async () => {
 
   // @ts-ignore
-  const response: Array = prompts(promptsConfig);
+  const response: Array = await prompts(promptsConfig);
   const options: NormalizeAnswers = normalizeAnswers(response);
 
   const config = {
