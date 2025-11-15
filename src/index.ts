@@ -32,6 +32,8 @@ const neopixels = async () => {
     stripType: 'rgb'
   };
 
+  console.log('config', config);
+
   const manager = new EffectManager(config);
 
   const shutDown = once(async (reason: string, err?: Error | unknown) => {
