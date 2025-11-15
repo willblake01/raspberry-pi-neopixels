@@ -21,11 +21,6 @@
     "checkJs": false,
     "resolveJsonModule": true,
 
-    "typeRoots": [
-      "./src/types",
-      "./node_modules/@types"
-    ],
-
     /* Emit .d.ts files */
     "declaration": true,
     "declarationMap": true
