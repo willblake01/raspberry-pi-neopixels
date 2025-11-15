@@ -1,15 +1,17 @@
+// @ts-ignore
 import ws281x from 'rpi-ws281x';
+import { Config, Pixels } from './types';
 
 export const runtime = { alive: false };
 
-const tick = () => new Promise(r => setImmediate(r));
+const tick = () => new Promise<void>(r => setImmediate(r));
 
-export const init = (config) => {
+export const init = (config: Config) => {
   ws281x.configure(config);
   runtime.alive = true;
 };
 
-export const safeRender = (pixels) => {
+export const safeRender = (pixels: Pixels) => {
   if (!runtime.alive) return;
   ws281x.render(pixels);
 };

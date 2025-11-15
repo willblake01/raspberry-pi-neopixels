@@ -1,5 +1,24 @@
-import { EFFECTS } from "../constants/index.ts";
-import { and, integerBetween } from '../utils/index.ts';
+import { EFFECTS } from "../constants/index.js";
+import { and, integerBetween } from '../utils/index.js';
+import type { EffectName, NormalizeAnswers } from "../types/types.js";
+
+export type Predicate = (v: NormalizeAnswers) => boolean;
+
+export interface SelectChoice<T = any> {
+  title: string;
+  value: T;
+}
+
+export interface NumberPromptConfig {
+  min: number;
+  max: number;
+  initial: number;
+  when?: Predicate;
+}
+
+/** A function used by `prompts` to compute dynamic `type` */
+export type PromptTypeFn =
+  (prev: any, values: NormalizeAnswers) => "select" | "number" | null;
 
 const EFFECT_CHOICES = [
   { title: 'Solid', value: EFFECTS.SOLID },
@@ -12,38 +31,38 @@ const EFFECT_CHOICES = [
 ];
 
 // Capabilities
-const EFFECT_NEEDS_INTERVAL = new Set([
+const EFFECT_NEEDS_INTERVAL: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.CHANGE, EFFECTS.BLINK, EFFECTS.BREATHE, EFFECTS.CREEP, EFFECTS.WHEEL, EFFECTS.WALK_PIXEL
 ]);
-const EFFECT_ALLOWS_CUSTOM = new Set([
+const EFFECT_ALLOWS_CUSTOM: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.SOLID, EFFECTS.BLINK, EFFECTS.BREATHE, EFFECTS.CREEP, EFFECTS.WALK_PIXEL
 ]);
 
 // Random color is *not allowed for Change or Wheel
-const EFFECT_ALLOWS_RANDOM = new Set([
+const EFFECT_ALLOWS_RANDOM: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.SOLID, EFFECTS.BLINK, EFFECTS.CREEP, EFFECTS.WALK_PIXEL
 ]);
 
 // For random 'change' (interval choice), exclude Blink
-const EFFECT_ALLOWS_RANDOM_CHANGE_INTERVAL = new Set([
+const EFFECT_ALLOWS_RANDOM_CHANGE_INTERVAL: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.CREEP, EFFECTS.WALK_PIXEL
 ]);
 
 // --- Helpers ---
-const isOn = v => v.command === 1;
-const effectEquals = e => v => v.effect === e;
+const isOn: Predicate = v => v.command === 1;
+const effectEquals = (e: NormalizeAnswers['effect']): Predicate => v => v.effect === e;
 
-const needsInterval = v => EFFECT_NEEDS_INTERVAL.has(v.effect);
-const allowsCustom = v => EFFECT_ALLOWS_CUSTOM.has(v.effect);
-const allowsRandom = v => EFFECT_ALLOWS_RANDOM.has(v.effect);
-const allowsRandomcolorChangeInterval = v => EFFECT_ALLOWS_RANDOM_CHANGE_INTERVAL.has(v.effect);
+const needsInterval: Predicate = v => EFFECT_NEEDS_INTERVAL.has(v.effect);
+const allowsCustom: Predicate = v => EFFECT_ALLOWS_CUSTOM.has(v.effect);
+const allowsRandom: Predicate = v => EFFECT_ALLOWS_RANDOM.has(v.effect);
+const allowsRandomcolorChangeInterval: Predicate = v => EFFECT_ALLOWS_RANDOM_CHANGE_INTERVAL.has(v.effect);
 
-const show = (type, pred) => (_prev, values) => (pred(values) ? type : null);
+const show = (type: 'select' | 'number', pred: Predicate): PromptTypeFn => (_prev, values) => (pred(values) ? type : null);
 
 // --- Small factories ---
-const promptSelect = (name, message, choices, when) => ({ type: show('select', when ?? (() => true)), name, message, choices });
+const promptSelect = <T = any>(name: string, message: string, choices: SelectChoice<T>[], when?: Predicate) => ({ type: show('select', when ?? (() => true)), name, message, choices });
 
-const promptNumber = (name, message, { min, max, initial, when }) => ({
+const promptNumber = (name: string, message: string, { min, max, initial, when }: NumberPromptConfig) => ({
   type: show('number', when ?? (() => true)),
   name,
   message,
@@ -58,7 +77,7 @@ export const promptsConfig = [
   promptSelect('command', 'Enter command', [
     { title: 'On', value: 1 },
     { title: 'Off', value: 0 }
-  ]),
+  ], isOn),
 
   // Effect (only when turning on)
   promptSelect('effect', 'Set effect', EFFECT_CHOICES, isOn),
@@ -76,7 +95,7 @@ export const promptsConfig = [
 
   // LED count (always asked)
   promptNumber('leds', 'Enter number of LEDs (0-100)', {
-    min: 0, max: 100, initial: 100
+    min: 0, max: 100, initial: 100, when: isOn
   }),
 
   // Brightness (only when on)

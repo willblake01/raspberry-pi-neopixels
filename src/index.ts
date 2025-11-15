@@ -1,34 +1,28 @@
 import prompts from 'prompts';
 import { EffectManager } from './EffectManager.js';
-import { normalizeAnswers, promptsConfig } from './prompts/index.ts';
-import { TurnOff } from './effects/index.ts';
-import { RULES } from './effects/utils/index.ts';
-import { once } from './utils/index.ts';
-import { Config, Options } from './types/index.ts';
+import { normalizeAnswers, promptsConfig } from './prompts/index.js';
+import { TurnOff } from './effects/index.js';
+import { RULES } from './effects/utils/index.js';
+import { once } from './utils/index.js';
+import { Config, NormalizeAnswers, Options } from './types/index.js';
 
 interface DelayProps {
-  (ms: number): void;
+  (ms: number): Promise<void>;
 };
 
-interface SelectEffectProps {
-  (config: Config, opts: Options): void;
-};
+const delay: DelayProps = (ms) => new Promise<void>(resolve => setTimeout(resolve, ms));
 
-interface ShutDownProps {
-  (reason: string, error?: Error | unknown): void;
-};
-
-const delay: DelayProps = (ms) => new Promise(r => setTimeout(r, ms));
-
-const selectEffect: SelectEffectProps = (config, opts) => {
-  if (opts.isOff) return new TurnOff(config);
-  const rule = RULES.find(r => r.when(opts));
-  return rule ? rule.make(config, opts) : new TurnOff(config);
+const selectEffect = (config: Config, options: Options) => {
+  if (options.isOff) return new TurnOff(config);
+  const rule = RULES.find(r => r.when(options));
+  return rule ? rule.make(config, options) : new TurnOff(config);
 };
 
 const neopixels = async () => {
-  const response = prompts(promptsConfig);
-  const options: Options = normalizeAnswers(response);
+
+  // @ts-ignore
+  const response: Array = prompts(promptsConfig);
+  const options: NormalizeAnswers = normalizeAnswers(response);
 
   const config = {
     leds:options.leds,
@@ -40,7 +34,7 @@ const neopixels = async () => {
 
   const manager = new EffectManager(config);
 
-  const shutDown: ShutDownProps = once(async (reason: string, err: Error) => {
+  const shutDown = once(async (reason: string, err?: Error | unknown) => {
     try { 
       await manager.dispose();
     } finally {

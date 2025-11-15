@@ -1,28 +1,38 @@
 import { init, dispose } from './ledRuntime.js';
+import { Config } from './types/index.js'
 
-const tick = () => new Promise(r => setImmediate(r));
+interface Effect {
+  run(): void | Promise<void>;
+  stop?(): void | Promise<void>;
+};
+
+const tick = () => new Promise<void>(resolve => setImmediate(resolve));
 
 export class EffectManager {
-  constructor(config) {
+  config: Config;
+  _current: Effect | null;
+  _disposed: boolean;
+
+  constructor(config: Config) {
     this.config = config;
-    this.current = null;
+    this._current = null;
     this._disposed = false;
 
     init(config);
   };
 
-  async start(effect) {
+  async start(effect: Effect): Promise<void> {
     if (this._disposed) throw new Error('EffectManager already disposed');
     await this.stop();
-    this.current = effect;
+    this._current = effect;
     effect.run();
   };
 
   async stop() {
-    const eff = this.current;
+    const eff = this._current;
     if (!eff) return;
     try { eff.stop?.(); } finally {
-      this.current = null;
+      this._current = null;
       await tick();
     }; 
   };

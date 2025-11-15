@@ -6,4 +6,4 @@ export const EFFECTS = {
     CREEP: 'creep',
     WHEEL: 'wheel',
     WALK_PIXEL: 'walk pixel'
-  };
+  } as const;
