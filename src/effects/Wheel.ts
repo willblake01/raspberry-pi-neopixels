@@ -5,26 +5,26 @@ import { Config, Interval } from '../types/index.js';
 export class Wheel {
   config: Config;
   interval: Interval;
-  _offset: number;
-  _red1: number;
-  _green1: number;
-  _blue1: number;
+  red1: number;
+  green1: number;
+  blue1: number;
   _red2: number;
   _green2: number;
   _blue2: number;
+  _offset: number;
   _intervalID: NodeJS.Timeout | null;
   _stopped: boolean;
 
-  constructor(config: Config, interval: Interval) {
+  constructor(config: Config, interval: Interval, red1: number, green1: number, blue1: number) {
     this.config = config;
     this.interval = interval;
-    this._offset = 0;
-    this._red1 = randomNumber(255);
-    this._green1 = randomNumber(255);
-    this._blue1 = randomNumber(255);
+    this.red1 = randomNumber(255);
+    this.green1 = randomNumber(255);
+    this.blue1 = randomNumber(255);
     this._red2 = 0;
     this._green2 = 0;
     this._blue2 = 0;
+    this._offset = 0;
     this._intervalID = null;
     this._stopped = false;
   };
@@ -39,13 +39,13 @@ export class Wheel {
         color2 = color1;
 
         // Change color every loop
-        this._red1 = randomNumber(255);
-        this._green1 = randomNumber(255);
-        this._blue1 = randomNumber(255);
+        this.red1 = randomNumber(255);
+        this.green1 = randomNumber(255);
+        this.blue1 = randomNumber(255);
       };
     };
 
-    let color1 = (this._red1 << 16) | (this._green1 << 8) | this._blue1;
+    let color1 = (this.red1 << 16) | (this.green1 << 8) | this.blue1;
     let color2 = (this._red2 << 16) | (this._green2 << 8) | this._blue2;
 
     const pixels = new Uint32Array(this.config.leds);

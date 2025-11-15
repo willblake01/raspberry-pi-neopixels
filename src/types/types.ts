@@ -14,10 +14,10 @@ export interface Options {
   leds: number;
   brightness?: number;
   effect?: EffectName;
-  interval?: number;
-  red?: number;
-  green?: number;
-  blue?: number;
+  interval: number | 250;
+  red: number;
+  green: number;
+  blue: number;
 
   // Color mode
   colorMode?: ColorMode;
@@ -62,9 +62,9 @@ export interface RawAnswers {
   brightness?: number;
   effect?: EffectName;
   interval?: number;
-  red?: number;
-  green?: number;
-  blue?: number;
+  red: number;
+  green: number;
+  blue: number;
   colorMode?: ColorMode;
   randomColorMode?: RandomColorMode;
   colorChangeInterval?: ColorChangeInterval;

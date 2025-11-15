@@ -5,19 +5,19 @@ import { Config, Interval } from '../types/index.js';
 export class Change {
   config: Config;
   interval: Interval;
-  _red: number;
-  _green: number;
-  _blue: number;
+  red: number;
+  green: number;
+  blue: number;
   _intervalID: NodeJS.Timeout | null;
   _stopped: boolean;
 
 
-  constructor(config: Config, interval: Interval) {
+  constructor(config: Config, interval: Interval, red: number, green: number, blue: number) {
     this.config = config;
     this.interval = interval;
-    this._red = randomNumber(255);
-    this._green = randomNumber(255);
-    this._blue = randomNumber(255);
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
     this._intervalID = null;
     this._stopped = false;
   };
@@ -26,12 +26,12 @@ export class Change {
     if (this._stopped) return;
 
     const setNextState = () => {
-      this._red = randomNumber(255);
-      this._green = randomNumber(255);
-      this._blue = randomNumber(255);
+      this.red = randomNumber(255);
+      this.green = randomNumber(255);
+      this.blue = randomNumber(255);
     };
 
-    const color = (this._red << 16) | (this._green << 8) | this._blue;
+    const color = (this.red << 16) | (this.green << 8) | this.blue;
 
     const pixels = new Uint32Array(this.config.leds);
 

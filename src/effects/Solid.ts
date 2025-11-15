@@ -42,20 +42,20 @@ export class SolidCustom implements SolidCustomProps {
 
 export class SolidRandom implements SolidRandomProps {
   config: Config;
-  _red: number;
-  _green: number;
-  _blue: number;
+  red: number;
+  green: number;
+  blue: number;
 
-  constructor(config: Config) {
+  constructor(config: Config, red: number, green: number, blue: number) {
     this.config = config;
 
-    this._red = randomNumber(255);
-    this._green = randomNumber(255);
-    this._blue = randomNumber(255);
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
   };
 
   run() {
-    const color = (this._red << 16) | (this._green << 8) | this._blue;
+    const color = (this.red << 16) | (this.green << 8) | this.blue;
 
     const pixels = new Uint32Array(this.config.leds);
 

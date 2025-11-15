@@ -66,19 +66,19 @@ export class BlinkCustom {
 export class BlinkRandomStatic {
   config: Config;
   interval: Interval;
-  _red: number;
-  _green: number;
-  _blue: number;
+  red: number;
+  green: number;
+  blue: number;
   _on: boolean;
   _intervalID: NodeJS.Timeout | null;
   _stopped: boolean;
 
-  constructor(config: Config, interval: Interval) {
+  constructor(config: Config, interval: Interval, red: number, green: number, blue: number) {
     this.config = config;
     this.interval = interval;
-    this._red = randomNumber(255);
-    this._green = randomNumber(255);
-    this._blue = randomNumber(255);
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
     this._on = true;
     this._intervalID = null;
     this._stopped = false;
@@ -91,9 +91,9 @@ export class BlinkRandomStatic {
       this._on = !this._on;
     };
 
-    const red = this._on ? this._red : 0;
-    const green = this._on ? this._green : 0;
-    const blue = this._on ? this._blue : 0;
+    const red = this._on ? this.red : 0;
+    const green = this._on ? this.green : 0;
+    const blue = this._on ? this.blue : 0;
 
     const color = (red << 16) | (green << 8) | blue;
 
@@ -127,19 +127,19 @@ export class BlinkRandomStatic {
 export class BlinkRandomChange {
   config: Config;
   interval: Interval;
-  _red: number;
-  _green: number;
-  _blue: number;
+  red: number;
+  green: number;
+  blue: number;
   _on: boolean;
   _intervalID: NodeJS.Timeout | null;
   _stopped: boolean;
 
-  constructor(config: Config, interval: Interval) {
+  constructor(config: Config, interval: Interval, red: number, green: number, blue: number) {
     this.config = config;
     this.interval = interval;
-    this._red = randomNumber(255);
-    this._green = randomNumber(255);
-    this._blue = randomNumber(255);
+    this.red = red;
+    this.green = green;
+    this.blue = blue;
     this._on = true;
     this._intervalID = null;
     this._stopped = false;
@@ -153,15 +153,15 @@ export class BlinkRandomChange {
 
       if (this._on) {
         // Change color every cycle
-        this._red = randomNumber(255);
-        this._green = randomNumber(255)
-        this._blue = randomNumber(255);
+        this.red = randomNumber(255);
+        this.green = randomNumber(255)
+        this.blue = randomNumber(255);
       };
     };
     
-    const red = this._on ? this._red : 0;
-    const green = this._on ? this._green : 0;
-    const blue = this._on ? this._blue : 0;
+    const red = this._on ? this.red : 0;
+    const green = this._on ? this.green : 0;
+    const blue = this._on ? this.blue : 0;
 
     const color = (red << 16) | (green << 8) | blue;
 
