@@ -22,10 +22,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.17.0",
-<<<<<<< Updated upstream
     "@types/prompts": "^2.4.9",
-=======
->>>>>>> Stashed changes
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }
