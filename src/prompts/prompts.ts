@@ -82,17 +82,6 @@ export const promptsConfig = [
   // Effect (only when turning on)
   promptSelect('effect', 'Set effect', EFFECT_CHOICES, isOn),
 
-  // Walk Pixel -> pixel state
-  promptSelect('pixelState', 'Set pixel', [
-    { title: 'On', value: 1 },
-    { title: 'Off', value: 0 }
-  ], and(isOn, effectEquals(EFFECTS.WALK_PIXEL))),
-
-  // Interval (for all effects except Solid)
-  promptNumber('interval', 'Enter interval (milliseconds)', {
-    min: 1, max: 60_000, initial: 250, when: and(isOn, v => needsInterval(v))
-  }),
-
   // LED count (always asked)
   promptNumber('leds', 'Enter number of LEDs (0-100)', {
     min: 0, max: 100, initial: 100, when: isOn
@@ -101,6 +90,11 @@ export const promptsConfig = [
   // Brightness (only when on)
   promptNumber('brightness', 'Enter brightness (0-255)', {
     min: 0, max: 255, initial: 128, when: isOn
+  }),
+
+  // Interval (for all effects except Solid)
+  promptNumber('interval', 'Enter interval (milliseconds)', {
+    min: 1, max: 60_000, initial: 250, when: and(isOn, v => needsInterval(v))
   }),
 
   // Color mode (disallowed for change & wheel)
@@ -124,5 +118,11 @@ export const promptsConfig = [
   // Custom RGB (only when custom color is allowed)
   promptNumber('red', 'Enter a red value (0-255)', { min: 0, max: 255, initial: 0, when: and(isOn, v => v.colorMode === 'custom' && allowsCustom(v)) }),
   promptNumber('green', 'Enter a green value (0-255)', { min: 0, max: 255, initial: 0, when: and(isOn, v => v.colorMode === 'custom' && allowsCustom(v)) }),
-  promptNumber('blue', 'Enter a blue value (0-255)', { min: 0, max: 255, initial: 0, when: and(isOn, v => v.colorMode === 'custom' && allowsCustom(v)) })
+  promptNumber('blue', 'Enter a blue value (0-255)', { min: 0, max: 255, initial: 0, when: and(isOn, v => v.colorMode === 'custom' && allowsCustom(v)) }),
+
+  // Walk Pixel -> pixel state
+  promptSelect('pixelState', 'Set pixel', [
+    { title: 'On', value: 1 },
+    { title: 'Off', value: 0 }
+  ], and(isOn, effectEquals(EFFECTS.WALK_PIXEL)))
 ];
