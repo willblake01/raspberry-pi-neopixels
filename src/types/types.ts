@@ -1,4 +1,4 @@
-import { EFFECTS } from "../constants/index.js";  
+import { EFFECTS } from "../constants/index.js";
 
 export interface Config {
   leds: number;
@@ -10,22 +10,22 @@ export interface Config {
 
 export interface Options {
   // Base config
-  leds: number;
-  brightness: number;
-  interval: number;
-  red: number;
-  green: number;
-  blue: number;
   command: number;
-  effect: string;
+  leds: number;
+  brightness?: number;
+  effect?: EffectName;
+  interval?: number;
+  red?: number;
+  green?: number;
+  blue?: number;
 
   // Color mode
-  colorMode: 'custom' | 'random';
-  randomColorMode: 'static' | 'change';
-  colorChangeInterval: string;
+  colorMode?: ColorMode;
+  randomColorMode?: RandomColorMode;
+  colorChangeInterval?: ColorChangeInterval;
 
   // Pixel state
-  pixelState: 0 | 1;
+  pixelState?: 0 | 1;
 
   // Effect flags
   isSolid: boolean;
@@ -57,22 +57,24 @@ export type RandomColorMode = "static" | "change";
 export type ColorChangeInterval = "everyPixel" | "everyLoop";
 
 export interface RawAnswers {
-  leds: number;
-  brightness: number;
-  interval: number;
-  red: number;
-  green: number;
-  blue: number;
   command: number;
-  effect: EffectName;
-  colorMode: ColorMode;
-  randomColorMode: RandomColorMode;
-  colorChangeInterval: ColorChangeInterval;
-  pixelState: 0 | 1;
+  leds: number;
+  brightness?: number;
+  effect?: EffectName;
+  interval?: number;
+  red?: number;
+  green?: number;
+  blue?: number;
+  colorMode?: ColorMode;
+  randomColorMode?: RandomColorMode;
+  colorChangeInterval?: ColorChangeInterval;
+  pixelState?: 0 | 1;
 };
 
 // Normalized shape you actually use downstream
 export interface NormalizeAnswers extends RawAnswers {
+  brightness: number;
+  interval: number;
   isOn: boolean;
   isOff: boolean;
   isSolid: boolean;
@@ -95,7 +97,7 @@ export type PromptTypeFn =
   (prev: any, values: any) => 'select' | 'number' | null;
 
 export interface BasePrompt {
-  // In your code, `type` is always `show('select' | 'number', pred)`
+  // `type` is always `show('select' | 'number', pred)`
   type: PromptTypeFn;
   name: string;
   message: string;
