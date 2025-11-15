@@ -122,3 +122,5 @@ export type PromptConfig = SelectPrompt | NumberPrompt;
 
 // The whole config array
 export type PromptsConfig = PromptConfig[];
+
+export type Interval = number;
