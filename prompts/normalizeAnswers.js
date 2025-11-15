@@ -28,6 +28,6 @@ export const normalizeAnswers = (res) => {
     isStaticRandomColorMode: randomColorMode === 'static',
     isChangeRandomColorMode: randomColorMode === 'change',
     everyPixelColorChangeInterval: colorChangeInterval === 'everyPixel',
-    everyLoopcolorChangeInterval: colorChangeInterval === 'everyLoop'
+    everyLoopColorChangeInterval: colorChangeInterval === 'everyLoop'
   };
 };

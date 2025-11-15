@@ -4,18 +4,31 @@ import { normalizeAnswers, promptsConfig } from './prompts/index.ts';
 import { TurnOff } from './effects/index.ts';
 import { RULES } from './effects/utils/index.ts';
 import { once } from './utils/index.ts';
+import { Config, Options } from './types/index.ts';
 
-const delay = (ms) => new Promise(r => setTimeout(r, ms));
+interface DelayProps {
+  (ms: number): void;
+};
 
-const selectEffect = (config, opts) => {
+interface SelectEffectProps {
+  (config: Config, opts: Options): void;
+};
+
+interface ShutDownProps {
+  (reason: string, error?: Error | unknown): void;
+};
+
+const delay: DelayProps = (ms) => new Promise(r => setTimeout(r, ms));
+
+const selectEffect: SelectEffectProps = (config, opts) => {
   if (opts.isOff) return new TurnOff(config);
   const rule = RULES.find(r => r.when(opts));
   return rule ? rule.make(config, opts) : new TurnOff(config);
 };
 
 const neopixels = async () => {
-  const response = await prompts(promptsConfig);
-  const options = normalizeAnswers(response);
+  const response = prompts(promptsConfig);
+  const options: Options = normalizeAnswers(response);
 
   const config = {
     leds:options.leds,
@@ -27,7 +40,7 @@ const neopixels = async () => {
 
   const manager = new EffectManager(config);
 
-  const shutDown = once(async (reason, err) => {
+  const shutDown: ShutDownProps = once(async (reason: string, err: Error) => {
     try { 
       await manager.dispose();
     } finally {
@@ -42,9 +55,9 @@ const neopixels = async () => {
   process.once('SIGINT', () => shutDown('SIGINT'));
   process.once('SIGTERM', () => shutDown('SIGTERM'));
   process.once('uncaughtException', (err) => shutDown('uncaughtException', err));
-  process.once('unhandledRejection', (err) => shutDown('unhandledRejection', err));
+  process.once('unhandledRejection', (err) => shutDown('uncaughtException', err));
 
-  await delay(1000);
+  delay(1000);
 
   const effect = selectEffect(manager.config, options);
   await manager.start(effect);

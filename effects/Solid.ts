@@ -1,20 +1,21 @@
 import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.ts';
+import { Config } from '../types/index.ts';
 
 interface SolidCustomProps {
-    config: object;
+    config: Config;
     red: number;
     green: number;
     blue: number;
   };
 
 export class SolidCustom implements SolidCustomProps {
-  config: object;
+  config: Config;
   red: number;
   green: number;
   blue: number;
 
-  constructor(config: object, red: number, green: number, blue: number) {
+  constructor(config: Config, red: number, green: number, blue: number) {
     this.config = config;
     this.red = red;
     this.green = green;
@@ -36,16 +37,16 @@ export class SolidCustom implements SolidCustomProps {
 };
 
 interface SolidRandomProps {
-  config: object;
+  config: Config;
 };
 
 export class SolidRandom {
-  config: object;
+  config: Config;
   _red: number;
   _green: number;
   _blue: number;
 
-  constructor(config: object) {
+  constructor(config: Config) {
     this.config = config;
 
     this._red = randomNumber(255);
