@@ -1,31 +1,19 @@
 {
   "compilerOptions": {
-    /* Node 16 ESM */
     "target": "ES2021",
-    "module": "node16",
+    "module": "Node16",
     "moduleResolution": "node16",
 
-    /* Output */
     "outDir": "dist",
     "rootDir": "src",
 
-    /* TS Behavior */
     "strict": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
 
-    /* ESM / Runtime Compatibility */
-    "isolatedModules": true,
-    "allowJs": true,
-    "checkJs": false,
     "resolveJsonModule": true,
-
-    /* Emit .d.ts files */
-    "declaration": true,
-    "declarationMap": true
+    "isolatedModules": true,
+    "declaration": true
   },
-
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*"]
 }
