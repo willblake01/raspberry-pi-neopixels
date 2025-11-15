@@ -12,7 +12,7 @@
     "node": "14.15.0"
   },
   "scripts": {
-    "dev": "ts-node --esm /neopixels.ts",
+    "dev": "ts-node --esm neopixels.ts",
     "build": "tsc",
     "start": "node dist/index.js"
   },
