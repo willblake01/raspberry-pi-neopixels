@@ -14,7 +14,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "node --loader ts-node/esm src/index.ts",
-    "start": "env \"PATH=$PATH\" bash -c 'echo PATH=$PATH'"
+    "start": "env \"PATH=$PATH\" node dist/index.js"
   },
   "dependencies": {
     "prompts": "^2.4.2",
