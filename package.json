@@ -14,7 +14,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "node --loader ts-node/esm src/index.ts",
-    "start": "/home/wild-stallion/.nvm/versions/node/v16.20.2/bin/node dist/index.js"
+    "start": "env \"PATH=$PATH\" node dist/index.js"
   },
   "dependencies": {
     "prompts": "^2.4.2",
