@@ -8,9 +8,6 @@
   },
   "type": "module",
   "description": "LED effects engine for Raspberry Pi using ws281x and TypeScript",
-  "engines": {
-    "node": "16.20.2"
-  },
   "scripts": {
     "build": "tsc",
     "dev": "node --loader ts-node/esm src/index.ts",

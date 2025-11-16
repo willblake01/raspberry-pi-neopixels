@@ -124,7 +124,7 @@ export const RULES: Rule[] = [
 
   // --- TURN OFF (explicit command) ---
   {
-    name: 'turnOff',
+    name: 'turn-off',
     when: options => options.isOff,
     make: (config) => new TurnOff(config),
   },
