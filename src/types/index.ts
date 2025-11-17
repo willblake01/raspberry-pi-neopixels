@@ -1,1 +1,1 @@
-export type { Config, Options, Pixels, RawAnswers, PromptsConfig, Interval } from './types.js';
+export type { Config, Effect, Options, Pixels, PromptsConfig, Interval } from './types.js';

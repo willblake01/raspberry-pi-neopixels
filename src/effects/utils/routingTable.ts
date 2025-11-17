@@ -1,6 +1,6 @@
 import { BlinkCustom, BlinkRandomChange, BlinkRandomStatic, BreatheCustom, Change, CreepCustom, CreepRandomChangePixel, CreepRandomChangeLoop, CreepRandomStatic, SolidCustom, SolidRandom, WalkPixelOffCustomStatic, WalkPixelOffRandomChangeLoop, WalkPixelOffRandomChangePixel, WalkPixelOnCustom, WalkPixelOnRandomChangePixel, WalkPixelOnRandomChangeLoop, WalkPixelOnRandomStatic, Wheel, TurnOff } from '../index.js';
 import { randomNumber } from '../../utils/utils.js';
-import { Options } from '../../types/index.js';
+import { Config, Effect, Options } from '../../types/index.js';
 
 const redRandomValue = randomNumber(255);
 const greenRandomValue = randomNumber(255);
@@ -9,7 +9,7 @@ const blueRandomValue = randomNumber(255);
 interface Rule {
   name: string;
   when: (options: Options) => boolean;
-  make: (config: any, options: Options) => any;
+  make: (config: Config, options: Options) => Effect;
 };
 
 export const RULES: Rule[] = [

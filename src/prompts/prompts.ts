@@ -11,7 +11,7 @@ type AnswersShape = Answers<string>;
 
 export type Predicate = (v: AnswersShape) => boolean;
 
-export interface SelectChoice<T = any> {
+export interface SelectChoice<T = unknown> {
   title: string;
   value: T;
 }
@@ -104,7 +104,7 @@ const show = (type: PromptType, pred: Predicate): PromptTypeFn =>
 // Small factories
 // -----------------------------------------------------------------------------
 
-const promptSelect = <T = any>(
+const promptSelect = <T = unknown>(
   name: string,
   message: string,
   choices: SelectChoice<T>[],
