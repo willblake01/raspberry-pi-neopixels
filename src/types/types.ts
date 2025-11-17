@@ -66,7 +66,7 @@ export interface Options {
   leds: number;
   brightness?: number;
   effect?: EffectName;
-  interval: number | 250;
+  interval: number;
   red: number;
   green: number;
   blue: number;

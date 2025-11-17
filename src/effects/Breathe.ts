@@ -83,9 +83,9 @@ export class BreatheCustom {
 export class BreatheRandom {
   config: Config;
   interval: Interval;
-  red: number;
-  green: number;
-  blue: number;
+  _red: number;
+  _green: number;
+  _blue: number;
   floor: number;
   gamma: number;
   fps: number;
@@ -93,12 +93,12 @@ export class BreatheRandom {
   _intervalID: NodeJS.Timeout | null;
   _stopped: boolean;
 
-  constructor(config: Config, interval: Interval, red: number, green: number, blue: number, floor: number = 0.08, gamma: number = 2, fps: number = 60) {
+  constructor(config: Config, interval: Interval, floor: number = 0.08, gamma: number = 2, fps: number = 60) {
     this.config = config;
     this.interval = interval;
-    this.red = red;
-    this.green = green;
-    this.blue = blue;
+    this._red = randomNumber(255);
+    this._green = randomNumber(255);
+    this._blue = randomNumber(255);
     this.floor = Math.min(Math.max(floor, 0), 1);
     this.gamma = gamma;
     this.fps = fps;
@@ -119,17 +119,11 @@ export class BreatheRandom {
   loop() {
     if (this._stopped) return;
 
-    const setNextState = () => {
-      this.red = randomNumber(255);
-      this.green = randomNumber(255);
-      this.blue = randomNumber(255);
-    };
-
     const scale = this._scalar(Date.now());
 
-    const red = Math.round(this.red | 0) * scale & 0xFF;
-    const green = Math.round(this.green | 0) * scale & 0xFF;
-    const blue = Math.round(this.blue | 0) * scale & 0xFF;
+    const red = Math.round(this._red | 0) * scale & 0xFF;
+    const green = Math.round(this._green | 0) * scale & 0xFF;
+    const blue = Math.round(this._blue | 0) * scale & 0xFF;
 
     const color = (red << 16) | (green << 8) | blue;
 
@@ -138,6 +132,14 @@ export class BreatheRandom {
     // Set strand to color
     for (let i = 0; i < this.config.leds; i++) {
       pixels[i] = color;
+    };
+
+    const setNextState = () => {
+
+      // Change color every cycle
+      this._red = randomNumber(255);
+      this._green = randomNumber(255);
+      this._blue = randomNumber(255);
     };
     
     safeRender(pixels);
