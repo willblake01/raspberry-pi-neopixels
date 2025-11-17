@@ -1,19 +1,7 @@
 import { safeRender } from '../ledRuntime.js';
-import { randomNumber } from '../utils/index.js';
 import { Config } from '../types/index.js';
 
-interface SolidCustomProps {
-  config: Config;
-  red: number;
-  green: number;
-  blue: number;
-};
-
-interface SolidRandomProps {
-  config: Config;
-};
-
-export class SolidCustom implements SolidCustomProps {
+export class SolidCustom {
   config: Config;
   red: number;
   green: number;
@@ -40,7 +28,7 @@ export class SolidCustom implements SolidCustomProps {
   };
 };
 
-export class SolidRandom implements SolidRandomProps {
+export class SolidRandom {
   config: Config;
   red: number;
   green: number;

@@ -3,11 +3,7 @@ import ws281x from 'rpi-ws281x';
 import { safeRender } from '../ledRuntime.js';
 import { Config } from '../types/index.js';
 
-interface TurnOffProps {
-  config: Config;
-};
-
-export class TurnOff implements TurnOffProps {
+export class TurnOff {
   config: Config;
 
   constructor(config: Config) {
