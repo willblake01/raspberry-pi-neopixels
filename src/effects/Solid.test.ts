@@ -68,3 +68,4 @@ describe('Solid effects', () => {
 
     expect(safeRender).not.toHaveBeenCalled();
   });
+});
