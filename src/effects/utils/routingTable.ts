@@ -2,7 +2,9 @@ import { BlinkCustom, BlinkRandomChange, BlinkRandomStatic, BreatheCustom, Chang
 import { randomNumber } from '../../utils/utils.js';
 import { Options } from '../../types/index.js';
 
-const randomColorValue = randomNumber(255);
+const redRandomValue = randomNumber(255);
+const greenRandomValue = randomNumber(255);
+const blueRandomValue = randomNumber(255);
 
 interface Rule {
   name: string;
@@ -20,14 +22,14 @@ export const RULES: Rule[] = [
   {
     name: 'solid-random',
     when: options => options.isSolid && options.isRandomColorMode,
-    make: config => new SolidRandom(config, randomColorValue, randomColorValue, randomColorValue),
+    make: config => new SolidRandom(config, redRandomValue, greenRandomValue, blueRandomValue),
   },
 
   // --- CHANGE ---
   {
     name: 'change',
     when: options => options.isChange,
-    make: (config, options) => new Change(config, options.interval, randomColorValue, randomColorValue, randomColorValue),
+    make: (config, options) => new Change(config, options.interval, redRandomValue, greenRandomValue, blueRandomValue),
   },
 
   // --- BLINK ---
@@ -39,12 +41,12 @@ export const RULES: Rule[] = [
   {
     name: 'blink-random-static',
     when: options => options.isBlink && options.isRandomColorMode && options.isStaticRandomColorMode,
-    make: (config, options) => new BlinkRandomStatic(config, options.interval, randomColorValue, randomColorValue, randomColorValue),
+    make: (config, options) => new BlinkRandomStatic(config, options.interval, redRandomValue, greenRandomValue, blueRandomValue),
   },
   {
     name: 'blink-random-change',
     when: options => options.isBlink && options.isRandomColorMode && options.isChangeRandomColorMode,
-    make: (config, options) => new BlinkRandomChange(config, options.interval, randomColorValue, randomColorValue, randomColorValue),
+    make: (config, options) => new BlinkRandomChange(config, options.interval, redRandomValue, greenRandomValue, blueRandomValue),
   },
 
   // --- BREATHE ---
@@ -80,7 +82,7 @@ export const RULES: Rule[] = [
   {
     name: 'wheel',
     when: options => options.isWheel,
-    make: (config, options) => new Wheel(config, options.interval, randomColorValue, randomColorValue, randomColorValue),
+    make: (config, options) => new Wheel(config, options.interval, redRandomValue, greenRandomValue, blueRandomValue),
   },
 
   // --- WALK PIXEL (pixel ON) ---
@@ -92,12 +94,12 @@ export const RULES: Rule[] = [
   {
     name: 'walkPixel-on-random-static',
     when: options => options.isWalkPixel && options.pixelState === 1 && options.isRandomColorMode && options.isStaticRandomColorMode,
-    make: (config, options) => new WalkPixelOnRandomStatic(config, options.interval, randomColorValue, randomColorValue, randomColorValue),
+    make: (config, options) => new WalkPixelOnRandomStatic(config, options.interval, redRandomValue, greenRandomValue, blueRandomValue),
   },
   {
     name: 'walkPixel-on-random-change-everyPixel',
     when: options => options.isWalkPixel && options.pixelState === 1 && options.isRandomColorMode && options.everyPixelColorChangeInterval,
-    make: (config, options) => new WalkPixelOnRandomChangePixel(config, options.interval, randomColorValue, randomColorValue, randomColorValue),
+    make: (config, options) => new WalkPixelOnRandomChangePixel(config, options.interval, redRandomValue, greenRandomValue, blueRandomValue),
   },
   {
     name: 'walkPixel-on-random-change-everyLoop',
@@ -114,12 +116,12 @@ export const RULES: Rule[] = [
   {
     name: 'walkPixel-off-random-change-everyPixel',
     when: options => options.isWalkPixel && options.pixelState === 0 && options.isRandomColorMode && options.everyPixelColorChangeInterval,
-    make: (config, options) => new WalkPixelOffRandomChangePixel(config, options.interval, randomColorValue, randomColorValue, randomColorValue),
+    make: (config, options) => new WalkPixelOffRandomChangePixel(config, options.interval, redRandomValue, greenRandomValue, blueRandomValue),
   },
   {
     name: 'walkPixel-off-random-change-everyLoop',
     when: options => options.isWalkPixel && options.pixelState === 0 && options.isRandomColorMode && options.everyLoopColorChangeInterval,
-    make: (config, options) => new WalkPixelOffRandomChangeLoop(config, options.interval, randomColorValue, randomColorValue, randomColorValue),
+    make: (config, options) => new WalkPixelOffRandomChangeLoop(config, options.interval, redRandomValue, greenRandomValue, blueRandomValue),
   },
 
   // --- TURN OFF (explicit command) ---
