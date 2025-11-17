@@ -1,17 +1,24 @@
 module.exports = {
-  preset: 'ts-jest/presets/default-esm',
-  testEnvironment: 'node',
+  preset: "ts-jest/presets/default-esm",
+  testEnvironment: "node",
 
-  // So Jest understands ESM imports
-  extensionsToTreatAsEsm: ['.ts'],
+  extensionsToTreatAsEsm: [".ts"],
 
   globals: {
-    'ts-jest': {
-      useESM: true
-    }
+    "ts-jest": {
+      useESM: true,
+      tsconfig: "./tsconfig.json",
+    },
   },
 
   moduleNameMapper: {
-    '^(\\.{1,2}/.*)\\.js$': '$1'
-  }
+    // Take './index.js' in TS and resolve './index' (i.e., index.ts)
+    "^(\\.{1,2}/.*)\\.js$": "$1",
+  },
+
+  transform: {
+    "^.+\\.tsx?$": ["ts-jest", { useESM: true }],
+  },
+
+  testPathIgnorePatterns: ["/node_modules/", "/dist/"],
 };

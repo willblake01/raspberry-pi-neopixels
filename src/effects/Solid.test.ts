@@ -40,7 +40,7 @@ describe('Solid effects', () => {
 
     for (const value of pixels) {
       expect(value).toBe(expectedColor);
-    }
+    };
   });
 
   test('SolidRandom: fills all pixels with a random color and calls safeRender once', () => {
@@ -57,9 +57,10 @@ describe('Solid effects', () => {
 
     // All pixels should have the same color value (but we don't know what it is)
     const firstColor = pixels[0];
+
     for (const value of pixels) {
       expect(value).toBe(firstColor);
-    }
+    };
   });
 
   test('constructors do not call safeRender', () => {
