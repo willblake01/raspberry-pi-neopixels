@@ -11,7 +11,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "node --loader ts-node/esm src/index.ts",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "prompts": "^2.4.2",
@@ -21,6 +22,10 @@
     "@types/node": "16.x",
     "@types/prompts": "^2.4.9",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "jest-environment-node": "^29.7.0",
+    "@types/jest": "^29.5.11"
   }
 }

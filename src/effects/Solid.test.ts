@@ -25,6 +25,7 @@ describe('Solid effects', () => {
     const red = 10;
     const green = 20;
     const blue = 30;
+
     const expectedColor = (red << 16) | (green << 8) | blue;
 
     const solid = new SolidCustom(baseConfig, red, green, blue);
@@ -36,18 +37,15 @@ describe('Solid effects', () => {
 
     expect(pixels).toBeInstanceOf(Uint32Array);
     expect(pixels.length).toBe(baseConfig.leds);
+
     for (const value of pixels) {
       expect(value).toBe(expectedColor);
     }
   });
 
-  test('SolidRandom: fills all pixels with the provided color and calls safeRender once', () => {
-    const red = 100;
-    const green = 150;
-    const blue = 200;
-    const expectedColor = (red << 16) | (green << 8) | blue;
-
-    const solid = new SolidRandom(baseConfig, red, green, blue);
+  test('SolidRandom: fills all pixels with a random color and calls safeRender once', () => {
+    const solid = new SolidRandom(baseConfig);
+    
     solid.run();
 
     expect(safeRender).toHaveBeenCalledTimes(1);
@@ -56,14 +54,17 @@ describe('Solid effects', () => {
 
     expect(pixels).toBeInstanceOf(Uint32Array);
     expect(pixels.length).toBe(baseConfig.leds);
+
+    // All pixels should have the same color value (but we don't know what it is)
+    const firstColor = pixels[0];
     for (const value of pixels) {
-      expect(value).toBe(expectedColor);
+      expect(value).toBe(firstColor);
     }
   });
 
   test('constructors do not call safeRender', () => {
     new SolidCustom(baseConfig, 1, 2, 3);
-    new SolidRandom(baseConfig, 4, 5, 6);
+    new SolidRandom(baseConfig);
+
     expect(safeRender).not.toHaveBeenCalled();
   });
-});
