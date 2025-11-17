@@ -87,39 +87,44 @@ export const RULES: Rule[] = [
 
   // --- WALK PIXEL (pixel ON) ---
   {
-    name: 'walkPixel-on-custom',
+    name: 'walk-pixel-on-custom',
     when: options => options.isWalkPixel && options.pixelState === 1 && options.isCustomColorMode,
     make: (config, options) => new WalkPixelOnCustom(config, options.interval, options.red, options.green, options.blue),
   },
   {
-    name: 'walkPixel-on-random-static',
+    name: 'walk-pixel-on-random-static',
     when: options => options.isWalkPixel && options.pixelState === 1 && options.isRandomColorMode && options.isStaticRandomColorMode,
     make: (config, options) => new WalkPixelOnRandomStatic(config, options.interval, redRandomValue, greenRandomValue, blueRandomValue),
   },
   {
-    name: 'walkPixel-on-random-change-everyPixel',
+    name: 'walk-pixel-on-random-change-everyPixel',
     when: options => options.isWalkPixel && options.pixelState === 1 && options.isRandomColorMode && options.everyPixelColorChangeInterval,
     make: (config, options) => new WalkPixelOnRandomChangePixel(config, options.interval, redRandomValue, greenRandomValue, blueRandomValue),
   },
   {
-    name: 'walkPixel-on-random-change-everyLoop',
+    name: 'walk-pixel-on-random-change-everyLoop',
     when: options => options.isWalkPixel && options.pixelState === 1 && options.isRandomColorMode && options.everyLoopColorChangeInterval,
     make: (config, options) => new WalkPixelOnRandomChangeLoop(config, options.interval, 0, 0, 0),
   },
 
   // --- WALK PIXEL (pixel OFF) ---
   {
-    name: 'walkPixel-off-custom',
+    name: 'walk-pixel-off-custom',
     when: options => options.isWalkPixel && options.pixelState === 0 && options.isCustomColorMode,
     make: (config, options) => new WalkPixelOffCustomStatic(config, options.interval, options.red, options.green, options.blue),
   },
   {
-    name: 'walkPixel-off-random-change-everyPixel',
+    name: 'walk-pixel-off-random-static',
+    when: options => options.isWalkPixel && options.pixelState === 0 && options.isRandomColorMode,
+    make: (config, options) => new WalkPixelOffCustomStatic(config, options.interval, redRandomValue, greenRandomValue, blueRandomValue),
+  },
+  {
+    name: 'walk-pixel-off-random-change-everyPixel',
     when: options => options.isWalkPixel && options.pixelState === 0 && options.isRandomColorMode && options.everyPixelColorChangeInterval,
     make: (config, options) => new WalkPixelOffRandomChangePixel(config, options.interval, redRandomValue, greenRandomValue, blueRandomValue),
   },
   {
-    name: 'walkPixel-off-random-change-everyLoop',
+    name: 'walk-pixel-off-random-change-everyLoop',
     when: options => options.isWalkPixel && options.pixelState === 0 && options.isRandomColorMode && options.everyLoopColorChangeInterval,
     make: (config, options) => new WalkPixelOffRandomChangeLoop(config, options.interval, redRandomValue, greenRandomValue, blueRandomValue),
   },
