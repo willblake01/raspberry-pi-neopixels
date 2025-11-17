@@ -1,5 +1,5 @@
 export { BlinkCustom, BlinkRandomChange, BlinkRandomStatic } from './Blink.js';
-export { BreatheCustom } from './Breathe.js'
+export { BreatheCustom, BreatheRandom } from './Breathe.js'
 export { Change } from './Change.js';
 export { CreepCustom, CreepRandomChangePixel, CreepRandomChangeLoop, CreepRandomStatic } from './Creep.js';
 export { SolidCustom, SolidRandom } from './Solid.js';
