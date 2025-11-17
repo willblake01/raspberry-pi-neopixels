@@ -12,7 +12,7 @@ module.exports = {
   },
 
   moduleNameMapper: {
-    // Take './index.js' in TS and resolve './index' (i.e., index.ts)
+    // Take './foo.js' in TS and resolve './foo' (i.e., foo.ts) for Jest
     "^(\\.{1,2}/.*)\\.js$": "$1",
   },
 
