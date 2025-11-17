@@ -12,14 +12,14 @@
     "build": "tsc",
     "dev": "node --loader ts-node/esm src/index.ts",
     "start": "node dist/index.js",
-    "test": "jest --passWithNoTests"
+    "test": "jest"
   },
   "dependencies": {
     "prompts": "^2.4.2",
     "rpi-ws281x": "^1.0.37"
   },
   "devDependencies": {
-    "@types/node": "16.x",
+    "@types/node": "18.x",
     "@types/prompts": "^2.4.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
