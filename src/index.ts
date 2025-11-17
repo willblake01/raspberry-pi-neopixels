@@ -4,7 +4,7 @@ import { normalizeAnswers, promptsConfig } from "./prompts/index.js";
 import { TurnOff } from "./effects/index.js";
 import { RULES } from "./effects/utils/index.js";
 import { once } from "./utils/index.js";
-import { Config, NormalizeAnswers, Options } from "./types/index.js";
+import { Config, Options } from "./types/index.js";
 
 interface DelayProps {
   (ms: number): Promise<void>;
@@ -21,7 +21,7 @@ const selectEffect = (config: Config, options: Options) => {
 
 const neopixels = async () => {
   const response = await prompts(promptsConfig);
-  const options: NormalizeAnswers = normalizeAnswers(response);
+  const options: Options = normalizeAnswers(response);
 
   const config: Config = {
     leds: options.leds,

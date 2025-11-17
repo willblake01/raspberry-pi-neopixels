@@ -1,8 +1,8 @@
 import type { Answers } from 'prompts';
 import { EFFECTS } from '../constants/index.js';
-import { NormalizeAnswers } from '../types/index.js';
+import { Options } from '../types/index.js';
 
-export const normalizeAnswers = (response: Answers<string>): NormalizeAnswers => {
+export const normalizeAnswers = (response: Answers<string>): Options => {
   const {
     command,
     leds,

@@ -3,7 +3,7 @@ import { EFFECTS } from "../constants/index.js";
 export interface Config {
   leds: number;
   dma: number;
-  brightness: number;
+  brightness?: number;
   gpio: number,
   stripType: string;
 };
@@ -35,6 +35,7 @@ export interface Options {
   isCreep: boolean;
   isWheel: boolean;
   isWalkPixel: boolean;
+  isOn: boolean;
   isOff: boolean;
 
   // Derived color-mode flags used in 'when'
@@ -69,27 +70,6 @@ export interface RawAnswers {
   randomColorMode?: RandomColorMode;
   colorChangeInterval?: ColorChangeInterval;
   pixelState?: 0 | 1;
-};
-
-// Normalized shape you actually use downstream
-export interface NormalizeAnswers extends RawAnswers {
-  brightness: number;
-  interval: number;
-  isOn: boolean;
-  isOff: boolean;
-  isSolid: boolean;
-  isChange: boolean;
-  isBlink: boolean;
-  isBreathe: boolean;
-  isCreep: boolean;
-  isWheel: boolean;
-  isWalkPixel: boolean;
-  isCustomColorMode: boolean;
-  isRandomColorMode: boolean;
-  isStaticRandomColorMode: boolean;
-  isChangeRandomColorMode: boolean;
-  everyPixelColorChangeInterval: boolean;
-  everyLoopColorChangeInterval: boolean;
 };
 
 // A function that decides whether to show a prompt and what type it is
