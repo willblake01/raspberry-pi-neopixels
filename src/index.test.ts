@@ -3,6 +3,8 @@ import { EffectManager } from './EffectManager.js';
 import { normalizeAnswers, promptsConfig } from './prompts/index.js';
 import { RULES } from './effects/utils/index.js';
 
+jest.useFakeTimers();
+
 jest.mock('prompts', () => ({
   __esModule: true,
   default: jest.fn(),
@@ -25,7 +27,6 @@ jest.mock('./utils/index.js', () => ({
 describe('index entrypoint', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-
   });
 
   test('drives prompts and starts effect manager with selected effect', async () => {
@@ -67,7 +68,15 @@ describe('index entrypoint', () => {
       make: jest.fn(() => ({ run: jest.fn() })),
     } as any);
 
+    // Import AFTER mocks are configured
     await import('./index.js');
+
+    // Let the async chain progress:
+    // 1) prompts(...) resolves
+    // 2) delay(1000) resolves
+    // 3) manager.start(effect) is called
+
+    await jest.runAllTimersAsync();
 
     expect(promptsMock).toHaveBeenCalledWith(mockedPromptsConfig);
     expect(normalizeAnswersMock).toHaveBeenCalled();
