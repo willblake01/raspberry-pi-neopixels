@@ -1,16 +1,18 @@
 # 🌈 Raspberry Pi NeoPixel Effects Engine
 
-LED animations powered by **TypeScript**, **rpi-ws281x**, and **Prompts**.
+LED animations powered by **TypeScript**, **rpi-ws281x**, and an
+interactive **CLI menu**.
 
-This project lets you control WS281x LED strips (NeoPixels) on a **Raspberry Pi** using a beautiful CLI menu of effects (solid, blink, breathe, wheel, creep, walk pixel, random color modes, etc.).
+This engine controls WS281x LED strips (NeoPixels) on a **Raspberry Pi**
+with a menu of effects (solid, blink, breathe, wheel, creep, walk pixel,
+random modes, etc.), all running directly on the Pi's GPIO via
+`/dev/mem`.
 
-Built for **Node.js**, **TypeScript**, and runs directly on the Pi’s GPIO via `/dev/mem`.
-
----
+------------------------------------------------------------------------
 
 ## 🚀 Features
 
-- CLI-based LED configuration via **prompts**
+- Interactive CLI built with **prompts**
 - Multiple LED effects:
   - Solid (custom or random)
   - Blink (static or random-changing)
@@ -19,180 +21,194 @@ Built for **Node.js**, **TypeScript**, and runs directly on the Pi’s GPIO via 
   - Creep
   - Wheel
   - Walk Pixel (ON/OFF modes)
-- Random color modes with:
-  - Static random colors  
-  - Changing random colors per-pixel or per-loop
-- Fully typed with TypeScript
-- Jest unit testing support
+- Random color modes:
+  - Static random colors\
+  - Per-pixel random\
+  - Per-frame random\
+- Strong TypeScript typing
+- Jest testing support
 - Graceful shutdown on:
   - `SIGINT`
   - `SIGTERM`
   - `uncaughtException`
   - `unhandledRejection`
 
----
+------------------------------------------------------------------------
 
 ## 🧱 Requirements
 
 ### Hardware
 
 - Raspberry Pi (tested on Pi 3B+)
-- WS281x LED strip
-- External power supply recommended
+- WS281x / NeoPixel LED strip
+- External 5V LED power supply recommended (with **common ground**)
 
 ### Software
 
-- Debian (Bookworm) or Raspberry Pi OS
-- Debian (Bookworm) or Raspberry Pi OS
-- **System Node.js** (recommended)
-  Works best with:
+- Raspberry Pi OS (Bookworm recommended)
 
-  ```bash
-  node -v
-  # e.g., v18.x or v16.20.x
+- **nvm-installed Node.js (LTS v24.x)**\
+  Works reliably with `rpi-ws281x`:
+
+  ``` bash
+  nvm install 24
+  nvm use 24
+  node -v  # v24.x.x
   ```
 
-- Python ≥ 3.x (for building native modules)
+- Python ≥ 3.x (native module build)
+
 - Build tools:
 
-  ```bash
+  ``` bash
   sudo apt install build-essential python3
   ```
 
----
+------------------------------------------------------------------------
 
 ## 📦 Installation
 
 Clone the repo:
 
-```bash
+``` bash
 git clone https://github.com/willblake01/raspberry-pi-neopixels
 cd raspberry-pi-neopixels
 ```
 
-Install dependencies using **system Node**:
+Install using **nvm Node**:
 
-```bash
+``` bash
+nvm use
 npm install
 ```
 
-Make sure the correct Node is being used:
+Ensure you are using the correct Node:
 
-```bash
+``` bash
 node -v
-sudo node -v
-```
+which node
+Expected path:
 
-Both should show the same version.
-
----
+------------------------------------------------------------------------
 
 ## ▶️ Running the LED Engine
 
-On Raspberry Pi, hardware access requires root, so run:
+WS281x hardware requires **root access**, but **npm itself must NOT run
+as root**.
 
-```bash
-sudo npm run start
+Your `package.json` should include:
+
+``` jsonc
+"scripts": {
+  "build": "tsc",
+  "start": "node dist/index.js",
+  "start:root": "sudo /home/pi/.nvm/versions/node/v24.11.1/bin/node dist/index.js"
+}
 ```
 
-The CLI will launch:
+Run the engine:
 
-- Choose command (on/off)
-- Choose effect
-- Adjust LEDs, brightness, interval
-- Choose color modes and random behavior
+``` bash
+npm run build
+npm run start:root
+```
 
----
+This:
+
+- Uses **nvm's Node**, even with sudo\
+- Avoids permission issues\
+- Avoids system Node entirely
+
+The CLI will launch with:
+
+- LED count / brightness\
+- Effect selection\
+- Random color modes
+
+------------------------------------------------------------------------
 
 ## 🧪 Running Tests
 
-Tests are written in Jest + ts-jest.
+Tests use Jest + ts-jest:
 
-Run:
-
-```bash
+``` bash
 npm test
 ```
 
-Tests live alongside source files, e.g.:
+Test files are colocated next to modules, for example:
 
-```
-src/effects/Solid.test.ts
-```
-
----
+------------------------------------------------------------------------
 
 ## 📁 Project Structure
 
-```text
+``` text
 src/
   effects/
-    Solid.ts
-    Blink.ts
-    ...
   prompts/
-    prompts.ts
-    normalizeAnswers.ts
-  utils/
-    index.ts
   types/
-    index.ts
+  utils/
   ledRuntime.ts
   index.ts
+
 tests/
-dist/ (build output)
+dist/   (build output)
 ```
 
----
+------------------------------------------------------------------------
 
 ## 🛠 Building
 
-Build TypeScript → JavaScript:
+Compile TypeScript:
 
-```bash
+``` bash
 npm run build
 ```
 
-Output is written to `/dist`.
+Output goes to `/dist`.
 
----
+------------------------------------------------------------------------
 
 ## 🧹 Shutdown Behavior
 
-The project uses a centralized shutdown handler:
+The runtime includes a unified cleanup handler:
 
-- Stops the active effect
-- Resets WS281x LED hardware
-- Ensures a clean exit
+- Stops active effect
+- Zeroes LEDs
+- Resets WS281x hardware
+- Ensures a clean exit on all signal types
 
----
+------------------------------------------------------------------------
 
 ## ⚠️ Troubleshooting
 
-### “Cannot open /dev/mem: Permission denied”
+### "Cannot open /dev/mem"
 
-You forgot `sudo`:
+Use the correct script:
 
-```bash
-sudo npm run start
+``` bash
+npm run start:root
 ```
 
 ### Native module mismatch
 
-Rebuild after changing Node versions:
+Rebuild after switching node versions:
 
-```bash
+``` bash
 npm rebuild rpi-ws281x
 ```
 
-### Using NVM?
+### Accidentally used system node?
 
-Avoid using NVM for this project unless necessary.
-Root (`sudo`) often bypasses NVM, causing module version mismatches.
+Check:
 
-Stick with **system Node** on Raspberry Pi.
+``` bash
+which node
+sudo which node
+```
 
----
+Use the fixed script (`start:root`) to ensure the correct Node binary.
+
+------------------------------------------------------------------------
 
 ## 📜 License
 
