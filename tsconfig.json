@@ -14,7 +14,8 @@
 
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "declaration": true
+    "declaration": true,
+    "typeRoots": ["./src/types", "./node_modules/@types"]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
