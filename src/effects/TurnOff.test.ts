@@ -1,3 +1,4 @@
+import ws281x from 'rpi-ws281x';
 import { TurnOff } from './index.js';
 import type { Config } from '../types/index.js';
 
@@ -10,7 +11,6 @@ jest.mock('rpi-ws281x', () => ({
 }));
 
 import { safeRender } from '../ledRuntime.js';
-import ws281x from 'rpi-ws281x';
 
 const safeRenderMock = safeRender as jest.MockedFunction<typeof safeRender>;
 

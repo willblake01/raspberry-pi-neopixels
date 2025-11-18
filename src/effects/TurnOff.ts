@@ -1,4 +1,3 @@
-// @ts-ignore
 import ws281x from 'rpi-ws281x';
 import { safeRender } from '../ledRuntime.js';
 import { Config } from '../types/index.js';

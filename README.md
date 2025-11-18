@@ -1,5 +1,12 @@
 # 🌈 Raspberry Pi NeoPixel Effects Engine
 
+![Node Version](https://img.shields.io/badge/node-24.x-brightgreen)
+![TypeScript](https://img.shields.io/badge/typescript-5.x-blue)
+![Jest](https://img.shields.io/badge/tests-jest%20%2B%20ts--jest-red)
+![License: ISC](https://img.shields.io/badge/license-ISC-lightgrey)
+![Platform](https://img.shields.io/badge/platform-Raspberry%20Pi-orange)
+![WS281x](https://img.shields.io/badge/LED-WS281x%20%2F%20Neopixel-purple)
+
 LED animations powered by **TypeScript**, **rpi-ws281x**, and an
 interactive **CLI menu**.
 
@@ -22,11 +29,14 @@ random modes, etc.), all running directly on the Pi's GPIO via
   - Wheel
   - Walk Pixel (ON/OFF modes)
 - Random color modes:
-  - Static random colors\
-  - Per-pixel random\
-  - Per-frame random\
+  - Static random colors
+  - Per-pixel random
+  - Per-frame random
 - Strong TypeScript typing
 - Jest testing support
+- **Tests live next to the files they test**
+  *(except only the root-level `index.ts` has a test; other index.ts
+  files are not tested)*
 - Graceful shutdown on:
   - `SIGINT`
   - `SIGTERM`
@@ -46,23 +56,20 @@ random modes, etc.), all running directly on the Pi's GPIO via
 ### Software
 
 - Raspberry Pi OS (Bookworm recommended)
+- **nvm-installed Node.js (LTS v24.x)**
 
-- **nvm-installed Node.js (LTS v24.x)**\
-  Works reliably with `rpi-ws281x`:
+``` bash
+nvm install 24
+nvm use 24
+node -v  # v24.x.x
+```
 
-  ``` bash
-  nvm install 24
-  nvm use 24
-  node -v  # v24.x.x
-  ```
+-   Python ≥ 3.x
+-   Build tools:
 
-- Python ≥ 3.x (native module build)
-
-- Build tools:
-
-  ``` bash
-  sudo apt install build-essential python3
-  ```
+``` bash
+sudo apt install build-essential python3
+```
 
 ------------------------------------------------------------------------
 
@@ -82,19 +89,21 @@ nvm use
 npm install
 ```
 
-Ensure you are using the correct Node:
+Verify Node:
 
 ``` bash
 node -v
 which node
-Expected path:
+```
+
+Expected:
 
 ------------------------------------------------------------------------
 
 ## ▶️ Running the LED Engine
 
-WS281x hardware requires **root access**, but **npm itself must NOT run
-as root**.
+WS281x hardware requires **root access**, but **npm must not run as
+root**.
 
 Your `package.json` should include:
 
@@ -106,36 +115,35 @@ Your `package.json` should include:
 }
 ```
 
-Run the engine:
+Run:
 
 ``` bash
 npm run build
 npm run start:root
 ```
 
-This:
+This ensures:
 
-- Uses **nvm's Node**, even with sudo\
-- Avoids permission issues\
-- Avoids system Node entirely
-
-The CLI will launch with:
-
-- LED count / brightness\
-- Effect selection\
-- Random color modes
+- nvm's Node is used
+- system Node is NOT used
+- only the LED runtime runs with sudo
 
 ------------------------------------------------------------------------
 
 ## 🧪 Running Tests
 
-Tests use Jest + ts-jest:
+Tests use **Jest + ts-jest**.
+
+### Test Layout
+
+- Tests live **next to the files they test**
+- **Only root `index.ts` has a test file**
+
+Examples:
 
 ``` bash
 npm test
 ```
-
-Test files are colocated next to modules, for example:
 
 ------------------------------------------------------------------------
 
@@ -144,13 +152,26 @@ Test files are colocated next to modules, for example:
 ``` text
 src/
   effects/
+    /utils
+    Solid.ts
+    Solid.test.ts
+    Blink.ts
+    Blink.test.ts
+    ...
   prompts/
+    normalizeAnswers.ts
+    normalizeAnswers.test.ts
+    prompts.ts
+    prompts.test.ts
   types/
   utils/
+  EffectManager.ts
+  EffectManager.test.ts
   ledRuntime.ts
+  ledRuntime.test.ts
   index.ts
+  index.test.ts
 
-tests/
 dist/   (build output)
 ```
 
@@ -158,7 +179,7 @@ dist/   (build output)
 
 ## 🛠 Building
 
-Compile TypeScript:
+Compile:
 
 ``` bash
 npm run build
@@ -170,12 +191,12 @@ Output goes to `/dist`.
 
 ## 🧹 Shutdown Behavior
 
-The runtime includes a unified cleanup handler:
+The runtime includes a safe exit handler:
 
 - Stops active effect
-- Zeroes LEDs
+- Clears LEDs
 - Resets WS281x hardware
-- Ensures a clean exit on all signal types
+- Handles all common shutdown signals
 
 ------------------------------------------------------------------------
 
@@ -183,7 +204,7 @@ The runtime includes a unified cleanup handler:
 
 ### "Cannot open /dev/mem"
 
-Use the correct script:
+Use:
 
 ``` bash
 npm run start:root
@@ -191,22 +212,18 @@ npm run start:root
 
 ### Native module mismatch
 
-Rebuild after switching node versions:
-
 ``` bash
 npm rebuild rpi-ws281x
 ```
 
-### Accidentally used system node?
-
-Check:
+### Wrong Node?
 
 ``` bash
 which node
 sudo which node
 ```
 
-Use the fixed script (`start:root`) to ensure the correct Node binary.
+Make sure the script points to the nvm Node.
 
 ------------------------------------------------------------------------
 
