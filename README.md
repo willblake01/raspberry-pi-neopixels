@@ -196,4 +196,4 @@ Stick with **system Node** on Raspberry Pi.
 
 ## 📜 License
 
-MIT
+ISC
