@@ -6,6 +6,11 @@
     "type": "git",
     "url": "https://github.com/willblake01/raspberry-pi-neopixels"
   },
+  "engines": {
+    "node": ">=24 <25",
+    "npm": ">=10"
+  },
+  "engineStrict": true,
   "type": "module",
   "description": "LED effects engine for Raspberry Pi using ws281x and TypeScript",
   "scripts": {
