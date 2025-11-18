@@ -19,14 +19,17 @@ jest.mock('./utils/index.js', () => ({
   once: (fn: unknown) => fn,
 }));
 
-const promptsMock = prompts as jest.MockedFunction<typeof prompts>;
-const normalizeAnswersMock = normalizeAnswers as jest.MockedFunction<typeof normalizeAnswers>;
-const EffectManagerMock = EffectManager as unknown as jest.MockedClass<typeof EffectManager>;
-
 describe('index entrypoint', () => {
   beforeEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
+
+  });
+
+  test('drives prompts and starts effect manager with selected effect', async () => {
+    const promptsMock = prompts as jest.MockedFunction<typeof prompts>;
+    const normalizeAnswersMock = normalizeAnswers as jest.MockedFunction<typeof normalizeAnswers>;
+    const EffectManagerMock = EffectManager as unknown as jest.MockedClass<typeof EffectManager>;
 
     promptsMock.mockResolvedValue({} as any);
     normalizeAnswersMock.mockReturnValue({
@@ -35,9 +38,7 @@ describe('index entrypoint', () => {
       isOff: true,
       isOn: false,
     } as any);
-  });
 
-  test('drives prompts and starts effect manager with selected effect', async () => {
     const startMock = jest.fn();
     const disposeMock = jest.fn();
 

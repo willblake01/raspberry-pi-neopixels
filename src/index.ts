@@ -49,10 +49,10 @@ const neopixels = async () => {
 
   process.once("SIGINT", () => shutDown("SIGINT"));
   process.once("SIGTERM", () => shutDown("SIGTERM"));
-  process.once("uncaughtException", (err) =>
+  process.once("uncaughtException", (err: Error) =>
     shutDown("uncaughtException", err),
   );
-  process.once("unhandledRejection", (err) =>
+  process.once("unhandledRejection", (err: Error) =>
     shutDown("unhandledRejection", err),
   );
 
