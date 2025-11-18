@@ -19,7 +19,7 @@
     "rpi-ws281x": "^1.0.37"
   },
   "devDependencies": {
-    "@types/node": "18.x",
+    "@types/node": "^24.10.1",
     "@types/prompts": "^2.4.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
