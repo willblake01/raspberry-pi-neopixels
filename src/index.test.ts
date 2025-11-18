@@ -31,8 +31,14 @@ describe('index entrypoint', () => {
 
   test('drives prompts and starts effect manager with selected effect', async () => {
     const promptsMock = prompts as jest.MockedFunction<typeof prompts>;
-    const normalizeAnswersMock = normalizeAnswers as jest.MockedFunction<typeof normalizeAnswers>;
-    const EffectManagerMock = EffectManager as unknown as jest.MockedClass<typeof EffectManager>;
+    const { normalizeAnswers: normalizeAnswersMock, promptsConfig: mockedPromptsConfig } =
+      jest.requireMock('./prompts/index.js') as {
+        normalizeAnswers: jest.MockedFunction<typeof normalizeAnswers>;
+        promptsConfig: typeof promptsConfig;
+      };
+    const { EffectManager: EffectManagerMock } = jest.requireMock('./EffectManager.js') as {
+      EffectManager: jest.MockedClass<typeof EffectManager>;
+    };
 
     promptsMock.mockResolvedValue({} as any);
     normalizeAnswersMock.mockReturnValue({
@@ -59,7 +65,7 @@ describe('index entrypoint', () => {
 
     await import('./index.js');
 
-    expect(promptsMock).toHaveBeenCalledWith(promptsConfig);
+    expect(promptsMock).toHaveBeenCalledWith(mockedPromptsConfig);
     expect(normalizeAnswersMock).toHaveBeenCalled();
     expect(EffectManagerMock).toHaveBeenCalledWith({
       leds: 10,
