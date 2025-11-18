@@ -3,7 +3,10 @@ import { EffectManager } from './EffectManager.js';
 import { normalizeAnswers, promptsConfig } from './prompts/index.js';
 import { RULES } from './effects/utils/index.js';
 
-jest.mock('prompts');
+jest.mock('prompts', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
 jest.mock('./EffectManager.js');
 jest.mock('./prompts/index.js', () => ({
   promptsConfig: [{ name: 'command' }],
