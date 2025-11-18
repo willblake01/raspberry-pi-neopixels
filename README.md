@@ -151,6 +151,8 @@ npm test
 
 ``` text
 src/
+  @types/
+  constants/
   effects/
     /utils
     Solid.ts
