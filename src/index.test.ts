@@ -48,8 +48,8 @@ describe('index entrypoint', () => {
     normalizeAnswersMock.mockReturnValue({
       leds: 10,
       brightness: 100,
-      isOff: true,
-      isOn: false,
+      isOff: false,
+      isOn: true,
     } as any);
 
     const startMock = jest.fn();
