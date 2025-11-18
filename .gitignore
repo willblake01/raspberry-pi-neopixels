@@ -9,6 +9,7 @@ es/
 lib/
 *.js
 *.d.ts
+!src/@types/**/*.d.ts
 *.map
 
 # Log files
