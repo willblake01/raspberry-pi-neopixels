@@ -1,7 +1,7 @@
 import type { Answers, PromptObject, PromptType } from "prompts";
 import { EFFECTS } from "../constants/index.js";
 import { and, integerBetween } from "../utils/index.js";
-import type { EffectName } from "../types/types.js";
+import type { EffectName } from "../types/index.js";
 
 /**
  * Raw answer shape while prompts is running.
