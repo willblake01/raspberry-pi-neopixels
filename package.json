@@ -12,6 +12,7 @@
     "build": "tsc",
     "dev": "node --loader ts-node/esm src/index.ts",
     "start": "node dist/index.js",
+    "start:root": "sudo -E node dist/index.js",
     "test": "jest"
   },
   "dependencies": {
