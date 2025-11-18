@@ -16,7 +16,7 @@
     "isolatedModules": true,
     "declaration": true,
     "typeRoots": ["./src/@types", "./node_modules/@types"],
-    "types": ["node"]
+    "types": ["node", "rpi-ws281x"]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "src/**/*.test.ts"]
