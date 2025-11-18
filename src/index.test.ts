@@ -24,13 +24,14 @@ jest.mock('./utils/index.js', () => ({
 
 describe('index entrypoint', () => {
   beforeEach(() => {
-    jest.resetModules();
     jest.clearAllMocks();
 
   });
 
   test('drives prompts and starts effect manager with selected effect', async () => {
-    const promptsMock = prompts as jest.MockedFunction<typeof prompts>;
+    const { default: promptsMock } = jest.requireMock('prompts') as {
+      default: jest.MockedFunction<typeof prompts>;
+    };
     const { normalizeAnswers: normalizeAnswersMock, promptsConfig: mockedPromptsConfig } =
       jest.requireMock('./prompts/index.js') as {
         normalizeAnswers: jest.MockedFunction<typeof normalizeAnswers>;
@@ -38,6 +39,9 @@ describe('index entrypoint', () => {
       };
     const { EffectManager: EffectManagerMock } = jest.requireMock('./EffectManager.js') as {
       EffectManager: jest.MockedClass<typeof EffectManager>;
+    };
+    const { RULES: mockedRules } = jest.requireMock('./effects/utils/index.js') as {
+      RULES: typeof RULES;
     };
 
     promptsMock.mockResolvedValue({} as any);
@@ -57,7 +61,7 @@ describe('index entrypoint', () => {
       dispose: disposeMock,
     }) as any);
 
-    RULES.splice(0, RULES.length, {
+    mockedRules.splice(0, mockedRules.length, {
       name: 'turn-off',
       when: () => true,
       make: jest.fn(() => ({ run: jest.fn() })),
