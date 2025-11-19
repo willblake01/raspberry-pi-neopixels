@@ -10,6 +10,8 @@ interface DelayProps {
   (ms: number): Promise<void>;
 }
 
+const delayInMs = 1000;
+
 const delay: DelayProps = (ms) =>
   new Promise<void>((resolve) => setTimeout(resolve, ms));
 
@@ -57,9 +59,11 @@ const main = async () => {
   );
 
   const effect = selectEffect(manager.config, options);
-  await manager.start(effect);
 
-  await delay(1000);
+  // Delay before effect starts
+  await delay(delayInMs);
+
+  await manager.start(effect);
 };
 
 void main().catch((err) => {
