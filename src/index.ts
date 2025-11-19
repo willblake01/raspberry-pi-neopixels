@@ -21,7 +21,7 @@ const selectEffect = (config: Config, options: Options) => {
   return rule ? rule.make(config, options) : new TurnOff(config);
 };
 
-const main = async () => {
+export const main = async () => {
   const answers = await prompts(promptsConfig);
   const options: Options = normalizeAnswers(answers);
 

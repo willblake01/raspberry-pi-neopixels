@@ -2,6 +2,7 @@ import prompts from 'prompts';
 import { EffectManager } from './EffectManager.js';
 import { normalizeAnswers, promptsConfig } from './prompts/index.js';
 import { RULES } from './effects/utils/index.js';
+import { main } from './index.js';
 
 jest.useFakeTimers();
 
@@ -29,15 +30,17 @@ describe('index entrypoint', () => {
     jest.clearAllMocks();
   });
 
-  test('drives prompts and starts effect manager with selected effect', () => {
+  test('drives prompts and starts effect manager with selected effect', async () => {
     const { default: promptsMock } = jest.requireMock('prompts') as {
       default: jest.MockedFunction<typeof prompts>;
     };
-    const { normalizeAnswers: normalizeAnswersMock, promptsConfig: mockedPromptsConfig } =
-      jest.requireMock('./prompts/index.js') as {
-        normalizeAnswers: jest.MockedFunction<typeof normalizeAnswers>;
-        promptsConfig: typeof promptsConfig;
-      };
+    const {
+      normalizeAnswers: normalizeAnswersMock,
+      promptsConfig: mockedPromptsConfig,
+    } = jest.requireMock('./prompts/index.js') as {
+      normalizeAnswers: jest.MockedFunction<typeof normalizeAnswers>;
+      promptsConfig: typeof promptsConfig;
+    };
     const { EffectManager: EffectManagerMock } = jest.requireMock('./EffectManager.js') as {
       EffectManager: jest.MockedClass<typeof EffectManager>;
     };
@@ -68,29 +71,27 @@ describe('index entrypoint', () => {
       make: jest.fn(() => ({ run: jest.fn() })),
     } as any);
 
-    // Run index.ts in an isolated module environment AFTER mocks are set up
-    jest.isolateModules(() => {
-      // ts-jest will transpile this require() fine even in ESM-mode tests
-      // and it avoids top-level await entirely.
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      require('./index.js');
-    });
+    // Kick off main but don't await it yet
+    const mainPromise = main();
 
-    // Fast-forward the delay(1000)
+    // Let the prompts() promise resolve
+    await Promise.resolve();
+
+    // Fast-forward the 1s delay
     jest.advanceTimersByTime(1000);
 
-    // Let any pending microtasks finish
-    return Promise.resolve().then(() => {
-      expect(promptsMock).toHaveBeenCalledWith(mockedPromptsConfig);
-      expect(normalizeAnswersMock).toHaveBeenCalled();
-      expect(EffectManagerMock).toHaveBeenCalledWith({
-        leds: 10,
-        dma: 10,
-        brightness: 100,
-        gpio: 18,
-        stripType: 'rgb',
-      });
-      expect(startMock).toHaveBeenCalled();
+    // Wait for main to finish anything pending after the delay
+    await mainPromise;
+
+    expect(promptsMock).toHaveBeenCalledWith(mockedPromptsConfig);
+    expect(normalizeAnswersMock).toHaveBeenCalled();
+    expect(EffectManagerMock).toHaveBeenCalledWith({
+      leds: 10,
+      dma: 10,
+      brightness: 100,
+      gpio: 18,
+      stripType: 'rgb',
     });
+    expect(startMock).toHaveBeenCalled(); // ✅ now this should pass
   });
 });
