@@ -1,10 +1,10 @@
-import prompts from "prompts";
-import { EffectManager } from "./EffectManager.js";
-import { normalizeAnswers, promptsConfig } from "./prompts/index.js";
-import { TurnOff } from "./effects/index.js";
-import { RULES } from "./effects/utils/index.js";
-import { once } from "./utils/index.js";
-import { Config, Options } from "./types/index.js";
+import prompts from 'prompts';
+import { EffectManager } from './EffectManager.js';
+import { normalizeAnswers, promptsConfig } from './prompts/index.js';
+import { TurnOff } from './effects/index.js';
+import { RULES } from './effects/utils/index.js';
+import { once } from './utils/index.js';
+import { Config, Options } from './types/index.js';
 
 interface DelayProps {
   (ms: number): Promise<void>;
@@ -28,7 +28,7 @@ const neopixels = async () => {
     dma: 10,
     brightness: options.brightness,
     gpio: 18,
-    stripType: "rgb",
+    stripType: 'rgb',
   };
 
   const manager = new EffectManager(config);
@@ -47,13 +47,13 @@ const neopixels = async () => {
     },
   );
 
-  process.once("SIGINT", () => shutDown("SIGINT"));
-  process.once("SIGTERM", () => shutDown("SIGTERM"));
-  process.once("uncaughtException", (err: Error) =>
-    shutDown("uncaughtException", err),
+  process.once('SIGINT', () => shutDown('SIGINT'));
+  process.once('SIGTERM', () => shutDown('SIGTERM'));
+  process.once('uncaughtException', (err: Error) =>
+    shutDown('uncaughtException', err),
   );
-  process.once("unhandledRejection", (err: Error) =>
-    shutDown("unhandledRejection", err),
+  process.once('unhandledRejection', (err: Error) =>
+    shutDown('unhandledRejection', err),
   );
 
   await delay(1000);
@@ -63,6 +63,6 @@ const neopixels = async () => {
 };
 
 neopixels().catch((err) => {
-  console.error("[fatal]", err);
+  console.error('[fatal]', err);
   process.exitCode = 1;
 });

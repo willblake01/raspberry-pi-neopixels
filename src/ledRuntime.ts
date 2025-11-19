@@ -1,4 +1,4 @@
-import ws281x from "./hardware/ws281x.js";
+import ws281x from './hardware/ws281x.js';
 import { Config, Pixels } from './types/index.js';
 
 export const runtime = { alive: false };

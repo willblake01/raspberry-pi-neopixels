@@ -1,4 +1,4 @@
-import ws281x from "../hardware/ws281x.js";
+import ws281x from '../hardware/ws281x.js';
 import { TurnOff } from './index.js';
 import type { Config } from '../types/index.js';
 

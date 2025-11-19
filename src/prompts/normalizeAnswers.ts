@@ -41,11 +41,11 @@ export const normalizeAnswers = (response: Answers<string>): Options => {
     isCreep: effect === EFFECTS.CREEP,
     isWheel: effect === EFFECTS.WHEEL,
     isWalkPixel: effect === EFFECTS.WALK_PIXEL,
-    isCustomColorMode: colorMode === "custom",
-    isRandomColorMode: colorMode === "random",
-    isStaticRandomColorMode: randomColorMode === "static",
-    isChangeRandomColorMode: randomColorMode === "change",
-    everyPixelColorChangeInterval: colorChangeInterval === "everyPixel",
-    everyLoopColorChangeInterval: colorChangeInterval === "everyLoop",
+    isCustomColorMode: colorMode === 'custom',
+    isRandomColorMode: colorMode === 'random',
+    isStaticRandomColorMode: randomColorMode === 'static',
+    isChangeRandomColorMode: randomColorMode === 'change',
+    everyPixelColorChangeInterval: colorChangeInterval === 'everyPixel',
+    everyLoopColorChangeInterval: colorChangeInterval === 'everyLoop',
   };
 };

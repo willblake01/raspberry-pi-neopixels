@@ -1,4 +1,4 @@
-import ws281x from "../hardware/ws281x.js";
+import ws281x from '../hardware/ws281x.js';
 import { safeRender } from '../ledRuntime.js';
 import { Config } from '../types/index.js';
 

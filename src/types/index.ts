@@ -1,4 +1,4 @@
-import { EFFECTS } from "../constants/index.js";
+import { EFFECTS } from '../constants/index.js';
 
 export type Interval = number;
 
@@ -21,9 +21,9 @@ export interface Effect {
 // Types for the raw answers coming in
 export type EffectName = (typeof EFFECTS) [keyof typeof EFFECTS];
 
-export type ColorMode = "custom" | "random";
-export type RandomColorMode = "static" | "change";
-export type ColorChangeInterval = "everyPixel" | "everyLoop";
+export type ColorMode = 'custom' | 'random';
+export type RandomColorMode = 'static' | 'change';
+export type ColorChangeInterval = 'everyPixel' | 'everyLoop';
 
 // A function that decides whether to show a prompt and what type it is
 export type PromptTypeFn =

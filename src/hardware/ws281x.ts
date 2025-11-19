@@ -4,33 +4,36 @@ export interface Ws281xInterface {
   reset(): void;
 }
 
+const noop: Ws281xInterface = {
+  configure: () => {},
+  render: () => {},
+  reset: () => {},
+};
+
 let ws281x: Ws281xInterface;
 
 const isPi =
-  process.platform === "linux" &&
-  (process.arch === "arm" || process.arch === "arm64");
+  process.platform === 'linux' &&
+  (process.arch === 'arm' || process.arch === 'arm64');
 
-try {
-  if (isPi) {
-    // On Pi, load the real module
-    // @ts-ignore - require is available at runtime
-    const real = require("rpi-ws281x");
-    ws281x = (real.default || real) as Ws281xInterface;
-  } else {
-    // On non-Pi (macOS/Windows), try to load it so Jest can mock it,
-    // but fall back to no-op if it isn't installed.
+if (isPi) {
+
+  // On Pi: do NOT swallow errors. If this fails, you want to know.
+  // @ts-ignore
+  const real = require('rpi-ws281x');
+  ws281x = (real.default || real) as Ws281xInterface;
+} else {
+
+  // macOS / Windows / CI: try to require so Jest can mock it, but
+  // fall back to a no-op if the module isn't installed.
+  try {
+    
     // @ts-ignore
-    const real = require("rpi-ws281x");
+    const real = require('rpi-ws281x');
     ws281x = (real.default || real) as Ws281xInterface;
+  } catch (err) {
+    ws281x = noop;
   }
-} catch {
-  // If require fails (e.g., mac without the module installed),
-  // fall back to a no-op implementation.
-  ws281x = {
-    configure: () => {},
-    render: () => {},
-    reset: () => {},
-  };
 }
 
 export default ws281x;

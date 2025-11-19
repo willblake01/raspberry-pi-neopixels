@@ -9,7 +9,7 @@ export const and =
 export const integerBetween =
   (min: number, max: number) =>
   (x: unknown): true | string => {
-    return Number.isInteger(x) && typeof x === "number" && x >= min && x <= max
+    return Number.isInteger(x) && typeof x === 'number' && x >= min && x <= max
       ? true
       : `Enter an integer ${min}-${max}`;
   };

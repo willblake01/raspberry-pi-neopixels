@@ -12,7 +12,7 @@ module.exports = {
     ]
   },
 
-  // Allow TS files to import "./file.js" but map to "./file.ts"
+  // Allow TS files to import './file.js' but map to './file.ts'
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1'
   },

@@ -1,7 +1,7 @@
-import type { Answers, PromptObject, PromptType } from "prompts";
-import { EFFECTS } from "../constants/index.js";
-import { and, integerBetween } from "../utils/index.js";
-import type { EffectName } from "../types/index.js";
+import type { Answers, PromptObject, PromptType } from 'prompts';
+import { EFFECTS } from '../constants/index.js';
+import { and, integerBetween } from '../utils/index.js';
+import type { EffectName } from '../types/index.js';
 
 /**
  * Raw answer shape while prompts is running.
@@ -34,13 +34,13 @@ export type PromptTypeFn = (
 // -----------------------------------------------------------------------------
 
 const EFFECT_CHOICES: SelectChoice<EffectName>[] = [
-  { title: "Solid", value: EFFECTS.SOLID },
-  { title: "Change", value: EFFECTS.CHANGE },
-  { title: "Blink", value: EFFECTS.BLINK },
-  { title: "Breathe", value: EFFECTS.BREATHE },
-  { title: "Creep", value: EFFECTS.CREEP },
-  { title: "Wheel", value: EFFECTS.WHEEL },
-  { title: "Walk Pixel", value: EFFECTS.WALK_PIXEL },
+  { title: 'Solid', value: EFFECTS.SOLID },
+  { title: 'Change', value: EFFECTS.CHANGE },
+  { title: 'Blink', value: EFFECTS.BLINK },
+  { title: 'Breathe', value: EFFECTS.BREATHE },
+  { title: 'Creep', value: EFFECTS.CREEP },
+  { title: 'Wheel', value: EFFECTS.WHEEL },
+  { title: 'Walk Pixel', value: EFFECTS.WALK_PIXEL },
 ];
 
 // Capabilities
@@ -110,7 +110,7 @@ const promptSelect = <T = unknown>(
   choices: SelectChoice<T>[],
   when?: Predicate
 ): PromptObject<string> => ({
-  type: show("select", when ?? (() => true)),
+  type: show('select', when ?? (() => true)),
   name,
   message,
   choices,
@@ -121,7 +121,7 @@ const promptNumber = (
   message: string,
   { min, max, initial, when }: NumberPromptConfig
 ): PromptObject<string> => ({
-  type: show("number", when ?? (() => true)),
+  type: show('number', when ?? (() => true)),
   name,
   message,
   initial,
@@ -134,23 +134,23 @@ const promptNumber = (
 
 export const promptsConfig: PromptObject<string>[] = [
   // Command
-  promptSelect("command", "Enter command", [
-    { title: "On", value: 1 },
-    { title: "Off", value: 0 },
+  promptSelect('command', 'Enter command', [
+    { title: 'On', value: 1 },
+    { title: 'Off', value: 0 },
   ]),
 
   // Effect (only when turning on)
-  promptSelect("effect", "Set effect", EFFECT_CHOICES, isOn),
+  promptSelect('effect', 'Set effect', EFFECT_CHOICES, isOn),
 
   // LED count (always asked)
-  promptNumber("leds", "Enter number of LEDs (0-100)", {
+  promptNumber('leds', 'Enter number of LEDs (0-100)', {
     min: 0,
     max: 100,
     initial: 100,
   }),
 
   // Brightness (only when on)
-  promptNumber("brightness", "Enter brightness (0-255)", {
+  promptNumber('brightness', 'Enter brightness (0-255)', {
     min: 0,
     max: 255,
     initial: 128,
@@ -158,7 +158,7 @@ export const promptsConfig: PromptObject<string>[] = [
   }),
 
   // Interval (for all effects except Solid)
-  promptNumber("interval", "Enter interval (milliseconds)", {
+  promptNumber('interval', 'Enter interval (milliseconds)', {
     min: 1,
     max: 60_000,
     initial: 250,
@@ -167,11 +167,11 @@ export const promptsConfig: PromptObject<string>[] = [
 
   // Color mode (disallowed for change & wheel)
   promptSelect(
-    "colorMode",
-    "Set color mode",
+    'colorMode',
+    'Set color mode',
     [
-      { title: "Custom", value: "custom" },
-      { title: "Random", value: "random" },
+      { title: 'Custom', value: 'custom' },
+      { title: 'Random', value: 'random' },
     ],
     and(
       isOn,
@@ -181,16 +181,16 @@ export const promptsConfig: PromptObject<string>[] = [
 
   // Random color subtype (only when random, and not for solid/change)
   promptSelect(
-    "randomColorMode",
-    "Set random color mode",
+    'randomColorMode',
+    'Set random color mode',
     [
-      { title: "Static", value: "static" },
-      { title: "Change", value: "change" },
+      { title: 'Static', value: 'static' },
+      { title: 'Change', value: 'change' },
     ],
     and(
       isOn,
       (v) =>
-        v.colorMode === "random" &&
+        v.colorMode === 'random' &&
         v.effect !== EFFECTS.SOLID &&
         v.effect !== EFFECTS.CHANGE
     )
@@ -198,58 +198,58 @@ export const promptsConfig: PromptObject<string>[] = [
 
   // Random 'change' interval (every pixel vs end of loop)
   promptSelect(
-    "colorChangeInterval",
-    "Set color change interval",
+    'colorChangeInterval',
+    'Set color change interval',
     [
-      { title: "After every pixel", value: "everyPixel" },
-      { title: "At end of loop", value: "everyLoop" },
+      { title: 'After every pixel', value: 'everyPixel' },
+      { title: 'At end of loop', value: 'everyLoop' },
     ],
     and(
       isOn,
       (v) =>
-        v.colorMode === "random" &&
-        v.randomColorMode === "change" &&
+        v.colorMode === 'random' &&
+        v.randomColorMode === 'change' &&
         v.effect !== EFFECTS.BLINK &&
         allowsRandomcolorChangeInterval(v)
     )
   ),
 
   // Custom RGB (only when custom color is allowed)
-  promptNumber("red", "Enter a red value (0-255)", {
+  promptNumber('red', 'Enter a red value (0-255)', {
     min: 0,
     max: 255,
     initial: 0,
     when: and(
       isOn,
-      (v) => v.colorMode === "custom" && allowsCustom(v)
+      (v) => v.colorMode === 'custom' && allowsCustom(v)
     ),
   }),
-  promptNumber("green", "Enter a green value (0-255)", {
+  promptNumber('green', 'Enter a green value (0-255)', {
     min: 0,
     max: 255,
     initial: 0,
     when: and(
       isOn,
-      (v) => v.colorMode === "custom" && allowsCustom(v)
+      (v) => v.colorMode === 'custom' && allowsCustom(v)
     ),
   }),
-  promptNumber("blue", "Enter a blue value (0-255)", {
+  promptNumber('blue', 'Enter a blue value (0-255)', {
     min: 0,
     max: 255,
     initial: 0,
     when: and(
       isOn,
-      (v) => v.colorMode === "custom" && allowsCustom(v)
+      (v) => v.colorMode === 'custom' && allowsCustom(v)
     ),
   }),
 
   // Walk Pixel -> pixel state
   promptSelect(
-    "pixelState",
-    "Set pixel",
+    'pixelState',
+    'Set pixel',
     [
-      { title: "On", value: 1 },
-      { title: "Off", value: 0 },
+      { title: 'On', value: 1 },
+      { title: 'Off', value: 0 },
     ],
     and(isOn, effectEquals(EFFECTS.WALK_PIXEL))
   ),
