@@ -1,4 +1,4 @@
-import { init, dispose } from './ledRuntime.js';
+import { init as runtimeInit, dispose } from './ledRuntime.js';
 import { Config } from './types/index.js'
 
 interface Effect {
@@ -12,34 +12,48 @@ export class EffectManager {
   config: Config;
   _current: Effect | null;
   _disposed: boolean;
+  private _runtimeReady: Promise<void>;
 
   constructor(config: Config) {
     this.config = config;
     this._current = null;
     this._disposed = false;
 
-    init(config);
+    // start async init immediately, but don't block constructor
+    this._runtimeReady = runtimeInit(config);
   };
 
   async start(effect: Effect): Promise<void> {
     if (this._disposed) throw new Error('EffectManager already disposed');
+
+    await this._runtimeReady;
     await this.stop();
+
     this._current = effect;
-    effect.run();
+
+    await effect.run();
   };
 
   async stop() {
     const eff = this._current;
+
     if (!eff) return;
-    try { eff.stop?.(); } finally {
+
+    try {
+      await eff.stop?.();
+    } finally {
       this._current = null;
+
       await tick();
     }; 
   };
 
   async dispose() {
     if (this._disposed) return;
+
     this._disposed = true;
+
+    await this._runtimeReady;
 
     await this.stop();
     await dispose();

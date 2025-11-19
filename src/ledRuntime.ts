@@ -10,11 +10,9 @@ export const runtime = { alive: false };
 const tick = () => new Promise<void>(r => setImmediate(r));
 
 export const init = async (config: Config) => {
-  // Lazily load and cache ws281x
   if (!ws281x) {
     ws281x = await loadWs281x();
   }
-
   ws281x.configure(config);
   runtime.alive = true;
 };
