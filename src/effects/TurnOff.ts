@@ -1,6 +1,6 @@
-import ws281x from '../hardware/ws281x.js';
+import { loadWs281x } from '../hardware/ws281x.js';
 import { safeRender } from '../ledRuntime.js';
-import { Config } from '../types/index.js';
+import type { Config } from '../types/index.js';
 
 export class TurnOff {
   config: Config;
@@ -9,7 +9,9 @@ export class TurnOff {
     this.config = config;
   };
 
-  run() {
+  async run() {
+    const ws281x = await loadWs281x();
+
     const pixels: Uint32Array = new Uint32Array(this.config.leds);
 
     safeRender(pixels);

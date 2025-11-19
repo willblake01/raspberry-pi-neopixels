@@ -19,9 +19,9 @@ const selectEffect = (config: Config, options: Options) => {
   return rule ? rule.make(config, options) : new TurnOff(config);
 };
 
-const neopixels = async () => {
-  const response = await prompts(promptsConfig);
-  const options: Options = normalizeAnswers(response);
+const main = async () => {
+  const answers = await prompts(promptsConfig);
+  const options: Options = normalizeAnswers(answers);
 
   const config: Config = {
     leds: options.leds,
@@ -56,13 +56,18 @@ const neopixels = async () => {
     shutDown('unhandledRejection', err),
   );
 
-  await delay(1000);
-
   const effect = selectEffect(manager.config, options);
   await manager.start(effect);
+
+  await delay(1000);
 };
 
-neopixels().catch((err) => {
+// Auto-run when used as a CLI: node dist/index.js
+if (require.main === module) {
+  void main();
+}
+
+main().catch((err) => {
   console.error('[fatal]', err);
   process.exitCode = 1;
 });
