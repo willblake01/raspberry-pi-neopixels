@@ -66,7 +66,10 @@ export const main = async () => {
   await manager.start(effect);
 };
 
-void main().catch((err) => {
-  console.error('[fatal]', err);
-  process.exitCode = 1;
-});
+// Only auto-run when NOT under Jest
+if (!process.env.JEST_WORKER_ID) {
+  void main().catch((err) => {
+    console.error('[fatal]', err);
+    process.exitCode = 1;
+  });
+}
