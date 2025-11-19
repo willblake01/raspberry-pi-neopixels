@@ -62,12 +62,7 @@ const main = async () => {
   await delay(1000);
 };
 
-// Auto-run when used as a CLI: node dist/index.js
-if (require.main === module) {
-  void main();
-}
-
-main().catch((err) => {
+void main().catch((err) => {
   console.error('[fatal]', err);
   process.exitCode = 1;
 });
