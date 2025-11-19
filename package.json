@@ -21,7 +21,9 @@
     "test": "jest"
   },
   "dependencies": {
-    "prompts": "^2.4.2",
+    "prompts": "^2.4.2"
+  },
+  "optionalDependencies": {
     "rpi-ws281x": "^1.0.37"
   },
   "devDependencies": {

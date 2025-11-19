@@ -1,4 +1,4 @@
-import ws281x from 'rpi-ws281x';
+import ws281x from "../hardware/ws281x.js";
 import { TurnOff } from './index.js';
 import type { Config } from '../types/index.js';
 
@@ -61,11 +61,13 @@ describe('TurnOff effect', () => {
     expect(onSpy).toHaveBeenCalledWith('SIGINT', expect.any(Function));
     expect(capturedHandler).toBeDefined();
 
-    (ws281x.reset as jest.Mock).mockClear();
+    const resetMock = ws281x.reset as jest.MockedFunction<typeof ws281x.reset>;
+
+    resetMock.mockClear();
 
     capturedHandler?.();
 
-    expect(ws281x.reset).toHaveBeenCalledTimes(1);
+    expect(resetMock).toHaveBeenCalledTimes(1);
     expect(exitSpy).toHaveBeenCalledWith(0);
 
     onSpy.mockRestore();

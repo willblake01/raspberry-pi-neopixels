@@ -64,8 +64,8 @@ nvm use 24
 node -v  # v24.x.x
 ```
 
--   Python ≥ 3.x
--   Build tools:
+- Python ≥ 3.x
+- Build tools:
 
 ``` bash
 sudo apt install build-essential python3
