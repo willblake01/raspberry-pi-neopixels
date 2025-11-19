@@ -10,30 +10,29 @@ const noop: Ws281xInterface = {
   reset: () => {},
 };
 
-let ws281x: Ws281xInterface;
-
 const isPi =
-  process.platform === 'linux' &&
-  (process.arch === 'arm' || process.arch === 'arm64');
+  process.platform === "linux" &&
+  (process.arch === "arm" || process.arch === "arm64");
 
-if (isPi) {
+/**
+ * Load the ws281x driver:
+ *  - On Pi: real rpi-ws281x (or throw if missing)
+ *  - On mac/Windows: try to import; if missing, return no-op
+ *  - In Jest: jest.mock('rpi-ws281x') will intercept this import
+ */
+export async function loadWs281x(): Promise<Ws281xInterface> {
+  if (isPi) {
+    // On Pi, fail loudly if the module isn't available
+    const real = await import("rpi-ws281x");
+    return (real.default || real) as Ws281xInterface;
+  }
 
-  // On Pi: do NOT swallow errors. If this fails, you want to know.
-  // @ts-ignore
-  const real = require('rpi-ws281x');
-  ws281x = (real.default || real) as Ws281xInterface;
-} else {
-
-  // macOS / Windows / CI: try to require so Jest can mock it, but
-  // fall back to a no-op if the module isn't installed.
+  // Non-Pi (dev / macOS / tests)
   try {
-    
-    // @ts-ignore
-    const real = require('rpi-ws281x');
-    ws281x = (real.default || real) as Ws281xInterface;
-  } catch (err) {
-    ws281x = noop;
+    const real = await import("rpi-ws281x");
+    return (real.default || real) as Ws281xInterface;
+  } catch {
+    // No native module here? Just no-op.
+    return noop;
   }
 }
-
-export default ws281x;
