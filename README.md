@@ -58,17 +58,24 @@ random modes, etc.), all running directly on the Pi's GPIO via
 - Raspberry Pi OS (Bookworm recommended)
 - **nvm-installed Node.js (LTS v24.x)**
 
-``` bash
+```bash
 nvm install 24
 nvm use 24
 node -v  # v24.x.x
 ```
 
-- Python ≥ 3.x
+- Python ≥ 3.x  
 - Build tools:
 
-``` bash
+```bash
 sudo apt install build-essential python3
+```
+
+### Optional  
+A `.nvmrc` file makes Node selection automatic:
+
+```
+v24
 ```
 
 ------------------------------------------------------------------------
@@ -77,56 +84,55 @@ sudo apt install build-essential python3
 
 Clone the repo:
 
-``` bash
+```bash
 git clone https://github.com/willblake01/raspberry-pi-neopixels
 cd raspberry-pi-neopixels
 ```
 
 Install using **nvm Node**:
 
-``` bash
+```bash
 nvm use
 npm install
 ```
 
 Verify Node:
 
-``` bash
+```bash
 node -v
 which node
 ```
-
-Expected:
 
 ------------------------------------------------------------------------
 
 ## ▶️ Running the LED Engine
 
-WS281x hardware requires **root access**, but **npm must not run as
-root**.
+WS281x hardware requires **root access**, but **npm must not run as root**  
+(otherwise it breaks your environment variables, PATH, and permissions).
 
 Your `package.json` should include:
 
-``` jsonc
+```jsonc
 "scripts": {
   "build": "tsc",
   "start": "node dist/index.js",
-  "start:root": "sudo /home/pi/.nvm/versions/node/v24.11.1/bin/node dist/index.js"
+  "start:root": "sudo env \"PATH=$PATH\" node dist/index.js"
 }
-```
-
-Run:
-
-``` bash
-npm run build
-npm run start:root
 ```
 
 This ensures:
 
-- nvm's Node is used
-- system Node is NOT used
-- only the LED runtime runs with sudo
+- **Your nvm Node** is used (`PATH` is preserved through sudo)
+- The code has **sudo access** to `/dev/mem`
+- You never have to hardcode full paths to Node
+- Anyone who clones the repo can run it safely
+
+Run:
+
+```bash
+npm run build
+npm run start:root
+```
 
 ------------------------------------------------------------------------
 
@@ -137,11 +143,12 @@ Tests use **Jest + ts-jest**.
 ### Test Layout
 
 - Tests live **next to the files they test**
-- **Only root `index.ts` has a test file**
+- **Only root `index.ts` has an associated test**
+- Hardware is fully mocked (`rpi-ws281x`) so tests run without a Pi
 
-Examples:
+Run:
 
-``` bash
+```bash
 npm test
 ```
 
@@ -149,7 +156,7 @@ npm test
 
 ## 📁 Project Structure
 
-``` text
+```text
 src/
   @types/
   constants/
@@ -183,11 +190,11 @@ dist/   (build output)
 
 Compile:
 
-``` bash
+```bash
 npm run build
 ```
 
-Output goes to `/dist`.
+Output goes to `dist/`.
 
 ------------------------------------------------------------------------
 
@@ -198,34 +205,36 @@ The runtime includes a safe exit handler:
 - Stops active effect
 - Clears LEDs
 - Resets WS281x hardware
-- Handles all common shutdown signals
+- Handles all common shutdown signals automatically
 
 ------------------------------------------------------------------------
 
 ## ⚠️ Troubleshooting
 
-### "Cannot open /dev/mem"
+### “Cannot open /dev/mem”
 
-Use:
+You must run with root _but not with sudo npm_:
 
-``` bash
+```bash
 npm run start:root
 ```
 
 ### Native module mismatch
 
-``` bash
+```bash
 npm rebuild rpi-ws281x
 ```
 
-### Wrong Node?
+### Wrong Node being used?
 
-``` bash
+Check:
+
+```bash
 which node
-sudo which node
+sudo env "PATH=$PATH" which node
 ```
 
-Make sure the script points to the nvm Node.
+Both should point to your **nvm** Node.
 
 ------------------------------------------------------------------------
 
