@@ -280,7 +280,7 @@ export const promptsConfig: PromptObject<string>[] = [
     'Set motion color mode',
     [
       { title: 'Custom', value: 'custom' },
-      { title: 'Random', value: 'random' },
+      { title: 'Random', value: 'random' }
     ],
     and(isOn, motionEnabled)
   ),
