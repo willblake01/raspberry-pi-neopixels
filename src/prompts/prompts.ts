@@ -96,6 +96,13 @@ const allowsRandom: Predicate = (v) =>
 const allowsRandomcolorChangeInterval: Predicate = (v) =>
   EFFECT_ALLOWS_RANDOM_CHANGE_INTERVAL.has(v.effect as EffectName);
 
+// Motion override enabled?
+const motionEnabled: Predicate = (v) => v.useMotionColor === 1;
+
+const motionCustom: Predicate = (v) => v.useMotionColor === 1 && v.motionColorMode === 'custom';
+
+const motionRandom: Predicate = (v) => v.useMotionColor === 1 && v.motionColorMode === 'random';
+
 /** Wraps a predicate into a dynamic `type` function that `prompts` accepts. */
 const show = (type: PromptType, pred: Predicate): PromptTypeFn =>
   (_prev, values) => (pred(values) ? type : null);
@@ -253,4 +260,56 @@ export const promptsConfig: PromptObject<string>[] = [
     ],
     and(isOn, effectEquals(EFFECTS.WALK_PIXEL))
   ),
+
+  // ---------------------------------------------------------------------------
+  // Motion color override
+  // ---------------------------------------------------------------------------
+
+  // Enable motion override (only when turning on)
+  promptSelect(
+    'useMotionColor',
+    'Enable motion color?',
+    [
+      { title: 'No', value: 0 },
+      { title: 'Yes', value: 1 }
+    ],
+    isOn
+  ),
+  promptSelect(
+    'motionColorMode',
+    'Set motion color mode',
+    [
+      { title: 'Custom', value: 'custom' },
+      { title: 'Random', value: 'random' },
+    ],
+    and(isOn, motionEnabled)
+  ),
+
+  // Motion custom RGB (only if custom)
+  promptNumber('motionRed', 'Enter motion red value (0-255)', {
+    min: 0,
+    max: 255,
+    initial: 255,
+    when: and(isOn, motionCustom),
+  }),
+  promptNumber('motionGreen', 'Enter motion green value (0-255)', {
+    min: 0,
+    max: 255,
+    initial: 200,
+    when: and(isOn, motionCustom),
+  }),
+  promptNumber('motionBlue', 'Enter motion blue value (0-255)', {
+    min: 0,
+    max: 255,
+    initial: 80,
+    when: and(isOn, motionCustom),
+  }),
+
+  // Motion brightness (always asked if motion override enabled)
+  promptNumber('motionBrightness', 'Enter motion brightness (0-255)', {
+    min: 0,
+    max: 255,
+    initial: 64,
+    when: and(isOn, motionEnabled),
+  })
 ];

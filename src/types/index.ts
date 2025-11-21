@@ -79,7 +79,16 @@ export interface Options {
   // Pixel state
   pixelState?: 0 | 1;
 
+  useMotionColor: 0 | 1;
+  motionBrightness: number;
+  motionColorMode: 'custom' | 'random';
+  motionRed: number;
+  motionGreen: number;
+  motionBlue: number;
+
   // Effect flags
+  isOn: boolean;
+  isOff: boolean;
   isSolid: boolean;
   isChange: boolean;
   isBlink: boolean;
@@ -87,8 +96,6 @@ export interface Options {
   isCreep: boolean;
   isWheel: boolean;
   isWalkPixel: boolean;
-  isOn: boolean;
-  isOff: boolean;
 
   // Derived color-mode flags used in 'when'
   isCustomColorMode: boolean;
@@ -98,4 +105,7 @@ export interface Options {
 
   everyPixelColorChangeInterval: boolean;
   everyLoopColorChangeInterval: boolean;
+  isMotionColorEnabled: boolean;
+  isMotionCustomColorMode: boolean;
+  isMotionRandomColorMode: boolean;
 };

@@ -1,23 +1,23 @@
-import { EventEmitter } from "events";
-import { execFile } from "child_process";
-import { promisify } from "util";
-import sharp from "sharp";
+import { EventEmitter } from 'events';
+import { execFile } from 'child_process';
+import { promisify } from 'util';
+import sharp from 'sharp';
 
 const execFileAsync = promisify(execFile);
 
-async function captureFrame(width: number, height: number): Promise<Buffer> {
+const captureFrame = async (width: number, height: number): Promise<Buffer> => {
   const { stdout, stderr } = await execFileAsync(
-    "rpicam-still",
+    'rpicam-still',
     [
-      "--width", String(width),
-      "--height", String(height),
-      "--nopreview",
-      "--timeout", "1",      // don’t wait before capture
-      "--encoding", "jpg",
-      "-o", "-",             // write JPEG to stdout
+      '--width', String(width),
+      '--height', String(height),
+      '--nopreview',
+      '--timeout', '1',      // don’t wait before capture
+      '--encoding', 'jpg',
+      '-o', '-',             // write JPEG to stdout
     ],
     {
-      encoding: "buffer",
+      encoding: 'buffer',
       maxBuffer: 10 * 1024 * 1024, // 10MB safety limit
     }
   );
@@ -31,14 +31,14 @@ async function captureFrame(width: number, height: number): Promise<Buffer> {
 }
 
 export class CameraMotion extends EventEmitter {
+  intervalMs?: number;
+  diffThreshold?: number;
+  cooldownMs?: number;
   private _lastFrame: Buffer | null = null;
   private _isRunning = false;
   private _timer: NodeJS.Timeout | null = null;
   private _lastMotionAt = 0;
   private _capturing = false;
-  intervalMs?: number; 
-  diffThreshold?: number; 
-  cooldownMs?: number;
 
   constructor(opts: {
     intervalMs?: number; 
@@ -71,20 +71,22 @@ export class CameraMotion extends EventEmitter {
 
         if (this._lastFrame) {
           let diff = 0;
+
           for (let i = 0; i < frame.length; i++) {
             diff += Math.abs(frame[i] - this._lastFrame[i]);
           }
 
           const now = Date.now();
+
           if (diff > (this.diffThreshold ?? 15000) && now - this._lastMotionAt > (this.cooldownMs ?? 800)) {
             this._lastMotionAt = now;
-            this.emit("motionDetected", { diff });
+            this.emit('motionDetected', { diff });
           }
         }
 
         this._lastFrame = frame;
       } catch (err) {
-        this.emit("error", err);
+        this.emit('error', err);
       } finally {
         this._capturing = false;
       };

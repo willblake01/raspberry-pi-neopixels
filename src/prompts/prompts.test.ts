@@ -1,111 +1,260 @@
+import type { PromptObject, PromptType } from 'prompts';
 import { promptsConfig } from './prompts.js';
 import { EFFECTS } from '../constants/index.js';
 
+/**
+ * prompts `type` can be:
+ * - a function (your show(...))
+ * - a string literal ('select'/'number')
+ * - false/null
+ *
+ * This helper normalizes that into the *resolved* runtime type.
+ */
+const evalType = (
+  prompt: PromptObject<string>,
+  values: any
+): PromptType | null => {
+  const t = prompt.type;
+
+  if (typeof t === "function") {
+    // prompts calls: type(prev, values, prompt)
+    const out = t(null as never, values as never, prompt as never);
+    return out ? (out as PromptType) : null; // normalize falsy -> null
+  }
+
+  if (typeof t === "string") return t;
+  return null;
+};
+
+const getPrompt = (name: string) => {
+  const p = promptsConfig.find((x) => x.name === name);
+  expect(p).toBeDefined();
+  return p!;
+};
+
 describe('prompts configuration', () => {
   test('command prompt is always shown and offers on/off options', () => {
-    const commandPrompt = promptsConfig.find((prompt) => prompt.name === 'command');
-    expect(commandPrompt).toBeDefined();
-    const choices = commandPrompt!.choices ?? [];
-    expect(choices).toEqual([
+    const commandPrompt = getPrompt('command');
+    expect(commandPrompt.choices).toEqual([
       { title: 'On', value: 1 },
       { title: 'Off', value: 0 },
     ]);
-    expect(commandPrompt!.type?.(null as never, {} as never)).toBe('select');
+    expect(evalType(commandPrompt, {})).toBe('select');
   });
 
   test('effect prompt appears only when command is on', () => {
-    const effectPrompt = promptsConfig.find((prompt) => prompt.name === 'effect');
-    expect(effectPrompt).toBeDefined();
+    const effectPrompt = getPrompt('effect');
 
-    expect(effectPrompt!.type?.(null as never, { command: 0 } as never)).toBeNull();
-    expect(effectPrompt!.type?.(null as never, { command: 1 } as never)).toBe('select');
+    expect(evalType(effectPrompt, { command: 0 })).toBeNull();
+    expect(evalType(effectPrompt, { command: 1 })).toBe('select');
+  });
+
+  test('brightness prompt appears only when command is on', () => {
+    const brightnessPrompt = getPrompt('brightness');
+
+    expect(evalType(brightnessPrompt, { command: 0 })).toBeNull();
+    expect(evalType(brightnessPrompt, { command: 1 })).toBe('number');
   });
 
   test('interval prompt respects effect capabilities', () => {
-    const intervalPrompt = promptsConfig.find((prompt) => prompt.name === 'interval');
-    expect(intervalPrompt).toBeDefined();
+    const intervalPrompt = getPrompt('interval');
 
-    expect(
-      intervalPrompt!.type?.(null as never, { command: 1, effect: EFFECTS.BLINK } as never),
-    ).toBe('number');
+    // Needs interval -> shown
+    expect(evalType(intervalPrompt, { command: 1, effect: EFFECTS.BLINK })).toBe('number');
+    expect(evalType(intervalPrompt, { command: 1, effect: EFFECTS.WHEEL })).toBe('number');
 
-    expect(
-      intervalPrompt!.type?.(null as never, { command: 1, effect: EFFECTS.SOLID } as never),
-    ).toBeNull();
+    // Solid does not need interval -> hidden
+    expect(evalType(intervalPrompt, { command: 1, effect: EFFECTS.SOLID })).toBeNull();
+
+    // Off -> hidden always
+    expect(evalType(intervalPrompt, { command: 0, effect: EFFECTS.BLINK })).toBeNull();
   });
 
-  test('color mode prompt only shows when an effect supports it', () => {
-    const colorModePrompt = promptsConfig.find((prompt) => prompt.name === 'colorMode');
-    expect(colorModePrompt).toBeDefined();
+  test('colorMode prompt only shows when an effect supports custom or random', () => {
+    const colorModePrompt = getPrompt('colorMode');
 
+    // Solid supports color mode -> shown
+    expect(evalType(colorModePrompt, { command: 1, effect: EFFECTS.SOLID })).toBe('select');
+
+    // Wheel does NOT allow colorMode -> hidden
+    expect(evalType(colorModePrompt, { command: 1, effect: EFFECTS.WHEEL })).toBeNull();
+
+    // Off -> hidden
+    expect(evalType(colorModePrompt, { command: 0, effect: EFFECTS.SOLID })).toBeNull();
+  });
+
+  test('randomColorMode prompt is only shown for random-capable effects (non-solid/change)', () => {
+    const randomModePrompt = getPrompt('randomColorMode');
+
+    // Random + creep (allowed) -> shown
     expect(
-      colorModePrompt!.type?.(null as never, { command: 1, effect: EFFECTS.SOLID } as never),
+      evalType(randomModePrompt, { command: 1, colorMode: 'random', effect: EFFECTS.CREEP })
     ).toBe('select');
 
+    // Random + solid -> hidden per config
     expect(
-      colorModePrompt!.type?.(null as never, { command: 1, effect: EFFECTS.WHEEL } as never),
+      evalType(randomModePrompt, { command: 1, colorMode: 'random', effect: EFFECTS.SOLID })
+    ).toBeNull();
+
+    // Random + change -> hidden per config
+    expect(
+      evalType(randomModePrompt, { command: 1, colorMode: 'random', effect: EFFECTS.CHANGE })
     ).toBeNull();
   });
 
-  test('random color mode prompt is only shown for random-capable effects', () => {
-    const randomModePrompt = promptsConfig.find((prompt) => prompt.name === 'randomColorMode');
-    expect(randomModePrompt).toBeDefined();
+  test('colorChangeInterval prompt shown only for random change mode and allowed effects', () => {
+    const colorChangeIntervalPrompt = getPrompt('colorChangeInterval');
 
+    // Random + change + creep -> shown
     expect(
-      randomModePrompt!.type?.(
-        null as never,
-        { command: 1, colorMode: 'random', effect: EFFECTS.CREEP } as never,
-      ),
+      evalType(colorChangeIntervalPrompt, {
+        command: 1,
+        colorMode: 'random',
+        randomColorMode: 'change',
+        effect: EFFECTS.CREEP,
+      })
     ).toBe('select');
 
+    // Random + change + blink excluded -> hidden
     expect(
-      randomModePrompt!.type?.(
-        null as never,
-        { command: 1, colorMode: 'random', effect: EFFECTS.SOLID } as never,
-      ),
+      evalType(colorChangeIntervalPrompt, {
+        command: 1,
+        colorMode: 'random',
+        randomColorMode: 'change',
+        effect: EFFECTS.BLINK,
+      })
+    ).toBeNull();
+
+    // Static random -> hidden
+    expect(
+      evalType(colorChangeIntervalPrompt, {
+        command: 1,
+        colorMode: 'random',
+        randomColorMode: 'static',
+        effect: EFFECTS.CREEP,
+      })
     ).toBeNull();
   });
 
-  test('custom RGB prompts only appear when custom color mode is selected', () => {
-    const redPrompt = promptsConfig.find((prompt) => prompt.name === 'red');
-    const greenPrompt = promptsConfig.find((prompt) => prompt.name === 'green');
-    const bluePrompt = promptsConfig.find((prompt) => prompt.name === 'blue');
+  test('custom RGB prompts only appear when custom colorMode is selected and effect allows custom', () => {
+    const redPrompt = getPrompt('red');
+    const greenPrompt = getPrompt('green');
+    const bluePrompt = getPrompt('blue');
 
-    for (const prompt of [redPrompt, greenPrompt, bluePrompt]) {
-      expect(prompt).toBeDefined();
+    for (const p of [redPrompt, greenPrompt, bluePrompt]) {
+      // Custom + solid -> shown
+      expect(evalType(p, { command: 1, colorMode: 'custom', effect: EFFECTS.SOLID })).toBe(
+        'number'
+      );
 
-      expect(
-        prompt!.type?.(
-          null as never,
-          { command: 1, colorMode: 'custom', effect: EFFECTS.SOLID } as never,
-        ),
-      ).toBe('number');
+      // Random -> hidden
+      expect(evalType(p, { command: 1, colorMode: 'random', effect: EFFECTS.SOLID })).toBeNull();
 
-      expect(
-        prompt!.type?.(
-          null as never,
-          { command: 1, colorMode: 'random', effect: EFFECTS.SOLID } as never,
-        ),
-      ).toBeNull();
+      // Effect that doesn't allow custom (wheel) -> hidden
+      expect(evalType(p, { command: 1, colorMode: 'custom', effect: EFFECTS.WHEEL })).toBeNull();
     }
   });
 
   test('walk pixel pixelState prompt only appears for walk pixel effect', () => {
-    const pixelStatePrompt = promptsConfig.find((prompt) => prompt.name === 'pixelState');
-    expect(pixelStatePrompt).toBeDefined();
+    const pixelStatePrompt = getPrompt('pixelState');
 
+    expect(evalType(pixelStatePrompt, { command: 1, effect: EFFECTS.WALK_PIXEL })).toBe('select');
+    expect(evalType(pixelStatePrompt, { command: 1, effect: EFFECTS.SOLID })).toBeNull();
+  });
+
+  // ---------------------------------------------------------------------------
+  // Motion color override tests
+  // ---------------------------------------------------------------------------
+
+  test('useMotionColor prompt appears only when command is on', () => {
+    const useMotionPrompt = getPrompt('useMotionColor');
+
+    expect(evalType(useMotionPrompt, { command: 0 })).toBeNull();
+    expect(evalType(useMotionPrompt, { command: 1 })).toBe('select');
+
+    expect(useMotionPrompt.choices).toEqual([
+      { title: 'No', value: 0 },
+      { title: 'Yes', value: 1 },
+    ]);
+  });
+
+  test('motionColorMode prompt appears only when motion override is enabled', () => {
+    const motionColorModePrompt = getPrompt('motionColorMode');
+
+    // Not enabled -> hidden
     expect(
-      pixelStatePrompt!.type?.(
-        null as never,
-        { command: 1, effect: EFFECTS.WALK_PIXEL } as never,
-      ),
+      evalType(motionColorModePrompt, { command: 1, useMotionColor: 0 })
+    ).toBeNull();
+
+    // Enabled -> shown
+    expect(
+      evalType(motionColorModePrompt, { command: 1, useMotionColor: 1 })
     ).toBe('select');
+  });
 
+  test('motion RGB prompts appear only for custom motionColorMode AND when enabled', () => {
+    const motionRedPrompt = getPrompt('motionRed');
+    const motionGreenPrompt = getPrompt('motionGreen');
+    const motionBluePrompt = getPrompt('motionBlue');
+
+    for (const p of [motionRedPrompt, motionGreenPrompt, motionBluePrompt]) {
+      // Enabled + custom -> shown
+      expect(
+        evalType(p, {
+          command: 1,
+          useMotionColor: 1,
+          motionColorMode: 'custom',
+        })
+      ).toBe('number');
+
+      // Enabled + random -> hidden
+      expect(
+        evalType(p, {
+          command: 1,
+          useMotionColor: 1,
+          motionColorMode: 'random',
+        })
+      ).toBeNull();
+
+      // Not enabled -> hidden
+      expect(
+        evalType(p, {
+          command: 1,
+          useMotionColor: 0,
+          motionColorMode: 'custom',
+        })
+      ).toBeNull();
+    }
+  });
+
+  test('motionBrightness prompt appears for both custom and random when enabled', () => {
+    const motionBrightnessPrompt = getPrompt('motionBrightness');
+
+    // Enabled + custom -> shown
     expect(
-      pixelStatePrompt!.type?.(
-        null as never,
-        { command: 1, effect: EFFECTS.SOLID } as never,
-      ),
+      evalType(motionBrightnessPrompt, {
+        command: 1,
+        useMotionColor: 1,
+        motionColorMode: 'custom',
+      })
+    ).toBe('number');
+
+    // Enabled + random -> shown
+    expect(
+      evalType(motionBrightnessPrompt, {
+        command: 1,
+        useMotionColor: 1,
+        motionColorMode: 'random',
+      })
+    ).toBe('number');
+
+    // Not enabled -> hidden
+    expect(
+      evalType(motionBrightnessPrompt, {
+        command: 1,
+        useMotionColor: 0,
+        motionColorMode: 'custom',
+      })
     ).toBeNull();
   });
 });
