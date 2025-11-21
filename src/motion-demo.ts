@@ -4,7 +4,7 @@ import { SolidCustom } from "./effects/Solid.js";
 import type { Config } from "./types/index.js";
 
 const config: Config = {
-  leds: 30,
+  leds: 100,
   dma: 10,
   brightness: 128,
   gpio: 18,
