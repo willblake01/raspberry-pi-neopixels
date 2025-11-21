@@ -1,11 +1,33 @@
 import { EventEmitter } from "events";
-import { still } from "node-libcamera";
+import { execFile } from "child_process";
+import { promisify } from "util";
 import sharp from "sharp";
 
-export interface MotionOptions {
-  intervalMs?: number;
-  diffThreshold?: number;
-  cooldownMs?: number; // min time between motion events
+const execFileAsync = promisify(execFile);
+
+async function captureFrame(width: number, height: number): Promise<Buffer> {
+  const { stdout, stderr } = await execFileAsync(
+    "rpicam-still",
+    [
+      "--width", String(width),
+      "--height", String(height),
+      "--nopreview",
+      "--timeout", "1",      // don’t wait before capture
+      "--encoding", "jpg",
+      "-o", "-",             // write JPEG to stdout
+    ],
+    {
+      encoding: "buffer",
+      maxBuffer: 10 * 1024 * 1024, // 10MB safety limit
+    }
+  );
+
+  // rpicam-still often logs to stderr even on success; only fail if no stdout
+  if ((!stdout || stdout.length === 0) && stderr?.length) {
+    throw new Error(stderr.toString());
+  }
+
+  return stdout as Buffer;
 }
 
 export class CameraMotion extends EventEmitter {
@@ -13,16 +35,20 @@ export class CameraMotion extends EventEmitter {
   private isRunning = false;
   private timer: NodeJS.Timeout | null = null;
   private lastMotionAt = 0;
+  intervalMs?: number; 
+  diffThreshold?: number; 
+  cooldownMs?: number;
 
-  private readonly intervalMs: number;
-  private readonly diffThreshold: number;
-  private readonly cooldownMs: number;
-
-  constructor(opts: MotionOptions = {}) {
+  constructor(opts: {
+    intervalMs?: number; 
+    diffThreshold?: number; 
+    cooldownMs?: number;
+  } = {}) {
     super();
+
     this.intervalMs = opts.intervalMs ?? 200;
     this.diffThreshold = opts.diffThreshold ?? 15000;
-    this.cooldownMs = opts.cooldownMs ?? 800; // adjust if you want faster/slower changes
+    this.cooldownMs = opts.cooldownMs ?? 800;
   }
 
   start() {
@@ -31,11 +57,7 @@ export class CameraMotion extends EventEmitter {
 
     this.timer = setInterval(async () => {
       try {
-        const img = await still({
-          width: 320,
-          height: 240,
-          nopreview: true,
-        });
+        const img = await captureFrame(320, 240);
 
         const frame = await sharp(img)
           .grayscale()
@@ -50,13 +72,10 @@ export class CameraMotion extends EventEmitter {
           }
 
           const now = Date.now();
-          if (diff > this.diffThreshold && now - this.lastMotionAt > this.cooldownMs) {
+          if (diff > (this.diffThreshold ?? 15000) && now - this.lastMotionAt > (this.cooldownMs ?? 800)) {
             this.lastMotionAt = now;
             this.emit("motionDetected", { diff });
           }
-
-          // optional debug hook:
-          // this.emit("frameDiff", diff);
         }
 
         this.lastFrame = frame;
