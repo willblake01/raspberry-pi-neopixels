@@ -29,27 +29,46 @@ const motion = new CameraMotion({
   cooldownMs: 800,
 });
 
-let revertTimer: NodeJS.Timeout | null = null;
-let motionActive = false;
+// how long after last motion before reverting
+const NO_MOTION_MS = 2500;   // bump this a bit to stop flapping
+const CHECK_MS = 200;        // how often we check if it's quiet
 
-// How long after last motion before reverting:
-const NO_MOTION_MS = 2000;
+let motionActive = false;
+let lastMotionAt = 0;
+let switching = false;       // prevents overlapping start() calls
 
 motion.on("motionDetected", async () => {
-  // If this is the first motion in a while, switch to motion effect
-  if (!motionActive) {
-    motionActive = true;
+  lastMotionAt = Date.now();
+
+  if (motionActive) return;  // already in motion mode, don't restart effect
+  motionActive = true;
+
+  if (switching) return;
+  switching = true;
+  try {
     await manager.start(makeMotionEffect());
+  } finally {
+    switching = false;
   }
-
-  // Reset the revert timer every time motion is detected
-  if (revertTimer) clearTimeout(revertTimer);
-
-  revertTimer = setTimeout(async () => {
-    motionActive = false;
-    await manager.start(makeIdleEffect());
-  }, NO_MOTION_MS);
 });
+
+// Periodically check if motion has stopped long enough
+setInterval(async () => {
+  if (!motionActive) return;
+
+  const quietFor = Date.now() - lastMotionAt;
+  if (quietFor < NO_MOTION_MS) return;
+
+  motionActive = false;
+
+  if (switching) return;
+  switching = true;
+  try {
+    await manager.start(makeIdleEffect());
+  } finally {
+    switching = false;
+  }
+}, CHECK_MS);
 
 motion.on("error", (err) => {
   console.error("Camera motion error:", err);
