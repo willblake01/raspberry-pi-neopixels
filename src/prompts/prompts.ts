@@ -285,6 +285,14 @@ export const promptsConfig: PromptObject<string>[] = [
     and(isOn, motionEnabled)
   ),
 
+  // Motion brightness (always asked if motion override enabled)
+  promptNumber('motionBrightness', 'Enter motion brightness (0-255)', {
+    min: 0,
+    max: 255,
+    initial: 64,
+    when: and(isOn, motionEnabled),
+  }),
+
   // Motion custom RGB (only if custom)
   promptNumber('motionRed', 'Enter motion red value (0-255)', {
     min: 0,
@@ -303,13 +311,5 @@ export const promptsConfig: PromptObject<string>[] = [
     max: 255,
     initial: 80,
     when: and(isOn, motionCustom),
-  }),
-
-  // Motion brightness (always asked if motion override enabled)
-  promptNumber('motionBrightness', 'Enter motion brightness (0-255)', {
-    min: 0,
-    max: 255,
-    initial: 64,
-    when: and(isOn, motionEnabled),
   })
 ];

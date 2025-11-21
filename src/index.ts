@@ -133,7 +133,7 @@ export const main = async () => {
       console.error('Camera motion error:', err);
     });
 
-    console.log('👀 Camera watching for motion...');
+    console.log('\n👀 Camera watching for motion...');
     motion.start();
   };
 };
