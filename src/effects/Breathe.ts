@@ -11,9 +11,9 @@ export class BreatheCustom {
   floor: number;
   gamma: number;
   fps: number;
-  _t0: number;
-  _intervalID: NodeJS.Timeout | null;
-  _stopped: boolean;
+  private _t0: number;
+  private _intervalID: NodeJS.Timeout | null;
+  private _stopped: boolean;
 
   constructor(config: Config, interval: Interval, red: number, green: number, blue: number, floor: number = 0.08, gamma: number = 2, fps: number = 60) {
     this.config = config;
@@ -83,15 +83,15 @@ export class BreatheCustom {
 export class BreatheRandom {
   config: Config;
   interval: Interval;
-  _red: number;
-  _green: number;
-  _blue: number;
   floor: number;
   gamma: number;
   fps: number;
-  _t0: number;
-  _intervalID: NodeJS.Timeout | null;
-  _stopped: boolean;
+  private _red: number;
+  private _green: number;
+  private _blue: number;
+  private _t0: number;
+  private _intervalID: NodeJS.Timeout | null;
+  private _stopped: boolean;
 
   constructor(config: Config, interval: Interval, floor: number = 0.08, gamma: number = 2, fps: number = 60) {
     this.config = config;

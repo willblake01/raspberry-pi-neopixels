@@ -5,15 +5,15 @@ import { Config, Interval } from '../types/index.js';
 export class Wheel {
   config: Config;
   interval: Interval;
-  _red1: number;
-  _green1: number;
-  _blue1: number;
-  _red2: number;
-  _green2: number;
-  _blue2: number;
-  _offset: number;
-  _intervalID: NodeJS.Timeout | null;
-  _stopped: boolean;
+  private _red1: number;
+  private _green1: number;
+  private _blue1: number;
+  private _red2: number;
+  private _green2: number;
+  private _blue2: number;
+  private _offset: number;
+  private _intervalID: NodeJS.Timeout | null;
+  private _stopped: boolean;
 
   constructor(config: Config, interval: Interval) {
     this.config = config;

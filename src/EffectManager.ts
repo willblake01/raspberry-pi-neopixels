@@ -10,8 +10,8 @@ const tick = () => new Promise<void>(resolve => setImmediate(resolve));
 
 export class EffectManager {
   config: Config;
-  _current: Effect | null;
-  _disposed: boolean;
+  private _current: Effect | null;
+  private _disposed: boolean;
   private _runtimeReady: Promise<void>;
 
   constructor(config: Config) {

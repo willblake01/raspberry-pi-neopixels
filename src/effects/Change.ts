@@ -5,11 +5,11 @@ import { Config, Interval } from '../types/index.js';
 export class Change {
   config: Config;
   interval: Interval;
-  _red: number;
-  _green: number;
-  _blue: number;
-  _intervalID: NodeJS.Timeout | null;
-  _stopped: boolean;
+  private _red: number;
+  private _green: number;
+  private _blue: number;
+  private _intervalID: NodeJS.Timeout | null;
+  private _stopped: boolean;
 
 
   constructor(config: Config, interval: Interval) {

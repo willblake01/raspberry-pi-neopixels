@@ -8,9 +8,9 @@ export class WalkPixelOnCustom {
   red: number;
   green: number;
   blue: number;
-  _offset: number;
-  _intervalID: NodeJS.Timeout | null;
-  _stopped: boolean;
+  private _offset: number;
+  private _intervalID: NodeJS.Timeout | null;
+  private _stopped: boolean;
 
   constructor(config: Config, interval: Interval, red: number, green: number, blue: number) {
     this.config = config;
@@ -60,12 +60,12 @@ export class WalkPixelOnCustom {
 export class WalkPixelOnRandomStatic {
   config: Config;
   interval: Interval;
-  _red: number;
-  _green: number;
-  _blue: number;
-  _offset: number;
-  _intervalID: NodeJS.Timeout | null;
-  _stopped: boolean;
+  private _red: number;
+  private _green: number;
+  private _blue: number;
+  private _offset: number;
+  private _intervalID: NodeJS.Timeout | null;
+  private _stopped: boolean;
 
   constructor(config: Config, interval: Interval) {
     this.config = config;
@@ -115,12 +115,12 @@ export class WalkPixelOnRandomStatic {
 export class WalkPixelOnRandomChangePixel {
   config: Config;
   interval: Interval;
-  _red: number;
-  _green: number;
-  _blue: number;
-  _offset: number;
-  _intervalID: NodeJS.Timeout | null;
-  _stopped: boolean;
+  private _red: number;
+  private _green: number;
+  private _blue: number;
+  private _offset: number;
+  private _intervalID: NodeJS.Timeout | null;
+  private _stopped: boolean;
 
   constructor(config: Config, interval: Interval) {
     this.config = config;
@@ -175,12 +175,12 @@ export class WalkPixelOnRandomChangePixel {
 export class WalkPixelOnRandomChangeLoop {
   config: Config;
   interval: Interval;
-  _red: number;
-  _green: number;
-  _blue: number;
-  _offset: number;
-  _intervalID: NodeJS.Timeout | null;
-  _stopped: boolean;
+  private _red: number;
+  private _green: number;
+  private _blue: number;
+  private _offset: number;
+  private _intervalID: NodeJS.Timeout | null;
+  private _stopped: boolean;
 
   constructor(config: Config, interval: Interval) {
     this.config = config;
@@ -240,9 +240,9 @@ export class WalkPixelOffCustomStatic {
   red: number;
   green: number;
   blue: number;
-  _offset: number;
-  _intervalID: NodeJS.Timeout | null;
-  _stopped: boolean;
+  private _offset: number;
+  private _intervalID: NodeJS.Timeout | null;
+  private _stopped: boolean;
 
   constructor(config: Config, interval: Interval, red: number, green: number, blue: number) {
     this.config = config;
@@ -298,12 +298,12 @@ export class WalkPixelOffCustomStatic {
 export class WalkPixelOffRandomStatic {
   config: Config;
   interval: Interval;
-  _red: number;
-  _green: number;
-  _blue: number;
-  _offset: number;
-  _intervalID: NodeJS.Timeout | null;
-  _stopped: boolean;
+  private _red: number;
+  private _green: number;
+  private _blue: number;
+  private _offset: number;
+  private _intervalID: NodeJS.Timeout | null;
+  private _stopped: boolean;
 
   constructor(config: Config, interval: Interval) {
     this.config = config;
@@ -359,12 +359,12 @@ export class WalkPixelOffRandomStatic {
 export class WalkPixelOffRandomChangePixel {
   config: Config;
   interval: Interval;
-  _red: number;
-  _green: number;
-  _blue: number;
-  _offset: number;
-  _intervalID: NodeJS.Timeout | null;
-  _stopped: boolean;
+  private _red: number;
+  private _green: number;
+  private _blue: number;
+  private _offset: number;
+  private _intervalID: NodeJS.Timeout | null;
+  private _stopped: boolean;
 
   constructor(config: Config, interval: Interval) {
     this.config = config;
@@ -425,12 +425,12 @@ export class WalkPixelOffRandomChangePixel {
 export class WalkPixelOffRandomChangeLoop {
   config: Config;
   interval: Interval;
-  _red: number;
-  _green: number;
-  _blue: number;
-  _offset: number;
-  _intervalID: NodeJS.Timeout | null;
-  _stopped: boolean;
+  private _red: number;
+  private _green: number;
+  private _blue: number;
+  private _offset: number;
+  private _intervalID: NodeJS.Timeout | null;
+  private _stopped: boolean;
 
   constructor(config: Config, interval: Interval) {
     this.config = config;

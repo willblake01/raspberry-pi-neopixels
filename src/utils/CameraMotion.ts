@@ -31,10 +31,11 @@ async function captureFrame(width: number, height: number): Promise<Buffer> {
 }
 
 export class CameraMotion extends EventEmitter {
-  private lastFrame: Buffer | null = null;
-  private isRunning = false;
-  private timer: NodeJS.Timeout | null = null;
-  private lastMotionAt = 0;
+  private _lastFrame: Buffer | null = null;
+  private _isRunning = false;
+  private _timer: NodeJS.Timeout | null = null;
+  private _lastMotionAt = 0;
+  private _capturing = false;
   intervalMs?: number; 
   diffThreshold?: number; 
   cooldownMs?: number;
@@ -52,10 +53,13 @@ export class CameraMotion extends EventEmitter {
   }
 
   start() {
-    if (this.isRunning) return;
-    this.isRunning = true;
+    if (this._isRunning) return;
+    this._isRunning = true;
 
-    this.timer = setInterval(async () => {
+    this._timer = setInterval(async () => {
+      if (this._capturing) return;
+      this._capturing = true;
+
       try {
         const img = await captureFrame(320, 240);
 
@@ -65,29 +69,31 @@ export class CameraMotion extends EventEmitter {
           .raw()
           .toBuffer();
 
-        if (this.lastFrame) {
+        if (this._lastFrame) {
           let diff = 0;
           for (let i = 0; i < frame.length; i++) {
-            diff += Math.abs(frame[i] - this.lastFrame[i]);
+            diff += Math.abs(frame[i] - this._lastFrame[i]);
           }
 
           const now = Date.now();
-          if (diff > (this.diffThreshold ?? 15000) && now - this.lastMotionAt > (this.cooldownMs ?? 800)) {
-            this.lastMotionAt = now;
+          if (diff > (this.diffThreshold ?? 15000) && now - this._lastMotionAt > (this.cooldownMs ?? 800)) {
+            this._lastMotionAt = now;
             this.emit("motionDetected", { diff });
           }
         }
 
-        this.lastFrame = frame;
+        this._lastFrame = frame;
       } catch (err) {
         this.emit("error", err);
-      }
+      } finally {
+        this._capturing = false;
+      };
     }, this.intervalMs);
   }
 
   stop() {
-    if (this.timer) clearInterval(this.timer);
-    this.timer = null;
-    this.isRunning = false;
+    if (this._timer) clearInterval(this._timer);
+    this._timer = null;
+    this._isRunning = false;
   }
 }

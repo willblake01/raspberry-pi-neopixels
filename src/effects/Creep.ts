@@ -8,9 +8,9 @@ export class CreepCustom {
   red: number;
   green: number;
   blue: number;
-  _offset: number;
-  _intervalID: NodeJS.Timeout | null;
-  _stopped: boolean;
+  private _offset: number;
+  private _intervalID: NodeJS.Timeout | null;
+  private _stopped: boolean;
 
   constructor(config: Config, interval: Interval, red: number, green: number, blue: number) {
     this.config = config;
@@ -66,12 +66,12 @@ export class CreepCustom {
 export class CreepRandomStatic {
   config: Config;
   interval: Interval;
-  _offset: number;
-  _red: number;
-  _green: number;
-  _blue: number;
-  _intervalID: NodeJS.Timeout | null;
-  _stopped: boolean;
+  private _offset: number;
+  private _red: number;
+  private _green: number;
+  private _blue: number;
+  private _intervalID: NodeJS.Timeout | null;
+  private _stopped: boolean;
 
   constructor(config: Config, interval: Interval) {
     this.config = config;
@@ -123,12 +123,12 @@ export class CreepRandomStatic {
 export class CreepRandomChangePixel {
   config: Config;
   interval: Interval;
-  _offset: number;
-  _red: number;
-  _green: number;
-  _blue: number;
-  _intervalID: NodeJS.Timeout | null;
-  _stopped: boolean;
+  private _offset: number;
+  private _red: number;
+  private _green: number;
+  private _blue: number;
+  private _intervalID: NodeJS.Timeout | null;
+  private _stopped: boolean;
 
   constructor(config: Config, interval: Interval) {
     this.config = config;
@@ -185,12 +185,12 @@ export class CreepRandomChangePixel {
 export class CreepRandomChangeLoop {
   config: Config;
   interval: Interval;
-  _offset: number;
-  _red: number;
-  _green: number;
-  _blue: number;
-  _intervalID: NodeJS.Timeout | null;
-  _stopped: boolean;
+  private _offset: number;
+  private _red: number;
+  private _green: number;
+  private _blue: number;
+  private _intervalID: NodeJS.Timeout | null;
+  private _stopped: boolean;
 
   constructor(config: Config, interval: Interval) {
     this.config = config;

@@ -31,9 +31,9 @@ export class SolidCustom {
 
 export class SolidRandom {
   config: Config;
-  _red: number;
-  _green: number;
-  _blue: number;
+  private _red: number;
+  private _green: number;
+  private _blue: number;
 
   constructor(config: Config) {
     this.config = config;

@@ -8,9 +8,9 @@ export class BlinkCustom {
   red: number;
   green: number;
   blue: number;
-  _on: boolean;
-  _intervalID: NodeJS.Timeout | null;
-  _stopped: boolean;
+  private _on: boolean;
+  private _intervalID: NodeJS.Timeout | null;
+  private _stopped: boolean;
 
   constructor(config: Config, interval: Interval, red: number, green: number, blue: number) {
     this.config = config;
@@ -66,12 +66,12 @@ export class BlinkCustom {
 export class BlinkRandomStatic {
   config: Config;
   interval: Interval;
-  _red: number;
-  _green: number;
-  _blue: number;
-  _on: boolean;
-  _intervalID: NodeJS.Timeout | null;
-  _stopped: boolean;
+  private _red: number;
+  private _green: number;
+  private _blue: number;
+  private _on: boolean;
+  private _intervalID: NodeJS.Timeout | null;
+  private _stopped: boolean;
 
   constructor(config: Config, interval: Interval) {
     this.config = config;
@@ -127,12 +127,12 @@ export class BlinkRandomStatic {
 export class BlinkRandomChange {
   config: Config;
   interval: Interval;
-  _red: number;
-  _green: number;
-  _blue: number;
-  _on: boolean;
-  _intervalID: NodeJS.Timeout | null;
-  _stopped: boolean;
+  private _red: number;
+  private _green: number;
+  private _blue: number;
+  private _on: boolean;
+  private _intervalID: NodeJS.Timeout | null;
+  private _stopped: boolean;
 
   constructor(config: Config, interval: Interval) {
     this.config = config;
