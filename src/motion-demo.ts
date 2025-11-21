@@ -39,9 +39,9 @@ let switching = false;       // prevents overlapping start() calls
 
 motion.on("motionDetected", async () => {
   lastMotionAt = Date.now();
-  
+
   const formattedDateTime = new Date(lastMotionAt).toLocaleString();
-  console.log(`🔥 motionDetected: ${formattedDateTime}`);
+  console.log(`🔥 Motion detected: ${formattedDateTime}`);
 
   if (motionActive) return;  // already in motion mode, don't restart effect
   motionActive = true;
