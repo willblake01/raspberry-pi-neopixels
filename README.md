@@ -7,15 +7,14 @@
 ![Platform](https://img.shields.io/badge/platform-Raspberry%20Pi-orange)
 ![WS281x](https://img.shields.io/badge/LED-WS281x%20%2F%20Neopixel-purple)
 
-LED animations powered by **TypeScript**, **rpi-ws281x**, and an
-interactive **CLI menu**.
+LED animations powered by **TypeScript**, **rpi-ws281x**, an interactive **CLI menu**,  
+and **optional motion‑triggered color overrides using the Raspberry Pi Camera**.
 
 This engine controls WS281x LED strips (NeoPixels) on a **Raspberry Pi**
 with a menu of effects (solid, blink, breathe, wheel, creep, walk pixel,
-random modes, etc.), all running directly on the Pi's GPIO via
-`/dev/mem`.
+random modes, etc.), all running directly on the Pi’s GPIO via `/dev/mem`.
 
-------------------------------------------------------------------------
+---
 
 ## 🚀 Features
 
@@ -32,18 +31,22 @@ random modes, etc.), all running directly on the Pi's GPIO via
   - Static random colors
   - Per-pixel random
   - Per-frame random
-- Strong TypeScript typing
+- **Motion Color Override (NEW)**  
+  When enabled:
+  - User selects **Custom** or **Random** motion color
+  - If **Custom**, user enters RGB + brightness
+  - When motion is detected, the LEDs **temporarily switch** to the motion color
+  - When motion stops, LEDs **return automatically to the chosen effect**
+- Strong TypeScript typing throughout
 - Jest testing support
 - **Tests live next to the files they test**
-  *(except only the root-level `index.ts` has a test; other index.ts
-  files are not tested)*
 - Graceful shutdown on:
   - `SIGINT`
   - `SIGTERM`
   - `uncaughtException`
   - `unhandledRejection`
 
-------------------------------------------------------------------------
+---
 
 ## 🧱 Requirements
 
@@ -51,17 +54,18 @@ random modes, etc.), all running directly on the Pi's GPIO via
 
 - Raspberry Pi (tested on Pi 3B+)
 - WS281x / NeoPixel LED strip
-- External 5V LED power supply recommended (with **common ground**)
+- External 5V LED power supply (**common ground required**)
+- (Optional) Raspberry Pi Camera for motion‑triggered color
 
 ### Software
 
-- Raspberry Pi OS (Bookworm recommended)
-- **nvm-installed Node.js (LTS v24.x)**
+- Raspberry Pi OS (Bookworm)
+- **nvm-installed Node.js v24.x**
 
 ```bash
 nvm install 24
 nvm use 24
-node -v  # v24.x.x
+node -v
 ```
 
 - Python ≥ 3.x  
@@ -71,14 +75,15 @@ node -v  # v24.x.x
 sudo apt install build-essential python3
 ```
 
-### Optional  
+### Optional
+
 A `.nvmrc` file makes Node selection automatic:
 
 ```
 v24
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 📦 Installation
 
@@ -89,43 +94,30 @@ git clone https://github.com/willblake01/raspberry-pi-neopixels
 cd raspberry-pi-neopixels
 ```
 
-Install using **nvm Node**:
+Install using nvm Node:
 
 ```bash
 nvm use
 npm install
 ```
 
-Verify Node:
-
-```bash
-node -v
-which node
-```
-
-------------------------------------------------------------------------
+---
 
 ## ▶️ Running the LED Engine
 
-WS281x hardware requires **root access**, but **npm must not run as root**  
-(otherwise it breaks your environment variables, PATH, and permissions).
+WS281x hardware requires **root access**, but **npm must NOT run as root**.
 
-Your `package.json` should include:
+Your `package.json` scripts (updated):
 
 ```jsonc
 "scripts": {
-  "build": "tsc",
+  "build": "tsc -p tsconfig.build.json",
+  "dev": "node --loader ts-node/esm src/index.ts",
   "start": "node dist/index.js",
-  "start:root": "sudo env \"PATH=$PATH\" node dist/index.js"
+  "start:root": "sudo env \"PATH=$PATH\" node dist/index.js",
+  "test": "jest"
 }
 ```
-
-This ensures:
-
-- **Your nvm Node** is used (`PATH` is preserved through sudo)
-- The code has **sudo access** to `/dev/mem`
-- You never have to hardcode full paths to Node
-- Anyone who clones the repo can run it safely
 
 Run:
 
@@ -134,25 +126,48 @@ npm run build
 npm run start:root
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 🧪 Running Tests
 
-Tests use **Jest + ts-jest**.
-
-### Test Layout
-
-- Tests live **next to the files they test**
-- **Only root `index.ts` has an associated test**
-- Hardware is fully mocked (`rpi-ws281x`) so tests run without a Pi
-
-Run:
+Run Jest:
 
 ```bash
 npm test
 ```
 
-------------------------------------------------------------------------
+Hardware is fully mocked.
+
+---
+
+## 🎥 Motion Color Override
+
+When enabled through the CLI:
+
+1. User chooses **Enable Motion Color → Yes**
+2. Choose **Custom** or **Random**
+3. For **Custom**, user enters:
+   - Motion Red (0–255)
+   - Motion Green (0–255)
+   - Motion Blue (0–255)
+4. User enters **Motion Brightness (0–255)**
+
+### Behavior
+
+- System runs the **selected LED effect normally**
+- When the camera detects motion:
+  - LEDs switch to the **motion color**
+- When the scene is stable again:
+  - LEDs **return to the original effect automatically**
+
+Motion detection uses:
+- the Raspberry Pi Camera Module
+- fast grayscale downsampling
+- frame‑difference analysis
+
+This keeps it CPU‑light and extremely responsive.
+
+---
 
 ## 📁 Project Structure
 
@@ -161,59 +176,41 @@ src/
   @types/
   constants/
   effects/
-    /utils
-    Solid.ts
-    Solid.test.ts
-    Blink.ts
-    Blink.test.ts
-    ...
   prompts/
-    normalizeAnswers.ts
-    normalizeAnswers.test.ts
-    prompts.ts
-    prompts.test.ts
   types/
   utils/
   EffectManager.ts
-  EffectManager.test.ts
   ledRuntime.ts
-  ledRuntime.test.ts
   index.ts
-  index.test.ts
-
-dist/   (build output)
+dist/
 ```
 
-------------------------------------------------------------------------
+---
 
 ## 🛠 Building
-
-Compile:
 
 ```bash
 npm run build
 ```
 
-Output goes to `dist/`.
-
-------------------------------------------------------------------------
+---
 
 ## 🧹 Shutdown Behavior
 
-The runtime includes a safe exit handler:
+The runtime safely handles all exit cases:
 
-- Stops active effect
-- Clears LEDs
-- Resets WS281x hardware
-- Handles all common shutdown signals automatically
+- Active effect stopped  
+- LEDs cleared  
+- WS281x strip reset  
+- All listeners removed  
 
-------------------------------------------------------------------------
+---
 
 ## ⚠️ Troubleshooting
 
 ### “Cannot open /dev/mem”
 
-You must run with root _but not with sudo npm_:
+Run using:
 
 ```bash
 npm run start:root
@@ -225,18 +222,16 @@ npm run start:root
 npm rebuild rpi-ws281x
 ```
 
-### Wrong Node being used?
-
-Check:
+### Wrong Node?
 
 ```bash
 which node
 sudo env "PATH=$PATH" which node
 ```
 
-Both should point to your **nvm** Node.
+Both should point to nvm Node.
 
-------------------------------------------------------------------------
+---
 
 ## 📜 License
 
