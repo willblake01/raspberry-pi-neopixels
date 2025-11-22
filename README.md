@@ -31,8 +31,7 @@ random modes, etc.), all running directly on the Pi’s GPIO via `/dev/mem`.
   - Static random colors
   - Per-pixel random
   - Per-frame random
-- Motion Color Override
-  When enabled:
+- Motion Color Override when enabled:
   - User selects **Custom** or **Random** motion color
   - If **Custom**, user enters RGB + brightness
   - When motion is detected, the LEDs **temporarily switch** to the motion color
