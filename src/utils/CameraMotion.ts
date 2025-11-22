@@ -91,11 +91,11 @@ export class CameraMotion extends EventEmitter {
         this._capturing = false;
       };
     }, this.intervalMs);
-  }
+  };
 
   stop() {
     if (this._timer) clearInterval(this._timer);
     this._timer = null;
     this._isRunning = false;
-  }
-}
+  };
+};
