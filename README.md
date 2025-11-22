@@ -31,7 +31,7 @@ random modes, etc.), all running directly on the Pi’s GPIO via `/dev/mem`.
   - Static random colors
   - Per-pixel random
   - Per-frame random
-- **Motion Color Override (NEW)**  
+- Motion Color Override
   When enabled:
   - User selects **Custom** or **Random** motion color
   - If **Custom**, user enters RGB + brightness
@@ -39,7 +39,7 @@ random modes, etc.), all running directly on the Pi’s GPIO via `/dev/mem`.
   - When motion stops, LEDs **return automatically to the chosen effect**
 - Strong TypeScript typing throughout
 - Jest testing support
-- **Tests live next to the files they test**
+- Tests live next to the files they test
 - Graceful shutdown on:
   - `SIGINT`
   - `SIGTERM`
@@ -79,7 +79,7 @@ sudo apt install build-essential python3
 
 A `.nvmrc` file makes Node selection automatic:
 
-```
+```text
 v24
 ```
 
@@ -161,6 +161,7 @@ When enabled through the CLI:
   - LEDs **return to the original effect automatically**
 
 Motion detection uses:
+
 - the Raspberry Pi Camera Module
 - fast grayscale downsampling
 - frame‑difference analysis

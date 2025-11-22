@@ -98,7 +98,7 @@ export const main = async () => {
       lastMotionAt = Date.now();
       
       const formattedDateTime = new Date(lastMotionAt).toLocaleString();
-      console.log(`🚨 Motion detected: ${formattedDateTime}`);
+      console.log(`🔥 Motion detected: ${formattedDateTime}`);
 
       if (motionActive) return;
       motionActive = true;
