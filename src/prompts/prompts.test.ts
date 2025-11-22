@@ -16,13 +16,13 @@ const evalType = (
 ): PromptType | null => {
   const t = prompt.type;
 
-  if (typeof t === "function") {
+  if (typeof t === 'function') {
     // prompts calls: type(prev, values, prompt)
     const out = t(null as never, values as never, prompt as never);
     return out ? (out as PromptType) : null; // normalize falsy -> null
   }
 
-  if (typeof t === "string") return t;
+  if (typeof t === 'string') return t;
   return null;
 };
 
