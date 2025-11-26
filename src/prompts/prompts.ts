@@ -293,7 +293,7 @@ export const promptsConfig: PromptObject<string>[] = [
     and(isOn, motionEnabled)
   ),
 
-  // Motion custom RGB (only if custom)
+  // Motion custom RGB (only if custom), default to white
   promptNumber('motionRed', 'Enter motion red value (0-255)', {
     min: 0,
     max: 255,
@@ -303,13 +303,13 @@ export const promptsConfig: PromptObject<string>[] = [
   promptNumber('motionGreen', 'Enter motion green value (0-255)', {
     min: 0,
     max: 255,
-    initial: 200,
+    initial: 255,
     when: and(isOn, motionCustom),
   }),
   promptNumber('motionBlue', 'Enter motion blue value (0-255)', {
     min: 0,
     max: 255,
-    initial: 80,
+    initial: 255,
     when: and(isOn, motionCustom),
   })
 ];

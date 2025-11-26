@@ -60,7 +60,7 @@ describe('index entrypoint', () => {
     const disposeMock = jest.fn();
 
     EffectManagerMock.mockImplementation(() => ({
-      config: { leds: 10, dma: 10, brightness: 100, gpio: 18, stripType: 'rgb' },
+      config: { leds: 10, dma: 10, brightness: 100, gpio: 18, stripType: 'brg' },
       start: startMock,
       dispose: disposeMock,
     }) as any);
@@ -90,7 +90,7 @@ describe('index entrypoint', () => {
       dma: 10,
       brightness: 100,
       gpio: 18,
-      stripType: 'rgb',
+      stripType: 'brg',
     });
     expect(startMock).toHaveBeenCalled(); // ✅ now this should pass
   });
