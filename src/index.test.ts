@@ -20,9 +20,11 @@ jest.mock('./effects/utils/index.js', () => ({
 }));
 jest.mock('./effects/index.js', () => ({
   TurnOff: jest.fn(function MockTurnOff() {}),
+  SolidCustom: jest.fn(function MockSolidCustom() {})
 }));
 jest.mock('./utils/index.js', () => ({
   once: (fn: unknown) => fn,
+  randomNumber: jest.fn((min: number, max: number) => Math.floor((min + max) / 2)),
 }));
 
 describe('index entrypoint', () => {
