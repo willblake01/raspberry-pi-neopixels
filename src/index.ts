@@ -63,13 +63,19 @@ export const main = async () => {
   const makeIdleEffect = () => selectEffect(manager.config, options);
 
   const makeMotionEffect = () => {
-    const brightness = options.motionBrightness;
+    const motionBrightness = options.motionBrightness;
+
+    const motionConfig: Config = {
+      leds: config.leds,
+      dma: config.dma,
+      brightness: motionBrightness,
+      gpio: config.gpio,
+      stripType: config.stripType,
+    };
 
     const [red, green, blue] = options.motionColorMode === 'custom' ? [options.motionRed, options.motionGreen, options.motionBlue] : [randomNumber(255), randomNumber(255), randomNumber(255)];
 
-    return new SolidCustom({
-      ...manager.config, brightness
-    }, red, green, blue)
+    return new SolidCustom(motionConfig, red, green, blue)
   };
 
   // Delay before effect starts
