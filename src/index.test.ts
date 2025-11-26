@@ -50,8 +50,8 @@ describe('index entrypoint', () => {
 
     promptsMock.mockResolvedValue({} as any);
     normalizeAnswersMock.mockReturnValue({
-      leds: 10,
-      brightness: 100,
+      leds: 100,
+      brightness: 128,
       isOff: false,
       isOn: true,
     } as any);
@@ -60,7 +60,7 @@ describe('index entrypoint', () => {
     const disposeMock = jest.fn();
 
     EffectManagerMock.mockImplementation(() => ({
-      config: { leds: 10, dma: 10, brightness: 100, gpio: 18, stripType: 'brg' },
+      config: { leds: 100, dma: 10, brightness: 128, gpio: 18, stripType: 'brg' },
       start: startMock,
       dispose: disposeMock,
     }) as any);
@@ -86,12 +86,12 @@ describe('index entrypoint', () => {
     expect(promptsMock).toHaveBeenCalledWith(mockedPromptsConfig);
     expect(normalizeAnswersMock).toHaveBeenCalled();
     expect(EffectManagerMock).toHaveBeenCalledWith({
-      leds: 10,
+      leds: 100,
       dma: 10,
-      brightness: 100,
+      brightness: 128,
       gpio: 18,
       stripType: 'brg',
     });
-    expect(startMock).toHaveBeenCalled(); // ✅ now this should pass
+    expect(startMock).toHaveBeenCalled();
   });
 });

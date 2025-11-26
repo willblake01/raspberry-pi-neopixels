@@ -280,7 +280,7 @@ export const promptsConfig: PromptObject<string>[] = [
   promptNumber('motionBrightness', 'Enter motion brightness (0-255)', {
     min: 0,
     max: 255,
-    initial: 64,
+    initial: 128,
     when: and(isOn, motionEnabled),
   }),
   promptSelect(

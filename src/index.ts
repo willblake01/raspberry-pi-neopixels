@@ -78,10 +78,13 @@ export const main = async () => {
     return new SolidCustom(motionConfig, red, green, blue)
   };
 
+  const idleEffect = makeIdleEffect();
+  const motionEffect = makeMotionEffect();
+
   // Delay before effect starts
   await delay(delayInMs);
 
-  await manager.start(makeIdleEffect());
+  await manager.start(idleEffect);
 
   // -------------------------------
   // Motion color override
@@ -113,7 +116,7 @@ export const main = async () => {
       switching = true;
 
       try {
-        await manager.start(makeMotionEffect());
+        await manager.start(motionEffect);
       } finally {
         switching = false;
       };
@@ -129,7 +132,7 @@ export const main = async () => {
       switching = true;
 
       try {
-        await manager.start(makeIdleEffect());
+        await manager.start(idleEffect);
       } finally {
         switching = false;
       };
