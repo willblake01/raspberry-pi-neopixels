@@ -1,20 +1,5 @@
 import { EFFECTS } from '../constants/index.js';
 
-export type Pixels = Uint32Array;
-
-export interface Config {
-  leds: number;
-  dma: number;
-  brightness?: number;
-  gpio: number,
-  stripType: string;
-};
-
-export interface Effect {
-  run(): void | Promise<void>;
-  stop?(): void | Promise<void>;
-};
-
 // < - - - Prompts - - - >
 // Types for the raw answers coming in
 export type EffectName = (typeof EFFECTS) [keyof typeof EFFECTS];
@@ -105,4 +90,17 @@ export interface Options {
   isMotionDetectionEnabled: boolean;
   isMotionCustomColorMode: boolean;
   isMotionRandomColorMode: boolean;
+};
+
+export interface Config {
+  leds: number;
+  dma: number;
+  brightness?: number;
+  gpio: number,
+  stripType: string;
+};
+
+export interface Effect {
+  run(): void | Promise<void>;
+  stop?(): void | Promise<void>;
 };

@@ -1,7 +1,8 @@
 import { loadWs281x } from './hardware/ws281x.js';
-import type { Config, Pixels } from './types/index.js';
+import type { Config } from './types/index.js';
 
 type Ws281x = Awaited<ReturnType<typeof loadWs281x>>;
+type Pixels = Uint32Array;
 
 let ws281x: Ws281x | null = null;
 
