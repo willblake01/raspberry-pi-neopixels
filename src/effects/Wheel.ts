@@ -1,8 +1,8 @@
 import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
-import { Options } from '../types/index.js';
+import type { Effect, Options } from '../types/index.js';
 
-export class Wheel {
+export class Wheel implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   private _red1: Options['red']

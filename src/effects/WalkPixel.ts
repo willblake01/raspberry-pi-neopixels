@@ -1,8 +1,8 @@
 import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
-import { Options } from '../types/index.js';
+import type { Effect, Options } from '../types/index.js';
 
-export class WalkPixelOnCustom {
+export class WalkPixelOnCustom implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   public red: Options['red'];
@@ -57,7 +57,7 @@ export class WalkPixelOnCustom {
   };
 };
 
-export class WalkPixelOnRandomStatic {
+export class WalkPixelOnRandomStatic implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   private _red: Options['red'];
@@ -112,7 +112,7 @@ export class WalkPixelOnRandomStatic {
   };
 };
 
-export class WalkPixelOnRandomChangePixel {
+export class WalkPixelOnRandomChangePixel implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   private _red: Options['red'];
@@ -172,7 +172,7 @@ export class WalkPixelOnRandomChangePixel {
   };
 };
 
-export class WalkPixelOnRandomChangeLoop {
+export class WalkPixelOnRandomChangeLoop implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   private _red: Options['red'];
@@ -234,7 +234,7 @@ export class WalkPixelOnRandomChangeLoop {
   };
 };
 
-export class WalkPixelOffCustomStatic {
+export class WalkPixelOffCustomStatic implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   public red: Options['red'];
@@ -295,7 +295,7 @@ export class WalkPixelOffCustomStatic {
   };
 };
 
-export class WalkPixelOffRandomStatic {
+export class WalkPixelOffRandomStatic implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   private _red: Options['red'];
@@ -356,7 +356,7 @@ export class WalkPixelOffRandomStatic {
   };
 };
 
-export class WalkPixelOffRandomChangePixel {
+export class WalkPixelOffRandomChangePixel implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   private _red: Options['red'];
@@ -422,7 +422,7 @@ export class WalkPixelOffRandomChangePixel {
   };
 };
 
-export class WalkPixelOffRandomChangeLoop {
+export class WalkPixelOffRandomChangeLoop implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   private _red: Options['red'];

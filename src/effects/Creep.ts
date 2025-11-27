@@ -1,8 +1,8 @@
 import { randomNumber } from '../utils/index.js';
 import { safeRender } from '../ledRuntime.js';
-import { Options } from '../types/index.js';
+import type { Effect, Options } from '../types/index.js';
 
-export class CreepCustom {
+export class CreepCustom implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   public red: Options['red'];
@@ -63,7 +63,7 @@ export class CreepCustom {
   };
 };
 
-export class CreepRandomStatic {
+export class CreepRandomStatic implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   private _red: Options['red'];
@@ -120,7 +120,7 @@ export class CreepRandomStatic {
   };
 };
 
-export class CreepRandomChangePixel {
+export class CreepRandomChangePixel implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   private _red: Options['red'];
@@ -182,7 +182,7 @@ export class CreepRandomChangePixel {
   };
 };
 
-export class CreepRandomChangeLoop {
+export class CreepRandomChangeLoop implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   private _red: Options['red'];

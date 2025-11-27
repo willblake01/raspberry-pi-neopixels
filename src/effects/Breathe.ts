@@ -1,8 +1,8 @@
 import { safeRender } from '../ledRuntime.js';
-import { Options } from '../types/index.js';
 import { randomNumber } from '../utils/index.js';
+import type { Effect, Options } from '../types/index.js';
 
-export class BreatheCustom {
+export class BreatheCustom implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   public red: Options['red'];
@@ -80,7 +80,7 @@ export class BreatheCustom {
   };
 };
 
-export class BreatheRandom {
+export class BreatheRandom implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   public floor: number;

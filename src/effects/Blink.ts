@@ -1,8 +1,8 @@
 import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
-import { Options } from '../types/index.js';
+import type { Effect, Options } from '../types/index.js';
 
-export class BlinkCustom {
+export class BlinkCustom implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   public red: Options['red'];
@@ -63,7 +63,7 @@ export class BlinkCustom {
   };
 };
 
-export class BlinkRandomStatic {
+export class BlinkRandomStatic implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   private _red: Options['red'];
@@ -124,7 +124,7 @@ export class BlinkRandomStatic {
   };
 };
 
-export class BlinkRandomChange {
+export class BlinkRandomChange implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   private _red: Options['red'];

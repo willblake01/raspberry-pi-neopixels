@@ -1,8 +1,8 @@
 import { safeRender } from '../ledRuntime.js';
-import { Options } from '../types/index.js';
 import { randomNumber } from '../utils/index.js';
+import type { Effect, Options } from '../types/index.js';
 
-export class SolidCustom {
+export class SolidCustom implements Effect {
   public leds: Options['leds'];
   public red: Options['red'];
   public green: Options['green'];
@@ -29,7 +29,7 @@ export class SolidCustom {
   };
 };
 
-export class SolidRandom {
+export class SolidRandom implements Effect {
   public leds: Options['leds'];
   private _red: Options['red'];
   private _green: Options['green'];

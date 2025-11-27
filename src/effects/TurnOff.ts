@@ -1,8 +1,8 @@
 import { loadWs281x } from '../hardware/ws281x.js';
 import { safeRender } from '../ledRuntime.js';
-import type { Options } from '../types/index.js';
+import type { Effect, Options } from '../types/index.js';
 
-export class TurnOff {
+export class TurnOff implements Effect {
   leds: Options['leds'];
 
   constructor(leds: Options['leds']) {
