@@ -1,10 +1,5 @@
 import { init as runtimeInit, dispose } from './ledRuntime.js';
-import { Config } from './types/index.js'
-
-interface Effect {
-  run(): void | Promise<void>;
-  stop?(): void | Promise<void>;
-};
+import { Config, Effect } from './types/index.js'
 
 const tick = () => new Promise<void>(resolve => setImmediate(resolve));
 
