@@ -1,18 +1,18 @@
 import { randomNumber } from '../utils/index.js';
 import { safeRender } from '../ledRuntime.js';
-import { Config, Interval } from '../types/index.js';
+import { Options } from '../types/index.js';
 
 export class CreepCustom {
-  leds: Config['leds'];
-  interval: Interval;
-  red: number;
-  green: number;
-  blue: number;
+  leds: Options['leds'];
+  interval: Options['interval'];
+  red: Options['red'];
+  green: Options['green'];
+  blue: Options['blue'];
   private _offset: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(leds: Config['leds'], interval: Interval, red: number, green: number, blue: number) {
+  constructor(leds: Options['leds'], interval: Options['interval'], red: Options['red'], green: Options['green'], blue: Options['blue']) {
     this.leds = leds;
     this.interval = interval;
     this.red = red;
@@ -64,16 +64,16 @@ export class CreepCustom {
 };
 
 export class CreepRandomStatic {
-  leds: Config['leds'];
-  interval: Interval;
+  leds: Options['leds'];
+  interval: Options['interval'];
+  private _red: Options['red'];
+  private _green: Options['green'];
+  private _blue: Options['blue'];
   private _offset: number;
-  private _red: number;
-  private _green: number;
-  private _blue: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(leds: Config['leds'], interval: Interval) {
+  constructor(leds: Options['leds'], interval: Options['interval']) {
     this.leds = leds;
     this.interval = interval;
     this._offset = 0;
@@ -121,16 +121,16 @@ export class CreepRandomStatic {
 };
 
 export class CreepRandomChangePixel {
-  leds: Config['leds'];
-  interval: Interval;
+  leds: Options['leds'];
+  interval: Options['interval'];
+  private _red: Options['red'];
+  private _green: Options['green'];
+  private _blue: Options['blue'];
   private _offset: number;
-  private _red: number;
-  private _green: number;
-  private _blue: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(leds: Config['leds'], interval: Interval) {
+  constructor(leds: Options['leds'], interval: Options['interval']) {
     this.leds = leds;
     this.interval = interval;
     this._offset = 0;
@@ -183,16 +183,16 @@ export class CreepRandomChangePixel {
 };
 
 export class CreepRandomChangeLoop {
-  leds: Config['leds'];
-  interval: Interval;
+  leds: Options['leds'];
+  interval: Options['interval'];
+  private _red: Options['red'];
+  private _green: Options['green'];
+  private _blue: Options['blue'];
   private _offset: number;
-  private _red: number;
-  private _green: number;
-  private _blue: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(leds: Config['leds'], interval: Interval) {
+  constructor(leds: Options['leds'], interval: Options['interval']) {
     this.leds = leds;
     this.interval = interval;
     this._offset = 0;

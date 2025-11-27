@@ -1,11 +1,11 @@
 import { loadWs281x } from '../hardware/ws281x.js';
 import { safeRender } from '../ledRuntime.js';
-import type { Config } from '../types/index.js';
+import type { Options } from '../types/index.js';
 
 export class TurnOff {
-  leds: Config['leds'];
+  leds: Options['leds'];
 
-  constructor(leds: Config['leds']) {
+  constructor(leds: Options['leds']) {
     this.leds = leds;
   };
 

@@ -1,7 +1,5 @@
 import { EFFECTS } from '../constants/index.js';
 
-export type Interval = number;
-
 export type Pixels = Uint32Array;
 
 export interface Config {

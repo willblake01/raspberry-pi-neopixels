@@ -1,18 +1,18 @@
 import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
-import { Config, Interval } from '../types/index.js';
+import { Options } from '../types/index.js';
 
 export class Change {
-  leds: Config['leds'];
-  interval: Interval;
-  private _red: number;
-  private _green: number;
-  private _blue: number;
+  leds: Options['leds'];
+  interval: Options['interval'];
+  private _red: Options['red'];
+  private _green: Options['green'];
+  private _blue: Options['blue'];
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
 
-  constructor(leds: Config['leds'], interval: Interval) {
+  constructor(leds: Options['leds'], interval: Options['interval']) {
     this.leds = leds;
     this.interval = interval;
     this._red = randomNumber(255);

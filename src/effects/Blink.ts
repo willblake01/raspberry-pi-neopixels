@@ -1,18 +1,18 @@
 import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
-import { Config } from '../types/index.js';
+import { Options } from '../types/index.js';
 
 export class BlinkCustom {
-  leds: Config['leds'];
-  interval: number;
-  red: number;
-  green: number;
-  blue: number;
+  leds: Options['leds'];
+  interval: Options['interval'];
+  red: Options['red'];
+  green: Options['green'];
+  blue: Options['blue'];
   private _on: boolean;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(leds: Config['leds'], interval: number, red: number, green: number, blue: number) {
+  constructor(leds: Options['leds'], interval: Options['interval'], red: Options['red'], green: Options['green'], blue: Options['blue']) {
     this.leds = leds;
     this.interval = interval;
     this.red = red;
@@ -64,16 +64,16 @@ export class BlinkCustom {
 };
 
 export class BlinkRandomStatic {
-  leds: Config['leds'];
-  interval: number;
-  private _red: number;
-  private _green: number;
-  private _blue: number;
+  leds: Options['leds'];
+  interval: Options['interval'];
+  private _red: Options['red'];
+  private _green: Options['green'];
+  private _blue: Options['blue'];
   private _on: boolean;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(leds: Config['leds'], interval: number) {
+  constructor(leds: Options['leds'], interval: Options['interval']) {
     this.leds = leds;
     this.interval = interval;
     this._red = randomNumber(255);
@@ -125,16 +125,16 @@ export class BlinkRandomStatic {
 };
 
 export class BlinkRandomChange {
-  leds: Config['leds'];
-  interval: number;
-  private _red: number;
-  private _green: number;
-  private _blue: number;
+  leds: Options['leds'];
+  interval: Options['interval'];
+  private _red: Options['red'];
+  private _green: Options['green'];
+  private _blue: Options['blue'];
   private _on: boolean;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(leds: Config['leds'], interval: number) {
+  constructor(leds: Options['leds'], interval: Options['interval']) {
     this.leds = leds;
     this.interval = interval;
     this._red = randomNumber(255);

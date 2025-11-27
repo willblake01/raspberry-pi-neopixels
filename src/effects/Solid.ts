@@ -1,14 +1,14 @@
 import { safeRender } from '../ledRuntime.js';
-import { Config } from '../types/index.js';
+import { Options } from '../types/index.js';
 import { randomNumber } from '../utils/index.js';
 
 export class SolidCustom {
-  leds: Config['leds'];
-  red: number;
-  green: number;
-  blue: number;
+  leds: Options['leds'];
+  red: Options['red'];
+  green: Options['green'];
+  blue: Options['blue'];
 
-  constructor(leds: Config['leds'], red: number, green: number, blue: number) {
+  constructor(leds: Options['leds'], red: Options['red'], green: Options['green'], blue: Options['blue']) {
     this.leds = leds;
     this.red = red;
     this.green = green;
@@ -30,12 +30,12 @@ export class SolidCustom {
 };
 
 export class SolidRandom {
-  leds: Config['leds'];
-  private _red: number;
-  private _green: number;
-  private _blue: number;
+  leds: Options['leds'];
+  private _red: Options['red'];
+  private _green: Options['green'];
+  private _blue: Options['blue'];
 
-  constructor(leds: Config['leds']) {
+  constructor(leds: Options['leds']) {
     this.leds = leds;
 
     this._red = randomNumber(255);

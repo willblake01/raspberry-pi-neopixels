@@ -1,21 +1,21 @@
 import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
-import { Config, Interval } from '../types/index.js';
+import { Options } from '../types/index.js';
 
 export class Wheel {
-  leds: Config['leds'];
-  interval: Interval;
-  private _red1: number;
-  private _green1: number;
-  private _blue1: number;
-  private _red2: number;
-  private _green2: number;
-  private _blue2: number;
+  leds: Options['leds'];
+  interval: Options['interval'];
+  private _red1: Options['red']
+  private _green1: Options['green'];
+  private _blue1: Options['blue'];
+  private _red2: Options['red']
+  private _green2: Options['green'];
+  private _blue2: Options['blue'];
   private _offset: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(leds: Config['leds'], interval: Interval) {
+  constructor(leds: Options['leds'], interval: Options['interval']) {
     this.leds = leds;
     this.interval = interval;
     this._red1 = randomNumber(255);

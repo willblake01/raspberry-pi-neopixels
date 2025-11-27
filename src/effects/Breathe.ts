@@ -1,13 +1,13 @@
 import { safeRender } from '../ledRuntime.js';
-import { Config, Interval } from '../types/index.js';
+import { Options } from '../types/index.js';
 import { randomNumber } from '../utils/index.js';
 
 export class BreatheCustom {
-  leds: Config['leds'];
-  interval: Interval;
-  red: number;
-  green: number;
-  blue: number;
+  leds: Options['leds'];
+  interval: Options['interval'];
+  red: Options['red'];
+  green: Options['green'];
+  blue: Options['blue'];
   floor: number;
   gamma: number;
   fps: number;
@@ -15,7 +15,7 @@ export class BreatheCustom {
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(leds: Config['leds'], interval: Interval, red: number, green: number, blue: number, floor: number = 0.08, gamma: number = 2, fps: number = 60) {
+  constructor(leds: Options['leds'], interval: Options['interval'], red: Options['red'], green: Options['green'], blue: Options['blue'], floor: number = 0.08, gamma: number = 2, fps: number = 60) {
     this.leds = leds;
     this.interval = interval;
     this.red = red;
@@ -81,19 +81,19 @@ export class BreatheCustom {
 };
 
 export class BreatheRandom {
-  leds: Config['leds'];
-  interval: Interval;
+  leds: Options['leds'];
+  interval: Options['interval'];
   floor: number;
   gamma: number;
   fps: number;
-  private _red: number;
-  private _green: number;
-  private _blue: number;
+  private _red: Options['red'];
+  private _green: Options['green'];
+  private _blue: Options['blue'];
   private _t0: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(leds: Config['leds'], interval: Interval, floor: number = 0.08, gamma: number = 2, fps: number = 60) {
+  constructor(leds: Options['leds'], interval: Options['interval'], floor: number = 0.08, gamma: number = 2, fps: number = 60) {
     this.leds = leds;
     this.interval = interval;
     this._red = randomNumber(255);

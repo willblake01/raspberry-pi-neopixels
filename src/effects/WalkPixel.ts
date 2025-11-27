@@ -1,18 +1,18 @@
 import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
-import { Config, Interval } from '../types/index.js';
+import { Options } from '../types/index.js';
 
 export class WalkPixelOnCustom {
-  leds: Config['leds'];
-  interval: Interval;
-  red: number;
-  green: number;
-  blue: number;
+  leds: Options['leds'];
+  interval: Options['interval'];
+  red: Options['red'];
+  green: Options['green'];
+  blue: Options['blue'];
   private _offset: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(leds: Config['leds'], interval: Interval, red: number, green: number, blue: number) {
+  constructor(leds: Options['leds'], interval: Options['interval'], red: Options['red'], green: Options['green'], blue: Options['blue']) {
     this.leds = leds;
     this.interval = interval;
     this.red = red;
@@ -58,16 +58,16 @@ export class WalkPixelOnCustom {
 };
 
 export class WalkPixelOnRandomStatic {
-  leds: Config['leds'];
-  interval: Interval;
-  private _red: number;
-  private _green: number;
-  private _blue: number;
+  leds: Options['leds'];
+  interval: Options['interval'];
+  private _red: Options['red'];
+  private _green: Options['green'];
+  private _blue: Options['blue'];
   private _offset: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(leds: Config['leds'], interval: Interval) {
+  constructor(leds: Options['leds'], interval: Options['interval']) {
     this.leds = leds;
     this.interval = interval;
     this._red = randomNumber(255);
@@ -113,16 +113,16 @@ export class WalkPixelOnRandomStatic {
 };
 
 export class WalkPixelOnRandomChangePixel {
-  leds: Config['leds'];
-  interval: Interval;
-  private _red: number;
-  private _green: number;
-  private _blue: number;
+  leds: Options['leds'];
+  interval: Options['interval'];
+  private _red: Options['red'];
+  private _green: Options['green'];
+  private _blue: Options['blue'];
   private _offset: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(leds: Config['leds'], interval: Interval) {
+  constructor(leds: Options['leds'], interval: Options['interval']) {
     this.leds = leds;
     this.interval = interval;
     this._red = randomNumber(255);
@@ -173,16 +173,16 @@ export class WalkPixelOnRandomChangePixel {
 };
 
 export class WalkPixelOnRandomChangeLoop {
-  leds: Config['leds'];
-  interval: Interval;
-  private _red: number;
-  private _green: number;
-  private _blue: number;
+  leds: Options['leds'];
+  interval: Options['interval'];
+  private _red: Options['red'];
+  private _green: Options['green'];
+  private _blue: Options['blue'];
   private _offset: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(leds: Config['leds'], interval: Interval) {
+  constructor(leds: Options['leds'], interval: Options['interval']) {
     this.leds = leds;
     this.interval = interval;
     this._red = randomNumber(255);
@@ -235,16 +235,16 @@ export class WalkPixelOnRandomChangeLoop {
 };
 
 export class WalkPixelOffCustomStatic {
-  leds: Config['leds'];
-  interval: Interval;
-  red: number;
-  green: number;
-  blue: number;
+  leds: Options['leds'];
+  interval: Options['interval'];
+  red: Options['red'];
+  green: Options['green'];
+  blue: Options['blue'];
   private _offset: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(leds: Config['leds'], interval: Interval, red: number, green: number, blue: number) {
+  constructor(leds: Options['leds'], interval: Options['interval'], red: Options['red'], green: Options['green'], blue: Options['blue']) {
     this.leds = leds;
     this.interval = interval;
     this.red = red;
@@ -296,16 +296,16 @@ export class WalkPixelOffCustomStatic {
 };
 
 export class WalkPixelOffRandomStatic {
-  leds: Config['leds'];
-  interval: Interval;
-  private _red: number;
-  private _green: number;
-  private _blue: number;
+  leds: Options['leds'];
+  interval: Options['interval'];
+  private _red: Options['red'];
+  private _green: Options['green'];
+  private _blue: Options['blue'];
   private _offset: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(leds: Config['leds'], interval: Interval) {
+  constructor(leds: Options['leds'], interval: Options['interval']) {
     this.leds = leds;
     this.interval = interval;
     this._red = randomNumber(255);
@@ -357,16 +357,16 @@ export class WalkPixelOffRandomStatic {
 };
 
 export class WalkPixelOffRandomChangePixel {
-  leds: Config['leds'];
-  interval: Interval;
-  private _red: number;
-  private _green: number;
-  private _blue: number;
+  leds: Options['leds'];
+  interval: Options['interval'];
+  private _red: Options['red'];
+  private _green: Options['green'];
+  private _blue: Options['blue'];
   private _offset: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(leds: Config['leds'], interval: Interval) {
+  constructor(leds: Options['leds'], interval: Options['interval']) {
     this.leds = leds;
     this.interval = interval;
     this._red = randomNumber(255);
@@ -423,16 +423,16 @@ export class WalkPixelOffRandomChangePixel {
 };
 
 export class WalkPixelOffRandomChangeLoop {
-  leds: Config['leds'];
-  interval: Interval;
-  private _red: number;
-  private _green: number;
-  private _blue: number;
+  leds: Options['leds'];
+  interval: Options['interval'];
+  private _red: Options['red'];
+  private _green: Options['green'];
+  private _blue: Options['blue'];
   private _offset: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(leds: Config['leds'], interval: Interval) {
+  constructor(leds: Options['leds'], interval: Options['interval']) {
     this.leds = leds;
     this.interval = interval;
     this._red = randomNumber(255);
