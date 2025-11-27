@@ -3,7 +3,7 @@ import { randomNumber } from '../utils/index.js';
 import { Config, Interval } from '../types/index.js';
 
 export class Wheel {
-  config: Config;
+  leds: Config['leds'];
   interval: Interval;
   private _red1: number;
   private _green1: number;
@@ -15,8 +15,8 @@ export class Wheel {
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(config: Config, interval: Interval) {
-    this.config = config;
+  constructor(leds: Config['leds'], interval: Interval) {
+    this.leds = leds;
     this.interval = interval;
     this._red1 = randomNumber(255);
     this._green1 = randomNumber(255);
@@ -35,7 +35,7 @@ export class Wheel {
     let color1 = (this._red1 << 16) | (this._green1 << 8) | this._blue1;
     let color2 = (this._red2 << 16) | (this._green2 << 8) | this._blue2;
 
-    const pixels = new Uint32Array(this.config.leds);
+    const pixels = new Uint32Array(this.leds);
 
     // Set pixels up to and including offset to color1
     for (let i = 0; i <= this._offset; i++) {
@@ -43,12 +43,12 @@ export class Wheel {
     };
 
     // Set rest of strand to color2
-    for (let i = this._offset + 1; i < this.config.leds; i++) {
+    for (let i = this._offset + 1; i < this.leds; i++) {
       pixels[i] = color2;
     };
 
     const setNextState = () => {
-      this._offset = (this._offset + 1) % this.config.leds;
+      this._offset = (this._offset + 1) % this.leds;
 
       if (this._offset === 0) {
         color2 = color1;

@@ -38,7 +38,7 @@ beforeEach(() => {
 
 describe('Breathe effects', () => {
   test('BreatheCustom scales the configured color using the easing scalar', () => {
-    const effect = new BreatheCustom(createConfig(), 1000, 200, 100, 50);
+    const effect = new BreatheCustom(createConfig().leds, 1000, 200, 100, 50);
     const scalarSpy = jest
       .spyOn(effect as unknown as { _scalar: (nowMs: number) => number }, '_scalar')
       .mockReturnValue(0.5);
@@ -48,7 +48,7 @@ describe('Breathe effects', () => {
     const expectedColor = colorFromRGB(100, 50, 25);
     const pixels = Array.from(lastRenderPixels());
 
-    expect(pixels).toEqual(new Array(effect.config.leds).fill(expectedColor));
+    expect(pixels).toEqual(new Array(effect.leds).fill(expectedColor));
 
     scalarSpy.mockRestore();
   });
@@ -62,7 +62,7 @@ describe('Breathe effects', () => {
       .mockReturnValueOnce(50)
       .mockReturnValueOnce(60); // next color
 
-    const effect = new BreatheRandom(createConfig(), 1500);
+    const effect = new BreatheRandom(createConfig().leds, 1500);
     const scalarSpy = jest
       .spyOn(effect as unknown as { _scalar: (nowMs: number) => number }, '_scalar')
       .mockReturnValue(1);
@@ -70,14 +70,14 @@ describe('Breathe effects', () => {
     effect.loop();
     let pixels = Array.from(lastRenderPixels());
     const firstColor = colorFromRGB(10, 20, 30);
-    expect(pixels).toEqual(new Array(effect.config.leds).fill(firstColor));
+    expect(pixels).toEqual(new Array(effect.leds).fill(firstColor));
 
     safeRenderMock.mockClear();
 
     effect.loop();
     pixels = Array.from(lastRenderPixels());
     const secondColor = colorFromRGB(40, 50, 60);
-    expect(pixels).toEqual(new Array(effect.config.leds).fill(secondColor));
+    expect(pixels).toEqual(new Array(effect.leds).fill(secondColor));
 
     scalarSpy.mockRestore();
   });

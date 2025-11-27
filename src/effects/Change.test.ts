@@ -46,16 +46,16 @@ describe('Change effect', () => {
       .mockReturnValueOnce(5)
       .mockReturnValueOnce(6); // next color
 
-    const effect = new Change(createConfig(), 90);
+    const effect = new Change(createConfig().leds, 90);
 
     effect.loop();
     let pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.config.leds).fill(colorFromRGB(1, 2, 3)));
+    expect(pixels).toEqual(new Array(effect.leds).fill(colorFromRGB(1, 2, 3)));
 
     safeRenderMock.mockClear();
 
     effect.loop();
     pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.config.leds).fill(colorFromRGB(4, 5, 6)));
+    expect(pixels).toEqual(new Array(effect.leds).fill(colorFromRGB(4, 5, 6)));
   });
 });

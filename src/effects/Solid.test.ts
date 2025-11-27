@@ -28,7 +28,7 @@ describe('Solid effects', () => {
 
     const expectedColor = (red << 16) | (green << 8) | blue;
 
-    const solid = new SolidCustom(baseConfig, red, green, blue);
+    const solid = new SolidCustom(baseConfig.leds, red, green, blue);
     solid.run();
 
     expect(safeRender).toHaveBeenCalledTimes(1);
@@ -44,7 +44,7 @@ describe('Solid effects', () => {
   });
 
   test('SolidRandom: fills all pixels with a random color and calls safeRender once', () => {
-    const solid = new SolidRandom(baseConfig);
+    const solid = new SolidRandom(baseConfig.leds);
     
     solid.run();
 
@@ -64,8 +64,8 @@ describe('Solid effects', () => {
   });
 
   test('constructors do not call safeRender', () => {
-    new SolidCustom(baseConfig, 1, 2, 3);
-    new SolidRandom(baseConfig);
+    new SolidCustom(baseConfig.leds, 1, 2, 3);
+    new SolidRandom(baseConfig.leds);
 
     expect(safeRender).not.toHaveBeenCalled();
   });

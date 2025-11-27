@@ -3,16 +3,16 @@ import { safeRender } from '../ledRuntime.js';
 import type { Config } from '../types/index.js';
 
 export class TurnOff {
-  config: Config;
+  leds: Config['leds'];
 
-  constructor(config: Config) {
-    this.config = config;
+  constructor(leds: Config['leds']) {
+    this.leds = leds;
   };
 
   async run() {
     const ws281x = await loadWs281x();
 
-    const pixels: Uint32Array = new Uint32Array(this.config.leds);
+    const pixels: Uint32Array = new Uint32Array(this.leds);
 
     safeRender(pixels);
 

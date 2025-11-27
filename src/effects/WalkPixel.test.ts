@@ -60,7 +60,7 @@ describe('WalkPixelOn* effects', () => {
     const config = createConfig({ leds: 3 });
     const color = colorFromRGB(4, 8, 12);
 
-    const effect = new WalkPixelOnCustom(config, 70, 4, 8, 12);
+    const effect = new WalkPixelOnCustom(config.leds, 70, 4, 8, 12);
 
     effect.loop();
     expectSinglePixel(lastRenderPixels(), 0, color);
@@ -81,7 +81,7 @@ describe('WalkPixelOn* effects', () => {
       .mockReturnValueOnce(2)
       .mockReturnValueOnce(3);
 
-    const effect = new WalkPixelOnRandomStatic(createConfig(), 60);
+    const effect = new WalkPixelOnRandomStatic(createConfig().leds, 60);
     const color = colorFromRGB(1, 2, 3);
 
     effect.loop();
@@ -100,7 +100,7 @@ describe('WalkPixelOn* effects', () => {
       .mockReturnValueOnce(9)
       .mockReturnValueOnce(10);
 
-    const effect = new WalkPixelOnRandomChangePixel(createConfig(), 80);
+    const effect = new WalkPixelOnRandomChangePixel(createConfig().leds, 80);
     const firstColor = colorFromRGB(5, 6, 7);
     const secondColor = colorFromRGB(8, 9, 10);
 
@@ -122,7 +122,7 @@ describe('WalkPixelOn* effects', () => {
       .mockReturnValueOnce(15)
       .mockReturnValueOnce(16);
 
-    const effect = new WalkPixelOnRandomChangeLoop(config, 90);
+    const effect = new WalkPixelOnRandomChangeLoop(config.leds, 90);
     const firstColor = colorFromRGB(11, 12, 13);
     const secondColor = colorFromRGB(14, 15, 16);
 
@@ -144,7 +144,7 @@ describe('WalkPixelOff* effects', () => {
   test('WalkPixelOffCustomStatic leaves one dark pixel while the rest stay lit', () => {
     const config = createConfig({ leds: 3 });
     const color = colorFromRGB(20, 30, 40);
-    const effect = new WalkPixelOffCustomStatic(config, 50, 20, 30, 40);
+    const effect = new WalkPixelOffCustomStatic(config.leds, 50, 20, 30, 40);
 
     effect.loop();
     expectOffPixel(lastRenderPixels(), 0, color);
@@ -162,7 +162,7 @@ describe('WalkPixelOff* effects', () => {
       .mockReturnValueOnce(4)
       .mockReturnValueOnce(6);
 
-    const effect = new WalkPixelOffRandomStatic(createConfig({ leds: 3 }), 55);
+    const effect = new WalkPixelOffRandomStatic(3, 55);
     const color = colorFromRGB(2, 4, 6);
 
     effect.loop();
@@ -181,7 +181,7 @@ describe('WalkPixelOff* effects', () => {
       .mockReturnValueOnce(11)
       .mockReturnValueOnce(12);
 
-    const effect = new WalkPixelOffRandomChangePixel(createConfig({ leds: 3 }), 65);
+    const effect = new WalkPixelOffRandomChangePixel(3, 65);
     const firstColor = colorFromRGB(7, 8, 9);
     const secondColor = colorFromRGB(10, 11, 12);
 
@@ -203,7 +203,7 @@ describe('WalkPixelOff* effects', () => {
       .mockReturnValueOnce(17)
       .mockReturnValueOnce(18);
 
-    const effect = new WalkPixelOffRandomChangeLoop(config, 95);
+    const effect = new WalkPixelOffRandomChangeLoop(config.leds, 95);
     const firstColor = colorFromRGB(13, 14, 15);
     const secondColor = colorFromRGB(16, 17, 18);
 

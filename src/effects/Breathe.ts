@@ -3,7 +3,7 @@ import { Config, Interval } from '../types/index.js';
 import { randomNumber } from '../utils/index.js';
 
 export class BreatheCustom {
-  config: Config;
+  leds: Config['leds'];
   interval: Interval;
   red: number;
   green: number;
@@ -15,8 +15,8 @@ export class BreatheCustom {
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(config: Config, interval: Interval, red: number, green: number, blue: number, floor: number = 0.08, gamma: number = 2, fps: number = 60) {
-    this.config = config;
+  constructor(leds: Config['leds'], interval: Interval, red: number, green: number, blue: number, floor: number = 0.08, gamma: number = 2, fps: number = 60) {
+    this.leds = leds;
     this.interval = interval;
     this.red = red;
     this.green = green;
@@ -49,10 +49,10 @@ export class BreatheCustom {
 
     const color = (red << 16) | (green << 8) | blue;
 
-    const pixels = new Uint32Array(this.config.leds);
+    const pixels = new Uint32Array(this.leds);
 
     // Set strand to color
-    for (let i = 0; i < this.config.leds; i++) {
+    for (let i = 0; i < this.leds; i++) {
       pixels[i] = color;
     };
     
@@ -81,7 +81,7 @@ export class BreatheCustom {
 };
 
 export class BreatheRandom {
-  config: Config;
+  leds: Config['leds'];
   interval: Interval;
   floor: number;
   gamma: number;
@@ -93,8 +93,8 @@ export class BreatheRandom {
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(config: Config, interval: Interval, floor: number = 0.08, gamma: number = 2, fps: number = 60) {
-    this.config = config;
+  constructor(leds: Config['leds'], interval: Interval, floor: number = 0.08, gamma: number = 2, fps: number = 60) {
+    this.leds = leds;
     this.interval = interval;
     this._red = randomNumber(255);
     this._green = randomNumber(255);
@@ -127,10 +127,10 @@ export class BreatheRandom {
 
     const color = (red << 16) | (green << 8) | blue;
 
-    const pixels = new Uint32Array(this.config.leds);
+    const pixels = new Uint32Array(this.leds);
 
     // Set strand to color
-    for (let i = 0; i < this.config.leds; i++) {
+    for (let i = 0; i < this.leds; i++) {
       pixels[i] = color;
     };
 

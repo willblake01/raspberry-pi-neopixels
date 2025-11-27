@@ -50,7 +50,7 @@ beforeEach(() => {
 
 describe('Creep effects', () => {
   test('CreepCustom progressively fills pixels and wraps to the start', () => {
-    const effect = new CreepCustom(createConfig(), 100, 5, 10, 15);
+    const effect = new CreepCustom(createConfig().leds, 100, 5, 10, 15);
     const color = colorFromRGB(5, 10, 15);
 
     effect.loop();
@@ -75,7 +75,7 @@ describe('Creep effects', () => {
       .mockReturnValueOnce(19)
       .mockReturnValueOnce(29);
 
-    const effect = new CreepRandomStatic(createConfig(), 120);
+    const effect = new CreepRandomStatic(createConfig().leds, 120);
     const color = colorFromRGB(9, 19, 29);
 
     effect.loop();
@@ -94,7 +94,7 @@ describe('Creep effects', () => {
       .mockReturnValueOnce(5)
       .mockReturnValueOnce(6); // next pixel
 
-    const effect = new CreepRandomChangePixel(createConfig(), 90);
+    const effect = new CreepRandomChangePixel(createConfig().leds, 90);
 
     effect.loop();
     expectLitPixels(lastRenderPixels(), 1, colorFromRGB(1, 2, 3));
@@ -114,7 +114,7 @@ describe('Creep effects', () => {
       .mockReturnValueOnce(11)
       .mockReturnValueOnce(12); // after wrap
 
-    const effect = new CreepRandomChangeLoop(config, 110);
+    const effect = new CreepRandomChangeLoop(config.leds, 110);
     const firstColor = colorFromRGB(7, 8, 9);
     const secondColor = colorFromRGB(10, 11, 12);
 

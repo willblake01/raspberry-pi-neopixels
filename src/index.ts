@@ -17,10 +17,10 @@ const delayInMs = 1000;
 const delay: DelayProps = (ms) =>
   new Promise<void>((resolve) => setTimeout(resolve, ms));
 
-const selectEffect = (config: Config, options: Options) => {
-  if (options.isOff) return new TurnOff(config);
+const selectEffect = (leds: Config['leds'], options: Options) => {
+  if (options.isOff) return new TurnOff(leds);
   const rule = RULES.find((r) => r.when(options));
-  return rule ? rule.make(config, options) : new TurnOff(config);
+  return rule ? rule.make(leds, options) : new TurnOff(leds);
 };
 
 export const main = async () => {
@@ -60,22 +60,12 @@ export const main = async () => {
     shutDown('unhandledRejection', err),
   );
 
-  const makeIdleEffect = () => selectEffect(manager.config, options);
+  const makeIdleEffect = () => selectEffect(manager.config.leds, options);
 
   const makeMotionEffect = () => {
-    const motionBrightness = options.motionBrightness;
-
-    const motionConfig: Config = {
-      leds: config.leds,
-      dma: config.dma,
-      brightness: motionBrightness,
-      gpio: config.gpio,
-      stripType: config.stripType,
-    };
-
     const [red, green, blue] = options.motionColorMode === 'custom' ? [options.motionRed, options.motionGreen, options.motionBlue] : [randomNumber(255), randomNumber(255), randomNumber(255)];
 
-    return new SolidCustom(motionConfig, red, green, blue)
+    return new SolidCustom(config.leds, red, green, blue);
   };
 
   const idleEffect = makeIdleEffect();

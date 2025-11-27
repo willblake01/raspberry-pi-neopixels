@@ -38,21 +38,21 @@ beforeEach(() => {
 
 describe('Blink effects', () => {
   test('BlinkCustom toggles the configured color on and off', () => {
-    const effect = new BlinkCustom(createConfig(), 50, 10, 20, 30);
+    const effect = new BlinkCustom(createConfig().leds, 50, 10, 20, 30);
     const expectedColor = colorFromRGB(10, 20, 30);
 
     effect.loop();
 
     let pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.config.leds).fill(expectedColor));
+    expect(pixels).toEqual(new Array(effect.leds).fill(expectedColor));
 
     effect.loop();
     pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.config.leds).fill(0));
+    expect(pixels).toEqual(new Array(effect.leds).fill(0));
 
     effect.loop();
     pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.config.leds).fill(expectedColor));
+    expect(pixels).toEqual(new Array(effect.leds).fill(expectedColor));
   });
 
   test('BlinkRandomStatic keeps the same random color when the LEDs are on', () => {
@@ -61,20 +61,20 @@ describe('Blink effects', () => {
       .mockReturnValueOnce(15)
       .mockReturnValueOnce(25);
 
-    const effect = new BlinkRandomStatic(createConfig(), 60);
+    const effect = new BlinkRandomStatic(createConfig().leds, 60);
     const expectedColor = colorFromRGB(5, 15, 25);
 
     effect.loop();
     let pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.config.leds).fill(expectedColor));
+    expect(pixels).toEqual(new Array(effect.leds).fill(expectedColor));
 
     effect.loop();
     pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.config.leds).fill(0));
+    expect(pixels).toEqual(new Array(effect.leds).fill(0));
 
     effect.loop();
     pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.config.leds).fill(expectedColor));
+    expect(pixels).toEqual(new Array(effect.leds).fill(expectedColor));
   });
 
   test('BlinkRandomChange picks a new color every time it turns back on', () => {
@@ -86,20 +86,20 @@ describe('Blink effects', () => {
       .mockReturnValueOnce(5)
       .mockReturnValueOnce(6); // next on-cycle color
 
-    const effect = new BlinkRandomChange(createConfig(), 80);
+    const effect = new BlinkRandomChange(createConfig().leds, 80);
     const firstColor = colorFromRGB(1, 2, 3);
     const secondColor = colorFromRGB(4, 5, 6);
 
     effect.loop();
     let pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.config.leds).fill(firstColor));
+    expect(pixels).toEqual(new Array(effect.leds).fill(firstColor));
 
     effect.loop();
     pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.config.leds).fill(0));
+    expect(pixels).toEqual(new Array(effect.leds).fill(0));
 
     effect.loop();
     pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.config.leds).fill(secondColor));
+    expect(pixels).toEqual(new Array(effect.leds).fill(secondColor));
   });
 });

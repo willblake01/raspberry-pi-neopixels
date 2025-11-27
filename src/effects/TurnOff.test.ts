@@ -21,7 +21,7 @@ const createConfig = (overrides: Partial<Config> = {}): Config => ({
   dma: 10,
   brightness: 50,
   gpio: 18,
-  stripType: 'rgb',
+  stripType: 'grb',
   ...overrides,
 });
 
@@ -54,13 +54,13 @@ describe('TurnOff effect', () => {
 
     exitSpy.mockImplementation((() => undefined as never) as typeof process.exit);
 
-    const effect = new TurnOff(createConfig());
+    const effect = new TurnOff(createConfig().leds);
     await effect.run(); // ⬅️ wait for safeRender to be hit
 
     // safeRender called once with zeroed pixels
     expect(safeRenderMock).toHaveBeenCalledTimes(1);
     const pixels = safeRenderMock.mock.calls[0][0] as Uint32Array;
-    expect(Array.from(pixels)).toEqual(new Array(effect.config.leds).fill(0));
+    expect(Array.from(pixels)).toEqual(new Array(effect.leds).fill(0));
 
     // SIGINT handler wired
     expect(onSpy).toHaveBeenCalledWith('SIGINT', expect.any(Function));

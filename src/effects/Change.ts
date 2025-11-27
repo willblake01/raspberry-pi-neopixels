@@ -3,7 +3,7 @@ import { randomNumber } from '../utils/index.js';
 import { Config, Interval } from '../types/index.js';
 
 export class Change {
-  config: Config;
+  leds: Config['leds'];
   interval: Interval;
   private _red: number;
   private _green: number;
@@ -12,8 +12,8 @@ export class Change {
   private _stopped: boolean;
 
 
-  constructor(config: Config, interval: Interval) {
-    this.config = config;
+  constructor(leds: Config['leds'], interval: Interval) {
+    this.leds = leds;
     this.interval = interval;
     this._red = randomNumber(255);
     this._green = randomNumber(255);
@@ -27,10 +27,10 @@ export class Change {
 
     const color = (this._red << 16) | (this._green << 8) | this._blue;
 
-    const pixels = new Uint32Array(this.config.leds);
+    const pixels = new Uint32Array(this.leds);
 
     // Set strand to color
-    for (let i = 0; i < this.config.leds; i++) {
+    for (let i = 0; i < this.leds; i++) {
       pixels[i] = color;
     };
 

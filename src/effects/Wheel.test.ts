@@ -47,7 +47,7 @@ describe('Wheel effect', () => {
       .mockReturnValueOnce(9); // next revolution
 
     const config = createConfig({ leds: 4 });
-    const effect = new Wheel(config, 75);
+    const effect = new Wheel(config.leds, 75);
     const firstColor = colorFromRGB(2, 4, 6);
     const secondColor = colorFromRGB(7, 8, 9);
 

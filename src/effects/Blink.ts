@@ -1,10 +1,10 @@
 import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
-import { Config, Interval } from '../types/index.js';
+import { Config } from '../types/index.js';
 
 export class BlinkCustom {
-  config: Config;
-  interval: Interval;
+  leds: Config['leds'];
+  interval: number;
   red: number;
   green: number;
   blue: number;
@@ -12,8 +12,8 @@ export class BlinkCustom {
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(config: Config, interval: Interval, red: number, green: number, blue: number) {
-    this.config = config;
+  constructor(leds: Config['leds'], interval: number, red: number, green: number, blue: number) {
+    this.leds = leds;
     this.interval = interval;
     this.red = red;
     this.green = green;
@@ -32,10 +32,10 @@ export class BlinkCustom {
 
     const color = (red << 16) | (green << 8) | blue;
 
-    const pixels = new Uint32Array(this.config.leds);
+    const pixels = new Uint32Array(this.leds);
 
     // Set strand to color
-    for (let i = 0; i < this.config.leds; i++) {
+    for (let i = 0; i < this.leds; i++) {
       pixels[i] = color;
     };
 
@@ -64,8 +64,8 @@ export class BlinkCustom {
 };
 
 export class BlinkRandomStatic {
-  config: Config;
-  interval: Interval;
+  leds: Config['leds'];
+  interval: number;
   private _red: number;
   private _green: number;
   private _blue: number;
@@ -73,8 +73,8 @@ export class BlinkRandomStatic {
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(config: Config, interval: Interval) {
-    this.config = config;
+  constructor(leds: Config['leds'], interval: number) {
+    this.leds = leds;
     this.interval = interval;
     this._red = randomNumber(255);
     this._green = randomNumber(255);
@@ -93,10 +93,10 @@ export class BlinkRandomStatic {
 
     const color = (red << 16) | (green << 8) | blue;
 
-    const pixels = new Uint32Array(this.config.leds);
+    const pixels = new Uint32Array(this.leds);
 
     // Set strand to color
-    for (let i = 0; i < this.config.leds; i++) {
+    for (let i = 0; i < this.leds; i++) {
       pixels[i] = color;
     };
 
@@ -125,8 +125,8 @@ export class BlinkRandomStatic {
 };
 
 export class BlinkRandomChange {
-  config: Config;
-  interval: Interval;
+  leds: Config['leds'];
+  interval: number;
   private _red: number;
   private _green: number;
   private _blue: number;
@@ -134,8 +134,8 @@ export class BlinkRandomChange {
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(config: Config, interval: Interval) {
-    this.config = config;
+  constructor(leds: Config['leds'], interval: number) {
+    this.leds = leds;
     this.interval = interval;
     this._red = randomNumber(255);
     this._green = randomNumber(255);
@@ -154,10 +154,10 @@ export class BlinkRandomChange {
 
     const color = (red << 16) | (green << 8) | blue;
 
-    const pixels = new Uint32Array(this.config.leds);
+    const pixels = new Uint32Array(this.leds);
 
     // Set strand to color
-    for (let i = 0; i < this.config.leds; i++) {
+    for (let i = 0; i < this.leds; i++) {
       pixels[i] = color;
     };
 
