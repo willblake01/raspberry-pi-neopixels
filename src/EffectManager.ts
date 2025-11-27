@@ -10,13 +10,13 @@ const tick = () => new Promise<void>(resolve => setImmediate(resolve));
 
 export class EffectManager {
   public config: Config;
-  private _current: Effect | null;
+  public current: Effect | null;
   private _disposed: boolean;
   private _runtimeReady: Promise<void>;
 
   constructor(config: Config) {
     this.config = config;
-    this._current = null;
+    this.current = null;
     this._disposed = false;
 
     // start async init immediately, but don't block constructor
@@ -29,20 +29,20 @@ export class EffectManager {
     await this._runtimeReady;
     await this.stop();
 
-    this._current = effect;
+    this.current = effect;
 
     await effect.run();
   };
 
   async stop() {
-    const eff = this._current;
+    const eff = this.current;
 
     if (!eff) return;
 
     try {
       await eff.stop?.();
     } finally {
-      this._current = null;
+      this.current = null;
 
       await tick();
     }; 

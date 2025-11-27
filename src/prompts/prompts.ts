@@ -97,11 +97,11 @@ const allowsRandomcolorChangeInterval: Predicate = (v) =>
   EFFECT_ALLOWS_RANDOM_CHANGE_INTERVAL.has(v.effect as EffectName);
 
 // Motion override enabled?
-const motionEnabled: Predicate = (v) => v.useMotionColor === 1;
+const motionEnabled: Predicate = (v) => v.useMotionDetection === 1;
 
-const motionCustom: Predicate = (v) => v.useMotionColor === 1 && v.motionColorMode === 'custom';
+const motionCustom: Predicate = (v) => v.useMotionDetection === 1 && v.motionColorMode === 'custom';
 
-const motionRandom: Predicate = (v) => v.useMotionColor === 1 && v.motionColorMode === 'random';
+const motionRandom: Predicate = (v) => v.useMotionDetection === 1 && v.motionColorMode === 'random';
 
 /** Wraps a predicate into a dynamic `type` function that `prompts` accepts. */
 const show = (type: PromptType, pred: Predicate): PromptTypeFn =>
@@ -267,8 +267,8 @@ export const promptsConfig: PromptObject<string>[] = [
 
   // Enable motion override (only when turning on)
   promptSelect(
-    'useMotionColor',
-    'Enable motion color?',
+    'useMotionDetection',
+    'Enable motion detection?',
     [
       { title: 'No', value: 0 },
       { title: 'Yes', value: 1 }

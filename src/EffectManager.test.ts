@@ -45,7 +45,7 @@ describe('EffectManager', () => {
 
     expect(runtimeInitMock).toHaveBeenCalledWith(config);
     expect(manager.config).toBe(config);
-    expect(manager._current).toBeNull();
+    expect(manager.current).toBeNull();
   });
 
   test('start stops current effect before running the next one', async () => {
@@ -60,7 +60,7 @@ describe('EffectManager', () => {
 
     expect(first.stopMock).toHaveBeenCalledTimes(1);
     expect(second.runMock).toHaveBeenCalledTimes(1);
-    expect(manager._current).toBe(second.effect);
+    expect(manager.current).toBe(second.effect);
   });
 
   test('stop clears the current effect even if it lacks a stop method', async () => {
@@ -71,7 +71,7 @@ describe('EffectManager', () => {
     await manager.stop();
 
     expect(effect.runMock).toHaveBeenCalledTimes(1);
-    expect(manager._current).toBeNull();
+    expect(manager.current).toBeNull();
   });
 
   test('dispose stops the active effect, disposes runtime, and prevents future starts', async () => {

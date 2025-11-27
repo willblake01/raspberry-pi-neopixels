@@ -16,7 +16,7 @@ export const normalizeAnswers = (response: Answers<string>): Options => {
     randomColorMode,
     colorChangeInterval,
     pixelState,
-    useMotionColor,
+    useMotionDetection,
     motionBrightness,
     motionColorMode,
     motionRed,
@@ -37,7 +37,7 @@ export const normalizeAnswers = (response: Answers<string>): Options => {
     randomColorMode,
     colorChangeInterval,
     pixelState,
-    useMotionColor,
+    useMotionDetection,
     motionBrightness,
     motionColorMode,
     motionRed,
@@ -59,10 +59,10 @@ export const normalizeAnswers = (response: Answers<string>): Options => {
     isChangeRandomColorMode: randomColorMode === 'change',
     everyPixelColorChangeInterval: colorChangeInterval === 'everyPixel',
     everyLoopColorChangeInterval: colorChangeInterval === 'everyLoop',
-    isMotionColorEnabled: useMotionColor === 1,
+    isMotionDetectionEnabled: useMotionDetection === 1,
     isMotionCustomColorMode:
-      useMotionColor === 1 && motionColorMode === 'custom',
+      useMotionDetection === 1 && motionColorMode === 'custom',
     isMotionRandomColorMode:
-      useMotionColor === 1 && motionColorMode === 'random',
+      useMotionDetection === 1 && motionColorMode === 'random',
   };
 };

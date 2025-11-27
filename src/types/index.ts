@@ -77,7 +77,7 @@ export interface Options {
   // Pixel state
   pixelState?: 0 | 1;
 
-  useMotionColor: 0 | 1;
+  useMotionDetection: 0 | 1;
   motionBrightness: number;
   motionColorMode: 'custom' | 'random';
   motionRed: number;
@@ -103,7 +103,7 @@ export interface Options {
 
   everyPixelColorChangeInterval: boolean;
   everyLoopColorChangeInterval: boolean;
-  isMotionColorEnabled: boolean;
+  isMotionDetectionEnabled: boolean;
   isMotionCustomColorMode: boolean;
   isMotionRandomColorMode: boolean;
 };

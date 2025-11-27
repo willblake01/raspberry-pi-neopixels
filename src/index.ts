@@ -37,6 +37,9 @@ export const main = async () => {
 
   const manager = new EffectManager(config);
 
+  const makeIdleEffect = () => selectEffect(manager.config.leds, options);
+  const idleEffect = makeIdleEffect();
+
   const shutDown = once(
     async (reason: string, err?: Error | unknown): Promise<void> => {
       try {
@@ -60,17 +63,6 @@ export const main = async () => {
     shutDown('unhandledRejection', err),
   );
 
-  const makeIdleEffect = () => selectEffect(manager.config.leds, options);
-
-  const makeMotionEffect = () => {
-    const [red, green, blue] = options.motionColorMode === 'custom' ? [options.motionRed, options.motionGreen, options.motionBlue] : [randomNumber(255), randomNumber(255), randomNumber(255)];
-
-    return new SolidCustom(config.leds, red, green, blue);
-  };
-
-  const idleEffect = makeIdleEffect();
-  const motionEffect = makeMotionEffect();
-
   // Delay before effect starts
   await delay(delayInMs);
 
@@ -79,7 +71,7 @@ export const main = async () => {
   // -------------------------------
   // Motion color override
   // -------------------------------
-  if (options.isMotionColorEnabled) {
+  if (options.isMotionDetectionEnabled) {
     const motion = new CameraMotion({
       intervalMs: 200,
       diffThreshold: 15000,
@@ -92,6 +84,14 @@ export const main = async () => {
     let motionActive = false;
     let lastMotionAt = 0;
     let switching = false;
+
+    const makeMotionEffect = () => {
+      const [red, green, blue] = options.motionColorMode === 'custom' ? [options.motionRed, options.motionGreen, options.motionBlue] : [randomNumber(255), randomNumber(255), randomNumber(255)];
+
+      return new SolidCustom(config.leds, red, green, blue);
+    };
+
+    const motionEffect = makeMotionEffect();
 
     motion.on('motionDetected', async () => {
       lastMotionAt = Date.now();

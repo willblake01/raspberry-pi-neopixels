@@ -166,8 +166,8 @@ describe('prompts configuration', () => {
   // Motion color override tests
   // ---------------------------------------------------------------------------
 
-  test('useMotionColor prompt appears only when command is on', () => {
-    const useMotionPrompt = getPrompt('useMotionColor');
+  test('useMotionDetection prompt appears only when command is on', () => {
+    const useMotionPrompt = getPrompt('useMotionDetection');
 
     expect(evalType(useMotionPrompt, { command: 0 })).toBeNull();
     expect(evalType(useMotionPrompt, { command: 1 })).toBe('select');
@@ -183,12 +183,12 @@ describe('prompts configuration', () => {
 
     // Not enabled -> hidden
     expect(
-      evalType(motionColorModePrompt, { command: 1, useMotionColor: 0 })
+      evalType(motionColorModePrompt, { command: 1, useMotionDetection: 0 })
     ).toBeNull();
 
     // Enabled -> shown
     expect(
-      evalType(motionColorModePrompt, { command: 1, useMotionColor: 1 })
+      evalType(motionColorModePrompt, { command: 1, useMotionDetection: 1 })
     ).toBe('select');
   });
 
@@ -202,7 +202,7 @@ describe('prompts configuration', () => {
       expect(
         evalType(p, {
           command: 1,
-          useMotionColor: 1,
+          useMotionDetection: 1,
           motionColorMode: 'custom',
         })
       ).toBe('number');
@@ -211,7 +211,7 @@ describe('prompts configuration', () => {
       expect(
         evalType(p, {
           command: 1,
-          useMotionColor: 1,
+          useMotionDetection: 1,
           motionColorMode: 'random',
         })
       ).toBeNull();
@@ -220,7 +220,7 @@ describe('prompts configuration', () => {
       expect(
         evalType(p, {
           command: 1,
-          useMotionColor: 0,
+          useMotionDetection: 0,
           motionColorMode: 'custom',
         })
       ).toBeNull();
@@ -234,7 +234,7 @@ describe('prompts configuration', () => {
     expect(
       evalType(motionBrightnessPrompt, {
         command: 1,
-        useMotionColor: 1,
+        useMotionDetection: 1,
         motionColorMode: 'custom',
       })
     ).toBe('number');
@@ -243,7 +243,7 @@ describe('prompts configuration', () => {
     expect(
       evalType(motionBrightnessPrompt, {
         command: 1,
-        useMotionColor: 1,
+        useMotionDetection: 1,
         motionColorMode: 'random',
       })
     ).toBe('number');
@@ -252,7 +252,7 @@ describe('prompts configuration', () => {
     expect(
       evalType(motionBrightnessPrompt, {
         command: 1,
-        useMotionColor: 0,
+        useMotionDetection: 0,
         motionColorMode: 'custom',
       })
     ).toBeNull();
