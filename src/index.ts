@@ -20,7 +20,7 @@ const delay: DelayProps = (ms) =>
 const selectEffect = (leds: Config['leds'], options: Options) => {
   if (options.isOff) return new TurnOff(leds);
   const rule = RULES.find((r) => r.when(options));
-  return rule ? rule.make(leds, options) : new TurnOff(leds);
+  return rule ? rule.make(options) : new TurnOff(leds);
 };
 
 export const main = async () => {
