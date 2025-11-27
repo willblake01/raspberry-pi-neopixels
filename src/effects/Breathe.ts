@@ -3,14 +3,14 @@ import { Options } from '../types/index.js';
 import { randomNumber } from '../utils/index.js';
 
 export class BreatheCustom {
-  leds: Options['leds'];
-  interval: Options['interval'];
-  red: Options['red'];
-  green: Options['green'];
-  blue: Options['blue'];
-  floor: number;
-  gamma: number;
-  fps: number;
+  public leds: Options['leds'];
+  public interval: Options['interval'];
+  public red: Options['red'];
+  public green: Options['green'];
+  public blue: Options['blue'];
+  public floor: number;
+  public gamma: number;
+  public fps: number;
   private _t0: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
@@ -81,11 +81,11 @@ export class BreatheCustom {
 };
 
 export class BreatheRandom {
-  leds: Options['leds'];
-  interval: Options['interval'];
-  floor: number;
-  gamma: number;
-  fps: number;
+  public leds: Options['leds'];
+  public interval: Options['interval'];
+  public floor: number;
+  public gamma: number;
+  public fps: number;
   private _red: Options['red'];
   private _green: Options['green'];
   private _blue: Options['blue'];

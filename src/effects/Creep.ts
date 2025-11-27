@@ -3,11 +3,11 @@ import { safeRender } from '../ledRuntime.js';
 import { Options } from '../types/index.js';
 
 export class CreepCustom {
-  leds: Options['leds'];
-  interval: Options['interval'];
-  red: Options['red'];
-  green: Options['green'];
-  blue: Options['blue'];
+  public leds: Options['leds'];
+  public interval: Options['interval'];
+  public red: Options['red'];
+  public green: Options['green'];
+  public blue: Options['blue'];
   private _offset: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
@@ -64,8 +64,8 @@ export class CreepCustom {
 };
 
 export class CreepRandomStatic {
-  leds: Options['leds'];
-  interval: Options['interval'];
+  public leds: Options['leds'];
+  public interval: Options['interval'];
   private _red: Options['red'];
   private _green: Options['green'];
   private _blue: Options['blue'];
@@ -121,8 +121,8 @@ export class CreepRandomStatic {
 };
 
 export class CreepRandomChangePixel {
-  leds: Options['leds'];
-  interval: Options['interval'];
+  public leds: Options['leds'];
+  public interval: Options['interval'];
   private _red: Options['red'];
   private _green: Options['green'];
   private _blue: Options['blue'];
@@ -183,8 +183,8 @@ export class CreepRandomChangePixel {
 };
 
 export class CreepRandomChangeLoop {
-  leds: Options['leds'];
-  interval: Options['interval'];
+  public leds: Options['leds'];
+  public interval: Options['interval'];
   private _red: Options['red'];
   private _green: Options['green'];
   private _blue: Options['blue'];

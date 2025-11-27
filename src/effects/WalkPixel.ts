@@ -3,11 +3,11 @@ import { randomNumber } from '../utils/index.js';
 import { Options } from '../types/index.js';
 
 export class WalkPixelOnCustom {
-  leds: Options['leds'];
-  interval: Options['interval'];
-  red: Options['red'];
-  green: Options['green'];
-  blue: Options['blue'];
+  public leds: Options['leds'];
+  public interval: Options['interval'];
+  public red: Options['red'];
+  public green: Options['green'];
+  public blue: Options['blue'];
   private _offset: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
@@ -58,8 +58,8 @@ export class WalkPixelOnCustom {
 };
 
 export class WalkPixelOnRandomStatic {
-  leds: Options['leds'];
-  interval: Options['interval'];
+  public leds: Options['leds'];
+  public interval: Options['interval'];
   private _red: Options['red'];
   private _green: Options['green'];
   private _blue: Options['blue'];
@@ -113,8 +113,8 @@ export class WalkPixelOnRandomStatic {
 };
 
 export class WalkPixelOnRandomChangePixel {
-  leds: Options['leds'];
-  interval: Options['interval'];
+  public leds: Options['leds'];
+  public interval: Options['interval'];
   private _red: Options['red'];
   private _green: Options['green'];
   private _blue: Options['blue'];
@@ -173,8 +173,8 @@ export class WalkPixelOnRandomChangePixel {
 };
 
 export class WalkPixelOnRandomChangeLoop {
-  leds: Options['leds'];
-  interval: Options['interval'];
+  public leds: Options['leds'];
+  public interval: Options['interval'];
   private _red: Options['red'];
   private _green: Options['green'];
   private _blue: Options['blue'];
@@ -235,11 +235,11 @@ export class WalkPixelOnRandomChangeLoop {
 };
 
 export class WalkPixelOffCustomStatic {
-  leds: Options['leds'];
-  interval: Options['interval'];
-  red: Options['red'];
-  green: Options['green'];
-  blue: Options['blue'];
+  public leds: Options['leds'];
+  public interval: Options['interval'];
+  public red: Options['red'];
+  public green: Options['green'];
+  public blue: Options['blue'];
   private _offset: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
@@ -296,8 +296,8 @@ export class WalkPixelOffCustomStatic {
 };
 
 export class WalkPixelOffRandomStatic {
-  leds: Options['leds'];
-  interval: Options['interval'];
+  public leds: Options['leds'];
+  public interval: Options['interval'];
   private _red: Options['red'];
   private _green: Options['green'];
   private _blue: Options['blue'];
@@ -357,8 +357,8 @@ export class WalkPixelOffRandomStatic {
 };
 
 export class WalkPixelOffRandomChangePixel {
-  leds: Options['leds'];
-  interval: Options['interval'];
+  public leds: Options['leds'];
+  public interval: Options['interval'];
   private _red: Options['red'];
   private _green: Options['green'];
   private _blue: Options['blue'];
@@ -423,8 +423,8 @@ export class WalkPixelOffRandomChangePixel {
 };
 
 export class WalkPixelOffRandomChangeLoop {
-  leds: Options['leds'];
-  interval: Options['interval'];
+  public leds: Options['leds'];
+  public interval: Options['interval'];
   private _red: Options['red'];
   private _green: Options['green'];
   private _blue: Options['blue'];

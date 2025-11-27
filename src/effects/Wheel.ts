@@ -3,8 +3,8 @@ import { randomNumber } from '../utils/index.js';
 import { Options } from '../types/index.js';
 
 export class Wheel {
-  leds: Options['leds'];
-  interval: Options['interval'];
+  public leds: Options['leds'];
+  public interval: Options['interval'];
   private _red1: Options['red']
   private _green1: Options['green'];
   private _blue1: Options['blue'];

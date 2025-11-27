@@ -3,10 +3,10 @@ import { Options } from '../types/index.js';
 import { randomNumber } from '../utils/index.js';
 
 export class SolidCustom {
-  leds: Options['leds'];
-  red: Options['red'];
-  green: Options['green'];
-  blue: Options['blue'];
+  public leds: Options['leds'];
+  public red: Options['red'];
+  public green: Options['green'];
+  public blue: Options['blue'];
 
   constructor(leds: Options['leds'], red: Options['red'], green: Options['green'], blue: Options['blue']) {
     this.leds = leds;
@@ -30,7 +30,7 @@ export class SolidCustom {
 };
 
 export class SolidRandom {
-  leds: Options['leds'];
+  public leds: Options['leds'];
   private _red: Options['red'];
   private _green: Options['green'];
   private _blue: Options['blue'];

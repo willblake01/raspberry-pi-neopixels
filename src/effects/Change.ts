@@ -3,8 +3,8 @@ import { randomNumber } from '../utils/index.js';
 import { Options } from '../types/index.js';
 
 export class Change {
-  leds: Options['leds'];
-  interval: Options['interval'];
+  public leds: Options['leds'];
+  public interval: Options['interval'];
   private _red: Options['red'];
   private _green: Options['green'];
   private _blue: Options['blue'];

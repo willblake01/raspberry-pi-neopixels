@@ -9,7 +9,7 @@ interface Effect {
 const tick = () => new Promise<void>(resolve => setImmediate(resolve));
 
 export class EffectManager {
-  config: Config;
+  public config: Config;
   private _current: Effect | null;
   private _disposed: boolean;
   private _runtimeReady: Promise<void>;

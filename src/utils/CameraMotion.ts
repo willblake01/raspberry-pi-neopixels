@@ -31,9 +31,9 @@ const captureFrame = async (width: number, height: number): Promise<Buffer> => {
 }
 
 export class CameraMotion extends EventEmitter {
-  intervalMs?: number;
-  diffThreshold?: number;
-  cooldownMs?: number;
+  public intervalMs?: number;
+  public diffThreshold?: number;
+  public cooldownMs?: number;
   private _lastFrame: Buffer | null = null;
   private _isRunning = false;
   private _timer: NodeJS.Timeout | null = null;
