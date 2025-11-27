@@ -275,14 +275,6 @@ export const promptsConfig: PromptObject<string>[] = [
     ],
     isOn
   ),
-
-  // Motion brightness (always asked if motion override enabled)
-  promptNumber('motionBrightness', 'Enter motion brightness (0-255)', {
-    min: 0,
-    max: 255,
-    initial: 128,
-    when: and(isOn, motionEnabled),
-  }),
   promptSelect(
     'motionColorMode',
     'Set motion color mode',

@@ -226,35 +226,4 @@ describe('prompts configuration', () => {
       ).toBeNull();
     }
   });
-
-  test('motionBrightness prompt appears for both custom and random when enabled', () => {
-    const motionBrightnessPrompt = getPrompt('motionBrightness');
-
-    // Enabled + custom -> shown
-    expect(
-      evalType(motionBrightnessPrompt, {
-        command: 1,
-        useMotionDetection: 1,
-        motionColorMode: 'custom',
-      })
-    ).toBe('number');
-
-    // Enabled + random -> shown
-    expect(
-      evalType(motionBrightnessPrompt, {
-        command: 1,
-        useMotionDetection: 1,
-        motionColorMode: 'random',
-      })
-    ).toBe('number');
-
-    // Not enabled -> hidden
-    expect(
-      evalType(motionBrightnessPrompt, {
-        command: 1,
-        useMotionDetection: 0,
-        motionColorMode: 'custom',
-      })
-    ).toBeNull();
-  });
 });

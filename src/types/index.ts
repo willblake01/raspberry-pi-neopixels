@@ -78,7 +78,6 @@ export interface Options {
   pixelState?: 0 | 1;
 
   useMotionDetection: 0 | 1;
-  motionBrightness: number;
   motionColorMode: 'custom' | 'random';
   motionRed: number;
   motionGreen: number;
