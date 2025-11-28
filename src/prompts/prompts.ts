@@ -141,13 +141,13 @@ const promptNumber = (
 
 export const promptsConfig: PromptObject<string>[] = [
   // Command
-  promptSelect('command', 'Enter command', [
+  promptSelect('command', 'Select command', [
     { title: 'On', value: 1 },
     { title: 'Off', value: 0 },
   ]),
 
   // Effect (only when turning on)
-  promptSelect('effect', 'Set effect', EFFECT_CHOICES, isOn),
+  promptSelect('effect', 'Select effect', EFFECT_CHOICES, isOn),
 
   // LED count (always asked)
   promptNumber('leds', 'Enter number of LEDs (0-100)', {
@@ -175,7 +175,7 @@ export const promptsConfig: PromptObject<string>[] = [
   // Color mode (disallowed for change & wheel)
   promptSelect(
     'colorMode',
-    'Set color mode',
+    'Select color mode',
     [
       { title: 'Custom', value: 'custom' },
       { title: 'Random', value: 'random' },
@@ -189,7 +189,7 @@ export const promptsConfig: PromptObject<string>[] = [
   // Random color subtype (only when random, and not for solid/change)
   promptSelect(
     'randomColorMode',
-    'Set random color mode',
+    'Select random color mode',
     [
       { title: 'Static', value: 'static' },
       { title: 'Change', value: 'change' },
@@ -206,7 +206,7 @@ export const promptsConfig: PromptObject<string>[] = [
   // Random 'change' interval (every pixel vs end of loop)
   promptSelect(
     'colorChangeInterval',
-    'Set color change interval',
+    'Select color change interval',
     [
       { title: 'After every pixel', value: 'everyPixel' },
       { title: 'At end of loop', value: 'everyLoop' },
@@ -222,7 +222,7 @@ export const promptsConfig: PromptObject<string>[] = [
   ),
 
   // Custom RGB (only when custom color is allowed)
-  promptNumber('red', 'Enter a red value (0-255)', {
+  promptNumber('red', 'Enter red value (0-255)', {
     min: 0,
     max: 255,
     initial: 0,
@@ -231,7 +231,7 @@ export const promptsConfig: PromptObject<string>[] = [
       (v) => v.colorMode === 'custom' && allowsCustom(v)
     ),
   }),
-  promptNumber('green', 'Enter a green value (0-255)', {
+  promptNumber('green', 'Enter green value (0-255)', {
     min: 0,
     max: 255,
     initial: 0,
@@ -240,7 +240,7 @@ export const promptsConfig: PromptObject<string>[] = [
       (v) => v.colorMode === 'custom' && allowsCustom(v)
     ),
   }),
-  promptNumber('blue', 'Enter a blue value (0-255)', {
+  promptNumber('blue', 'Enter blue value (0-255)', {
     min: 0,
     max: 255,
     initial: 0,
@@ -253,7 +253,7 @@ export const promptsConfig: PromptObject<string>[] = [
   // Walk Pixel -> pixel state
   promptSelect(
     'pixelState',
-    'Set pixel',
+    'Select pixel',
     [
       { title: 'On', value: 1 },
       { title: 'Off', value: 0 },
@@ -277,7 +277,7 @@ export const promptsConfig: PromptObject<string>[] = [
   ),
   promptSelect(
     'motionColorMode',
-    'Set motion color mode',
+    'Select motion color mode',
     [
       { title: 'Custom', value: 'custom' },
       { title: 'Random', value: 'random' }
