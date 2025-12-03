@@ -1,5 +1,6 @@
 export const EFFECTS = {
     SOLID: 'solid',
+    ALTERNATE: 'alternate',
     CHANGE: 'change',
     BLINK: 'blink',
     BREATHE: 'breathe',

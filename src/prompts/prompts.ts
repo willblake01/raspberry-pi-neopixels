@@ -35,6 +35,7 @@ export type PromptTypeFn = (
 
 const EFFECT_CHOICES: SelectChoice<EffectName>[] = [
   { title: 'Solid', value: EFFECTS.SOLID },
+  { title: 'Alternate', value: EFFECTS.ALTERNATE },
   { title: 'Change', value: EFFECTS.CHANGE },
   { title: 'Blink', value: EFFECTS.BLINK },
   { title: 'Breathe', value: EFFECTS.BREATHE },
@@ -45,6 +46,7 @@ const EFFECT_CHOICES: SelectChoice<EffectName>[] = [
 
 // Capabilities
 const EFFECT_NEEDS_INTERVAL: ReadonlySet<EffectName> = new Set<EffectName>([
+  EFFECTS.ALTERNATE,
   EFFECTS.CHANGE,
   EFFECTS.BLINK,
   EFFECTS.BREATHE,
@@ -55,15 +57,21 @@ const EFFECT_NEEDS_INTERVAL: ReadonlySet<EffectName> = new Set<EffectName>([
 
 const EFFECT_ALLOWS_CUSTOM: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.SOLID,
+  EFFECTS.ALTERNATE,
   EFFECTS.BLINK,
   EFFECTS.BREATHE,
   EFFECTS.CREEP,
   EFFECTS.WALK_PIXEL,
 ]);
 
+const EFFECT_ALLOWS_TWO_COLORS: ReadonlySet<EffectName> = new Set<EffectName>([
+  EFFECTS.ALTERNATE
+])
+
 // Random color is *not allowed for Change or Wheel
 const EFFECT_ALLOWS_RANDOM: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.SOLID,
+  EFFECTS.ALTERNATE,
   EFFECTS.BLINK,
   EFFECTS.CREEP,
   EFFECTS.WALK_PIXEL,
@@ -90,6 +98,8 @@ const needsInterval: Predicate = (v) =>
 const allowsCustom: Predicate = (v) =>
   EFFECT_ALLOWS_CUSTOM.has(v.effect as EffectName);
 
+const allows2Colors: Predicate = (v) => EFFECT_ALLOWS_TWO_COLORS.has(v.effect as EffectName);
+
 const allowsRandom: Predicate = (v) =>
   EFFECT_ALLOWS_RANDOM.has(v.effect as EffectName);
 
@@ -100,8 +110,6 @@ const allowsRandomcolorChangeInterval: Predicate = (v) =>
 const motionEnabled: Predicate = (v) => v.useMotionDetection === 1;
 
 const motionCustom: Predicate = (v) => v.useMotionDetection === 1 && v.motionColorMode === 'custom';
-
-const motionRandom: Predicate = (v) => v.useMotionDetection === 1 && v.motionColorMode === 'random';
 
 /** Wraps a predicate into a dynamic `type` function that `prompts` accepts. */
 const show = (type: PromptType, pred: Predicate): PromptTypeFn =>
@@ -247,6 +255,35 @@ export const promptsConfig: PromptObject<string>[] = [
     when: and(
       isOn,
       (v) => v.colorMode === 'custom' && allowsCustom(v)
+    ),
+  }),
+
+  // Color2 Custom RGB (only when 'custom color' and '2 colors' is allowed)
+  promptNumber('red2', 'Enter red value (0-255)', {
+    min: 0,
+    max: 255,
+    initial: 0,
+    when: and(
+      isOn,
+      (v) => v.colorMode === 'custom' && allowsCustom(v) && allows2Colors(v)
+    ),
+  }),
+  promptNumber('green2', 'Enter green value (0-255)', {
+    min: 0,
+    max: 255,
+    initial: 0,
+    when: and(
+      isOn,
+      (v) => v.colorMode === 'custom' && allowsCustom(v) && allows2Colors(v)
+    ),
+  }),
+  promptNumber('blue2', 'Enter blue value (0-255)', {
+    min: 0,
+    max: 255,
+    initial: 0,
+    when: and(
+      isOn,
+      (v) => v.colorMode === 'custom' && allowsCustom(v) && allows2Colors(v)
     ),
   }),
 

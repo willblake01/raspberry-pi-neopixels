@@ -17,10 +17,11 @@ const delayInMs = 1000;
 const delay: DelayProps = (ms) =>
   new Promise<void>((resolve) => setTimeout(resolve, ms));
 
-const selectEffect = (leds: Config['leds'], options: Options) => {
-  if (options.isOff) return new TurnOff(leds);
+const selectEffect = (options: Options) => {
+  if (options.isOff) return new TurnOff(options.leds);
+  
   const rule = RULES.find((r) => r.when(options));
-  return rule ? rule.make(options) : new TurnOff(leds);
+  return rule ? rule.make(options) : new TurnOff(options.leds);
 };
 
 export const main = async () => {
@@ -37,7 +38,7 @@ export const main = async () => {
 
   const manager = new EffectManager(config);
 
-  const makeIdleEffect = () => selectEffect(manager.config.leds, options);
+  const makeIdleEffect = () => selectEffect(options);
   const idleEffect = makeIdleEffect();
 
   const shutDown = once(

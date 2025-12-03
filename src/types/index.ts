@@ -53,6 +53,9 @@ export interface Options {
   red: number;
   green: number;
   blue: number;
+  red2: number;
+  green2: number;
+  blue2: number;
 
   // Color mode
   colorMode?: ColorMode;
@@ -72,6 +75,7 @@ export interface Options {
   isOn: boolean;
   isOff: boolean;
   isSolid: boolean;
+  isAlternate: boolean;
   isChange: boolean;
   isBlink: boolean;
   isBreathe: boolean;
