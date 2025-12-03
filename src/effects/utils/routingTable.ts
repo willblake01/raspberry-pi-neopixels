@@ -26,6 +26,11 @@ export const RULES: Rule[] = [
     when: options => options.isAlternate && options.isCustomColorMode,
     make: options => new AlternateCustom(options.leds, options.red, options.green, options.blue, options.red2, options.green2, options.blue2)
   },
+  {
+    name: 'alternate-random',
+    when: options => options.isAlternate && options.isRandomColorMode,
+    make: options => new AlternateRandom(options.leds)
+  },
 
   // --- CHANGE ---
   {
