@@ -46,7 +46,6 @@ const EFFECT_CHOICES: SelectChoice<EffectName>[] = [
 
 // Capabilities
 const EFFECT_NEEDS_INTERVAL: ReadonlySet<EffectName> = new Set<EffectName>([
-  EFFECTS.ALTERNATE,
   EFFECTS.CHANGE,
   EFFECTS.BLINK,
   EFFECTS.BREATHE,
@@ -259,7 +258,7 @@ export const promptsConfig: PromptObject<string>[] = [
   }),
 
   // Color2 Custom RGB (only when 'custom color' and '2 colors' is allowed)
-  promptNumber('red2', 'Enter red value (0-255)', {
+  promptNumber('red2', 'Enter second color red value (0-255)', {
     min: 0,
     max: 255,
     initial: 0,
@@ -268,7 +267,7 @@ export const promptsConfig: PromptObject<string>[] = [
       (v) => v.colorMode === 'custom' && allowsCustom(v) && allows2Colors(v)
     ),
   }),
-  promptNumber('green2', 'Enter green value (0-255)', {
+  promptNumber('green2', 'Enter second color green value (0-255)', {
     min: 0,
     max: 255,
     initial: 0,
@@ -277,7 +276,7 @@ export const promptsConfig: PromptObject<string>[] = [
       (v) => v.colorMode === 'custom' && allowsCustom(v) && allows2Colors(v)
     ),
   }),
-  promptNumber('blue2', 'Enter blue value (0-255)', {
+  promptNumber('blue2', 'Enter second color blue value (0-255)', {
     min: 0,
     max: 255,
     initial: 0,
