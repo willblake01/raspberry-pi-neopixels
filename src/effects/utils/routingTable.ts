@@ -1,4 +1,4 @@
-import { AlternateCustom, AlternateRandomShift, AlternateRandom, BlinkCustom, BlinkRandomChange, BlinkRandomStatic, BreatheCustom, BreatheRandom, Change, CreepCustom, CreepRandomChangePixel, CreepRandomChangeLoop, CreepRandomStatic, SolidCustom, SolidRandom, WalkPixelOffCustomStatic, WalkPixelOffRandomStatic, WalkPixelOffRandomChangeLoop, WalkPixelOffRandomChangePixel, WalkPixelOnCustom, WalkPixelOnRandomChangePixel, WalkPixelOnRandomChangeLoop, WalkPixelOnRandomStatic, Wheel, TurnOff, AlternateCustomShift } from '../index.js';
+import { CheckerboardCustom, CheckerboardRandomShift, CheckerboardRandom, BlinkCustom, BlinkRandomChange, BlinkRandomStatic, BreatheCustom, BreatheRandom, Change, GrowingBarCustom, GrowingBarRandomChangePixel, GrowingBarRandomChangeLoop, GrowingBarRandomStatic, SolidCustom, SolidRandom, WalkPixelOffCustomStatic, WalkPixelOffRandomStatic, WalkPixelOffRandomChangeLoop, WalkPixelOffRandomChangePixel, WalkPixelOnCustom, WalkPixelOnRandomChangePixel, WalkPixelOnRandomChangeLoop, WalkPixelOnRandomStatic, Wheel, TurnOff, CheckerboardCustomShift } from '../index.js';
 import { Effect, Options } from '../../types/index.js';
 
 interface Rule {
@@ -20,26 +20,26 @@ export const RULES: Rule[] = [
     make: options => new SolidRandom(options.leds)
   },
 
-  // --- ALTERNATE ---
+  // --- CHECKERBOARD ---
   {
-    name: 'alternate-custom',
+    name: 'growing-bar-custom',
     when: options => options.isAlternate && options.isCustomColorMode,
-    make: options => new AlternateCustom(options.leds, options.red, options.green, options.blue, options.red2, options.green2, options.blue2)
+    make: options => new CheckerboardCustom(options.leds, options.red, options.green, options.blue, options.red2, options.green2, options.blue2)
   },
   {
-    name: 'alternate-custom-shift',
+    name: 'growing-bar-custom-shift',
     when: options => options.isAlternate && options.isCustomColorMode && options.isShiftMode,
-    make: options => new AlternateCustomShift(options.leds, options.interval, options.red, options.green, options.blue, options.red2, options.green2, options.blue2)
+    make: options => new CheckerboardCustomShift(options.leds, options.interval, options.red, options.green, options.blue, options.red2, options.green2, options.blue2)
   },
   {
-    name: 'alternate-random',
+    name: 'growing-bar-random',
     when: options => options.isAlternate && options.isRandomColorMode,
-    make: options => new AlternateRandom(options.leds)
+    make: options => new CheckerboardRandom(options.leds)
   },
   {
-    name: 'alternate-random-shift',
+    name: 'growing-bar-random-shift',
     when: options => options.isAlternate && options.isRandomColorMode && options.isShiftMode,
-    make: options => new AlternateRandomShift(options.leds, options.interval),
+    make: options => new CheckerboardRandomShift(options.leds, options.interval),
   },
 
   // --- CHANGE ---
@@ -78,26 +78,26 @@ export const RULES: Rule[] = [
     make: options => new BreatheRandom(options.leds, options.interval)
   },
 
-  // --- CREEP ---
+  // --- GROWING_BAR ---
   {
     name: 'creep-custom',
     when: options => options.isCreep && options.isCustomColorMode,
-    make: options => new CreepCustom(options.leds, options.interval, options.red, options.green, options.blue)
+    make: options => new GrowingBarCustom(options.leds, options.interval, options.red, options.green, options.blue)
   },
   {
     name: 'creep-random-static',
     when: options => options.isCreep && options.isRandomColorMode && options.isStaticRandomColorMode,
-    make: options => new CreepRandomStatic(options.leds, options.interval)
+    make: options => new GrowingBarRandomStatic(options.leds, options.interval)
   },
   {
     name: 'creep-random-change-every-pixel',
     when: options => options.isCreep && options.isRandomColorMode && options.isChangeRandomColorMode && options.isEveryPixelColorChangeInterval,
-    make: options => new CreepRandomChangePixel(options.leds, options.interval)
+    make: options => new GrowingBarRandomChangePixel(options.leds, options.interval)
   },
   {
     name: 'creep-random-change-every-loop',
     when: options => options.isCreep && options.isRandomColorMode && options.isChangeRandomColorMode && options.isEveryLoopColorChangeInterval,
-    make: options => new CreepRandomChangeLoop(options.leds, options.interval)
+    make: options => new GrowingBarRandomChangeLoop(options.leds, options.interval)
   },
 
   // --- WHEEL ---

@@ -2,7 +2,7 @@ import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
 import type { Effect, Options } from '../types/index.js';
 
-export class AlternateCustom implements Effect {
+export class CheckerboardCustom implements Effect {
   public leds: Options['leds'];
   public red: Options['red'];
   public green: Options['green'];
@@ -36,7 +36,7 @@ export class AlternateCustom implements Effect {
   };
 };
 
-export class AlternateCustomShift implements Effect {
+export class CheckerboardCustomShift implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   public red: Options['red'];
@@ -111,7 +111,7 @@ export class AlternateCustomShift implements Effect {
   };
 };
 
-export class AlternateRandom implements Effect {
+export class CheckerboardRandom implements Effect {
   public leds: Options['leds'];
   private _red: Options['red'];
   private _green: Options['green'];
@@ -146,7 +146,7 @@ export class AlternateRandom implements Effect {
   };
 };
 
-export class AlternateRandomShift implements Effect {
+export class CheckerboardRandomShift implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
   private _red: Options['red'];

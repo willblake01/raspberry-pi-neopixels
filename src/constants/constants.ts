@@ -1,10 +1,10 @@
 export const EFFECTS = {
     SOLID: 'solid',
-    ALTERNATE: 'alternate',
+    CHECKERBOARD: 'checkerboard',
     CHANGE: 'change',
     BLINK: 'blink',
     BREATHE: 'breathe',
-    CREEP: 'creep',
+    GROWING_BAR: 'growing_bar',
     WHEEL: 'wheel',
     WALK_PIXEL: 'walk pixel'
   } as const;

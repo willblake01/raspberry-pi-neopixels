@@ -88,7 +88,7 @@ describe('prompts configuration', () => {
 
     // Random + creep (allowed) -> shown
     expect(
-      evalType(randomModePrompt, { command: 1, colorMode: 'random', effect: EFFECTS.CREEP })
+      evalType(randomModePrompt, { command: 1, colorMode: 'random', effect: EFFECTS.GROWING_BAR })
     ).toBe('select');
 
     // Random + solid -> hidden per config
@@ -111,7 +111,7 @@ describe('prompts configuration', () => {
         command: 1,
         colorMode: 'random',
         randomColorMode: 'change',
-        effect: EFFECTS.CREEP,
+        effect: EFFECTS.GROWING_BAR,
       })
     ).toBe('select');
 
@@ -131,7 +131,7 @@ describe('prompts configuration', () => {
         command: 1,
         colorMode: 'random',
         randomColorMode: 'static',
-        effect: EFFECTS.CREEP,
+        effect: EFFECTS.GROWING_BAR,
       })
     ).toBeNull();
   });

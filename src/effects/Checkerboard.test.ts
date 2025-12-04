@@ -1,8 +1,8 @@
 import { 
-  AlternateCustom, 
-  AlternateRandom, 
-  AlternateCustomShift, 
-  AlternateRandomShift
+  CheckerboardCustom, 
+  CheckerboardRandom, 
+  CheckerboardCustomShift, 
+  CheckerboardRandomShift
 } from './index.js';
 import type { Config } from '../types/index.js';
 
@@ -42,13 +42,13 @@ beforeEach(() => {
 });
 
 describe('Alternate effects', () => {
-  describe('AlternateCustom', () => {
+  describe('CheckerboardCustom', () => {
     test('alternates between two specified colors', () => {
       const leds = createConfig().leds;
       const red = 10, green = 20, blue = 30;
       const red2 = 40, green2 = 50, blue2 = 60;
       
-      const effect = new AlternateCustom(leds, red, green, blue, red2, green2, blue2);
+      const effect = new CheckerboardCustom(leds, red, green, blue, red2, green2, blue2);
       const expectedColor1 = colorFromRGB(red, green, blue);
       const expectedColor2 = colorFromRGB(red2, green2, blue2);
 
@@ -73,7 +73,7 @@ describe('Alternate effects', () => {
       const red = 100, green = 150, blue = 200;
       const red2 = 50, green2 = 75, blue2 = 25;
       
-      const effect = new AlternateCustom(leds, red, green, blue, red2, green2, blue2);
+      const effect = new CheckerboardCustom(leds, red, green, blue, red2, green2, blue2);
       const expectedColor1 = colorFromRGB(red, green, blue);
       const expectedColor2 = colorFromRGB(red2, green2, blue2);
 
@@ -94,7 +94,7 @@ describe('Alternate effects', () => {
       const red = 255, green = 0, blue = 0;
       const red2 = 0, green2 = 255, blue2 = 0;
       
-      const effect = new AlternateCustom(leds, red, green, blue, red2, green2, blue2);
+      const effect = new CheckerboardCustom(leds, red, green, blue, red2, green2, blue2);
       const expectedColor1 = colorFromRGB(red, green, blue);
       const expectedColor2 = colorFromRGB(red2, green2, blue2);
 
@@ -112,7 +112,7 @@ describe('Alternate effects', () => {
     });
   });
 
-  describe('AlternateRandom', () => {
+  describe('CheckerboardRandom', () => {
     test('alternates between two random colors', () => {
       // Mock randomNumber to return predictable values
       randomNumberMock
@@ -124,7 +124,7 @@ describe('Alternate effects', () => {
         .mockReturnValueOnce(60); // blue2
 
       const leds = 4;
-      const effect = new AlternateRandom(leds);
+      const effect = new CheckerboardRandom(leds);
       const expectedColor1 = colorFromRGB(10, 20, 30);
       const expectedColor2 = colorFromRGB(40, 50, 60); // Now uses correct bit shifting
 
@@ -150,8 +150,8 @@ describe('Alternate effects', () => {
         .mockReturnValueOnce(7).mockReturnValueOnce(8).mockReturnValueOnce(9) // second instance
         .mockReturnValueOnce(10).mockReturnValueOnce(11).mockReturnValueOnce(12);
 
-      const effect1 = new AlternateRandom(2);
-      const effect2 = new AlternateRandom(2);
+      const effect1 = new CheckerboardRandom(2);
+      const effect2 = new CheckerboardRandom(2);
 
       effect1.run();
       const pixels1 = Array.from(lastRenderPixels());
@@ -164,14 +164,14 @@ describe('Alternate effects', () => {
     });
   });
 
-  describe('AlternateCustomShift', () => {
+  describe('CheckerboardCustomShift', () => {
     test('shifts pattern between two specified colors on each loop call', () => {
       const leds = 4;
       const interval = 100;
       const red = 255, green = 0, blue = 0;
       const red2 = 0, green2 = 0, blue2 = 255;
       
-      const effect = new AlternateCustomShift(leds, interval, red, green, blue, red2, green2, blue2);
+      const effect = new CheckerboardCustomShift(leds, interval, red, green, blue, red2, green2, blue2);
       const expectedColor1 = colorFromRGB(red, green, blue);
       const expectedColor2 = colorFromRGB(red2, green2, blue2);
 
@@ -200,7 +200,7 @@ describe('Alternate effects', () => {
 
     test('run method calls loop and sets up interval', () => {
       jest.useFakeTimers();
-      const effect = new AlternateCustomShift(4, 100, 255, 0, 0, 0, 0, 255);
+      const effect = new CheckerboardCustomShift(4, 100, 255, 0, 0, 0, 0, 255);
       
       effect.run();
       expect(safeRender).toHaveBeenCalledTimes(1);
@@ -213,7 +213,7 @@ describe('Alternate effects', () => {
     });
   });
 
-  describe('AlternateRandomShift', () => {
+  describe('CheckerboardRandomShift', () => {
     test('shifts pattern between two random colors on each loop call', () => {
       randomNumberMock
         .mockReturnValueOnce(15) // red
@@ -225,7 +225,7 @@ describe('Alternate effects', () => {
 
       const leds = 3;
       const interval = 200;
-      const effect = new AlternateRandomShift(leds, interval);
+      const effect = new CheckerboardRandomShift(leds, interval);
       
       // First loop call
       effect.loop();
@@ -246,10 +246,10 @@ describe('Alternate effects', () => {
   });
 
   test('constructors do not call safeRender', () => {
-    new AlternateCustom(6, 1, 2, 3, 4, 5, 6);
-    new AlternateRandom(6);
-    new AlternateCustomShift(6, 100, 1, 2, 3, 4, 5, 6);
-    new AlternateRandomShift(6, 100);
+    new CheckerboardCustom(6, 1, 2, 3, 4, 5, 6);
+    new CheckerboardRandom(6);
+    new CheckerboardCustomShift(6, 100, 1, 2, 3, 4, 5, 6);
+    new CheckerboardRandomShift(6, 100);
 
     expect(safeRender).not.toHaveBeenCalled();
   });

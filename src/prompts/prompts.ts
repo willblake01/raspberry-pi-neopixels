@@ -35,11 +35,11 @@ export type PromptTypeFn = (
 
 const EFFECT_CHOICES: SelectChoice<EffectName>[] = [
   { title: 'Solid', value: EFFECTS.SOLID },
-  { title: 'Alternate', value: EFFECTS.ALTERNATE },
+  { title: 'Checkerboard', value: EFFECTS.CHECKERBOARD },
   { title: 'Change', value: EFFECTS.CHANGE },
   { title: 'Blink', value: EFFECTS.BLINK },
   { title: 'Breathe', value: EFFECTS.BREATHE },
-  { title: 'Creep', value: EFFECTS.CREEP },
+  { title: 'Growing Bar', value: EFFECTS.GROWING_BAR },
   { title: 'Wheel', value: EFFECTS.WHEEL },
   { title: 'Walk Pixel', value: EFFECTS.WALK_PIXEL },
 ];
@@ -49,36 +49,36 @@ const EFFECT_NEEDS_INTERVAL: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.CHANGE,
   EFFECTS.BLINK,
   EFFECTS.BREATHE,
-  EFFECTS.CREEP,
+  EFFECTS.GROWING_BAR,
   EFFECTS.WHEEL,
   EFFECTS.WALK_PIXEL,
 ]);
 
 const EFFECT_ALLOWS_CUSTOM: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.SOLID,
-  EFFECTS.ALTERNATE,
+  EFFECTS.CHECKERBOARD,
   EFFECTS.BLINK,
   EFFECTS.BREATHE,
-  EFFECTS.CREEP,
+  EFFECTS.GROWING_BAR,
   EFFECTS.WALK_PIXEL,
 ]);
 
 const EFFECT_NEEDS_SHIFTING: ReadonlySet<EffectName> = new Set<EffectName>([
-  EFFECTS.ALTERNATE
+  EFFECTS.CHECKERBOARD
 ])
 
 // Random color is *not allowed for Change or Wheel
 const EFFECT_ALLOWS_RANDOM: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.SOLID,
-  EFFECTS.ALTERNATE,
+  EFFECTS.CHECKERBOARD,
   EFFECTS.BLINK,
-  EFFECTS.CREEP,
+  EFFECTS.GROWING_BAR,
   EFFECTS.WALK_PIXEL,
 ]);
 
 // For random 'change' (interval choice), exclude Blink
 const EFFECT_ALLOWS_RANDOM_CHANGE_INTERVAL: ReadonlySet<EffectName> =
-  new Set<EffectName>([EFFECTS.CREEP, EFFECTS.WALK_PIXEL]);
+  new Set<EffectName>([EFFECTS.GROWING_BAR, EFFECTS.WALK_PIXEL]);
 
 // -----------------------------------------------------------------------------
 // Helpers (on raw AnswersShape)
