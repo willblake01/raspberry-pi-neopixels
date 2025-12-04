@@ -47,8 +47,13 @@ export class Change implements Effect {
   };
 
   run() {
-    if (this._intervalID || this._stopped) return;
-    
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
+
+    this._stopped = false;
+
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };

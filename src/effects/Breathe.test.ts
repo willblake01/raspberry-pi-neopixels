@@ -53,31 +53,32 @@ describe('Breathe effects', () => {
     scalarSpy.mockRestore();
   });
 
-  test('BreatheRandom changes to a new random color each cycle', () => {
+  test('BreatheRandom uses the same random color throughout its lifetime', () => {
     randomNumberMock
       .mockReturnValueOnce(10)
       .mockReturnValueOnce(20)
-      .mockReturnValueOnce(30) // constructor color
-      .mockReturnValueOnce(40)
-      .mockReturnValueOnce(50)
-      .mockReturnValueOnce(60); // next color
+      .mockReturnValueOnce(30); // constructor color
 
     const effect = new BreatheRandom(createConfig().leds, 1500);
     const scalarSpy = jest
       .spyOn(effect as unknown as { _scalar: (nowMs: number) => number }, '_scalar')
       .mockReturnValue(1);
 
+    // First loop call
     effect.loop();
     let pixels = Array.from(lastRenderPixels());
-    const firstColor = colorFromRGB(10, 20, 30);
-    expect(pixels).toEqual(new Array(effect.leds).fill(firstColor));
+    const expectedColor = colorFromRGB(10, 20, 30);
+    expect(pixels).toEqual(new Array(effect.leds).fill(expectedColor));
 
     safeRenderMock.mockClear();
 
+    // Second loop call - should use the same color (no new randomNumber calls)
     effect.loop();
     pixels = Array.from(lastRenderPixels());
-    const secondColor = colorFromRGB(40, 50, 60);
-    expect(pixels).toEqual(new Array(effect.leds).fill(secondColor));
+    expect(pixels).toEqual(new Array(effect.leds).fill(expectedColor));
+
+    // Verify randomNumber was only called during construction
+    expect(randomNumber).toHaveBeenCalledTimes(3);
 
     scalarSpy.mockRestore();
   });

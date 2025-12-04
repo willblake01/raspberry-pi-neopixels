@@ -42,7 +42,13 @@ export class WalkPixelOnCustom implements Effect {
   };
 
   run() {
-    if (this._intervalID || this._stopped) return;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
+
+    this._stopped = false;
+
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
@@ -97,7 +103,13 @@ export class WalkPixelOnRandomStatic implements Effect {
   };
 
   run() {
-    if (this._intervalID || this._stopped) return;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
+
+    this._stopped = false;
+
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
@@ -157,7 +169,13 @@ export class WalkPixelOnRandomChangePixel implements Effect {
   };
 
   run() {
-    if (this._intervalID || this._stopped) return;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
+
+    this._stopped = false;
+
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
@@ -219,7 +237,13 @@ export class WalkPixelOnRandomChangeLoop implements Effect {
   };
 
   run() {
-    if (this._intervalID || this._stopped) return;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
+
+    this._stopped = false;
+
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
@@ -280,7 +304,13 @@ export class WalkPixelOffCustomStatic implements Effect {
   };
 
   run() {
-    if (this._intervalID || this._stopped) return;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
+
+    this._stopped = false;
+
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
@@ -341,7 +371,13 @@ export class WalkPixelOffRandomStatic implements Effect {
   };
 
   run() {
-    if (this._intervalID || this._stopped) return;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
+
+    this._stopped = false;
+
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
@@ -407,7 +443,13 @@ export class WalkPixelOffRandomChangePixel implements Effect {
   };
 
   run() {
-    if (this._intervalID || this._stopped) return;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
+
+    this._stopped = false;
+
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
@@ -475,7 +517,13 @@ export class WalkPixelOffRandomChangeLoop implements Effect {
   };
 
   run() {
-    if (this._intervalID || this._stopped) return;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
+
+    this._stopped = false;
+
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
