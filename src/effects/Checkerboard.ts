@@ -24,7 +24,7 @@ export class CheckerboardCustom implements Effect {
   run() {
     const color1 = (this.red << 16) | (this.green << 8) | this.blue;
     const color2 = (this.red2 << 16) | (this.green2 << 8) | this.blue2;
-console.log('nope.')
+
     const pixels = new Uint32Array(this.leds);
 
     // Set even indexes to color1 and odd indexes to color2
@@ -65,7 +65,7 @@ export class CheckerboardCustomShift implements Effect {
 
   loop() {
     if (this._stopped) return;
-console.log('Yep!')
+
     const color1 = (this.red << 16) | (this.green << 8) | this.blue;
     const color2 = (this.red2 << 16) | (this.green2 << 8) | this.blue2;
 

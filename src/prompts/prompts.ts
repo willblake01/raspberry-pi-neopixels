@@ -194,7 +194,7 @@ export const promptsConfig: PromptObject<string>[] = [
     'Select color mode',
     [
       { title: 'Custom', value: 'custom' },
-      { title: 'Random', value: 'random' },
+      { title: 'Random', value: 'random' }
     ],
     and(
       isOn,
@@ -208,7 +208,7 @@ export const promptsConfig: PromptObject<string>[] = [
     'Select random color mode',
     [
       { title: 'Static', value: 'static' },
-      { title: 'Change', value: 'change' },
+      { title: 'Change', value: 'change' }
     ],
     and(
       isOn,
@@ -225,7 +225,7 @@ export const promptsConfig: PromptObject<string>[] = [
     'Select color change interval',
     [
       { title: 'After every pixel', value: 'everyPixel' },
-      { title: 'At end of loop', value: 'everyLoop' },
+      { title: 'At end of loop', value: 'everyLoop' }
     ],
     and(
       isOn,
@@ -301,7 +301,7 @@ export const promptsConfig: PromptObject<string>[] = [
     'Select pixel',
     [
       { title: 'On', value: 1 },
-      { title: 'Off', value: 0 },
+      { title: 'Off', value: 0 }
     ],
     and(isOn, effectEquals(EFFECTS.WALK_PIXEL))
   ),
