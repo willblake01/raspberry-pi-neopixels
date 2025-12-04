@@ -1,10 +1,8 @@
 import { 
   AlternateCustomStatic, 
   AlternateRandomStatic, 
-  AlternateCustomShiftPixel, 
-  AlternateRandomShiftPixel, 
-  AlternateCustomShiftLoop, 
-  AlternateRandomShiftLoop 
+  AlternateCustomShift, 
+  AlternateRandomShift
 } from './index.js';
 import type { Config } from '../types/index.js';
 
@@ -169,14 +167,14 @@ describe('Alternate effects', () => {
     });
   });
 
-  describe('AlternateCustomShiftPixel', () => {
+  describe('AlternateCustomShift', () => {
     test('shifts pattern between two specified colors on each loop call', () => {
       const leds = 4;
       const interval = 100;
       const red1 = 255, green1 = 0, blue1 = 0;
       const red2 = 0, green2 = 0, blue2 = 255;
       
-      const effect = new AlternateCustomShiftPixel(leds, interval, red1, green1, blue1, red2, green2, blue2);
+      const effect = new AlternateCustomShift(leds, interval, red1, green1, blue1, red2, green2, blue2);
       const expectedColor1 = colorFromRGB(red1, green1, blue1);
       const expectedColor2 = colorFromRGB(red2, green2, blue2);
 
@@ -205,7 +203,7 @@ describe('Alternate effects', () => {
 
     test('run method calls loop and sets up interval', () => {
       jest.useFakeTimers();
-      const effect = new AlternateCustomShiftPixel(4, 100, 255, 0, 0, 0, 0, 255);
+      const effect = new AlternateCustomShift(4, 100, 255, 0, 0, 0, 0, 255);
       
       effect.run();
       expect(safeRender).toHaveBeenCalledTimes(1);
@@ -218,7 +216,7 @@ describe('Alternate effects', () => {
     });
   });
 
-  describe('AlternateRandomShiftPixel', () => {
+  describe('AlternateRandomShift', () => {
     test('shifts pattern between two random colors on each loop call', () => {
       randomNumberMock
         .mockReturnValueOnce(15) // red1
@@ -230,14 +228,14 @@ describe('Alternate effects', () => {
 
       const leds = 3;
       const interval = 200;
-      const effect = new AlternateRandomShiftPixel(leds, interval);
+      const effect = new AlternateRandomShift(leds, interval);
       
       // First loop call
       effect.loop();
       let pixels = Array.from(lastRenderPixels());
       expect(pixels.length).toBe(leds);
       
-      // Second loop call - pattern should shift
+      // Second loop call - pattern should shift (same colors, different positions)
       effect.loop();
       const pixels2 = Array.from(lastRenderPixels());
       expect(pixels2.length).toBe(leds);
@@ -248,93 +246,13 @@ describe('Alternate effects', () => {
       expect(randomNumber).toHaveBeenCalledTimes(6);
       expect(safeRender).toHaveBeenCalledTimes(2);
     });
-
-    test('generates new colors every loop call', () => {
-      randomNumberMock
-        .mockReturnValue(100); // Always return 100 for initial colors
-
-      const effect = new AlternateRandomShiftPixel(2, 100);
-      
-      // Mock randomNumber for new colors on each loop
-      randomNumberMock
-        .mockReturnValueOnce(10).mockReturnValueOnce(20).mockReturnValueOnce(30) // first loop new colors
-        .mockReturnValueOnce(40).mockReturnValueOnce(50).mockReturnValueOnce(60); // second loop new colors
-      
-      effect.loop();
-      const pixels1 = Array.from(lastRenderPixels());
-      
-      effect.loop();
-      const pixels2 = Array.from(lastRenderPixels());
-      
-      // Colors should be different between loops
-      expect(pixels1).not.toEqual(pixels2);
-    });
-  });
-
-  describe('AlternateCustomShiftLoop', () => {
-    test('shifts pattern and changes colors on each loop call', () => {
-      const leds = 4;
-      const interval = 150;
-      const red1 = 128, green1 = 64, blue1 = 192;
-      const red2 = 32, green2 = 96, blue2 = 160;
-      
-      const effect = new AlternateCustomShiftLoop(leds, interval, red1, green1, blue1, red2, green2, blue2);
-      
-      // First loop call
-      effect.loop();
-      const pixels1 = Array.from(lastRenderPixels());
-      expect(pixels1.length).toBe(leds);
-      
-      // Second loop call - should shift pattern and potentially change colors
-      effect.loop();
-      const pixels2 = Array.from(lastRenderPixels());
-      expect(pixels2.length).toBe(leds);
-      
-      expect(safeRender).toHaveBeenCalledTimes(2);
-    });
-  });
-
-  describe('AlternateRandomShiftLoop', () => {
-    test('shifts pattern and generates new random colors on each loop call', () => {
-      randomNumberMock
-        .mockReturnValueOnce(80) // initial red1
-        .mockReturnValueOnce(90) // initial green1
-        .mockReturnValueOnce(100) // initial blue1
-        .mockReturnValueOnce(110) // initial red2
-        .mockReturnValueOnce(120) // initial green2
-        .mockReturnValueOnce(130); // initial blue2
-
-      const leds = 3;
-      const interval = 250;
-      const effect = new AlternateRandomShiftLoop(leds, interval);
-      
-      // Add more mocks for loop calls
-      randomNumberMock
-        .mockReturnValueOnce(10).mockReturnValueOnce(20).mockReturnValueOnce(30) // first loop
-        .mockReturnValueOnce(40).mockReturnValueOnce(50).mockReturnValueOnce(60); // second loop
-      
-      effect.loop();
-      const pixels1 = Array.from(lastRenderPixels());
-      expect(pixels1.length).toBe(leds);
-      
-      effect.loop();
-      const pixels2 = Array.from(lastRenderPixels());
-      expect(pixels2.length).toBe(leds);
-      
-      // Should have different patterns due to new random colors and shifting
-      expect(pixels1).not.toEqual(pixels2);
-      
-      expect(safeRender).toHaveBeenCalledTimes(2);
-    });
   });
 
   test('constructors do not call safeRender', () => {
     new AlternateCustomStatic(6, 1, 2, 3, 4, 5, 6);
     new AlternateRandomStatic(6);
-    new AlternateCustomShiftPixel(6, 100, 1, 2, 3, 4, 5, 6);
-    new AlternateRandomShiftPixel(6, 100);
-    new AlternateCustomShiftLoop(6, 100, 1, 2, 3, 4, 5, 6);
-    new AlternateRandomShiftLoop(6, 100);
+    new AlternateCustomShift(6, 100, 1, 2, 3, 4, 5, 6);
+    new AlternateRandomShift(6, 100);
 
     expect(safeRender).not.toHaveBeenCalled();
   });

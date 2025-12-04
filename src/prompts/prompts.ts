@@ -46,6 +46,7 @@ const EFFECT_CHOICES: SelectChoice<EffectName>[] = [
 
 // Capabilities
 const EFFECT_NEEDS_INTERVAL: ReadonlySet<EffectName> = new Set<EffectName>([
+  EFFECTS.ALTERNATE,
   EFFECTS.CHANGE,
   EFFECTS.BLINK,
   EFFECTS.BREATHE,
@@ -62,6 +63,10 @@ const EFFECT_ALLOWS_CUSTOM: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.CREEP,
   EFFECTS.WALK_PIXEL,
 ]);
+
+const EFFECT_NEEDS_SHIFTING: ReadonlySet<EffectName> = new Set<EffectName>([
+  EFFECTS.ALTERNATE
+])
 
 const EFFECT_ALLOWS_TWO_COLORS: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.ALTERNATE
@@ -96,6 +101,8 @@ const needsInterval: Predicate = (v) =>
 
 const allowsCustom: Predicate = (v) =>
   EFFECT_ALLOWS_CUSTOM.has(v.effect as EffectName);
+
+const needsShifting: Predicate = (v) => EFFECT_NEEDS_SHIFTING.has(v.effect as EffectName);
 
 const allows2Colors: Predicate = (v) => EFFECT_ALLOWS_TWO_COLORS.has(v.effect as EffectName);
 
@@ -155,6 +162,12 @@ export const promptsConfig: PromptObject<string>[] = [
 
   // Effect (only when turning on)
   promptSelect('effect', 'Select effect', EFFECT_CHOICES, isOn),
+
+  // Shift mode (only when on and needs shifting)
+  promptSelect('shift', 'Select shift mode', [
+    { title: 'Static', value: 'static' },
+    { title: 'Shift', value: 'shift' }
+  ], and(isOn, (v) => needsShifting(v))),
 
   // LED count (always asked)
   promptNumber('leds', 'Enter number of LEDs (0-100)', {
