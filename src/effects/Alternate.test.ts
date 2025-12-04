@@ -113,7 +113,7 @@ describe('Alternate effects', () => {
   });
 
   describe('AlternateRandom', () => {
-    test('alternates between two random colors (note: color2 has bit shifting bug)', () => {
+    test('alternates between two random colors', () => {
       // Mock randomNumber to return predictable values
       randomNumberMock
         .mockReturnValueOnce(10) // red
@@ -126,10 +126,7 @@ describe('Alternate effects', () => {
       const leds = 4;
       const effect = new AlternateRandom(leds);
       const expectedColor1 = colorFromRGB(10, 20, 30);
-      // Note: AlternateRandom has a bug in color2 calculation
-      // It should be (red2 << 16) | (green2 << 8) | blue2
-      // but it's currently (red2) | (green2) | (blue2)
-      const expectedColor2 = 40 | 50 | 60; // This is the buggy calculation
+      const expectedColor2 = colorFromRGB(40, 50, 60); // Now uses correct bit shifting
 
       effect.run();
 

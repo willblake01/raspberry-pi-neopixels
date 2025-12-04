@@ -93,6 +93,15 @@ export class AlternateCustomShift implements Effect {
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
+
+  stop() {
+    if (this._stopped) return;
+    this._stopped = true;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
+  };
 };
 
 export class AlternateRandom implements Effect {
@@ -117,7 +126,7 @@ export class AlternateRandom implements Effect {
 
   run() {
     const color1 = (this._red << 16) | (this._green << 8) | this._blue;
-    const color2 = (this._red2) | (this._green2) | this._blue2;
+    const color2 = (this._red2 << 16) | (this._green2 << 8) | this._blue2;
 
     const pixels = new Uint32Array(this.leds);
 
@@ -187,5 +196,14 @@ export class AlternateRandomShift implements Effect {
     if (this._intervalID || this._stopped) return;
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
+  };
+
+  stop() {
+    if (this._stopped) return;
+    this._stopped = true;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
   };
 };
