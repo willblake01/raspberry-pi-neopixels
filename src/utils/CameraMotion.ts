@@ -95,6 +95,7 @@ export class CameraMotion extends EventEmitter {
 
   stop() {
     if (this._timer) clearInterval(this._timer);
+    
     this._timer = null;
     this._isRunning = false;
   };

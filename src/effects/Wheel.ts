@@ -78,7 +78,9 @@ export class Wheel implements Effect {
 
   stop() {
     if (this._stopped) return;
+
     this._stopped = true;
+    
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;

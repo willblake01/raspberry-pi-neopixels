@@ -100,7 +100,9 @@ export class CheckerboardCustomShift implements Effect {
 
   stop() {
     if (this._stopped) return;
+
     this._stopped = true;
+
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
@@ -208,7 +210,9 @@ export class CheckerboardRandomShift implements Effect {
 
   stop() {
     if (this._stopped) return;
+    
     this._stopped = true;
+    
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;

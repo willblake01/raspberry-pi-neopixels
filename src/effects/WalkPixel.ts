@@ -55,7 +55,9 @@ export class WalkPixelOnCustom implements Effect {
 
   stop() {
     if (this._stopped) return;
+
     this._stopped = true;
+
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
@@ -116,7 +118,9 @@ export class WalkPixelOnRandomStatic implements Effect {
 
   stop() {
     if (this._stopped) return;
+
     this._stopped = true;
+
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
@@ -182,7 +186,9 @@ export class WalkPixelOnRandomChangePixel implements Effect {
 
   stop() {
     if (this._stopped) return;
+
     this._stopped = true;
+
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
@@ -250,7 +256,9 @@ export class WalkPixelOnRandomChangeLoop implements Effect {
 
   stop() {
     if (this._stopped) return;
+
     this._stopped = true;
+
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
@@ -317,7 +325,9 @@ export class WalkPixelOffCustomStatic implements Effect {
 
   stop() {
     if (this._stopped) return;
+
     this._stopped = true;
+
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
@@ -384,7 +394,9 @@ export class WalkPixelOffRandomStatic implements Effect {
 
   stop() {
     if (this._stopped) return;
+
     this._stopped = true;
+
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
@@ -456,7 +468,9 @@ export class WalkPixelOffRandomChangePixel implements Effect {
 
   stop() {
     if (this._stopped) return;
+
     this._stopped = true;
+
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
@@ -530,7 +544,9 @@ export class WalkPixelOffRandomChangeLoop implements Effect {
 
   stop() {
     if (this._stopped) return;
+
     this._stopped = true;
+    
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;

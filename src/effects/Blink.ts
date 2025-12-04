@@ -58,7 +58,9 @@ export class BlinkCustom implements Effect {
 
   stop() {
     if (this._stopped) return;
+
     this._stopped = true;
+
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
@@ -122,7 +124,9 @@ export class BlinkRandomStatic implements Effect {
 
   stop() {
     if (this._stopped) return;
+
     this._stopped = true;
+
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
@@ -193,7 +197,9 @@ export class BlinkRandomChange implements Effect {
 
   stop() {
     if (this._stopped) return;
+
     this._stopped = true;
+    
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
