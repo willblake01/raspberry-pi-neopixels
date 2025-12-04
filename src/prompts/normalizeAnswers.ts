@@ -28,6 +28,8 @@ export const normalizeAnswers = (response: Answers<string>): Options => {
   } = response;
 
   return {
+
+    // Values
     command,
     leds,
     brightness,
@@ -50,6 +52,7 @@ export const normalizeAnswers = (response: Answers<string>): Options => {
     motionGreen,
     motionBlue,
 
+    // Flags
     isOn: command === 1,
     isOff: command === 0,
     isSolid: effect === EFFECTS.SOLID,
@@ -65,8 +68,9 @@ export const normalizeAnswers = (response: Answers<string>): Options => {
     isRandomColorMode: colorMode === 'random',
     isStaticRandomColorMode: randomColorMode === 'static',
     isChangeRandomColorMode: randomColorMode === 'change',
-    everyPixelColorChangeInterval: colorChangeInterval === 'everyPixel',
-    everyLoopColorChangeInterval: colorChangeInterval === 'everyLoop',
+    isPixelOn: pixelState === 1,
+    isEveryPixelColorChangeInterval: colorChangeInterval === 'everyPixel',
+    isEveryLoopColorChangeInterval: colorChangeInterval === 'everyLoop',
     isMotionDetectionEnabled: useMotionDetection === 1,
     isMotionCustomColorMode:
       useMotionDetection === 1 && motionColorMode === 'custom',

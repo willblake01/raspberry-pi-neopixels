@@ -82,8 +82,8 @@ export interface Options {
   colorMode?: ColorMode;
   randomColorMode?: RandomColorMode;
   colorChangeInterval?: ColorChangeInterval;
-  everyPixelColorChangeInterval: boolean;
-  everyLoopColorChangeInterval: boolean;
+  isEveryPixelColorChangeInterval: boolean;
+  isEveryLoopColorChangeInterval: boolean;
 
   // Derived color-mode flags used in 'when'
   isCustomColorMode: boolean;
@@ -93,6 +93,9 @@ export interface Options {
 
   // Pixel state
   pixelState?: 0 | 1;
+
+  // Pixel flags
+  isPixelOn: boolean;
 
   // Motion detection
   useMotionDetection: 0 | 1;

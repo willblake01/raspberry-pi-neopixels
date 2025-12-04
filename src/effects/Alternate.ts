@@ -36,41 +36,6 @@ export class AlternateCustom implements Effect {
   };
 };
 
-export class AlternateRandom implements Effect {
-  public leds: Options['leds'];
-  private _red: Options['red'];
-  private _green: Options['green'];
-  private _blue: Options['blue'];
-  private _red2: Options['red2'];
-  private _green2: Options['green2'];
-  private _blue2: Options['blue2'];
-
-  constructor(leds: Options['leds']) {
-    this.leds = leds;
-
-    this._red = randomNumber(255);
-    this._green = randomNumber(255);
-    this._blue = randomNumber(255);
-    this._red2 = randomNumber(255);
-    this._green2 = randomNumber(255);
-    this._blue2 = randomNumber(255);
-  };
-
-  run() {
-    const color1 = (this._red << 16) | (this._green << 8) | this._blue;
-    const color2 = (this._red2) | (this._green2) | this._blue2;
-
-    const pixels = new Uint32Array(this.leds);
-
-    // Set even indexes to color1 and odd indexes to color2
-    for (let i = 0; i < this.leds; i++) {
-      i % 2 === 0 ? pixels[i] = color1 : pixels[i] = color2;
-    };
-
-    safeRender(pixels);
-  };
-};
-
 export class AlternateCustomShift implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
@@ -127,6 +92,41 @@ export class AlternateCustomShift implements Effect {
     if (this._intervalID || this._stopped) return;
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
+  };
+};
+
+export class AlternateRandom implements Effect {
+  public leds: Options['leds'];
+  private _red: Options['red'];
+  private _green: Options['green'];
+  private _blue: Options['blue'];
+  private _red2: Options['red2'];
+  private _green2: Options['green2'];
+  private _blue2: Options['blue2'];
+
+  constructor(leds: Options['leds']) {
+    this.leds = leds;
+
+    this._red = randomNumber(255);
+    this._green = randomNumber(255);
+    this._blue = randomNumber(255);
+    this._red2 = randomNumber(255);
+    this._green2 = randomNumber(255);
+    this._blue2 = randomNumber(255);
+  };
+
+  run() {
+    const color1 = (this._red << 16) | (this._green << 8) | this._blue;
+    const color2 = (this._red2) | (this._green2) | this._blue2;
+
+    const pixels = new Uint32Array(this.leds);
+
+    // Set even indexes to color1 and odd indexes to color2
+    for (let i = 0; i < this.leds; i++) {
+      i % 2 === 0 ? pixels[i] = color1 : pixels[i] = color2;
+    };
+
+    safeRender(pixels);
   };
 };
 

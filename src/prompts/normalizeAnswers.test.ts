@@ -26,8 +26,8 @@ describe('normalizeAnswers', () => {
     expect(normalized.isSolid).toBe(false);
     expect(normalized.isRandomColorMode).toBe(true);
     expect(normalized.isChangeRandomColorMode).toBe(true);
-    expect(normalized.everyLoopColorChangeInterval).toBe(true);
-    expect(normalized.everyPixelColorChangeInterval).toBe(false);
+    expect(normalized.isEveryLoopColorChangeInterval).toBe(true);
+    expect(normalized.isEveryPixelColorChangeInterval).toBe(false);
 
     // Ensure original scalar values are preserved
     expect(normalized.command).toBe(answers.command);
@@ -59,6 +59,6 @@ describe('normalizeAnswers', () => {
     expect(normalized.isSolid).toBe(true);
     expect(normalized.isCustomColorMode).toBe(true);
     expect(normalized.isStaticRandomColorMode).toBe(true);
-    expect(normalized.everyPixelColorChangeInterval).toBe(true);
+    expect(normalized.isEveryPixelColorChangeInterval).toBe(true);
   });
 });

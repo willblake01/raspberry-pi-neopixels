@@ -28,7 +28,7 @@ export const RULES: Rule[] = [
   },
   {
     name: 'alternate-custom-shift',
-    when: options => options.isAlternate && options.isShiftMode && options.isCustomColorMode,
+    when: options => options.isAlternate && options.isCustomColorMode && options.isShiftMode,
     make: options => new AlternateCustomShift(options.leds, options.interval, options.red, options.green, options.blue, options.red2, options.green2, options.blue2)
   },
   {
@@ -38,7 +38,7 @@ export const RULES: Rule[] = [
   },
   {
     name: 'alternate-random-shift',
-    when: options => options.isAlternate && options.isShiftMode && options.isRandomColorMode,
+    when: options => options.isAlternate && options.isCustomColorMode && options.isShiftMode,
     make: options => new AlternateRandomShift(options.leds, options.interval),
   },
 
@@ -91,12 +91,12 @@ export const RULES: Rule[] = [
   },
   {
     name: 'creep-random-change-every-pixel',
-    when: options => options.isCreep && options.isRandomColorMode && options.isChangeRandomColorMode && options.everyPixelColorChangeInterval,
+    when: options => options.isCreep && options.isRandomColorMode && options.isChangeRandomColorMode && options.isEveryPixelColorChangeInterval,
     make: options => new CreepRandomChangePixel(options.leds, options.interval)
   },
   {
     name: 'creep-random-change-every-loop',
-    when: options => options.isCreep && options.isRandomColorMode && options.isChangeRandomColorMode && options.everyLoopColorChangeInterval,
+    when: options => options.isCreep && options.isRandomColorMode && options.isChangeRandomColorMode && options.isEveryLoopColorChangeInterval,
     make: options => new CreepRandomChangeLoop(options.leds, options.interval)
   },
 
@@ -110,44 +110,44 @@ export const RULES: Rule[] = [
   // --- WALK PIXEL (pixel ON) ---
   {
     name: 'walk-pixel-on-custom',
-    when: options => options.isWalkPixel && options.pixelState === 1 && options.isCustomColorMode,
+    when: options => options.isWalkPixel && options.isPixelOn && options.isCustomColorMode,
     make: options => new WalkPixelOnCustom(options.leds, options.interval, options.red, options.green, options.blue)
   },
   {
     name: 'walk-pixel-on-random-static',
-    when: options => options.isWalkPixel && options.pixelState === 1 && options.isRandomColorMode && options.isStaticRandomColorMode,
+    when: options => options.isWalkPixel && options.isPixelOn && options.isRandomColorMode && options.isStaticRandomColorMode,
     make: options => new WalkPixelOnRandomStatic(options.leds, options.interval)
   },
   {
     name: 'walk-pixel-on-random-change-every-pixel',
-    when: options => options.isWalkPixel && options.pixelState === 1 && options.isRandomColorMode && options.everyPixelColorChangeInterval,
+    when: options => options.isWalkPixel && options.isPixelOn && options.isRandomColorMode && options.isEveryPixelColorChangeInterval,
     make: options => new WalkPixelOnRandomChangePixel(options.leds, options.interval)
   },
   {
     name: 'walk-pixel-on-random-change-every-loop',
-    when: options => options.isWalkPixel && options.pixelState === 1 && options.isRandomColorMode && options.everyLoopColorChangeInterval,
+    when: options => options.isWalkPixel && options.isPixelOn && options.isRandomColorMode && options.isEveryLoopColorChangeInterval,
     make: options => new WalkPixelOnRandomChangeLoop(options.leds, options.interval)
   },
 
   // --- WALK PIXEL (pixel OFF) ---
   {
     name: 'walk-pixel-off-custom',
-    when: options => options.isWalkPixel && options.pixelState === 0 && options.isCustomColorMode,
+    when: options => options.isWalkPixel && !options.isPixelOn && options.isCustomColorMode,
     make: options => new WalkPixelOffCustomStatic(options.leds, options.interval, options.red, options.green, options.blue)
   },
   {
     name: 'walk-pixel-off-random-static',
-    when: options => options.isWalkPixel && options.pixelState === 0 && options.isRandomColorMode,
+    when: options => options.isWalkPixel && !options.isPixelOn && options.isRandomColorMode,
     make: options => new WalkPixelOffRandomStatic(options.leds, options.interval)
   },
   {
     name: 'walk-pixel-off-random-change-every-pixel',
-    when: options => options.isWalkPixel && options.pixelState === 0 && options.isRandomColorMode && options.everyPixelColorChangeInterval,
+    when: options => options.isWalkPixel && !options.isPixelOn && options.isRandomColorMode && options.isEveryPixelColorChangeInterval,
     make: options => new WalkPixelOffRandomChangePixel(options.leds, options.interval)
   },
   {
     name: 'walk-pixel-off-random-change-every-loop',
-    when: options => options.isWalkPixel && options.pixelState === 0 && options.isRandomColorMode && options.everyLoopColorChangeInterval,
+    when: options => options.isWalkPixel && !options.isPixelOn && options.isRandomColorMode && options.isEveryLoopColorChangeInterval,
     make: options => new WalkPixelOffRandomChangeLoop(options.leds, options.interval)
   },
 
