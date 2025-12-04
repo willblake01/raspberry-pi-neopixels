@@ -43,9 +43,9 @@ export class BreatheCustom implements Effect {
 
     const scale = this._scalar(Date.now());
 
-    const red = Math.round(this.red | 0) * scale & 0xFF;
-    const green = Math.round(this.green | 0) * scale & 0xFF;
-    const blue = Math.round(this.blue | 0) * scale & 0xFF;
+    const red = Math.max(0, Math.min(255, Math.round(this.red * scale)));
+    const green = Math.max(0, Math.min(255, Math.round(this.green * scale)));
+    const blue = Math.max(0, Math.min(255, Math.round(this.blue * scale)));
 
     const color = (red << 16) | (green << 8) | blue;
 
@@ -60,14 +60,17 @@ export class BreatheCustom implements Effect {
   };
 
   run() {
-    if (this._intervalID || this._stopped) return;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
+
+    this._stopped = false;
 
     const frameMs: number = Math.max(5, Math.round(1000 / this.fps));
 
     this.loop();
     this._intervalID = setInterval(() => this.loop(), frameMs);
-
-    
   };
 
   stop() {
@@ -117,44 +120,36 @@ export class BreatheRandom implements Effect {
   };
 
   loop() {
-    if (this._stopped) return;
+  if (this._stopped) return;
 
-    const scale = this._scalar(Date.now());
+  const scale = this._scalar(Date.now());
 
-    const red = Math.round(this._red | 0) * scale & 0xFF;
-    const green = Math.round(this._green | 0) * scale & 0xFF;
-    const blue = Math.round(this._blue | 0) * scale & 0xFF;
+  const red = Math.max(0, Math.min(255, Math.round(this._red * scale)));
+  const green = Math.max(0, Math.min(255, Math.round(this._green * scale)));
+  const blue = Math.max(0, Math.min(255, Math.round(this._blue * scale)));
 
-    const color = (red << 16) | (green << 8) | blue;
+  const color = (red << 16) | (green << 8) | blue;
+  const pixels = new Uint32Array(this.leds);
 
-    const pixels = new Uint32Array(this.leds);
+  for (let i = 0; i < this.leds; i++) {
+    pixels[i] = color;
+  }
 
-    // Set strand to color
-    for (let i = 0; i < this.leds; i++) {
-      pixels[i] = color;
-    };
-
-    const setNextState = () => {
-
-      // Change color every cycle
-      this._red = randomNumber(255);
-      this._green = randomNumber(255);
-      this._blue = randomNumber(255);
-    };
-    
-    safeRender(pixels);
-    setNextState();
-  };
+  safeRender(pixels);
+}
 
   run() {
-    if (this._intervalID || this._stopped) return;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
+
+    this._stopped = false;
 
     const frameMs: number = Math.max(5, Math.round(1000 / this.fps));
 
     this.loop();
     this._intervalID = setInterval(() => this.loop(), frameMs);
-
-    
   };
 
   stop() {

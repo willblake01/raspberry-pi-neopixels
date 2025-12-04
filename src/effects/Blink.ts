@@ -44,7 +44,14 @@ export class BlinkCustom implements Effect {
   };
 
   run() {
-    if (this._intervalID || this._stopped) return;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
+
+    this._stopped = false;
+    this._on = true;
+
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
@@ -101,7 +108,14 @@ export class BlinkRandomStatic implements Effect {
   };
 
   run() {
-    if (this._intervalID || this._stopped) return;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
+
+    this._stopped = false;
+    this._on = true;
+
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
@@ -165,7 +179,14 @@ export class BlinkRandomChange implements Effect {
   };
 
   run() {
-    if (this._intervalID || this._stopped) return;
+    if (this._intervalID) {
+      clearInterval(this._intervalID);
+      this._intervalID = null;
+    };
+
+    this._stopped = false;
+    this._on = true;
+
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
   };
