@@ -1,6 +1,7 @@
 import { EFFECTS } from '../constants/index.js';
 
-// < - - - Prompts - - - >
+// < - - - - - - Prompts - - - - - - >
+
 // Types for the raw answers coming in
 export type EffectName = (typeof EFFECTS) [keyof typeof EFFECTS];
 
@@ -42,9 +43,10 @@ export type PromptConfig = SelectPrompt | NumberPrompt;
 // The whole config array
 export type PromptsConfig = PromptConfig[];
 
-// < - - - - - - - - - >
+// < - - - - - - - - - - - - - - - - - >
 
 export interface Options {
+
   // Base config
   command: number;
   leds: number;

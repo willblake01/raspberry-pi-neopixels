@@ -45,11 +45,11 @@ describe('Alternate effects', () => {
   describe('AlternateCustom', () => {
     test('alternates between two specified colors', () => {
       const leds = createConfig().leds;
-      const red1 = 10, green1 = 20, blue1 = 30;
+      const red = 10, green = 20, blue = 30;
       const red2 = 40, green2 = 50, blue2 = 60;
       
-      const effect = new AlternateCustom(leds, red1, green1, blue1, red2, green2, blue2);
-      const expectedColor1 = colorFromRGB(red1, green1, blue1);
+      const effect = new AlternateCustom(leds, red, green, blue, red2, green2, blue2);
+      const expectedColor1 = colorFromRGB(red, green, blue);
       const expectedColor2 = colorFromRGB(red2, green2, blue2);
 
       effect.run();
@@ -70,11 +70,11 @@ describe('Alternate effects', () => {
 
     test('works with even number of LEDs', () => {
       const leds = 4;
-      const red1 = 100, green1 = 150, blue1 = 200;
+      const red = 100, green = 150, blue = 200;
       const red2 = 50, green2 = 75, blue2 = 25;
       
-      const effect = new AlternateCustom(leds, red1, green1, blue1, red2, green2, blue2);
-      const expectedColor1 = colorFromRGB(red1, green1, blue1);
+      const effect = new AlternateCustom(leds, red, green, blue, red2, green2, blue2);
+      const expectedColor1 = colorFromRGB(red, green, blue);
       const expectedColor2 = colorFromRGB(red2, green2, blue2);
 
       effect.run();
@@ -91,11 +91,11 @@ describe('Alternate effects', () => {
 
     test('works with odd number of LEDs', () => {
       const leds = 5;
-      const red1 = 255, green1 = 0, blue1 = 0;
+      const red = 255, green = 0, blue = 0;
       const red2 = 0, green2 = 255, blue2 = 0;
       
-      const effect = new AlternateCustom(leds, red1, green1, blue1, red2, green2, blue2);
-      const expectedColor1 = colorFromRGB(red1, green1, blue1);
+      const effect = new AlternateCustom(leds, red, green, blue, red2, green2, blue2);
+      const expectedColor1 = colorFromRGB(red, green, blue);
       const expectedColor2 = colorFromRGB(red2, green2, blue2);
 
       effect.run();
@@ -116,9 +116,9 @@ describe('Alternate effects', () => {
     test('alternates between two random colors (note: color2 has bit shifting bug)', () => {
       // Mock randomNumber to return predictable values
       randomNumberMock
-        .mockReturnValueOnce(10) // red1
-        .mockReturnValueOnce(20) // green1
-        .mockReturnValueOnce(30) // blue1
+        .mockReturnValueOnce(10) // red
+        .mockReturnValueOnce(20) // green
+        .mockReturnValueOnce(30) // blue
         .mockReturnValueOnce(40) // red2
         .mockReturnValueOnce(50) // green2
         .mockReturnValueOnce(60); // blue2
@@ -171,11 +171,11 @@ describe('Alternate effects', () => {
     test('shifts pattern between two specified colors on each loop call', () => {
       const leds = 4;
       const interval = 100;
-      const red1 = 255, green1 = 0, blue1 = 0;
+      const red = 255, green = 0, blue = 0;
       const red2 = 0, green2 = 0, blue2 = 255;
       
-      const effect = new AlternateCustomShift(leds, interval, red1, green1, blue1, red2, green2, blue2);
-      const expectedColor1 = colorFromRGB(red1, green1, blue1);
+      const effect = new AlternateCustomShift(leds, interval, red, green, blue, red2, green2, blue2);
+      const expectedColor1 = colorFromRGB(red, green, blue);
       const expectedColor2 = colorFromRGB(red2, green2, blue2);
 
       // First loop call
@@ -219,9 +219,9 @@ describe('Alternate effects', () => {
   describe('AlternateRandomShift', () => {
     test('shifts pattern between two random colors on each loop call', () => {
       randomNumberMock
-        .mockReturnValueOnce(15) // red1
-        .mockReturnValueOnce(25) // green1
-        .mockReturnValueOnce(35) // blue1
+        .mockReturnValueOnce(15) // red
+        .mockReturnValueOnce(25) // green
+        .mockReturnValueOnce(35) // blue
         .mockReturnValueOnce(45) // red2
         .mockReturnValueOnce(55) // green2
         .mockReturnValueOnce(65); // blue2

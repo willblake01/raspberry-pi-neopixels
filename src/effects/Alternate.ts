@@ -11,7 +11,7 @@ export class AlternateCustom implements Effect {
   public green2: Options['green2'];
   public blue2: Options['blue2'];
 
-  constructor(leds: Options['leds'], red: Options['red'], green: Options['green'], blue: Options['blue'], red2: Options['red'], green2: Options['green2'], blue2: Options['blue2']) {
+  constructor(leds: Options['leds'], red: Options['red'], green: Options['green'], blue: Options['blue'], red2: Options['red2'], green2: Options['green2'], blue2: Options['blue2']) {
     this.leds = leds;
     this.red = red;
     this.green = green;
@@ -49,7 +49,7 @@ export class AlternateCustomShift implements Effect {
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
-  constructor(leds: Options['leds'], interval: Options['interval'], red: Options['red'], green: Options['green'], blue: Options['blue'], red2: Options['red'], green2: Options['green2'], blue2: Options['blue2']) {
+  constructor(leds: Options['leds'], interval: Options['interval'], red: Options['red'], green: Options['green'], blue: Options['blue'], red2: Options['red2'], green2: Options['green2'], blue2: Options['blue2']) {
     this.leds = leds;
     this.interval = interval;
     this.red = red;
@@ -73,7 +73,7 @@ export class AlternateCustomShift implements Effect {
 
     // Set even indexes to color1 and odd indexes to color2 and vice versa when shifted
     for (let i = 0; i < this.leds; i++) {
-      if (this._isShifted === false) {
+      if (!this._isShifted) {
         i % 2 === 0 ? pixels[i] = color1 : pixels[i] = color2;
       } else {
         i % 2 === 0 ? pixels[i] = color2 : pixels[i] = color1;
@@ -168,7 +168,7 @@ export class AlternateRandomShift implements Effect {
 
     // Set even indexes to color1 and odd indexes to color2 and vice versa when shifted
     for (let i = 0; i < this.leds; i++) {
-      if (this._isShifted === false) {
+      if (!this._isShifted) {
         i % 2 === 0 ? pixels[i] = color1 : pixels[i] = color2;
       } else {
         i % 2 === 0 ? pixels[i] = color2 : pixels[i] = color1;

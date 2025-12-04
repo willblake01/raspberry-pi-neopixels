@@ -26,17 +26,13 @@ export class BlinkCustom implements Effect {
   loop() {
     if (this._stopped) return;
 
-    const red = this._on ? this.red : 0;
-    const green = this._on ? this.green : 0;
-    const blue = this._on ? this.blue : 0;
-
-    const color = (red << 16) | (green << 8) | blue;
+    const color = (this.red << 16) | (this.green << 8) | this.blue;
 
     const pixels = new Uint32Array(this.leds);
 
-    // Set strand to color
+    // Set strand to color if 'on' phase else set to 0 
     for (let i = 0; i < this.leds; i++) {
-      pixels[i] = color;
+      this._on ? pixels[i] = color : pixels[i] = 0;
     };
 
     const setNextState = () => {
@@ -87,17 +83,13 @@ export class BlinkRandomStatic implements Effect {
   loop() {
     if (this._stopped) return;
 
-    const red = this._on ? this._red : 0;
-    const green = this._on ? this._green : 0;
-    const blue = this._on ? this._blue : 0;
-
-    const color = (red << 16) | (green << 8) | blue;
+    const color = (this._red << 16) | (this._green << 8) | this._blue;
 
     const pixels = new Uint32Array(this.leds);
 
-    // Set strand to color
+    // Set strand to color if 'on' phase else set to 0
     for (let i = 0; i < this.leds; i++) {
-      pixels[i] = color;
+      this._on ? pixels[i] = color : pixels[i] = 0;
     };
 
     const setNextState = () => {
@@ -147,18 +139,14 @@ export class BlinkRandomChange implements Effect {
 
   loop() {
     if (this._stopped) return;
-    
-    const red = this._on ? this._red : 0;
-    const green = this._on ? this._green : 0;
-    const blue = this._on ? this._blue : 0;
 
-    const color = (red << 16) | (green << 8) | blue;
+    const color = (this._red << 16) | (this._green << 8) | this._blue;
 
     const pixels = new Uint32Array(this.leds);
 
-    // Set strand to color
+    // Set strand to color if 'on' phase else set to 0
     for (let i = 0; i < this.leds; i++) {
-      pixels[i] = color;
+      this._on ? pixels[i] = color : pixels[i] = 0;
     };
 
     const setNextState = () => {
