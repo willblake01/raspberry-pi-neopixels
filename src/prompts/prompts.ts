@@ -165,8 +165,8 @@ export const promptsConfig: PromptObject<string>[] = [
 
   // Shift mode (only when on and needs shifting)
   promptSelect('shift', 'Select shift mode', [
-    { title: 'Static', value: 'static' },
-    { title: 'Shift', value: 'shift' }
+    { title: 'Off', value: 0 },
+    { title: 'On', value: 1 }
   ], and(isOn, (v) => needsShifting(v))),
 
   // LED count (always asked)
