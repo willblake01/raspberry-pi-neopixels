@@ -184,7 +184,7 @@ export const promptsConfig: PromptObject<string>[] = [
     initial: 250,
     when: and(
       isOn,
-      (v) => needsInterval(v) || v.isShiftMode
+      (v) => needsInterval(v) || v.isShiftMode === true
     ),
   }),
 
