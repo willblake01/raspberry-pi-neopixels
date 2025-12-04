@@ -157,17 +157,8 @@ export const promptsConfig: PromptObject<string>[] = [
   // Command
   promptSelect('command', 'Select command', [
     { title: 'On', value: 1 },
-    { title: 'Off', value: 0 },
+    { title: 'Off', value: 0 }
   ]),
-
-  // Effect (only when turning on)
-  promptSelect('effect', 'Select effect', EFFECT_CHOICES, isOn),
-
-  // Shift mode (only when on and needs shifting)
-  promptSelect('shift', 'Select shift mode', [
-    { title: 'Off', value: 0 },
-    { title: 'On', value: 1 }
-  ], and(isOn, (v) => needsShifting(v))),
 
   // LED count (always asked)
   promptNumber('leds', 'Enter number of LEDs (0-100)', {
@@ -184,6 +175,9 @@ export const promptsConfig: PromptObject<string>[] = [
     when: isOn,
   }),
 
+  // Effect (only when turning on)
+  promptSelect('effect', 'Select effect', EFFECT_CHOICES, isOn),
+
   // Interval (for all effects except Solid)
   promptNumber('interval', 'Enter interval (milliseconds)', {
     min: 1,
@@ -191,6 +185,12 @@ export const promptsConfig: PromptObject<string>[] = [
     initial: 250,
     when: and(isOn, (v) => needsInterval(v)),
   }),
+
+  // Shift mode (only when on and needs shifting)
+  promptSelect('shift', 'Select shift mode', [
+    { title: 'On', value: 1 },
+    { title: 'Off', value: 0 }
+  ], and(isOn, (v) => needsShifting(v))),
 
   // Color mode (disallowed for change & wheel)
   promptSelect(
