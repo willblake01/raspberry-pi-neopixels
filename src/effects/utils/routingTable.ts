@@ -38,7 +38,7 @@ export const RULES: Rule[] = [
   },
   {
     name: 'alternate-random-shift',
-    when: options => options.isAlternate && options.isCustomColorMode && options.isShiftMode,
+    when: options => options.isAlternate && options.isRandomColorMode && options.isShiftMode,
     make: options => new AlternateRandomShift(options.leds, options.interval),
   },
 
