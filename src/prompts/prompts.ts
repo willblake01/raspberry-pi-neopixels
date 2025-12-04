@@ -172,7 +172,7 @@ export const promptsConfig: PromptObject<string>[] = [
   promptSelect('effect', 'Select effect', EFFECT_CHOICES, isOn),
 
   // Shift mode (only when on and needs shifting)
-  promptSelect('shift', 'Select shift mode', [
+  promptSelect('shiftMode', 'Select shift mode', [
     { title: 'On', value: 1 },
     { title: 'Off', value: 0 }
   ], and(isOn, (v) => needsShifting(v))),
