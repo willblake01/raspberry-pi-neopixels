@@ -273,7 +273,7 @@ export const promptsConfig: PromptObject<string>[] = [
     initial: 0,
     when: and(
       isOn,
-      (v) => v.colorMode === 'custom' && allowsCustom(v) || needsShifting(v)
+      (v) => v.colorMode === 'custom' && allowsCustom(v) && needsShifting(v)
     ),
   }),
   promptNumber('green2', 'Enter second color green value (0-255)', {
@@ -282,7 +282,7 @@ export const promptsConfig: PromptObject<string>[] = [
     initial: 0,
     when: and(
       isOn,
-      (v) => v.colorMode === 'custom' && allowsCustom(v) || needsShifting(v)
+      (v) => v.colorMode === 'custom' && allowsCustom(v) && needsShifting(v)
     ),
   }),
   promptNumber('blue2', 'Enter second color blue value (0-255)', {
@@ -291,7 +291,7 @@ export const promptsConfig: PromptObject<string>[] = [
     initial: 0,
     when: and(
       isOn,
-      (v) => v.colorMode === 'custom' && allowsCustom(v) || needsShifting(v)
+      (v) => v.colorMode === 'custom' && allowsCustom(v) && needsShifting(v)
     ),
   }),
 
