@@ -14,7 +14,8 @@ module.exports = {
 
   // Allow TS files to import './file.js' but map to './file.ts'
   moduleNameMapper: {
-    '^(\\.{1,2}/.*)\\.js$': '$1'
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+    '^rpi-ws281x$': '<rootDir>/test/__mocks__/rpi-ws281x.ts'
   },
 
   // Only match test files inside src/

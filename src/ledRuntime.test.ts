@@ -1,12 +1,8 @@
-import { loadWs281x } from './hardware/ws281x.js';
 import { init, safeRender, dispose, runtime } from './ledRuntime.js';
 import type { Config } from './types/index.js';
+import * as ws281x from 'rpi-ws281x';
 
-jest.mock('rpi-ws281x', () => ({
-  configure: jest.fn(),
-  render: jest.fn(),
-  reset: jest.fn(),
-}));
+const wsMock = ws281x as jest.Mocked<typeof ws281x>;
 
 const createConfig = (overrides: Partial<Config> = {}): Config => ({
   leds: 10,
@@ -15,14 +11,6 @@ const createConfig = (overrides: Partial<Config> = {}): Config => ({
   gpio: 18,
   stripType: 'rgb',
   ...overrides,
-});
-
-type Ws281x = Awaited<ReturnType<typeof loadWs281x>>;
-let wsMock: jest.Mocked<Ws281x>;
-
-beforeAll(async () => {
-  const ws281x = await loadWs281x();
-  wsMock = ws281x as jest.Mocked<Ws281x>;
 });
 
 describe('ledRuntime', () => {
@@ -34,7 +22,7 @@ describe('ledRuntime', () => {
   test('init configures ws281x and marks runtime alive', async () => {
     const config = createConfig();
 
-    await init(config); // ⬅️ important
+    await init(config);
 
     expect(wsMock.configure).toHaveBeenCalledWith(config);
     expect(runtime.alive).toBe(true);
@@ -43,11 +31,9 @@ describe('ledRuntime', () => {
   test('safeRender only renders when runtime is alive', async () => {
     const pixels = new Uint32Array(5);
 
-    // Before init: should not render
     safeRender(pixels);
     expect(wsMock.render).not.toHaveBeenCalled();
 
-    // After init: should render
     await init(createConfig());
     safeRender(pixels);
 

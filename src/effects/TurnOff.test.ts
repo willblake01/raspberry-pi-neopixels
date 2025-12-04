@@ -3,10 +3,6 @@ jest.mock('../ledRuntime.js', () => ({
   safeRender: jest.fn(),
 }));
 
-jest.mock('rpi-ws281x', () => ({
-  reset: jest.fn(),
-}));
-
 // Then imports that consume those mocks
 import { TurnOff } from './index.js';
 import type { Config } from '../types/index.js';
