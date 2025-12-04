@@ -67,10 +67,6 @@ const EFFECT_NEEDS_SHIFTING: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.ALTERNATE
 ])
 
-const EFFECT_ALLOWS_TWO_COLORS: ReadonlySet<EffectName> = new Set<EffectName>([
-  EFFECTS.ALTERNATE
-])
-
 // Random color is *not allowed for Change or Wheel
 const EFFECT_ALLOWS_RANDOM: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.SOLID,
@@ -95,15 +91,13 @@ const effectEquals =
   (v) =>
     v.effect === e;
 
+const needsShifting: Predicate = (v) => EFFECT_NEEDS_SHIFTING.has(v.effect as EffectName);
+
 const needsInterval: Predicate = (v) =>
   EFFECT_NEEDS_INTERVAL.has(v.effect as EffectName);
 
 const allowsCustom: Predicate = (v) =>
   EFFECT_ALLOWS_CUSTOM.has(v.effect as EffectName);
-
-const needsShifting: Predicate = (v) => EFFECT_NEEDS_SHIFTING.has(v.effect as EffectName);
-
-const allows2Colors: Predicate = (v) => EFFECT_ALLOWS_TWO_COLORS.has(v.effect as EffectName);
 
 const allowsRandom: Predicate = (v) =>
   EFFECT_ALLOWS_RANDOM.has(v.effect as EffectName);
@@ -188,7 +182,10 @@ export const promptsConfig: PromptObject<string>[] = [
     min: 1,
     max: 60_000,
     initial: 250,
-    when: and(isOn, (v) => needsInterval(v)) || needsShifting,
+    when: and(
+      isOn,
+      (v) => needsInterval(v) || needsShifting(v)
+    ),
   }),
 
   // Color mode (disallowed for change & wheel)
@@ -269,14 +266,14 @@ export const promptsConfig: PromptObject<string>[] = [
     ),
   }),
 
-  // Color2 Custom RGB (only when 'custom color' and '2 colors' is allowed)
+  // Color2 Custom RGB (only when 'custom color' and 'needs shifting' is allowed)
   promptNumber('red2', 'Enter second color red value (0-255)', {
     min: 0,
     max: 255,
     initial: 0,
     when: and(
       isOn,
-      (v) => v.colorMode === 'custom' && allowsCustom(v) && allows2Colors(v)
+      (v) => v.colorMode === 'custom' && allowsCustom(v) || needsShifting(v)
     ),
   }),
   promptNumber('green2', 'Enter second color green value (0-255)', {
@@ -285,7 +282,7 @@ export const promptsConfig: PromptObject<string>[] = [
     initial: 0,
     when: and(
       isOn,
-      (v) => v.colorMode === 'custom' && allowsCustom(v) && allows2Colors(v)
+      (v) => v.colorMode === 'custom' && allowsCustom(v) || needsShifting(v)
     ),
   }),
   promptNumber('blue2', 'Enter second color blue value (0-255)', {
@@ -294,7 +291,7 @@ export const promptsConfig: PromptObject<string>[] = [
     initial: 0,
     when: and(
       isOn,
-      (v) => v.colorMode === 'custom' && allowsCustom(v) && allows2Colors(v)
+      (v) => v.colorMode === 'custom' && allowsCustom(v) || needsShifting(v)
     ),
   }),
 

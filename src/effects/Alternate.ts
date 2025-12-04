@@ -108,7 +108,7 @@ export class AlternateCustomShift implements Effect {
 
     // Set even indexes to color1 and odd indexes to color2 and vice versa when shifted
     for (let i = 0; i < this.leds; i++) {
-      if (this._isShifted) {
+      if (!this._isShifted) {
         i % 2 === 0 ? pixels[i] = color1 : pixels[i] = color2;
       } else {
         i % 2 === 0 ? pixels[i] = color2 : pixels[i] = color1;

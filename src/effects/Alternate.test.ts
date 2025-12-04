@@ -182,20 +182,20 @@ describe('Alternate effects', () => {
       effect.loop();
       let pixels = Array.from(lastRenderPixels());
       expect(pixels).toEqual([
-        expectedColor2, // index 0 - even (shifted)
-        expectedColor1, // index 1 - odd (shifted)
-        expectedColor2, // index 2 - even (shifted)
-        expectedColor1  // index 3 - odd (shifted)
+        expectedColor1, // index 0 - even (normal pattern)
+        expectedColor2, // index 1 - odd (normal pattern)
+        expectedColor1, // index 2 - even (normal pattern)
+        expectedColor2  // index 3 - odd (normal pattern)
       ]);
 
       // Second loop call - should shift pattern
       effect.loop();
       pixels = Array.from(lastRenderPixels());
       expect(pixels).toEqual([
-        expectedColor1, // index 0 - even (normal)
-        expectedColor2, // index 1 - odd (normal)
-        expectedColor1, // index 2 - even (normal)
-        expectedColor2  // index 3 - odd (normal)
+        expectedColor2, // index 0 - even (shifted pattern)
+        expectedColor1, // index 1 - odd (shifted pattern)
+        expectedColor2, // index 2 - even (shifted pattern)
+        expectedColor1  // index 3 - odd (shifted pattern)
       ]);
 
       expect(safeRender).toHaveBeenCalledTimes(2);
