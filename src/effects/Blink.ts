@@ -25,7 +25,7 @@ export class BlinkCustom implements Effect {
 
   loop() {
     if (this._stopped) return;
-console.log('BlinkCustom')
+
     const color = (this.red << 16) | (this.green << 8) | this.blue;
 
     const pixels = new Uint32Array(this.leds);
@@ -91,7 +91,7 @@ export class BlinkRandomStatic implements Effect {
 
   loop() {
     if (this._stopped) return;
-console.log('BlinkRandomStatic')
+
     const color = (this._red << 16) | (this._green << 8) | this._blue;
 
     const pixels = new Uint32Array(this.leds);
@@ -157,7 +157,7 @@ export class BlinkRandomChange implements Effect {
 
   loop() {
     if (this._stopped) return;
-console.log('BlinkRandomChange')
+
     const color = (this._red << 16) | (this._green << 8) | this._blue;
 
     const pixels = new Uint32Array(this.leds);

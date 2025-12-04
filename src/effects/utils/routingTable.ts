@@ -23,7 +23,7 @@ export const RULES: Rule[] = [
   // --- CHECKERBOARD ---
   {
     name: 'checkerboard-custom',
-    when: options => options.isAlternate && options.isCustomColorMode,
+    when: options => options.isAlternate && options.isCustomColorMode && !options.isShiftMode,
     make: options => new CheckerboardCustom(options.leds, options.red, options.green, options.blue, options.red2, options.green2, options.blue2)
   },
   {
@@ -33,7 +33,7 @@ export const RULES: Rule[] = [
   },
   {
     name: 'checkerboard-random',
-    when: options => options.isAlternate && options.isRandomColorMode,
+    when: options => options.isAlternate && options.isRandomColorMode && !options.isShiftMode,
     make: options => new CheckerboardRandom(options.leds)
   },
   {
