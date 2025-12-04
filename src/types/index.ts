@@ -84,6 +84,8 @@ export interface Options {
   colorMode?: ColorMode;
   randomColorMode?: RandomColorMode;
   colorChangeInterval?: ColorChangeInterval;
+
+  // Color mode flags
   isEveryPixelColorChangeInterval: boolean;
   isEveryLoopColorChangeInterval: boolean;
 
