@@ -46,7 +46,6 @@ const EFFECT_CHOICES: SelectChoice<EffectName>[] = [
 
 // Capabilities
 const EFFECT_NEEDS_INTERVAL: ReadonlySet<EffectName> = new Set<EffectName>([
-  EFFECTS.ALTERNATE,
   EFFECTS.CHANGE,
   EFFECTS.BLINK,
   EFFECTS.BREATHE,
@@ -178,19 +177,19 @@ export const promptsConfig: PromptObject<string>[] = [
   // Effect (only when turning on)
   promptSelect('effect', 'Select effect', EFFECT_CHOICES, isOn),
 
-  // Interval (for all effects except Solid)
-  promptNumber('interval', 'Enter interval (milliseconds)', {
-    min: 1,
-    max: 60_000,
-    initial: 250,
-    when: and(isOn, (v) => needsInterval(v)),
-  }),
-
   // Shift mode (only when on and needs shifting)
   promptSelect('shift', 'Select shift mode', [
     { title: 'On', value: 1 },
     { title: 'Off', value: 0 }
   ], and(isOn, (v) => needsShifting(v))),
+
+  // Interval (for all effects except Solid)
+  promptNumber('interval', 'Enter interval (milliseconds)', {
+    min: 1,
+    max: 60_000,
+    initial: 250,
+    when: and(isOn, (v) => needsInterval(v)) || needsShifting,
+  }),
 
   // Color mode (disallowed for change & wheel)
   promptSelect(
