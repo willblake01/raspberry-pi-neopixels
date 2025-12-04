@@ -71,13 +71,10 @@ export class CheckerboardCustomShift implements Effect {
 
     const pixels = new Uint32Array(this.leds);
 
-    // Set even indexes to color1 and odd indexes to color2 and vice versa when shifted
+    // Set even indexes to color1 and odd indexes to color2, shift entire pattern when _isShifted
     for (let i = 0; i < this.leds; i++) {
-      if (!this._isShifted) {
-        i % 2 === 0 ? pixels[i] = color1 : pixels[i] = color2;
-      } else {
-        i % 2 === 0 ? pixels[i] = color2 : pixels[i] = color1;
-      };
+      const patternIndex = this._isShifted ? (i + 1) % 2 : i % 2;
+      patternIndex === 0 ? pixels[i] = color1 : pixels[i] = color2;
     };
 
     const setNextState = () => {
@@ -182,13 +179,10 @@ export class CheckerboardRandomShift implements Effect {
 
     const pixels = new Uint32Array(this.leds);
 
-    // Set even indexes to color1 and odd indexes to color2 and vice versa when shifted
+    // Set even indexes to color1 and odd indexes to color2, shift entire pattern when _isShifted
     for (let i = 0; i < this.leds; i++) {
-      if (!this._isShifted) {
-        i % 2 === 0 ? pixels[i] = color1 : pixels[i] = color2;
-      } else {
-        i % 2 === 0 ? pixels[i] = color2 : pixels[i] = color1;
-      };
+      const patternIndex = this._isShifted ? (i + 1) % 2 : i % 2;
+      patternIndex === 0 ? pixels[i] = color1 : pixels[i] = color2;
     };
 
     const setNextState = () => {
