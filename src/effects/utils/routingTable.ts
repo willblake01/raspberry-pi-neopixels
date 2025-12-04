@@ -1,4 +1,4 @@
-import { AlternateCustomStatic, AlternateRandomShift, AlternateRandomStatic, BlinkCustom, BlinkRandomChange, BlinkRandomStatic, BreatheCustom, BreatheRandom, Change, CreepCustom, CreepRandomChangePixel, CreepRandomChangeLoop, CreepRandomStatic, SolidCustom, SolidRandom, WalkPixelOffCustomStatic, WalkPixelOffRandomStatic, WalkPixelOffRandomChangeLoop, WalkPixelOffRandomChangePixel, WalkPixelOnCustom, WalkPixelOnRandomChangePixel, WalkPixelOnRandomChangeLoop, WalkPixelOnRandomStatic, Wheel, TurnOff, AlternateCustomShift } from '../index.js';
+import { AlternateCustom, AlternateRandomShift, AlternateRandom, BlinkCustom, BlinkRandomChange, BlinkRandomStatic, BreatheCustom, BreatheRandom, Change, CreepCustom, CreepRandomChangePixel, CreepRandomChangeLoop, CreepRandomStatic, SolidCustom, SolidRandom, WalkPixelOffCustomStatic, WalkPixelOffRandomStatic, WalkPixelOffRandomChangeLoop, WalkPixelOffRandomChangePixel, WalkPixelOnCustom, WalkPixelOnRandomChangePixel, WalkPixelOnRandomChangeLoop, WalkPixelOnRandomStatic, Wheel, TurnOff, AlternateCustomShift } from '../index.js';
 import { Effect, Options } from '../../types/index.js';
 
 interface Rule {
@@ -22,23 +22,23 @@ export const RULES: Rule[] = [
 
   // --- ALTERNATE ---
   {
-    name: 'alternate-custom-static',
+    name: 'alternate-custom',
     when: options => options.isAlternate && options.isCustomColorMode,
-    make: options => new AlternateCustomStatic(options.leds, options.red, options.green, options.blue, options.red2, options.green2, options.blue2)
+    make: options => new AlternateCustom(options.leds, options.red, options.green, options.blue, options.red2, options.green2, options.blue2)
   },
   {
     name: 'alternate-custom-shift',
-    when: options => options.isAlternate && options.isCustomColorMode,
+    when: options => options.isAlternate && options.isShiftMode && options.isCustomColorMode,
     make: options => new AlternateCustomShift(options.leds, options.interval, options.red, options.green, options.blue, options.red2, options.green2, options.blue2)
   },
   {
-    name: 'alternate-random-static',
+    name: 'alternate-random',
     when: options => options.isAlternate && options.isRandomColorMode,
-    make: options => new AlternateRandomStatic(options.leds)
+    make: options => new AlternateRandom(options.leds)
   },
   {
     name: 'alternate-random-shift',
-    when: options => options.isAlternate && options.isCustomColorMode,
+    when: options => options.isAlternate && options.isShiftMode && options.isRandomColorMode,
     make: options => new AlternateRandomShift(options.leds, options.interval),
   },
 

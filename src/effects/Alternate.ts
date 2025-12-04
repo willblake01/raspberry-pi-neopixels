@@ -2,7 +2,7 @@ import { safeRender } from '../ledRuntime.js';
 import { randomNumber } from '../utils/index.js';
 import type { Effect, Options } from '../types/index.js';
 
-export class AlternateCustomStatic implements Effect {
+export class AlternateCustom implements Effect {
   public leds: Options['leds'];
   public red: Options['red'];
   public green: Options['green'];
@@ -36,7 +36,7 @@ export class AlternateCustomStatic implements Effect {
   };
 };
 
-export class AlternateRandomStatic implements Effect {
+export class AlternateRandom implements Effect {
   public leds: Options['leds'];
   private _red: Options['red'];
   private _green: Options['green'];

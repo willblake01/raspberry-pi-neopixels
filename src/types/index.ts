@@ -4,6 +4,7 @@ import { EFFECTS } from '../constants/index.js';
 // Types for the raw answers coming in
 export type EffectName = (typeof EFFECTS) [keyof typeof EFFECTS];
 
+export type ShiftMode = 0 | 1;
 export type ColorMode = 'custom' | 'random';
 export type RandomColorMode = 'static' | 'change';
 export type ColorChangeInterval = 'everyPixel' | 'everyLoop';
@@ -57,23 +58,11 @@ export interface Options {
   green2: number;
   blue2: number;
 
-  // Color mode
-  colorMode?: ColorMode;
-  randomColorMode?: RandomColorMode;
-  colorChangeInterval?: ColorChangeInterval;
-
-  // Pixel state
-  pixelState?: 0 | 1;
-
-  useMotionDetection: 0 | 1;
-  motionColorMode: 'custom' | 'random';
-  motionRed: number;
-  motionGreen: number;
-  motionBlue: number;
-
-  // Effect flags
+  // Command flags
   isOn: boolean;
   isOff: boolean;
+
+  // Effect flags
   isSolid: boolean;
   isAlternate: boolean;
   isChange: boolean;
@@ -83,14 +72,36 @@ export interface Options {
   isWheel: boolean;
   isWalkPixel: boolean;
 
+  // Shift mode
+  shiftMode?: ShiftMode;
+
+  // Shift mode flags
+  isShiftMode: boolean;
+
+  // Color mode
+  colorMode?: ColorMode;
+  randomColorMode?: RandomColorMode;
+  colorChangeInterval?: ColorChangeInterval;
+  everyPixelColorChangeInterval: boolean;
+  everyLoopColorChangeInterval: boolean;
+
   // Derived color-mode flags used in 'when'
   isCustomColorMode: boolean;
   isRandomColorMode: boolean;
   isStaticRandomColorMode: boolean;
   isChangeRandomColorMode: boolean;
 
-  everyPixelColorChangeInterval: boolean;
-  everyLoopColorChangeInterval: boolean;
+  // Pixel state
+  pixelState?: 0 | 1;
+
+  // Motion detection
+  useMotionDetection: 0 | 1;
+  motionColorMode: 'custom' | 'random';
+  motionRed: number;
+  motionGreen: number;
+  motionBlue: number;
+
+  // Motion detection flags
   isMotionDetectionEnabled: boolean;
   isMotionCustomColorMode: boolean;
   isMotionRandomColorMode: boolean;

@@ -1,4 +1,4 @@
-export { AlternateCustomStatic, AlternateRandomStatic, AlternateCustomShift, AlternateRandomShift } from './Alternate.js';
+export { AlternateCustom, AlternateRandom, AlternateCustomShift, AlternateRandomShift } from './Alternate.js';
 export { BlinkCustom, BlinkRandomChange, BlinkRandomStatic } from './Blink.js';
 export { BreatheCustom, BreatheRandom } from './Breathe.js'
 export { Change } from './Change.js';
