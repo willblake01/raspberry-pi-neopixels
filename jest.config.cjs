@@ -21,5 +21,6 @@ module.exports = {
   // Only match test files inside src/
   testMatch: ['**/src/**/*.test.ts'],
 
-  testPathIgnorePatterns: ['/node_modules/', '/dist/']
+  testPathIgnorePatterns: ['/node_modules/', '/dist/'],
+  modulePathIgnorePatterns: ['/dist/']
 };
