@@ -171,6 +171,17 @@ export const promptsConfig: PromptObject<string>[] = [
   // Effect (only when turning on)
   promptSelect('effect', 'Select effect', EFFECT_CHOICES, isOn),
 
+  // Walk Pixel -> pixel state
+  promptSelect(
+    'pixelState',
+    'Select pixel',
+    [
+      { title: 'On', value: 1 },
+      { title: 'Off', value: 0 }
+    ],
+    and(isOn, effectEquals(EFFECTS.WALK_PIXEL))
+  ),
+
   // Shift mode (only when on and needs shifting)
   promptSelect('shiftMode', 'Enable shift mode', [
     { title: 'No', value: 0 },
@@ -294,17 +305,6 @@ export const promptsConfig: PromptObject<string>[] = [
       (v) => v.colorMode === 'custom' && allowsCustom(v) && needsShifting(v)
     ),
   }),
-
-  // Walk Pixel -> pixel state
-  promptSelect(
-    'pixelState',
-    'Select pixel',
-    [
-      { title: 'On', value: 1 },
-      { title: 'Off', value: 0 }
-    ],
-    and(isOn, effectEquals(EFFECTS.WALK_PIXEL))
-  ),
 
   // ---------------------------------------------------------------------------
   // Motion color override
