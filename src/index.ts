@@ -33,7 +33,7 @@ export const main = async () => {
     dma: 10,
     brightness: options.brightness,
     gpio: 18,
-    stripType: 'brg',
+    stripType: 'rgb',
   };
 
   const manager = new EffectManager(config);
