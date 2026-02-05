@@ -7,6 +7,8 @@
 ![Platform](https://img.shields.io/badge/platform-Raspberry%20Pi-orange)
 ![WS281x](https://img.shields.io/badge/LED-WS281x%20%2F%20Neopixel-purple)
 
+![Raspberry Pi Neopixels](https://res.cloudinary.com/willblake01/image/upload/v1770245203/portfolio/raspberry-pi-neopixels_c7o5g2.webp)
+
 LED animations powered by **TypeScript**, **rpi-ws281x**, an interactive **CLI menu**,  
 and **optional motion‑triggered color overrides using the Raspberry Pi Camera**.
 

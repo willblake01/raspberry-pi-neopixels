@@ -37,7 +37,6 @@ export class SolidRandom implements Effect {
 
   constructor(leds: Options['leds']) {
     this.leds = leds;
-
     this._red = randomNumber(255);
     this._green = randomNumber(255);
     this._blue = randomNumber(255);
