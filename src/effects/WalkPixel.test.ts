@@ -8,7 +8,14 @@ import {
   WalkPixelOnRandomChangePixel,
   WalkPixelOnRandomStatic,
 } from './index.js';
-import type { Config } from '../types/index.js';
+import { buildWalkPixel } from './WalkPixel.js';
+import {
+  fixedColor,
+  randomStaticColor,
+  randomEveryPixelColor,
+  randomEveryLoopColor,
+} from './utils/colorSources.js';
+import type { Effect } from '../types/index.js';
 
 jest.mock('../ledRuntime.js', () => ({
   safeRender: jest.fn(),
@@ -24,199 +31,276 @@ import { randomNumber } from '../utils/index.js';
 const safeRenderMock = safeRender as jest.MockedFunction<typeof safeRender>;
 const randomNumberMock = randomNumber as jest.MockedFunction<typeof randomNumber>;
 
-const createConfig = (overrides: Partial<Config> = {}): Config => ({
-  leds: 4,
-  dma: 10,
-  brightness: 90,
-  gpio: 18,
-  stripType: 'rgb',
-  ...overrides,
-});
+// < - - - - - - Helpers - - - - - - >
 
 const colorFromRGB = (red: number, green: number, blue: number) =>
-  (red << 16) | (green << 8) | blue;
+    (red << 16) | (green << 8) | blue;
 
-const lastRenderPixels = () =>
-  safeRenderMock.mock.calls[safeRenderMock.mock.calls.length - 1][0] as Uint32Array;
-
-const expectSinglePixel = (pixels: Uint32Array, index: number, color: number) => {
-  const expected = Array.from({ length: pixels.length }, (_, i) => (i === index ? color : 0));
-  expect(Array.from(pixels)).toEqual(expected);
+/** Queue RGB triples for randomNumber, in R, G, B order. */
+const queueColors = (...triples: [number, number, number][]) => {
+  for (const [r, g, b] of triples) {
+    randomNumberMock.mockReturnValueOnce(r).mockReturnValueOnce(g).mockReturnValueOnce(b);
+  }
 };
 
-const expectOffPixel = (pixels: Uint32Array, index: number, color: number) => {
-  const expected = Array.from({ length: pixels.length }, (_, i) => (i === index ? 0 : color));
-  expect(Array.from(pixels)).toEqual(expected);
+/** Expected frame: one lit pixel on a dark strip. */
+const onFrame = (leds: number, index: number, color: number) =>
+    Array.from({ length: leds }, (_, i) => (i === index ? color : 0));
+
+/** Expected frame: one dark pixel on a lit strip. */
+const offFrame = (leds: number, index: number, color: number) =>
+    Array.from({ length: leds }, (_, i) => (i === index ? 0 : color));
+
+const renderedFrames = () =>
+    safeRenderMock.mock.calls.map(([pixels]) => Array.from(pixels as Uint32Array));
+
+/** Run an effect for `count` frames, stop it, and return every rendered frame. */
+const runFrames = (effect: Effect, interval: number, count: number) => {
+  effect.run();
+  jest.advanceTimersByTime(interval * (count - 1));
+  effect.stop?.();
+  return renderedFrames();
 };
 
 beforeEach(() => {
+  jest.useFakeTimers();
   safeRenderMock.mockClear();
   randomNumberMock.mockReset();
   randomNumberMock.mockReturnValue(0);
 });
 
-describe('WalkPixelOn* effects', () => {
-  test('WalkPixelOnCustom moves the lit pixel and wraps to the start', () => {
-    const config = createConfig({ leds: 3 });
-    const color = colorFromRGB(4, 8, 12);
+afterEach(() => {
+  jest.clearAllTimers();
+  jest.useRealTimers();
+});
 
-    const effect = new WalkPixelOnCustom(config.leds, 70, 4, 8, 12);
+// < - - - - - - Pure frame builder - - - - - - >
 
-    effect.loop();
-    expectSinglePixel(lastRenderPixels(), 0, color);
-
-    effect.loop();
-    expectSinglePixel(lastRenderPixels(), 1, color);
-
-    effect.loop();
-    expectSinglePixel(lastRenderPixels(), 2, color);
-
-    effect.loop();
-    expectSinglePixel(lastRenderPixels(), 0, color);
+describe('buildWalkPixel', () => {
+  test('pixel on: lights only the offset pixel', () => {
+    expect(Array.from(buildWalkPixel(4, 2, 7, true))).toEqual([0, 0, 7, 0]);
   });
 
-  test('WalkPixelOnRandomStatic uses one random color for the moving pixel', () => {
-    randomNumberMock
-      .mockReturnValueOnce(1)
-      .mockReturnValueOnce(2)
-      .mockReturnValueOnce(3);
-
-    const effect = new WalkPixelOnRandomStatic(createConfig().leds, 60);
-    const color = colorFromRGB(1, 2, 3);
-
-    effect.loop();
-    expectSinglePixel(lastRenderPixels(), 0, color);
-
-    effect.loop();
-    expectSinglePixel(lastRenderPixels(), 1, color);
+  test('pixel off: darkens only the offset pixel', () => {
+    expect(Array.from(buildWalkPixel(4, 2, 7, false))).toEqual([7, 7, 0, 7]);
   });
 
-  test('WalkPixelOnRandomChangePixel changes color every time the pixel moves', () => {
-    randomNumberMock
-      .mockReturnValueOnce(5)
-      .mockReturnValueOnce(6)
-      .mockReturnValueOnce(7)
-      .mockReturnValueOnce(8)
-      .mockReturnValueOnce(9)
-      .mockReturnValueOnce(10);
-
-    const effect = new WalkPixelOnRandomChangePixel(createConfig().leds, 80);
-    const firstColor = colorFromRGB(5, 6, 7);
-    const secondColor = colorFromRGB(8, 9, 10);
-
-    effect.loop();
-    expectSinglePixel(lastRenderPixels(), 0, firstColor);
-
-    effect.loop();
-    expectSinglePixel(lastRenderPixels(), 1, secondColor);
+  test('ignores an out-of-range offset', () => {
+    expect(Array.from(buildWalkPixel(3, 5, 7, true))).toEqual([0, 0, 0]);
+    expect(Array.from(buildWalkPixel(3, -1, 7, false))).toEqual([7, 7, 7]);
   });
 
-  test('WalkPixelOnRandomChangeLoop keeps a color for a full loop before changing', () => {
-    const config = createConfig({ leds: 3 });
-
-    randomNumberMock
-      .mockReturnValueOnce(11)
-      .mockReturnValueOnce(12)
-      .mockReturnValueOnce(13)
-      .mockReturnValueOnce(14)
-      .mockReturnValueOnce(15)
-      .mockReturnValueOnce(16);
-
-    const effect = new WalkPixelOnRandomChangeLoop(config.leds, 90);
-    const firstColor = colorFromRGB(11, 12, 13);
-    const secondColor = colorFromRGB(14, 15, 16);
-
-    effect.loop();
-    expectSinglePixel(lastRenderPixels(), 0, firstColor);
-
-    effect.loop();
-    expectSinglePixel(lastRenderPixels(), 1, firstColor);
-
-    effect.loop();
-    expectSinglePixel(lastRenderPixels(), 2, firstColor);
-
-    effect.loop();
-    expectSinglePixel(lastRenderPixels(), 0, secondColor);
+  test('returns an empty array for zero LEDs', () => {
+    expect(buildWalkPixel(0, 0, 7, true)).toHaveLength(0);
   });
 });
 
+// < - - - - - - Color sources - - - - - - >
+
+describe('color sources', () => {
+  test('fixedColor never changes', () => {
+    const source = fixedColor(42);
+    source.advance(false);
+    source.advance(true);
+    expect(source.current()).toBe(42);
+  });
+
+  test('randomStaticColor draws once and never changes', () => {
+    queueColors([1, 2, 3], [4, 5, 6]);
+    const source = randomStaticColor();
+
+    source.advance(false);
+    source.advance(true);
+
+    expect(source.current()).toBe(colorFromRGB(1, 2, 3));
+    expect(randomNumber).toHaveBeenCalledTimes(3);
+  });
+
+  test('randomEveryPixelColor redraws on every advance', () => {
+    queueColors([1, 2, 3], [4, 5, 6], [7, 8, 9]);
+    const source = randomEveryPixelColor();
+
+    expect(source.current()).toBe(colorFromRGB(1, 2, 3));
+    source.advance(false);
+    expect(source.current()).toBe(colorFromRGB(4, 5, 6));
+    source.advance(true);
+    expect(source.current()).toBe(colorFromRGB(7, 8, 9));
+  });
+
+  test('randomEveryLoopColor redraws only when the walk wraps', () => {
+    queueColors([1, 2, 3], [4, 5, 6]);
+    const source = randomEveryLoopColor();
+
+    source.advance(false);
+    source.advance(false);
+    expect(source.current()).toBe(colorFromRGB(1, 2, 3));
+
+    source.advance(true);
+    expect(source.current()).toBe(colorFromRGB(4, 5, 6));
+  });
+});
+
+// < - - - - - - Pixel on - - - - - - >
+
+describe('WalkPixelOn* effects', () => {
+  test('WalkPixelOnCustom moves the lit pixel and wraps to the start', () => {
+    const color = colorFromRGB(4, 8, 12);
+    const effect = new WalkPixelOnCustom(3, 70, 4, 8, 12);
+
+    expect(runFrames(effect, 70, 4)).toEqual([
+      onFrame(3, 0, color),
+      onFrame(3, 1, color),
+      onFrame(3, 2, color),
+      onFrame(3, 0, color),
+    ]);
+  });
+
+  test('WalkPixelOnRandomStatic uses one random color for the moving pixel', () => {
+    queueColors([1, 2, 3]);
+    const color = colorFromRGB(1, 2, 3);
+    const effect = new WalkPixelOnRandomStatic(4, 60);
+
+    expect(runFrames(effect, 60, 2)).toEqual([
+      onFrame(4, 0, color),
+      onFrame(4, 1, color),
+    ]);
+  });
+
+  test('WalkPixelOnRandomChangePixel changes color every time the pixel moves', () => {
+    queueColors([5, 6, 7], [8, 9, 10]);
+    const effect = new WalkPixelOnRandomChangePixel(4, 80);
+
+    expect(runFrames(effect, 80, 2)).toEqual([
+      onFrame(4, 0, colorFromRGB(5, 6, 7)),
+      onFrame(4, 1, colorFromRGB(8, 9, 10)),
+    ]);
+  });
+
+  test('WalkPixelOnRandomChangeLoop keeps a color for a full loop before changing', () => {
+    queueColors([11, 12, 13], [14, 15, 16]);
+    const first = colorFromRGB(11, 12, 13);
+    const second = colorFromRGB(14, 15, 16);
+    const effect = new WalkPixelOnRandomChangeLoop(3, 90);
+
+    expect(runFrames(effect, 90, 4)).toEqual([
+      onFrame(3, 0, first),
+      onFrame(3, 1, first),
+      onFrame(3, 2, first),
+      onFrame(3, 0, second),
+    ]);
+  });
+});
+
+// < - - - - - - Pixel off - - - - - - >
+
 describe('WalkPixelOff* effects', () => {
   test('WalkPixelOffCustomStatic leaves one dark pixel while the rest stay lit', () => {
-    const config = createConfig({ leds: 3 });
     const color = colorFromRGB(20, 30, 40);
-    const effect = new WalkPixelOffCustomStatic(config.leds, 50, 20, 30, 40);
+    const effect = new WalkPixelOffCustomStatic(3, 50, 20, 30, 40);
 
-    effect.loop();
-    expectOffPixel(lastRenderPixels(), 0, color);
-
-    effect.loop();
-    expectOffPixel(lastRenderPixels(), 1, color);
-
-    effect.loop();
-    expectOffPixel(lastRenderPixels(), 2, color);
+    expect(runFrames(effect, 50, 4)).toEqual([
+      offFrame(3, 0, color),
+      offFrame(3, 1, color),
+      offFrame(3, 2, color),
+      offFrame(3, 0, color),
+    ]);
   });
 
   test('WalkPixelOffRandomStatic keeps the same random color for the lit pixels', () => {
-    randomNumberMock
-      .mockReturnValueOnce(2)
-      .mockReturnValueOnce(4)
-      .mockReturnValueOnce(6);
-
-    const effect = new WalkPixelOffRandomStatic(3, 55);
+    queueColors([2, 4, 6]);
     const color = colorFromRGB(2, 4, 6);
+    const effect = new WalkPixelOffRandomStatic(3, 55);
 
-    effect.loop();
-    expectOffPixel(lastRenderPixels(), 0, color);
-
-    effect.loop();
-    expectOffPixel(lastRenderPixels(), 1, color);
+    expect(runFrames(effect, 55, 2)).toEqual([
+      offFrame(3, 0, color),
+      offFrame(3, 1, color),
+    ]);
   });
 
   test('WalkPixelOffRandomChangePixel changes the lit color each time the gap moves', () => {
-    randomNumberMock
-      .mockReturnValueOnce(7)
-      .mockReturnValueOnce(8)
-      .mockReturnValueOnce(9)
-      .mockReturnValueOnce(10)
-      .mockReturnValueOnce(11)
-      .mockReturnValueOnce(12);
-
+    queueColors([7, 8, 9], [10, 11, 12]);
     const effect = new WalkPixelOffRandomChangePixel(3, 65);
-    const firstColor = colorFromRGB(7, 8, 9);
-    const secondColor = colorFromRGB(10, 11, 12);
 
-    effect.loop();
-    expectOffPixel(lastRenderPixels(), 0, firstColor);
-
-    effect.loop();
-    expectOffPixel(lastRenderPixels(), 1, secondColor);
+    expect(runFrames(effect, 65, 2)).toEqual([
+      offFrame(3, 0, colorFromRGB(7, 8, 9)),
+      offFrame(3, 1, colorFromRGB(10, 11, 12)),
+    ]);
   });
 
   test('WalkPixelOffRandomChangeLoop only changes color after a full pass', () => {
-    const config = createConfig({ leds: 3 });
+    queueColors([13, 14, 15], [16, 17, 18]);
+    const first = colorFromRGB(13, 14, 15);
+    const second = colorFromRGB(16, 17, 18);
+    const effect = new WalkPixelOffRandomChangeLoop(3, 95);
 
-    randomNumberMock
-      .mockReturnValueOnce(13)
-      .mockReturnValueOnce(14)
-      .mockReturnValueOnce(15)
-      .mockReturnValueOnce(16)
-      .mockReturnValueOnce(17)
-      .mockReturnValueOnce(18);
+    expect(runFrames(effect, 95, 4)).toEqual([
+      offFrame(3, 0, first),
+      offFrame(3, 1, first),
+      offFrame(3, 2, first),
+      offFrame(3, 0, second),
+    ]);
+  });
+});
 
-    const effect = new WalkPixelOffRandomChangeLoop(config.leds, 95);
-    const firstColor = colorFromRGB(13, 14, 15);
-    const secondColor = colorFromRGB(16, 17, 18);
+// < - - - - - - Lifecycle - - - - - - >
 
-    effect.loop();
-    expectOffPixel(lastRenderPixels(), 0, firstColor);
+describe('WalkPixel lifecycle', () => {
+  test('stop halts rendering', () => {
+    const effect = new WalkPixelOnCustom(3, 100, 1, 2, 3);
 
-    effect.loop();
-    expectOffPixel(lastRenderPixels(), 1, firstColor);
+    effect.run();
+    effect.stop();
+    jest.advanceTimersByTime(500);
 
-    effect.loop();
-    expectOffPixel(lastRenderPixels(), 2, firstColor);
+    expect(safeRender).toHaveBeenCalledTimes(1);
+  });
 
-    effect.loop();
-    expectOffPixel(lastRenderPixels(), 0, secondColor);
+  test('calling run twice does not stack intervals', () => {
+    const effect = new WalkPixelOnCustom(3, 100, 1, 2, 3);
+
+    effect.run();
+    effect.run();
+    safeRenderMock.mockClear();
+
+    jest.advanceTimersByTime(100);
+
+    expect(safeRender).toHaveBeenCalledTimes(1);
+    effect.stop();
+  });
+
+  test('run resumes from the current offset after stop', () => {
+    const color = colorFromRGB(1, 2, 3);
+    const effect = new WalkPixelOnCustom(3, 100, 1, 2, 3);
+
+    effect.run();                   // renders offset 0
+    jest.advanceTimersByTime(100);  // renders offset 1
+    effect.stop();
+    safeRenderMock.mockClear();
+
+    effect.run();                   // resumes at offset 2
+
+    expect(renderedFrames()).toEqual([onFrame(3, 2, color)]);
+    effect.stop();
+  });
+
+  test('zero LEDs renders empty frames without breaking', () => {
+    const effect = new WalkPixelOnCustom(0, 100, 1, 2, 3);
+
+    const frames = runFrames(effect, 100, 3);
+
+    expect(frames).toEqual([[], [], []]);
+  });
+
+  test('constructors do not call safeRender', () => {
+    new WalkPixelOnCustom(3, 100, 1, 2, 3);
+    new WalkPixelOnRandomStatic(3, 100);
+    new WalkPixelOnRandomChangePixel(3, 100);
+    new WalkPixelOnRandomChangeLoop(3, 100);
+    new WalkPixelOffCustomStatic(3, 100, 1, 2, 3);
+    new WalkPixelOffRandomStatic(3, 100);
+    new WalkPixelOffRandomChangePixel(3, 100);
+    new WalkPixelOffRandomChangeLoop(3, 100);
+
+    expect(safeRender).not.toHaveBeenCalled();
   });
 });

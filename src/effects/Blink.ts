@@ -33,7 +33,7 @@ export class BlinkCustom implements Effect {
     // Set strand to color if 'on' phase else set to 0 
     for (let i = 0; i < this.leds; i++) {
       this._on ? pixels[i] = color : pixels[i] = 0;
-    };
+    }
 
     const setNextState = () => {
       this._on = !this._on;
@@ -47,7 +47,7 @@ export class BlinkCustom implements Effect {
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
-    };
+    }
 
     this._stopped = false;
     this._on = true;
@@ -64,16 +64,16 @@ export class BlinkCustom implements Effect {
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
-    };
-  };
-};
+    }
+  }
+}
 
 export class BlinkRandomStatic implements Effect {
   public leds: Options['leds'];
   public interval: Options['interval'];
-  private _red: Options['red'];
-  private _green: Options['green'];
-  private _blue: Options['blue'];
+  private readonly _red: Options['red'];
+  private readonly _green: Options['green'];
+  private readonly _blue: Options['blue'];
   private _on: boolean;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
@@ -99,7 +99,7 @@ export class BlinkRandomStatic implements Effect {
     // Set strand to color if 'on' phase else set to 0
     for (let i = 0; i < this.leds; i++) {
       this._on ? pixels[i] = color : pixels[i] = 0;
-    };
+    }
 
     const setNextState = () => {
       this._on = !this._on;
@@ -113,7 +113,7 @@ export class BlinkRandomStatic implements Effect {
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
-    };
+    }
 
     this._stopped = false;
     this._on = true;
@@ -130,9 +130,9 @@ export class BlinkRandomStatic implements Effect {
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
-    };
-  };
-};
+    }
+  }
+}
 
 export class BlinkRandomChange implements Effect {
   public leds: Options['leds'];
@@ -165,7 +165,7 @@ export class BlinkRandomChange implements Effect {
     // Set strand to color if 'on' phase else set to 0
     for (let i = 0; i < this.leds; i++) {
       this._on ? pixels[i] = color : pixels[i] = 0;
-    };
+    }
 
     const setNextState = () => {
       this._on = !this._on;
@@ -175,25 +175,25 @@ export class BlinkRandomChange implements Effect {
         this._red = randomNumber(255);
         this._green = randomNumber(255)
         this._blue = randomNumber(255);
-      };
-    };
+      }
+    }
 
     safeRender(pixels);
     setNextState();
-  };
+  }
 
   run() {
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
-    };
+    }
 
     this._stopped = false;
     this._on = true;
 
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
-  };
+  }
 
   stop() {
     if (this._stopped) return;
@@ -203,6 +203,6 @@ export class BlinkRandomChange implements Effect {
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
-    };
-  };
-};
+    }
+  }
+}

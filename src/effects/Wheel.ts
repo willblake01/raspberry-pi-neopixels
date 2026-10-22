@@ -8,9 +8,9 @@ export class Wheel implements Effect {
   private _red1: Options['red']
   private _green1: Options['green'];
   private _blue1: Options['blue'];
-  private _red2: Options['red']
-  private _green2: Options['green'];
-  private _blue2: Options['blue'];
+  private readonly _red2: Options['red']
+  private readonly _green2: Options['green'];
+  private readonly _blue2: Options['blue'];
   private _offset: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
@@ -27,7 +27,7 @@ export class Wheel implements Effect {
     this._offset = 0;
     this._intervalID = null;
     this._stopped = false;
-  };
+  }
 
   loop() {
     if (this._stopped) return;
@@ -40,12 +40,12 @@ export class Wheel implements Effect {
     // Set pixels up to and including offset to color1
     for (let i = 0; i <= this._offset; i++) {
       pixels[i] = color1;
-    };
+    }
 
     // Set rest of strand to color2
     for (let i = this._offset + 1; i < this.leds; i++) {
       pixels[i] = color2;
-    };
+    }
 
     const setNextState = () => {
       this._offset = (this._offset + 1) % this.leds;
@@ -57,24 +57,24 @@ export class Wheel implements Effect {
         this._red1 = randomNumber(255);
         this._green1 = randomNumber(255);
         this._blue1 = randomNumber(255);
-      };
-    };
+      }
+    }
 
     safeRender(pixels);
     setNextState();
-  };
+  }
 
   run() {
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
-    };
+    }
 
     this._stopped = false;
 
     this.loop();
     this._intervalID = setInterval(() => this.loop(), this.interval);
-  };
+  }
 
   stop() {
     if (this._stopped) return;
@@ -84,6 +84,6 @@ export class Wheel implements Effect {
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
-    };
-  };
-};
+    }
+  }
+}

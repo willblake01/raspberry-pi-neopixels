@@ -1,5 +1,14 @@
+export interface Ws281xConfig {
+  leds: number;
+  dma?: number;
+  brightness?: number;
+  gpio?: number;
+  stripType?: 'rgb' | 'rbg' | 'grb' | 'gbr' | 'brg' | 'bgr' | 'rgbw' | 'grbw';
+  gamma?: number;
+}
+
 export interface Ws281xInterface {
-  configure(config: any): void;
+  configure(config: Ws281xConfig): void;
   render(pixels: Uint32Array): void;
   reset(): void;
 }

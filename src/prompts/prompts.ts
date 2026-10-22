@@ -2,6 +2,7 @@ import type { Answers, PromptObject, PromptType } from 'prompts';
 import { EFFECTS } from '../constants/index.js';
 import { and, integerBetween } from '../utils/index.js';
 import type { EffectName } from '../types/index.js';
+import { GAMMA } from '../constants/index.js';
 
 /**
  * Raw answer shape while prompts is running.
@@ -20,6 +21,8 @@ export interface NumberPromptConfig {
   min: number;
   max: number;
   initial: number;
+  float?: boolean;
+  round?: number;
   when?: Predicate;
 }
 
@@ -102,7 +105,7 @@ const allowsCustom: Predicate = (v) =>
 const allowsRandom: Predicate = (v) =>
   EFFECT_ALLOWS_RANDOM.has(v.effect as EffectName);
 
-const allowsRandomcolorChangeInterval: Predicate = (v) =>
+const allowsRandomColorChangeInterval: Predicate = (v) =>
   EFFECT_ALLOWS_RANDOM_CHANGE_INTERVAL.has(v.effect as EffectName);
 
 // Motion override enabled?
@@ -123,7 +126,7 @@ const promptSelect = <T = unknown>(
   message: string,
   choices: SelectChoice<T>[],
   when?: Predicate
-): PromptObject<string> => ({
+): PromptObject => ({
   type: show('select', when ?? (() => true)),
   name,
   message,
@@ -133,12 +136,14 @@ const promptSelect = <T = unknown>(
 const promptNumber = (
   name: string,
   message: string,
-  { min, max, initial, when }: NumberPromptConfig
-): PromptObject<string> => ({
+  { min, max, initial, float, round, when }: NumberPromptConfig
+): PromptObject => ({
   type: show('number', when ?? (() => true)),
   name,
   message,
   initial,
+  float,
+  round,
   validate: integerBetween(min, max),
 });
 
@@ -146,7 +151,7 @@ const promptNumber = (
 // final prompts config
 // -----------------------------------------------------------------------------
 
-export const promptsConfig: PromptObject<string>[] = [
+export const promptsConfig: PromptObject[] = [
   // Command
   promptSelect('command', 'Select command', [
     { title: 'On', value: 1 },
@@ -158,6 +163,15 @@ export const promptsConfig: PromptObject<string>[] = [
     min: 0,
     max: 100,
     initial: 100,
+  }),
+
+  // Gamma Correction (always asked)
+  promptNumber('gammaCorrection', 'Enter gamma correction (1-3)', {
+    min: GAMMA.MIN,
+    max: GAMMA.MAX,
+    initial: GAMMA.DEFAULT,
+    float: true,
+    round: 1,
   }),
 
   // Brightness (only when on)
@@ -244,7 +258,7 @@ export const promptsConfig: PromptObject<string>[] = [
         v.colorMode === 'random' &&
         v.randomColorMode === 'change' &&
         v.effect !== EFFECTS.BLINK &&
-        allowsRandomcolorChangeInterval(v)
+        allowsRandomColorChangeInterval(v)
     )
   ),
 

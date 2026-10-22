@@ -1,555 +1,115 @@
 import { safeRender } from '../ledRuntime.js';
-import { randomNumber } from '../utils/index.js';
+import { packRGB } from './utils/color.js';
+import { IntervalRunner } from './utils/IntervalRunner.js';
+import {
+  fixedColor,
+  randomStaticColor,
+  randomEveryPixelColor,
+  randomEveryLoopColor,
+  type ColorSource,
+} from './utils/colorSources.js';
 import type { Effect, Options } from '../types/index.js';
 
-export class WalkPixelOnCustom implements Effect {
-  public leds: Options['leds'];
-  public interval: Options['interval'];
-  public red: Options['red'];
-  public green: Options['green'];
-  public blue: Options['blue'];
-  private _offset: number;
-  private _intervalID: NodeJS.Timeout | null;
-  private _stopped: boolean;
-
-  constructor(leds: Options['leds'], interval: Options['interval'], red: Options['red'], green: Options['green'], blue: Options['blue']) {
-    this.leds = leds;
-    this.interval = interval;
-    this.red = red;
-    this.green = green;
-    this.blue = blue;
-    this._offset = 0;
-    this._intervalID = null;
-    this._stopped = false;
-  };
-
-  loop() {
-    if (this._stopped) return;
-
-    const color = (this.red << 16) | (this.green << 8) | this.blue;
-
-    const pixels = new Uint32Array(this.leds);
-
-    // Set pixel at offset to color
-    pixels[this._offset] = color;
-
-    const setNextState = () => {
-      this._offset = (this._offset + 1) % this.leds;
-    };
-
-    safeRender(pixels);
-    setNextState();
-  };
-
-  run() {
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    };
-
-    this._stopped = false;
-
-    this.loop();
-    this._intervalID = setInterval(() => this.loop(), this.interval);
-  };
-
-  stop() {
-    if (this._stopped) return;
-
-    this._stopped = true;
-
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    };
-  };
+/**
+ * Pure: pixelOn = one lit pixel on a dark strip;
+ * !pixelOn = one dark pixel on a lit strip.
+ */
+export const buildWalkPixel = (leds: number, offset: number, color: number, pixelOn: boolean) => {
+  const pixels = new Uint32Array(leds);
+  if (!pixelOn) pixels.fill(color);
+  if (offset >= 0 && offset < leds) pixels[offset] = pixelOn ? color : 0;
+  return pixels;
 };
 
-export class WalkPixelOnRandomStatic implements Effect {
-  public leds: Options['leds'];
-  public interval: Options['interval'];
-  private _red: Options['red'];
-  private _green: Options['green'];
-  private _blue: Options['blue'];
-  private _offset: number;
-  private _intervalID: NodeJS.Timeout | null;
-  private _stopped: boolean;
+// < - - - - - - Core behavior - - - - - - >
 
+class WalkPixel implements Effect {
+  private offset = 0;
+  private readonly runner: IntervalRunner;
+
+  constructor(
+      protected readonly leds: number,
+      interval: number,
+      private readonly pixelOn: boolean,
+      private readonly colors: ColorSource,
+  ) {
+    this.runner = new IntervalRunner(interval, () => this.step());
+  }
+
+  private step() {
+    safeRender(buildWalkPixel(this.leds, this.offset, this.colors.current(), this.pixelOn));
+
+    if (this.leds > 0) {
+      this.offset = (this.offset + 1) % this.leds;
+    }
+    this.colors.advance(this.offset === 0);
+  }
+
+  run() {
+    this.runner.start();
+  }
+
+  stop() {
+    this.runner.stop();
+  }
+}
+
+// < - - - - - - Public API (unchanged signatures) - - - - - - >
+
+// Pixel on
+
+export class WalkPixelOnCustom extends WalkPixel {
+  constructor(
+      leds: Options['leds'], interval: Options['interval'],
+      red: Options['red'], green: Options['green'], blue: Options['blue'],
+  ) {
+    super(leds, interval, true, fixedColor(packRGB(red, green, blue)));
+  }
+}
+
+export class WalkPixelOnRandomStatic extends WalkPixel {
   constructor(leds: Options['leds'], interval: Options['interval']) {
-    this.leds = leds;
-    this.interval = interval;
-    this._red = randomNumber(255);
-    this._green = randomNumber(255);
-    this._blue = randomNumber(255);
-    this._offset = 0;
-    this._intervalID = null;
-    this._stopped = false;
-  };
+    super(leds, interval, true, randomStaticColor());
+  }
+}
 
-  loop() {
-    if (this._stopped) return;
-
-    const color = (this._red << 16) | (this._green << 8) | this._blue;
-
-    const pixels = new Uint32Array(this.leds);
-
-    // Set pixel at offset to color
-    pixels[this._offset] = color;
-
-    const setNextState = () => {
-      this._offset = (this._offset + 1) % this.leds;
-    };
-
-    safeRender(pixels);
-    setNextState();
-  };
-
-  run() {
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    };
-
-    this._stopped = false;
-
-    this.loop();
-    this._intervalID = setInterval(() => this.loop(), this.interval);
-  };
-
-  stop() {
-    if (this._stopped) return;
-
-    this._stopped = true;
-
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    };
-  };
-};
-
-export class WalkPixelOnRandomChangePixel implements Effect {
-  public leds: Options['leds'];
-  public interval: Options['interval'];
-  private _red: Options['red'];
-  private _green: Options['green'];
-  private _blue: Options['blue'];
-  private _offset: number;
-  private _intervalID: NodeJS.Timeout | null;
-  private _stopped: boolean;
-
+export class WalkPixelOnRandomChangePixel extends WalkPixel {
   constructor(leds: Options['leds'], interval: Options['interval']) {
-    this.leds = leds;
-    this.interval = interval;
-    this._red = randomNumber(255);
-    this._green = randomNumber(255);
-    this._blue = randomNumber(255);
-    this._offset = 0;
-    this._intervalID = null;
-    this._stopped = false;
-  };
+    super(leds, interval, true, randomEveryPixelColor());
+  }
+}
 
-  loop() {
-    if (this._stopped) return;
-
-    const color = (this._red << 16) | (this._green << 8) | this._blue;
-
-    const pixels = new Uint32Array(this.leds);
-
-    // Set pixel at offset to color
-    pixels[this._offset] = color;
-
-    const setNextState = () => {
-      this._offset = (this._offset + 1) % this.leds;
-
-      // Change color every pixel
-      this._red = randomNumber(255);
-      this._green = randomNumber(255);
-      this._blue = randomNumber(255);
-    };
-
-    safeRender(pixels);
-    setNextState();
-  };
-
-  run() {
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    };
-
-    this._stopped = false;
-
-    this.loop();
-    this._intervalID = setInterval(() => this.loop(), this.interval);
-  };
-
-  stop() {
-    if (this._stopped) return;
-
-    this._stopped = true;
-
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    };
-  };
-};
-
-export class WalkPixelOnRandomChangeLoop implements Effect {
-  public leds: Options['leds'];
-  public interval: Options['interval'];
-  private _red: Options['red'];
-  private _green: Options['green'];
-  private _blue: Options['blue'];
-  private _offset: number;
-  private _intervalID: NodeJS.Timeout | null;
-  private _stopped: boolean;
-
+export class WalkPixelOnRandomChangeLoop extends WalkPixel {
   constructor(leds: Options['leds'], interval: Options['interval']) {
-    this.leds = leds;
-    this.interval = interval;
-    this._red = randomNumber(255);
-    this._green = randomNumber(255);
-    this._blue = randomNumber(255);
-    this._offset = 0;
-    this._intervalID = null;
-    this._stopped = false;
-  };
+    super(leds, interval, true, randomEveryLoopColor());
+  }
+}
 
-  loop() {
-    if (this._stopped) return;
+// Pixel off
 
-    const color = (this._red << 16) | (this._green << 8) | this._blue;
+export class WalkPixelOffCustomStatic extends WalkPixel {
+  constructor(
+      leds: Options['leds'], interval: Options['interval'],
+      red: Options['red'], green: Options['green'], blue: Options['blue'],
+  ) {
+    super(leds, interval, false, fixedColor(packRGB(red, green, blue)));
+  }
+}
 
-    const pixels = new Uint32Array(this.leds);
-
-    // Set pixel at offset to color
-    pixels[this._offset] = color;
-
-    const setNextState = () => {
-      this._offset = (this._offset + 1) % this.leds;
-
-      // Change color every loop
-      if (this._offset === 0) {
-        this._red = randomNumber(255);
-        this._green = randomNumber(255);
-        this._blue = randomNumber(255);
-      };
-    };
-
-    safeRender(pixels);
-    setNextState();
-  };
-
-  run() {
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    };
-
-    this._stopped = false;
-
-    this.loop();
-    this._intervalID = setInterval(() => this.loop(), this.interval);
-  };
-
-  stop() {
-    if (this._stopped) return;
-
-    this._stopped = true;
-
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    };
-  };
-};
-
-export class WalkPixelOffCustomStatic implements Effect {
-  public leds: Options['leds'];
-  public interval: Options['interval'];
-  public red: Options['red'];
-  public green: Options['green'];
-  public blue: Options['blue'];
-  private _offset: number;
-  private _intervalID: NodeJS.Timeout | null;
-  private _stopped: boolean;
-
-  constructor(leds: Options['leds'], interval: Options['interval'], red: Options['red'], green: Options['green'], blue: Options['blue']) {
-    this.leds = leds;
-    this.interval = interval;
-    this.red = red;
-    this.green = green;
-    this.blue = blue;
-    this._offset = 0;
-    this._intervalID = null;
-    this._stopped = false;
-  };
-
-  loop() {
-    if (this._stopped) return;
-
-    const color = (this.red << 16) | (this.green << 8) | this.blue;
-
-    const pixels = new Uint32Array(this.leds);
-
-    // Set pixel at index to 0 and rest of strand to color
-    for (let i = 0; i < this.leds; i++) {
-      if (i === this._offset) {
-        pixels[this._offset] = 0;
-      } else {
-        pixels[i] = color;
-      };
-    };
-
-    const setNextState = () => {
-      this._offset = (this._offset + 1) % this.leds;
-    };
-
-    safeRender(pixels);
-    setNextState();
-  };
-
-  run() {
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    };
-
-    this._stopped = false;
-
-    this.loop();
-    this._intervalID = setInterval(() => this.loop(), this.interval);
-  };
-
-  stop() {
-    if (this._stopped) return;
-
-    this._stopped = true;
-
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    };
-  };
-};
-
-export class WalkPixelOffRandomStatic implements Effect {
-  public leds: Options['leds'];
-  public interval: Options['interval'];
-  private _red: Options['red'];
-  private _green: Options['green'];
-  private _blue: Options['blue'];
-  private _offset: number;
-  private _intervalID: NodeJS.Timeout | null;
-  private _stopped: boolean;
-
+export class WalkPixelOffRandomStatic extends WalkPixel {
   constructor(leds: Options['leds'], interval: Options['interval']) {
-    this.leds = leds;
-    this.interval = interval;
-    this._red = randomNumber(255);
-    this._green = randomNumber(255);
-    this._blue = randomNumber(255);
-    this._offset = 0;
-    this._intervalID = null;
-    this._stopped = false;
-  };
+    super(leds, interval, false, randomStaticColor());
+  }
+}
 
-  loop() {
-    if (this._stopped) return;
-
-    const color = (this._red << 16) | (this._green << 8) | this._blue;
-
-    const pixels = new Uint32Array(this.leds);
-
-    // Set pixel at index to 0 and rest of strand to color
-    for (let i = 0; i < this.leds; i++) {
-      if (i === this._offset) {
-        pixels[this._offset] = 0;
-      } else {
-        pixels[i] = color;
-      };
-    };
-
-    const setNextState = () => {
-      this._offset = (this._offset + 1) % this.leds;
-    };
-
-    safeRender(pixels);
-    setNextState();
-  };
-
-  run() {
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    };
-
-    this._stopped = false;
-
-    this.loop();
-    this._intervalID = setInterval(() => this.loop(), this.interval);
-  };
-
-  stop() {
-    if (this._stopped) return;
-
-    this._stopped = true;
-
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    };
-  };
-};
-
-export class WalkPixelOffRandomChangePixel implements Effect {
-  public leds: Options['leds'];
-  public interval: Options['interval'];
-  private _red: Options['red'];
-  private _green: Options['green'];
-  private _blue: Options['blue'];
-  private _offset: number;
-  private _intervalID: NodeJS.Timeout | null;
-  private _stopped: boolean;
-
+export class WalkPixelOffRandomChangePixel extends WalkPixel {
   constructor(leds: Options['leds'], interval: Options['interval']) {
-    this.leds = leds;
-    this.interval = interval;
-    this._red = randomNumber(255);
-    this._green = randomNumber(255);
-    this._blue = randomNumber(255);
-    this._offset = 0;
-    this._intervalID = null;
-    this._stopped = false;
-  };
+    super(leds, interval, false, randomEveryPixelColor());
+  }
+}
 
-  loop() {
-    if (this._stopped) return;
-
-    const color = (this._red << 16) | (this._green << 8) | this._blue;
-
-    const pixels = new Uint32Array(this.leds);
-
-    // Set pixel at index to 0 and rest of strand to color
-    for (let i = 0; i < this.leds; i++) {
-      if (i === this._offset) {
-        pixels[this._offset] = 0;
-      } else {
-        pixels[i] = color;
-      };
-    };
-
-    const setNextState = () => {
-      this._offset = (this._offset + 1) % this.leds;
-
-      // Change color every pixel
-      this._red = randomNumber(255);
-      this._green = randomNumber(255);
-      this._blue = randomNumber(255);
-    };
-
-    safeRender(pixels);
-    setNextState();
-  };
-
-  run() {
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    };
-
-    this._stopped = false;
-
-    this.loop();
-    this._intervalID = setInterval(() => this.loop(), this.interval);
-  };
-
-  stop() {
-    if (this._stopped) return;
-
-    this._stopped = true;
-
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    };
-  };
-};
-
-export class WalkPixelOffRandomChangeLoop implements Effect {
-  public leds: Options['leds'];
-  public interval: Options['interval'];
-  private _red: Options['red'];
-  private _green: Options['green'];
-  private _blue: Options['blue'];
-  private _offset: number;
-  private _intervalID: NodeJS.Timeout | null;
-  private _stopped: boolean;
-
+export class WalkPixelOffRandomChangeLoop extends WalkPixel {
   constructor(leds: Options['leds'], interval: Options['interval']) {
-    this.leds = leds;
-    this.interval = interval;
-    this._red = randomNumber(255);
-    this._green = randomNumber(255);
-    this._blue = randomNumber(255);
-    this._offset = 0;
-    this._intervalID = null;
-    this._stopped = false;
-  };
-
-  loop() {
-    if (this._stopped) return;
-
-    const color = (this._red << 16) | (this._green << 8) | this._blue;
-
-    const pixels = new Uint32Array(this.leds);
-
-    // Set pixel at index to 0 and rest of strand to color
-    for (let i = 0; i < this.leds; i++) {
-      if (i === this._offset) {
-        pixels[this._offset] = 0;
-      } else {
-        pixels[i] = color;
-      };
-    };
-
-    const setNextState = () => {
-      this._offset = (this._offset + 1) % this.leds;
-
-      // Change color every loop
-      if (this._offset === 0) {
-        this._red = randomNumber(255);
-        this._green = randomNumber(255);
-        this._blue = randomNumber(255);
-      };
-    };
-
-    safeRender(pixels);
-    setNextState();
-  };
-
-  run() {
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    };
-
-    this._stopped = false;
-
-    this.loop();
-    this._intervalID = setInterval(() => this.loop(), this.interval);
-  };
-
-  stop() {
-    if (this._stopped) return;
-
-    this._stopped = true;
-    
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    };
-  };
-};
+    super(leds, interval, false, randomEveryLoopColor());
+  }
+}

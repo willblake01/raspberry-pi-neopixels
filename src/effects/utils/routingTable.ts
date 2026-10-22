@@ -5,7 +5,7 @@ interface Rule {
   name: string;
   when: (options: Options) => boolean;
   make: (options: Options) => Effect;
-};
+}
 
 export const RULES: Rule[] = [
   // --- SOLID ---
@@ -23,22 +23,22 @@ export const RULES: Rule[] = [
   // --- CHECKERBOARD ---
   {
     name: 'checkerboard-custom',
-    when: options => options.isAlternate && options.isCustomColorMode && !options.isShiftMode,
+    when: options => options.isCheckerboard && options.isCustomColorMode && !options.isShiftMode,
     make: options => new CheckerboardCustom(options.leds, options.red, options.green, options.blue, options.red2, options.green2, options.blue2)
   },
   {
     name: 'checkerboard-custom-shift',
-    when: options => options.isAlternate && options.isCustomColorMode && options.isShiftMode,
+    when: options => options.isCheckerboard && options.isCustomColorMode && options.isShiftMode,
     make: options => new CheckerboardCustomShift(options.leds, options.interval, options.red, options.green, options.blue, options.red2, options.green2, options.blue2)
   },
   {
     name: 'checkerboard-random',
-    when: options => options.isAlternate && options.isRandomColorMode && !options.isShiftMode,
+    when: options => options.isCheckerboard && options.isRandomColorMode && !options.isShiftMode,
     make: options => new CheckerboardRandom(options.leds)
   },
   {
     name: 'checkerboard-random-shift',
-    when: options => options.isAlternate && options.isRandomColorMode && options.isShiftMode,
+    when: options => options.isCheckerboard && options.isRandomColorMode && options.isShiftMode,
     make: options => new CheckerboardRandomShift(options.leds, options.interval),
   },
 
@@ -81,22 +81,22 @@ export const RULES: Rule[] = [
   // --- GROWING_BAR ---
   {
     name: 'growing-bar-custom',
-    when: options => options.isCreep && options.isCustomColorMode,
+    when: options => options.isGrowingBar && options.isCustomColorMode,
     make: options => new GrowingBarCustom(options.leds, options.interval, options.red, options.green, options.blue)
   },
   {
     name: 'growing-bar-random-static',
-    when: options => options.isCreep && options.isRandomColorMode && options.isStaticRandomColorMode,
+    when: options => options.isGrowingBar && options.isRandomColorMode && options.isStaticRandomColorMode,
     make: options => new GrowingBarRandomStatic(options.leds, options.interval)
   },
   {
     name: 'growing-bar-random-change-every-pixel',
-    when: options => options.isCreep && options.isRandomColorMode && options.isChangeRandomColorMode && options.isEveryPixelColorChangeInterval,
+    when: options => options.isGrowingBar && options.isRandomColorMode && options.isChangeRandomColorMode && options.isEveryPixelColorChangeInterval,
     make: options => new GrowingBarRandomChangePixel(options.leds, options.interval)
   },
   {
     name: 'growing-bar-random-change-every-loop',
-    when: options => options.isCreep && options.isRandomColorMode && options.isChangeRandomColorMode && options.isEveryLoopColorChangeInterval,
+    when: options => options.isGrowingBar && options.isRandomColorMode && options.isChangeRandomColorMode && options.isEveryLoopColorChangeInterval,
     make: options => new GrowingBarRandomChangeLoop(options.leds, options.interval)
   },
 

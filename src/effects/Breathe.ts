@@ -11,7 +11,7 @@ export class BreatheCustom implements Effect {
   public floor: number;
   public gamma: number;
   public fps: number;
-  private _t0: number;
+  private readonly _t0: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
@@ -54,16 +54,16 @@ export class BreatheCustom implements Effect {
     // Set strand to color
     for (let i = 0; i < this.leds; i++) {
       pixels[i] = color;
-    };
+    }
     
     safeRender(pixels);
-  };
+  }
 
   run() {
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
-    };
+    }
 
     this._stopped = false;
 
@@ -71,7 +71,7 @@ export class BreatheCustom implements Effect {
 
     this.loop();
     this._intervalID = setInterval(() => this.loop(), frameMs);
-  };
+  }
 
   stop() {
     if (this._stopped) return;
@@ -81,9 +81,9 @@ export class BreatheCustom implements Effect {
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
-    };
-  };
-};
+    }
+  }
+}
 
 export class BreatheRandom implements Effect {
   public leds: Options['leds'];
@@ -91,10 +91,10 @@ export class BreatheRandom implements Effect {
   public floor: number;
   public gamma: number;
   public fps: number;
-  private _red: Options['red'];
-  private _green: Options['green'];
-  private _blue: Options['blue'];
-  private _t0: number;
+  private readonly _red: Options['red'];
+  private readonly _green: Options['green'];
+  private readonly _blue: Options['blue'];
+  private readonly _t0: number;
   private _intervalID: NodeJS.Timeout | null;
   private _stopped: boolean;
 
@@ -144,7 +144,7 @@ export class BreatheRandom implements Effect {
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
-    };
+    }
 
     this._stopped = false;
 
@@ -152,7 +152,7 @@ export class BreatheRandom implements Effect {
 
     this.loop();
     this._intervalID = setInterval(() => this.loop(), frameMs);
-  };
+  }
 
   stop() {
     if (this._stopped) return;
@@ -162,6 +162,6 @@ export class BreatheRandom implements Effect {
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
-    };
-  };
-};
+    }
+  }
+}

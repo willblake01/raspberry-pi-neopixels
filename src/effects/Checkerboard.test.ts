@@ -1,9 +1,10 @@
-import { 
-  CheckerboardCustom, 
-  CheckerboardRandom, 
-  CheckerboardCustomShift, 
-  CheckerboardRandomShift
+import {
+  CheckerboardCustom,
+  CheckerboardRandom,
+  CheckerboardCustomShift,
+  CheckerboardRandomShift,
 } from './index.js';
+import { buildCheckerboard } from './Checkerboard.js';
 import type { Config } from '../types/index.js';
 
 jest.mock('../ledRuntime.js', () => ({
@@ -30,218 +31,180 @@ const createConfig = (overrides: Partial<Config> = {}): Config => ({
 });
 
 const colorFromRGB = (red: number, green: number, blue: number) =>
-  (red << 16) | (green << 8) | blue;
+    (red << 16) | (green << 8) | blue;
 
 const lastRenderPixels = () =>
-  safeRenderMock.mock.calls[safeRenderMock.mock.calls.length - 1][0] as Uint32Array;
+    Array.from(
+        safeRenderMock.mock.calls[safeRenderMock.mock.calls.length - 1][0] as Uint32Array,
+    );
+
+const RED = colorFromRGB(255, 0, 0);
+const BLUE = colorFromRGB(0, 0, 255);
 
 beforeEach(() => {
+  jest.useFakeTimers();
   safeRenderMock.mockClear();
   randomNumberMock.mockReset();
   randomNumberMock.mockReturnValue(0);
 });
 
-describe('Alternate effects', () => {
+afterEach(() => {
+  jest.clearAllTimers();
+  jest.useRealTimers();
+});
+
+describe('buildCheckerboard', () => {
+  test('alternates colors starting with color1', () => {
+    expect(Array.from(buildCheckerboard(4, 1, 2))).toEqual([1, 2, 1, 2]);
+  });
+
+  test('starts with color2 when shifted', () => {
+    expect(Array.from(buildCheckerboard(4, 1, 2, true))).toEqual([2, 1, 2, 1]);
+  });
+
+  test('handles odd lengths', () => {
+    expect(Array.from(buildCheckerboard(5, 1, 2))).toEqual([1, 2, 1, 2, 1]);
+  });
+
+  test('returns an empty array for zero LEDs', () => {
+    expect(buildCheckerboard(0, 1, 2)).toHaveLength(0);
+  });
+});
+
+describe('Checkerboard effect', () => {
   describe('CheckerboardCustom', () => {
     test('alternates between two specified colors', () => {
-      const leds = createConfig().leds;
-      const red = 10, green = 20, blue = 30;
-      const red2 = 40, green2 = 50, blue2 = 60;
-      
-      const effect = new CheckerboardCustom(leds, red, green, blue, red2, green2, blue2);
-      const expectedColor1 = colorFromRGB(red, green, blue);
-      const expectedColor2 = colorFromRGB(red2, green2, blue2);
+      const { leds } = createConfig();
+      const effect = new CheckerboardCustom(leds, 10, 20, 30, 40, 50, 60);
+      const color1 = colorFromRGB(10, 20, 30);
+      const color2 = colorFromRGB(40, 50, 60);
 
       effect.run();
 
-      const pixels = Array.from(lastRenderPixels());
-      
-      // Check that even indexes have color1 and odd indexes have color2
-      for (let i = 0; i < leds; i++) {
-        if (i % 2 === 0) {
-          expect(pixels[i]).toBe(expectedColor1);
-        } else {
-          expect(pixels[i]).toBe(expectedColor2);
-        }
-      }
-
+      expect(lastRenderPixels()).toEqual([color1, color2, color1, color2, color1, color2]);
       expect(safeRender).toHaveBeenCalledTimes(1);
     });
 
-    test('works with even number of LEDs', () => {
-      const leds = 4;
-      const red = 100, green = 150, blue = 200;
-      const red2 = 50, green2 = 75, blue2 = 25;
-      
-      const effect = new CheckerboardCustom(leds, red, green, blue, red2, green2, blue2);
-      const expectedColor1 = colorFromRGB(red, green, blue);
-      const expectedColor2 = colorFromRGB(red2, green2, blue2);
-
-      effect.run();
-
-      const pixels = Array.from(lastRenderPixels());
-      
-      expect(pixels).toEqual([
-        expectedColor1, // index 0 - even
-        expectedColor2, // index 1 - odd
-        expectedColor1, // index 2 - even
-        expectedColor2  // index 3 - odd
-      ]);
-    });
-
     test('works with odd number of LEDs', () => {
-      const leds = 5;
-      const red = 255, green = 0, blue = 0;
-      const red2 = 0, green2 = 255, blue2 = 0;
-      
-      const effect = new CheckerboardCustom(leds, red, green, blue, red2, green2, blue2);
-      const expectedColor1 = colorFromRGB(red, green, blue);
-      const expectedColor2 = colorFromRGB(red2, green2, blue2);
+      const effect = new CheckerboardCustom(5, 255, 0, 0, 0, 255, 0);
+      const color1 = colorFromRGB(255, 0, 0);
+      const color2 = colorFromRGB(0, 255, 0);
 
       effect.run();
 
-      const pixels = Array.from(lastRenderPixels());
-      
-      expect(pixels).toEqual([
-        expectedColor1, // index 0 - even
-        expectedColor2, // index 1 - odd
-        expectedColor1, // index 2 - even
-        expectedColor2, // index 3 - odd
-        expectedColor1  // index 4 - even
-      ]);
+      expect(lastRenderPixels()).toEqual([color1, color2, color1, color2, color1]);
     });
   });
 
   describe('CheckerboardRandom', () => {
     test('alternates between two random colors', () => {
-      // Mock randomNumber to return predictable values
       randomNumberMock
-        .mockReturnValueOnce(10) // red
-        .mockReturnValueOnce(20) // green
-        .mockReturnValueOnce(30) // blue
-        .mockReturnValueOnce(40) // red2
-        .mockReturnValueOnce(50) // green2
-        .mockReturnValueOnce(60); // blue2
+          .mockReturnValueOnce(10).mockReturnValueOnce(20).mockReturnValueOnce(30)
+          .mockReturnValueOnce(40).mockReturnValueOnce(50).mockReturnValueOnce(60);
 
-      const leds = 4;
-      const effect = new CheckerboardRandom(leds);
-      const expectedColor1 = colorFromRGB(10, 20, 30);
-      const expectedColor2 = colorFromRGB(40, 50, 60); // Now uses correct bit shifting
+      const effect = new CheckerboardRandom(4);
+      const color1 = colorFromRGB(10, 20, 30);
+      const color2 = colorFromRGB(40, 50, 60);
 
       effect.run();
 
-      const pixels = Array.from(lastRenderPixels());
-      
-      expect(pixels).toEqual([
-        expectedColor1, // index 0 - even
-        expectedColor2, // index 1 - odd
-        expectedColor1, // index 2 - even
-        expectedColor2  // index 3 - odd
-      ]);
-
+      expect(lastRenderPixels()).toEqual([color1, color2, color1, color2]);
       expect(randomNumber).toHaveBeenCalledTimes(6);
       expect(safeRender).toHaveBeenCalledTimes(1);
     });
 
     test('generates different colors on each instantiation', () => {
       randomNumberMock
-        .mockReturnValueOnce(1).mockReturnValueOnce(2).mockReturnValueOnce(3) // first instance
-        .mockReturnValueOnce(4).mockReturnValueOnce(5).mockReturnValueOnce(6) 
-        .mockReturnValueOnce(7).mockReturnValueOnce(8).mockReturnValueOnce(9) // second instance
-        .mockReturnValueOnce(10).mockReturnValueOnce(11).mockReturnValueOnce(12);
+          .mockReturnValueOnce(1).mockReturnValueOnce(2).mockReturnValueOnce(3)
+          .mockReturnValueOnce(4).mockReturnValueOnce(5).mockReturnValueOnce(6)
+          .mockReturnValueOnce(7).mockReturnValueOnce(8).mockReturnValueOnce(9)
+          .mockReturnValueOnce(10).mockReturnValueOnce(11).mockReturnValueOnce(12);
 
       const effect1 = new CheckerboardRandom(2);
       const effect2 = new CheckerboardRandom(2);
 
       effect1.run();
-      const pixels1 = Array.from(lastRenderPixels());
+      const pixels1 = lastRenderPixels();
 
       effect2.run();
-      const pixels2 = Array.from(lastRenderPixels());
+      const pixels2 = lastRenderPixels();
 
-      // The two effects should have different color patterns
       expect(pixels1).not.toEqual(pixels2);
     });
   });
 
   describe('CheckerboardCustomShift', () => {
-    test('shifts pattern between two specified colors on each loop call', () => {
-      const leds = 4;
-      const interval = 100;
-      const red = 255, green = 0, blue = 0;
-      const red2 = 0, green2 = 0, blue2 = 255;
-      
-      const effect = new CheckerboardCustomShift(leds, interval, red, green, blue, red2, green2, blue2);
-      const expectedColor1 = colorFromRGB(red, green, blue);
-      const expectedColor2 = colorFromRGB(red2, green2, blue2);
+    test('renders immediately on run, then shifts each interval', () => {
+      const effect = new CheckerboardCustomShift(4, 100, 255, 0, 0, 0, 0, 255);
 
-      // First loop call
-      effect.loop();
-      let pixels = Array.from(lastRenderPixels());
-      expect(pixels).toEqual([
-        expectedColor1, // index 0 - even (normal pattern)
-        expectedColor2, // index 1 - odd (normal pattern)
-        expectedColor1, // index 2 - even (normal pattern)
-        expectedColor2  // index 3 - odd (normal pattern)
-      ]);
+      effect.run();
+      expect(lastRenderPixels()).toEqual([RED, BLUE, RED, BLUE]);
 
-      // Second loop call - should shift pattern
-      effect.loop();
-      pixels = Array.from(lastRenderPixels());
-      expect(pixels).toEqual([
-        expectedColor2, // index 0 - even (shifted pattern)
-        expectedColor1, // index 1 - odd (shifted pattern)
-        expectedColor2, // index 2 - even (shifted pattern)
-        expectedColor1  // index 3 - odd (shifted pattern)
-      ]);
+      jest.advanceTimersByTime(100);
+      expect(lastRenderPixels()).toEqual([BLUE, RED, BLUE, RED]);
 
-      expect(safeRender).toHaveBeenCalledTimes(2);
+      jest.advanceTimersByTime(100);
+      expect(lastRenderPixels()).toEqual([RED, BLUE, RED, BLUE]);
+
+      expect(safeRender).toHaveBeenCalledTimes(3);
+      effect.stop();
     });
 
-    test('run method calls loop and sets up interval', () => {
-      jest.useFakeTimers();
+    test('stop halts rendering', () => {
       const effect = new CheckerboardCustomShift(4, 100, 255, 0, 0, 0, 0, 255);
-      
+
       effect.run();
+      effect.stop();
+      jest.advanceTimersByTime(500);
+
       expect(safeRender).toHaveBeenCalledTimes(1);
-      
-      // Advance timers to trigger interval
+    });
+
+    test('calling run twice does not stack intervals', () => {
+      const effect = new CheckerboardCustomShift(4, 100, 255, 0, 0, 0, 0, 255);
+
+      effect.run();
+      effect.run();
+      safeRenderMock.mockClear();
+
       jest.advanceTimersByTime(100);
-      expect(safeRender).toHaveBeenCalledTimes(2);
-      
-      jest.useRealTimers();
+
+      expect(safeRender).toHaveBeenCalledTimes(1);
+      effect.stop();
+    });
+
+    test('run resets to the unshifted pattern', () => {
+      const effect = new CheckerboardCustomShift(4, 100, 255, 0, 0, 0, 0, 255);
+
+      effect.run();
+      jest.advanceTimersByTime(100); // now shifted
+      effect.stop();
+
+      effect.run();
+      expect(lastRenderPixels()).toEqual([RED, BLUE, RED, BLUE]);
+      effect.stop();
     });
   });
 
   describe('CheckerboardRandomShift', () => {
-    test('shifts pattern between two random colors on each loop call', () => {
+    test('shifts pattern between two random colors each interval', () => {
       randomNumberMock
-        .mockReturnValueOnce(15) // red
-        .mockReturnValueOnce(25) // green
-        .mockReturnValueOnce(35) // blue
-        .mockReturnValueOnce(45) // red2
-        .mockReturnValueOnce(55) // green2
-        .mockReturnValueOnce(65); // blue2
+          .mockReturnValueOnce(15).mockReturnValueOnce(25).mockReturnValueOnce(35)
+          .mockReturnValueOnce(45).mockReturnValueOnce(55).mockReturnValueOnce(65);
 
-      const leds = 3;
-      const interval = 200;
-      const effect = new CheckerboardRandomShift(leds, interval);
-      
-      // First loop call
-      effect.loop();
-      let pixels = Array.from(lastRenderPixels());
-      expect(pixels.length).toBe(leds);
-      
-      // Second loop call - pattern should shift (same colors, different positions)
-      effect.loop();
-      const pixels2 = Array.from(lastRenderPixels());
-      expect(pixels2.length).toBe(leds);
-      
-      // Patterns should be different due to shifting
-      expect(pixels).not.toEqual(pixels2);
-      
+      const effect = new CheckerboardRandomShift(3, 200);
+      const color1 = colorFromRGB(15, 25, 35);
+      const color2 = colorFromRGB(45, 55, 65);
+
+      effect.run();
+      expect(lastRenderPixels()).toEqual([color1, color2, color1]);
+
+      jest.advanceTimersByTime(200);
+      expect(lastRenderPixels()).toEqual([color2, color1, color2]);
+
       expect(randomNumber).toHaveBeenCalledTimes(6);
       expect(safeRender).toHaveBeenCalledTimes(2);
+      effect.stop();
     });
   });
 

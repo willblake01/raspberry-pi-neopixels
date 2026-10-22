@@ -24,4 +24,4 @@ export class TurnOff implements Effect {
       });
     });
   };
-};
+}

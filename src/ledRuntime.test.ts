@@ -1,4 +1,4 @@
-import { init, safeRender, dispose, runtime } from './ledRuntime.js';
+import { init, safeRender, dispose, setGamma, getGamma, runtime } from './ledRuntime.js';
 import type { Config } from './types/index.js';
 import * as ws281x from 'rpi-ws281x';
 
@@ -10,8 +10,14 @@ const createConfig = (overrides: Partial<Config> = {}): Config => ({
   brightness: 128,
   gpio: 18,
   stripType: 'rgb',
+  gamma: 2.2,
   ...overrides,
 });
+
+const lastConfigureCall = () => {
+  const calls = wsMock.configure.mock.calls;
+  return calls[calls.length - 1]?.[0];
+};
 
 describe('ledRuntime', () => {
   beforeEach(() => {
@@ -48,5 +54,69 @@ describe('ledRuntime', () => {
 
     expect(runtime.alive).toBe(false);
     expect(wsMock.reset).toHaveBeenCalledTimes(1);
+  });
+
+  describe('gamma', () => {
+    test('passes a valid gamma through to the driver', async () => {
+      await init(createConfig({ gamma: 2.8 }));
+
+      expect(lastConfigureCall()).toEqual(expect.objectContaining({ gamma: 2.8 }));
+    });
+
+    test('omits gamma from driver config when unset', async () => {
+      await init(createConfig({ gamma: undefined }));
+
+      expect(lastConfigureCall()).not.toHaveProperty('gamma');
+      expect(runtime.alive).toBe(true);
+    });
+
+    test.each([
+      [22, 3.0],
+      [0.5, 1.0],
+      [0, 1.0],
+    ])('clamps gamma %p to %p', async (input, expected) => {
+      await init(createConfig({ gamma: input }));
+
+      expect(lastConfigureCall()).toEqual(expect.objectContaining({ gamma: expected }));
+    });
+
+    test.each([NaN, Infinity])('rejects invalid gamma %p without configuring', async (input) => {
+      await expect(init(createConfig({ gamma: input }))).rejects.toThrow(/Invalid gamma/);
+
+      expect(wsMock.configure).not.toHaveBeenCalled();
+      expect(runtime.alive).toBe(false);
+    });
+
+    test('setGamma resets and reconfigures with new gamma, keeping other options', async () => {
+      await init(createConfig());
+      jest.clearAllMocks();
+
+      await setGamma(2.5);
+
+      expect(wsMock.reset).toHaveBeenCalledTimes(1);
+      expect(lastConfigureCall()).toEqual(createConfig({ gamma: 2.5 }));
+      expect(runtime.alive).toBe(true);
+      expect(getGamma()).toBe(2.5);
+    });
+
+    test('setGamma(undefined) disables correction', async () => {
+      await init(createConfig());
+
+      await setGamma(undefined);
+
+      expect(lastConfigureCall()).not.toHaveProperty('gamma');
+      expect(getGamma()).toBeUndefined();
+    });
+
+    test('setGamma rejects invalid gamma without disposing', async () => {
+      await init(createConfig());
+      jest.clearAllMocks();
+
+      await expect(setGamma(NaN)).rejects.toThrow(/Invalid gamma/);
+
+      expect(wsMock.reset).not.toHaveBeenCalled();
+      expect(runtime.alive).toBe(true);
+      expect(getGamma()).toBe(2.2);
+    });
   });
 });

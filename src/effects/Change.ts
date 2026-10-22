@@ -32,7 +32,7 @@ export class Change implements Effect {
     // Set strand to color
     for (let i = 0; i < this.leds; i++) {
       pixels[i] = color;
-    };
+    }
 
     const setNextState = () => {
 
@@ -50,7 +50,7 @@ export class Change implements Effect {
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
-    };
+    }
 
     this._stopped = false;
 
@@ -66,6 +66,6 @@ export class Change implements Effect {
     if (this._intervalID) {
       clearInterval(this._intervalID);
       this._intervalID = null;
-    };
-  };
-};
+    }
+  }
+}

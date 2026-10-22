@@ -1,4 +1,5 @@
 import { EFFECTS } from '../constants/index.js';
+import type { Ws281xConfig } from '../hardware/ws281x.js';
 
 // < - - - - - - Prompts - - - - - - >
 
@@ -19,23 +20,23 @@ export interface BasePrompt {
   type: PromptTypeFn;
   name: string;
   message: string;
-};
+}
 
 // For `promptSelect(...)`
 export interface SelectChoice<T = unknown> {
   title: string;
   value: T;
-};
+}
 
 export interface SelectPrompt<T = unknown> extends BasePrompt {
   choices: SelectChoice<T>[];
-};
+}
 
 // For `promptNumber(...)`
 export interface NumberPrompt extends BasePrompt {
   initial: number;
   validate: (value: unknown) => true | string;
-};
+}
 
 // One prompt in the config can be either kind
 export type PromptConfig = SelectPrompt | NumberPrompt;
@@ -50,6 +51,7 @@ export interface Options {
   // Base config
   command: number;
   leds: number;
+  gammaCorrection: number;
   brightness?: number;
   effect?: EffectName;
   interval: number;
@@ -66,11 +68,11 @@ export interface Options {
 
   // Effect flags
   isSolid: boolean;
-  isAlternate: boolean;
+  isCheckerboard: boolean;
   isChange: boolean;
   isBlink: boolean;
   isBreathe: boolean;
-  isCreep: boolean;
+  isGrowingBar: boolean;
   isWheel: boolean;
   isWalkPixel: boolean;
 
@@ -102,27 +104,21 @@ export interface Options {
   isPixelOn: boolean;
 
   // Motion detection
-  useMotionDetection: 0 | 1;
-  motionColorMode: 'custom' | 'random';
-  motionRed: number;
-  motionGreen: number;
-  motionBlue: number;
+  useMotionDetection?: 0 | 1;
+  motionColorMode?: 'custom' | 'random';
+  motionRed?: number;
+  motionGreen?: number;
+  motionBlue?: number;
 
   // Motion detection flags
   isMotionDetectionEnabled: boolean;
   isMotionCustomColorMode: boolean;
   isMotionRandomColorMode: boolean;
-};
+}
 
-export interface Config {
-  leds: number;
-  dma: number;
-  brightness?: number;
-  gpio: number,
-  stripType: string;
-};
+export interface Config extends Ws281xConfig {}
 
 export interface Effect {
   run(): void | Promise<void>;
   stop?(): void | Promise<void>;
-};
+}

@@ -23,24 +23,24 @@ export class SolidCustom implements Effect {
     // Set strand to color
     for (let i = 0; i < this.leds; i++) {
       pixels[i] = color;
-    };
+    }
 
     safeRender(pixels);
-  };
-};
+  }
+}
 
 export class SolidRandom implements Effect {
   public leds: Options['leds'];
-  private _red: Options['red'];
-  private _green: Options['green'];
-  private _blue: Options['blue'];
+  private readonly _red: Options['red'];
+  private readonly _green: Options['green'];
+  private readonly _blue: Options['blue'];
 
   constructor(leds: Options['leds']) {
     this.leds = leds;
     this._red = randomNumber(255);
     this._green = randomNumber(255);
     this._blue = randomNumber(255);
-  };
+  }
 
   run() {
     const color = (this._red << 16) | (this._green << 8) | this._blue;
@@ -50,8 +50,8 @@ export class SolidRandom implements Effect {
     // Set strand to color
     for (let i = 0; i < this.leds; i++) {
       pixels[i] = color;
-    };
+    }
 
     safeRender(pixels);
-  };
-};
+  }
+}

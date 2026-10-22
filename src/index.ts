@@ -87,7 +87,7 @@ export const main = async () => {
     let switching = false;
 
     const makeMotionEffect = () => {
-      const [red, green, blue] = options.motionColorMode === 'custom' ? [options.motionRed, options.motionGreen, options.motionBlue] : [randomNumber(255), randomNumber(255), randomNumber(255)];
+      const [red = 255, green = 255, blue = 255] = options.motionColorMode === 'custom' ? [options.motionRed, options.motionGreen, options.motionBlue] : [randomNumber(255), randomNumber(255), randomNumber(255)];
 
       return new SolidCustom(config.leds, red, green, blue);
     };
@@ -110,7 +110,7 @@ export const main = async () => {
         await manager.start(motionEffect);
       } finally {
         switching = false;
-      };
+      }
     });
 
     // Stable revert (prevents blinking/flapping)
@@ -126,7 +126,7 @@ export const main = async () => {
         await manager.start(idleEffect);
       } finally {
         switching = false;
-      };
+      }
     }, CHECK_MS);
 
     motion.on('error', (err) => {
@@ -135,7 +135,7 @@ export const main = async () => {
 
     console.log('\n👀 Camera watching for motion...\n');
     motion.start();
-  };
+  }
 };
 
 // Only auto-run when NOT under Jest
@@ -144,4 +144,4 @@ if (!process.env.JEST_WORKER_ID) {
     console.error('[fatal]', err);
     process.exitCode = 1;
   });
-};
+}
