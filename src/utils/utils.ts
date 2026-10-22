@@ -14,6 +14,12 @@ export const integerBetween =
       : `Enter an integer ${min}-${max}`;
   };
 
+// Number validator
+export const numberBetween = (min: number, max: number) => (v: unknown) =>
+    typeof v === 'number' && Number.isFinite(v) && v >= min && v <= max
+        ? true
+        : `Enter a value between ${min} and ${max}`;
+
 
 // Ensures a function runs only once
 export const once = <Args extends unknown[], R>(

@@ -1,6 +1,6 @@
 import type { Answers, PromptObject, PromptType } from 'prompts';
 import { EFFECTS } from '../constants/index.js';
-import { and, integerBetween } from '../utils/index.js';
+import { and, integerBetween, numberBetween } from '../utils/index.js';
 import type { EffectName } from '../types/index.js';
 import { GAMMA } from '../constants/index.js';
 
@@ -144,7 +144,7 @@ const promptNumber = (
   initial,
   float,
   round,
-  validate: integerBetween(min, max),
+  validate: float ? numberBetween(min, max) : integerBetween(min, max),
 });
 
 // -----------------------------------------------------------------------------
@@ -165,16 +165,17 @@ export const promptsConfig: PromptObject[] = [
     initial: 100,
   }),
 
-  // Gamma Correction (always asked)
-  promptNumber('gammaCorrection', 'Enter gamma correction (1-3)', {
+  // Gamma Correction (only when turning on)
+  promptNumber('gamma', 'Enter gamma correction (1-3)', {
     min: GAMMA.MIN,
     max: GAMMA.MAX,
     initial: GAMMA.DEFAULT,
     float: true,
     round: 1,
+    when: isOn,
   }),
 
-  // Brightness (only when on)
+  // Brightness (only when turning on)
   promptNumber('brightness', 'Enter brightness (0-255)', {
     min: 0,
     max: 255,
@@ -196,7 +197,7 @@ export const promptsConfig: PromptObject[] = [
     and(isOn, effectEquals(EFFECTS.WALK_PIXEL))
   ),
 
-  // Shift mode (only when on and needs shifting)
+  // Shift mode (only when turning on and needs shifting)
   promptSelect('shiftMode', 'Enable shift mode', [
     { title: 'No', value: 0 },
     { title: 'Yes', value: 1 }
