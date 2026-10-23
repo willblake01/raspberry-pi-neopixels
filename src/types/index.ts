@@ -51,7 +51,7 @@ export interface Options {
   // Base config
   command: number;
   leds: number;
-  gammaCorrection: number;
+  gamma: number;
   brightness?: number;
   effect?: EffectName;
   interval: number;

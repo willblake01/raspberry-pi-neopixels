@@ -6,7 +6,7 @@ export const normalizeAnswers = (response: Answers<string>): Options => {
   const {
     command,
     leds,
-    gammaCorrection,
+    gamma,
     brightness,
     effect,
     shiftMode,
@@ -33,7 +33,7 @@ export const normalizeAnswers = (response: Answers<string>): Options => {
     // Values
     command,
     leds,
-    gammaCorrection,
+    gamma,
     brightness,
     effect,
     shiftMode,

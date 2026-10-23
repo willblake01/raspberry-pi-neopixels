@@ -7,6 +7,7 @@ import { SolidCustom } from './effects/index.js';
 import { RULES } from './effects/utils/index.js';
 import { once } from './utils/index.js';
 import { Config, Options } from './types/index.js';
+import { GAMMA } from "./constants/index.js";
 
 interface DelayProps {
   (ms: number): Promise<void>;
@@ -30,6 +31,7 @@ export const main = async () => {
 
   const config: Config = {
     leds: options.leds,
+    gamma: options.gamma ?? GAMMA.DEFAULT,
     dma: 10,
     brightness: options.brightness,
     gpio: 18,
