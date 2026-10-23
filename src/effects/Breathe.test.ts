@@ -1,85 +1,116 @@
 import { BreatheCustom, BreatheRandom } from './index.js';
-import type { Config } from '../types/index.js';
+import { breatheScale } from './Breathe.js';
+import { scaleColor } from './utils/color.js';
+import {
+  colorFromRGB,
+  itBehavesLikeAnIntervalEffect,
+  queueColors,
+  randomNumberMock,
+  renderedFrames,
+  runFrames,
+  setupEffectTest,
+} from '../test-utils/effectHelpers.js';
 
-jest.mock('../ledRuntime.js', () => ({
-  safeRender: jest.fn(),
-}));
+jest.mock('../ledRuntime.js', () => ({ safeRender: jest.fn() }));
+jest.mock('../utils/index.js', () => ({ randomNumber: jest.fn() }));
 
-jest.mock('../utils/index.js', () => ({
-  randomNumber: jest.fn(),
-}));
+setupEffectTest();
 
-import { safeRender } from '../ledRuntime.js';
-import { randomNumber } from '../utils/index.js';
+const PERIOD = 1000;
+const FPS = 2; // one frame every 500 ms → floor, peak, floor
+const FRAME_MS = 500;
 
-const safeRenderMock = safeRender as jest.MockedFunction<typeof safeRender>;
-const randomNumberMock = randomNumber as jest.MockedFunction<typeof randomNumber>;
+const solid = (leds: number, color: number) => Array(leds).fill(color);
 
-const createConfig = (overrides: Partial<Config> = {}): Config => ({
-  leds: 5,
-  dma: 10,
-  brightness: 120,
-  gpio: 18,
-  stripType: 'rgb',
-  ...overrides,
+// < - - - - - - Pure helpers - - - - - - >
+
+describe('breatheScale', () => {
+  test('starts at the floor', () => {
+    expect(breatheScale(0, PERIOD, 0.1)).toBeCloseTo(0.1);
+  });
+
+  test('peaks at full brightness halfway through', () => {
+    expect(breatheScale(500, PERIOD, 0.1)).toBeCloseTo(1);
+  });
+
+  test('wraps back to the floor each period', () => {
+    expect(breatheScale(1000, PERIOD, 0.1)).toBeCloseTo(0.1);
+    expect(breatheScale(2500, PERIOD, 0.1)).toBeCloseTo(1);
+  });
+
+  test('curve > 1 lingers longer near the floor', () => {
+    // At a quarter period the plain cosine is halfway (0.5); curve 2 squares it.
+    expect(breatheScale(250, PERIOD, 0, 1)).toBeCloseTo(0.5);
+    expect(breatheScale(250, PERIOD, 0, 2)).toBeCloseTo(0.25);
+  });
 });
 
-const colorFromRGB = (red: number, green: number, blue: number) =>
-  (red << 16) | (green << 8) | blue;
+describe('scaleColor', () => {
+  test('scales each channel and rounds', () => {
+    expect(scaleColor(colorFromRGB(200, 100, 50), 0.5)).toBe(colorFromRGB(100, 50, 25));
+  });
 
-const lastRenderPixels = () =>
-  safeRenderMock.mock.calls[safeRenderMock.mock.calls.length - 1][0] as Uint32Array;
-
-beforeEach(() => {
-  safeRenderMock.mockClear();
-  randomNumberMock.mockReset();
-  randomNumberMock.mockReturnValue(0);
+  test('clamps to 0–255', () => {
+    expect(scaleColor(colorFromRGB(200, 100, 50), 2)).toBe(colorFromRGB(255, 200, 100));
+    expect(scaleColor(colorFromRGB(200, 100, 50), -1)).toBe(0);
+  });
 });
+
+// < - - - - - - Effects - - - - - - >
 
 describe('Breathe effects', () => {
-  test('BreatheCustom scales the configured color using the easing scalar', () => {
-    const effect = new BreatheCustom(createConfig().leds, 1000, 200, 100, 50);
-    const scalarSpy = jest
-      .spyOn(effect as unknown as { _scalar: (nowMs: number) => number }, '_scalar')
-      .mockReturnValue(0.5);
+  test('BreatheCustom breathes between the floor and the configured color', () => {
+    const effect = new BreatheCustom(3, PERIOD, 200, 100, 50, 0.5, 1, FPS);
 
-    effect.loop();
-
-    const expectedColor = colorFromRGB(100, 50, 25);
-    const pixels = Array.from(lastRenderPixels());
-
-    expect(pixels).toEqual(new Array(effect.leds).fill(expectedColor));
-
-    scalarSpy.mockRestore();
+    expect(runFrames(effect, FRAME_MS, 3)).toEqual([
+      solid(3, colorFromRGB(100, 50, 25)),  // t=0: floor (0.5)
+      solid(3, colorFromRGB(200, 100, 50)), // t=500: peak (1.0)
+      solid(3, colorFromRGB(100, 50, 25)),  // t=1000: floor again
+    ]);
   });
 
   test('BreatheRandom uses the same random color throughout its lifetime', () => {
-    randomNumberMock
-      .mockReturnValueOnce(10)
-      .mockReturnValueOnce(20)
-      .mockReturnValueOnce(30); // constructor color
+    queueColors([200, 100, 50]);
+    const effect = new BreatheRandom(3, PERIOD, 0.5, 1, FPS);
 
-    const effect = new BreatheRandom(createConfig().leds, 1500);
-    const scalarSpy = jest
-      .spyOn(effect as unknown as { _scalar: (nowMs: number) => number }, '_scalar')
-      .mockReturnValue(1);
+    expect(runFrames(effect, FRAME_MS, 3)).toEqual([
+      solid(3, colorFromRGB(100, 50, 25)),
+      solid(3, colorFromRGB(200, 100, 50)),
+      solid(3, colorFromRGB(100, 50, 25)),
+    ]);
+    expect(randomNumberMock).toHaveBeenCalledTimes(3); // constructor only
+  });
 
-    // First loop call
-    effect.loop();
-    let pixels = Array.from(lastRenderPixels());
-    const expectedColor = colorFromRGB(10, 20, 30);
-    expect(pixels).toEqual(new Array(effect.leds).fill(expectedColor));
+  test('renders at the frame rate set by fps', () => {
+    const effect = new BreatheCustom(3, PERIOD, 1, 2, 3, 0.5, 1, 60); // 17 ms frames
 
-    safeRenderMock.mockClear();
+    effect.run();
+    jest.advanceTimersByTime(17 * 3);
+    effect.stop();
 
-    // Second loop call - should use the same color (no new randomNumber calls)
-    effect.loop();
-    pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.leds).fill(expectedColor));
+    expect(renderedFrames()).toHaveLength(4);
+  });
 
-    // Verify randomNumber was only called during construction
-    expect(randomNumber).toHaveBeenCalledTimes(3);
+  test('never renders faster than every 5 ms', () => {
+    const effect = new BreatheCustom(3, PERIOD, 1, 2, 3, 0.5, 1, 1000); // would be 1 ms
 
-    scalarSpy.mockRestore();
+    effect.run();
+    jest.advanceTimersByTime(10);
+    effect.stop();
+
+    expect(renderedFrames()).toHaveLength(3); // t=0, 5, 10
+  });
+
+  test('clamps floor to 0–1', () => {
+    const effect = new BreatheCustom(1, PERIOD, 200, 100, 50, 5, 1, FPS);
+
+    expect(runFrames(effect, FRAME_MS, 1)).toEqual([[colorFromRGB(200, 100, 50)]]);
+  });
+
+  describe('lifecycle', () => {
+    itBehavesLikeAnIntervalEffect(
+        () => new BreatheCustom(3, PERIOD, 1, 2, 3, 0.5, 1, FPS),
+        FRAME_MS,
+    );
   });
 });

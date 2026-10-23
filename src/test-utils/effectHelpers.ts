@@ -42,3 +42,39 @@ export const setupEffectTest = () => {
         jest.useRealTimers();
     });
 };
+
+/**
+ * Standard lifecycle tests for any effect driven by IntervalRunner.
+ * Call inside a describe block.
+ */
+export const itBehavesLikeAnIntervalEffect = (make: () => Effect, interval: number) => {
+    test('constructor does not render', () => {
+        make();
+        expect(safeRenderMock).not.toHaveBeenCalled();
+    });
+
+    test('run renders immediately', () => {
+        const effect = make();
+        effect.run();
+        expect(safeRenderMock).toHaveBeenCalledTimes(1);
+        effect.stop?.();
+    });
+
+    test('stop halts rendering', () => {
+        const effect = make();
+        effect.run();
+        effect.stop?.();
+        jest.advanceTimersByTime(interval * 5);
+        expect(safeRenderMock).toHaveBeenCalledTimes(1);
+    });
+
+    test('calling run twice does not stack intervals', () => {
+        const effect = make();
+        effect.run();
+        effect.run();
+        safeRenderMock.mockClear();
+        jest.advanceTimersByTime(interval);
+        expect(safeRenderMock).toHaveBeenCalledTimes(1);
+        effect.stop?.();
+    });
+};

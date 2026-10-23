@@ -11,7 +11,7 @@ import { EFFECTS } from '../constants/index.js';
  * This helper normalizes that into the *resolved* runtime type.
  */
 const evalType = (
-  prompt: PromptObject<string>,
+  prompt: PromptObject,
   values: any
 ): PromptType | null => {
   const t = prompt.type;

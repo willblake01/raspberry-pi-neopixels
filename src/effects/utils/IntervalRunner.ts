@@ -4,10 +4,6 @@ export class IntervalRunner {
 
     constructor(private readonly interval: number, private readonly step: () => void) {}
 
-    get isStopped() {
-        return this.stopped;
-    }
-
     start() {
         this.stop();
         this.stopped = false;

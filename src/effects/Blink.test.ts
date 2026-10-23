@@ -1,105 +1,82 @@
-import { BlinkCustom, BlinkRandomChange, BlinkRandomStatic } from './index.js';
-import type { Config } from '../types/index.js';
+import { BlinkCustom, BlinkRandomStatic, BlinkRandomChange } from './index.js';
+import { buildBlink } from './Blink.js';
+import {
+  colorFromRGB,
+  itBehavesLikeAnIntervalEffect,
+  queueColors,
+  randomNumberMock,
+  renderedFrames,
+  runFrames,
+  safeRenderMock,
+  setupEffectTest,
+} from '../test-utils/effectHelpers.js';
 
-jest.mock('../ledRuntime.js', () => ({
-  safeRender: jest.fn(),
-}));
+jest.mock('../ledRuntime.js', () => ({ safeRender: jest.fn() }));
+jest.mock('../utils/index.js', () => ({ randomNumber: jest.fn() }));
 
-jest.mock('../utils/index.js', () => ({
-  randomNumber: jest.fn(),
-}));
+setupEffectTest();
 
-import { safeRender } from '../ledRuntime.js';
-import { randomNumber } from '../utils/index.js';
+const on = (leds: number, color: number) => Array(leds).fill(color);
+const off = (leds: number) => Array(leds).fill(0);
 
-const safeRenderMock = safeRender as jest.MockedFunction<typeof safeRender>;
-const randomNumberMock = randomNumber as jest.MockedFunction<typeof randomNumber>;
+describe('buildBlink', () => {
+  test('step 0 fills the strip', () => {
+    expect(Array.from(buildBlink(3, 0, 7))).toEqual([7, 7, 7]);
+  });
 
-const createConfig = (overrides: Partial<Config> = {}): Config => ({
-  leds: 4,
-  dma: 10,
-  brightness: 64,
-  gpio: 18,
-  stripType: 'rgb',
-  ...overrides,
-});
-
-const colorFromRGB = (red: number, green: number, blue: number) =>
-  (red << 16) | (green << 8) | blue;
-
-const lastRenderPixels = () =>
-  safeRenderMock.mock.calls[safeRenderMock.mock.calls.length - 1][0] as Uint32Array;
-
-beforeEach(() => {
-  safeRenderMock.mockClear();
-  randomNumberMock.mockReset();
-  randomNumberMock.mockReturnValue(0);
+  test('step 1 is dark', () => {
+    expect(Array.from(buildBlink(3, 1, 7))).toEqual([0, 0, 0]);
+  });
 });
 
 describe('Blink effects', () => {
-  test('BlinkCustom toggles the configured color on and off', () => {
-    const effect = new BlinkCustom(createConfig().leds, 50, 10, 20, 30);
-    const expectedColor = colorFromRGB(10, 20, 30);
+  test('BlinkCustom alternates on and off', () => {
+    const color = colorFromRGB(10, 20, 30);
 
-    effect.loop();
-
-    let pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.leds).fill(expectedColor));
-
-    effect.loop();
-    pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.leds).fill(0));
-
-    effect.loop();
-    pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.leds).fill(expectedColor));
+    expect(runFrames(new BlinkCustom(3, 100, 10, 20, 30), 100, 4)).toEqual([
+      on(3, color), off(3), on(3, color), off(3),
+    ]);
   });
 
-  test('BlinkRandomStatic keeps the same random color when the LEDs are on', () => {
-    randomNumberMock
-      .mockReturnValueOnce(5)
-      .mockReturnValueOnce(15)
-      .mockReturnValueOnce(25);
+  test('BlinkRandomStatic keeps one random color', () => {
+    queueColors([1, 2, 3]);
+    const color = colorFromRGB(1, 2, 3);
 
-    const effect = new BlinkRandomStatic(createConfig().leds, 60);
-    const expectedColor = colorFromRGB(5, 15, 25);
-
-    effect.loop();
-    let pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.leds).fill(expectedColor));
-
-    effect.loop();
-    pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.leds).fill(0));
-
-    effect.loop();
-    pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.leds).fill(expectedColor));
+    expect(runFrames(new BlinkRandomStatic(3, 100), 100, 4)).toEqual([
+      on(3, color), off(3), on(3, color), off(3),
+    ]);
+    expect(randomNumberMock).toHaveBeenCalledTimes(3);
   });
 
-  test('BlinkRandomChange picks a new color every time it turns back on', () => {
-    randomNumberMock
-      .mockReturnValueOnce(1)
-      .mockReturnValueOnce(2)
-      .mockReturnValueOnce(3) // constructor
-      .mockReturnValueOnce(4)
-      .mockReturnValueOnce(5)
-      .mockReturnValueOnce(6); // next on-cycle color
+  test('BlinkRandomChange picks a new color each time it turns back on', () => {
+    queueColors([1, 2, 3], [4, 5, 6]);
 
-    const effect = new BlinkRandomChange(createConfig().leds, 80);
-    const firstColor = colorFromRGB(1, 2, 3);
-    const secondColor = colorFromRGB(4, 5, 6);
+    expect(runFrames(new BlinkRandomChange(3, 100), 100, 4)).toEqual([
+      on(3, colorFromRGB(1, 2, 3)), off(3),
+      on(3, colorFromRGB(4, 5, 6)), off(3),
+    ]);
+  });
 
-    effect.loop();
-    let pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.leds).fill(firstColor));
+  test('run restarts at "on" after stopping mid-cycle', () => {
+    const color = colorFromRGB(10, 20, 30);
+    const effect = new BlinkCustom(3, 100, 10, 20, 30);
 
-    effect.loop();
-    pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.leds).fill(0));
+    effect.run();                   // on
+    jest.advanceTimersByTime(100);  // off
+    effect.stop();
+    safeRenderMock.mockClear();
 
-    effect.loop();
-    pixels = Array.from(lastRenderPixels());
-    expect(pixels).toEqual(new Array(effect.leds).fill(secondColor));
+    effect.run();                   // restarts: on
+
+    expect(renderedFrames()).toEqual([on(3, color)]);
+    effect.stop();
+  });
+
+  test('cycle length does not depend on LED count', () => {
+    expect(runFrames(new BlinkCustom(0, 100, 1, 2, 3), 100, 3)).toEqual([[], [], []]);
+  });
+
+  describe('lifecycle', () => {
+    itBehavesLikeAnIntervalEffect(() => new BlinkCustom(3, 100, 1, 2, 3), 100);
   });
 });

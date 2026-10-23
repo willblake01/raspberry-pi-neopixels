@@ -1,17 +1,7 @@
-export interface Ws281xConfig {
-  leds: number;
-  dma?: number;
-  brightness?: number;
-  gpio?: number;
-  stripType?: 'rgb' | 'rbg' | 'grb' | 'gbr' | 'brg' | 'bgr' | 'rgbw' | 'grbw';
-  gamma?: number;
-}
+import type { Ws281xConfig, Ws281xController } from 'rpi-ws281x';
 
-export interface Ws281xInterface {
-  configure(config: Ws281xConfig): void;
-  render(pixels: Uint32Array): void;
-  reset(): void;
-}
+export type { Ws281xConfig };
+export type Ws281xInterface = Ws281xController;
 
 const noop: Ws281xInterface = {
   configure: () => {},

@@ -3,15 +3,19 @@ import { IntervalRunner } from './IntervalRunner.js';
 import type { ColorSource } from './colorSources.js';
 import type { Effect } from '../../types/index.js';
 
-/** Builds one frame from the current offset and color. Should be pure. */
-export type FrameBuilder = (leds: number, offset: number, color: number) => Uint32Array;
+export type FrameBuilder = (leds: number, step: number, color: number) => Uint32Array;
 
-/**
- * An effect whose state is an offset that advances one step per interval
- * and wraps at `leds`, with colors supplied by a ColorSource.
- */
+export interface OffsetAnimationOptions {
+    /** Steps per cycle before wrapping to 0. Defaults to `leds`. */
+    steps?: number;
+    /** Restart at step 0 whenever run() is called. Defaults to false (resume). */
+    resetOnRun?: boolean;
+}
+
 export class OffsetAnimation implements Effect {
-    private offset = 0;
+    private step = 0;
+    private readonly steps: number;
+    private readonly resetOnRun: boolean;
     private readonly runner: IntervalRunner;
 
     constructor(
@@ -19,20 +23,21 @@ export class OffsetAnimation implements Effect {
         interval: number,
         private readonly buildFrame: FrameBuilder,
         private readonly colors: ColorSource,
+        { steps = leds, resetOnRun = false }: OffsetAnimationOptions = {},
     ) {
-        this.runner = new IntervalRunner(interval, () => this.step());
+        this.steps = steps;
+        this.resetOnRun = resetOnRun;
+        this.runner = new IntervalRunner(interval, () => this.tick());
     }
 
-    private step() {
-        safeRender(this.buildFrame(this.leds, this.offset, this.colors.current()));
-
-        if (this.leds > 0) {
-            this.offset = (this.offset + 1) % this.leds;
-        }
-        this.colors.advance(this.offset === 0);
+    private tick() {
+        safeRender(this.buildFrame(this.leds, this.step, this.colors.current()));
+        if (this.steps > 0) this.step = (this.step + 1) % this.steps;
+        this.colors.advance(this.step === 0);
     }
 
     run() {
+        if (this.resetOnRun) this.step = 0;
         this.runner.start();
     }
 

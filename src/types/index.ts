@@ -11,47 +11,12 @@ export type ColorMode = 'custom' | 'random';
 export type RandomColorMode = 'static' | 'change';
 export type ColorChangeInterval = 'everyPixel' | 'everyLoop';
 
-// A function that decides whether to show a prompt and what type it is
-export type PromptTypeFn =
-  (prev: unknown, values: unknown) => 'select' | 'number' | null;
-
-export interface BasePrompt {
-  // `type` is always `show('select' | 'number', pred)`
-  type: PromptTypeFn;
-  name: string;
-  message: string;
-}
-
-// For `promptSelect(...)`
-export interface SelectChoice<T = unknown> {
-  title: string;
-  value: T;
-}
-
-export interface SelectPrompt<T = unknown> extends BasePrompt {
-  choices: SelectChoice<T>[];
-}
-
-// For `promptNumber(...)`
-export interface NumberPrompt extends BasePrompt {
-  initial: number;
-  validate: (value: unknown) => true | string;
-}
-
-// One prompt in the config can be either kind
-export type PromptConfig = SelectPrompt | NumberPrompt;
-
-// The whole config array
-export type PromptsConfig = PromptConfig[];
-
-// < - - - - - - - - - - - - - - - - - >
-
 export interface Options {
 
   // Base config
   command: number;
   leds: number;
-  gamma: number;
+  gamma?: number;
   brightness?: number;
   effect?: EffectName;
   interval: number;
@@ -105,7 +70,7 @@ export interface Options {
 
   // Motion detection
   useMotionDetection?: 0 | 1;
-  motionColorMode?: 'custom' | 'random';
+  motionColorMode?: ColorMode;
   motionRed?: number;
   motionGreen?: number;
   motionBlue?: number;
@@ -116,7 +81,7 @@ export interface Options {
   isMotionRandomColorMode: boolean;
 }
 
-export interface Config extends Ws281xConfig {}
+export type Config = Ws281xConfig;
 
 export interface Effect {
   run(): void | Promise<void>;

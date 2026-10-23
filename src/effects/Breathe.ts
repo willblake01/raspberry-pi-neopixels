@@ -1,167 +1,79 @@
 import { safeRender } from '../ledRuntime.js';
-import { randomNumber } from '../utils/index.js';
+import { packRGB, randomColor, scaleColor, fillSolid } from './utils/color.js';
+import { IntervalRunner } from './utils/index.js';
 import type { Effect, Options } from '../types/index.js';
 
-export class BreatheCustom implements Effect {
-  public leds: Options['leds'];
-  public interval: Options['interval'];
-  public red: Options['red'];
-  public green: Options['green'];
-  public blue: Options['blue'];
-  public floor: number;
-  public gamma: number;
-  public fps: number;
-  private readonly _t0: number;
-  private _intervalID: NodeJS.Timeout | null;
-  private _stopped: boolean;
+const MIN_FRAME_MS = 5;
 
-  constructor(leds: Options['leds'], interval: Options['interval'], red: Options['red'], green: Options['green'], blue: Options['blue'], floor: number = 0.08, gamma: number = 2, fps: number = 60) {
-    this.leds = leds;
-    this.interval = interval;
-    this.red = red;
-    this.green = green;
-    this.blue = blue;
+/**
+ * Pure: brightness multiplier (floor–1) for a moment in the cycle.
+ * Smooth cosine ease in and out over one `period`.
+ * `curve` > 1 lingers near the floor; 1 is a plain cosine.
+ */
+export const breatheScale = (elapsedMs: number, period: number, floor: number, curve = 1) => {
+  const t = elapsedMs / period;
+  const phase = t - Math.floor(t);
+  const eased = (1 - Math.cos(2 * Math.PI * phase)) / 2;
+  return floor + (1 - floor) * Math.pow(eased, curve);
+};
+
+interface BreatheOptions {
+  floor?: number;
+  curve?: number;
+  fps?: number;
+}
+
+// < - - - - - - Core behavior - - - - - - >
+
+class Breathe implements Effect {
+  private readonly t0 = Date.now();
+  private readonly floor: number;
+  private readonly curve: number;
+  private readonly runner: IntervalRunner;
+
+  constructor(
+      protected readonly leds: number,
+      private readonly period: number,
+      private readonly color: number,
+      { floor = 0.08, curve = 1, fps = 60 }: BreatheOptions = {},
+  ) {
     this.floor = Math.min(Math.max(floor, 0), 1);
-    this.gamma = gamma;
-    this.fps = fps;
-    this._t0 = Date.now();
-    this._intervalID = null;
-    this._stopped = false;
-  };
+    this.curve = curve;
+    const frameMs = Math.max(MIN_FRAME_MS, Math.round(1000 / fps));
+    this.runner = new IntervalRunner(frameMs, () => this.frame());
+  }
 
-  _scalar(nowMs: number) {
-    const t = (nowMs - this._t0) / this.interval;
-    const phase = t - Math.floor(t);
-    const eased = (1 - Math.cos(2 * Math.PI * phase)) / 2;
-    const perceptual = Math.pow(eased, this.gamma);
-    
-    return this.floor + (1 - this.floor) * perceptual;
-  };
-
-  loop() {
-    if (this._stopped) return;
-
-    const scale = this._scalar(Date.now());
-
-    const red = Math.max(0, Math.min(255, Math.round(this.red * scale)));
-    const green = Math.max(0, Math.min(255, Math.round(this.green * scale)));
-    const blue = Math.max(0, Math.min(255, Math.round(this.blue * scale)));
-
-    const color = (red << 16) | (green << 8) | blue;
-
-    const pixels = new Uint32Array(this.leds);
-
-    // Set strand to color
-    for (let i = 0; i < this.leds; i++) {
-      pixels[i] = color;
-    }
-    
-    safeRender(pixels);
+  private frame() {
+    const scale = breatheScale(Date.now() - this.t0, this.period, this.floor, this.curve);
+    safeRender(fillSolid(this.leds, scaleColor(this.color, scale)));
   }
 
   run() {
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    }
-
-    this._stopped = false;
-
-    const frameMs: number = Math.max(5, Math.round(1000 / this.fps));
-
-    this.loop();
-    this._intervalID = setInterval(() => this.loop(), frameMs);
+    this.runner.start();
   }
 
   stop() {
-    if (this._stopped) return;
-
-    this._stopped = true;
-
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    }
+    this.runner.stop();
   }
 }
 
-export class BreatheRandom implements Effect {
-  public leds: Options['leds'];
-  public interval: Options['interval'];
-  public floor: number;
-  public gamma: number;
-  public fps: number;
-  private readonly _red: Options['red'];
-  private readonly _green: Options['green'];
-  private readonly _blue: Options['blue'];
-  private readonly _t0: number;
-  private _intervalID: NodeJS.Timeout | null;
-  private _stopped: boolean;
+// < - - - - - - Public API (unchanged signatures) - - - - - - >
 
-  constructor(leds: Options['leds'], interval: Options['interval'], floor: number = 0.08, gamma: number = 2, fps: number = 60) {
-    this.leds = leds;
-    this.interval = interval;
-    this._red = randomNumber(255);
-    this._green = randomNumber(255);
-    this._blue = randomNumber(255);
-    this.floor = Math.min(Math.max(floor, 0), 1);
-    this.gamma = gamma;
-    this.fps = fps;
-    this._t0 = Date.now();
-    this._intervalID = null;
-    this._stopped = false;
-  };
-
-  _scalar(nowMs: number) {
-    const t = (nowMs - this._t0) / this.interval;
-    const phase = t - Math.floor(t);
-    const eased = (1 - Math.cos(2 * Math.PI * phase)) / 2;
-    const perceptual = Math.pow(eased, this.gamma);
-    
-    return this.floor + (1 - this.floor) * perceptual;
-  };
-
-  loop() {
-  if (this._stopped) return;
-
-  const scale = this._scalar(Date.now());
-
-  const red = Math.max(0, Math.min(255, Math.round(this._red * scale)));
-  const green = Math.max(0, Math.min(255, Math.round(this._green * scale)));
-  const blue = Math.max(0, Math.min(255, Math.round(this._blue * scale)));
-
-  const color = (red << 16) | (green << 8) | blue;
-  const pixels = new Uint32Array(this.leds);
-
-  for (let i = 0; i < this.leds; i++) {
-    pixels[i] = color;
+export class BreatheCustom extends Breathe {
+  constructor(
+      leds: Options['leds'], interval: Options['interval'],
+      red: Options['red'], green: Options['green'], blue: Options['blue'],
+      floor = 0.08, curve = 1, fps = 60,
+  ) {
+    super(leds, interval, packRGB(red, green, blue), { floor, curve, fps });
   }
-
-  safeRender(pixels);
 }
 
-  run() {
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    }
-
-    this._stopped = false;
-
-    const frameMs: number = Math.max(5, Math.round(1000 / this.fps));
-
-    this.loop();
-    this._intervalID = setInterval(() => this.loop(), frameMs);
-  }
-
-  stop() {
-    if (this._stopped) return;
-
-    this._stopped = true;
-    
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    }
+export class BreatheRandom extends Breathe {
+  constructor(
+      leds: Options['leds'], interval: Options['interval'],
+      floor = 0.08, curve = 1, fps = 60,
+  ) {
+    super(leds, interval, randomColor(), { floor, curve, fps });
   }
 }
