@@ -1,6 +1,6 @@
 import { safeRender } from '../ledRuntime.js';
 import { packRGB } from './utils/color.js';
-import { IntervalRunner } from './utils/IntervalRunner.js';
+import { IntervalRunner } from './utils/index.js';
 import {
   fixedColor,
   randomStaticColor,

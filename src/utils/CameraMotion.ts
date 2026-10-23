@@ -89,7 +89,7 @@ export class CameraMotion extends EventEmitter {
         this.emit('error', err);
       } finally {
         this._capturing = false;
-      };
+      }
     }, this.intervalMs);
   };
 
@@ -99,4 +99,4 @@ export class CameraMotion extends EventEmitter {
     this._timer = null;
     this._isRunning = false;
   };
-};
+}

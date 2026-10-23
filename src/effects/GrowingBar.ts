@@ -1,11 +1,11 @@
 import { packRGB } from './utils/color.js';
-import { OffsetAnimation } from './utils/OffsetAnimation.js';
+import { OffsetAnimation } from './utils/index.js';
 import {
   fixedColor,
   randomStaticColor,
   randomEveryPixelColor,
   randomEveryLoopColor,
-} from './utils/colorSources.js';
+} from './utils/index.js';
 import type { Options } from '../types/index.js';
 
 /** Pure: lights pixels 0 through `offset` (inclusive). */

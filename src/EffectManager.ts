@@ -7,7 +7,7 @@ export class EffectManager {
   public config: Config;
   public current: Effect | null;
   private _disposed: boolean;
-  private _runtimeReady: Promise<void>;
+  private readonly _runtimeReady: Promise<void>;
 
   constructor(config: Config) {
     this.config = config;
@@ -16,7 +16,7 @@ export class EffectManager {
 
     // start async init immediately, but don't block constructor
     this._runtimeReady = runtimeInit(config);
-  };
+  }
 
   async start(effect: Effect): Promise<void> {
     if (this._disposed) throw new Error('EffectManager already disposed');
@@ -40,7 +40,7 @@ export class EffectManager {
       this.current = null;
 
       await tick();
-    }; 
+    }
   };
 
   async dispose() {
@@ -52,5 +52,5 @@ export class EffectManager {
 
     await this.stop();
     await dispose();
-  };
-};
+  }
+}

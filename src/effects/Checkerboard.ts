@@ -1,6 +1,6 @@
 import { safeRender } from '../ledRuntime.js';
 import { packRGB, randomColor } from './utils/color.js';
-import { IntervalRunner } from './utils/IntervalRunner.js';
+import { IntervalRunner } from './utils/index.js';
 import type { Effect, Options } from '../types/index.js';
 
 /** Pure: easy to unit test without mocking the renderer. */
