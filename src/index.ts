@@ -39,7 +39,7 @@ export const main = async () => {
   });
 
   if (cancelled) {
-    console.log('\n', '❌ Operation cancelled by user.');
+    console.log( '❌ Operation cancelled by user.');
     return process.exit(EXIT_CANCELLED);
   }
 
@@ -154,7 +154,7 @@ export const main = async () => {
       console.error('Camera motion error:', err);
     });
 
-    console.log('\n👀 Camera watching for motion...\n');
+    console.log('👀 Camera watching for motion...\n');
     motion.start();
   }
 };
