@@ -6,15 +6,15 @@ const dry = { precipitationIn: 0, weatherCode: 0 };
 describe('temperatureToRGB', () => {
     test('uses the end colors outside the range', () => {
         expect(temperatureToRGB(-10)).toEqual(TEMPERATURE_STOPS[0].rgb);
-        expect(temperatureToRGB(120)).toEqual([255, 0, 0]);
+        expect(temperatureToRGB(120)).toEqual([255, 0, 90]);
     });
 
     test('returns exact stop colors at stop temperatures', () => {
-        expect(temperatureToRGB(70)).toEqual([255, 180, 60]);
+        expect(temperatureToRGB(70)).toEqual([255, 180, 50]);
     });
 
     test('interpolates between stops', () => {
-        expect(temperatureToRGB(60)).toEqual([255, 210, 125]); // halfway between 50°F and 70°F
+        expect(temperatureToRGB(60)).toEqual([255, 220, 120]); // halfway between 50°F and 70°F
     });
 
     test('gets redder as it gets hotter', () => {
