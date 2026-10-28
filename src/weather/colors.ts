@@ -11,11 +11,16 @@ export const RAIN_COLOR: RGB = [0, 0, 255];
  * range use the end colors.
  */
 export const TEMPERATURE_STOPS: readonly { tempF: number; rgb: RGB }[] = [
-    { tempF: 20,  rgb: [200, 230, 255] }, // icy white
-    { tempF: 50,  rgb: [255, 240, 190] }, // soft warm white
-    { tempF: 70,  rgb: [255, 180, 60] },  // amber
-    { tempF: 85,  rgb: [255, 90, 20] },   // orange-red
+    { tempF: 0,   rgb: [170, 140, 255] }, // lavender (bitter cold)
+    { tempF: 20,  rgb: [160, 220, 255] }, // icy cyan-white
+    { tempF: 35,  rgb: [210, 255, 250] }, // frost (around freezing)
+    { tempF: 50,  rgb: [255, 245, 200] }, // soft warm white
+    { tempF: 60,  rgb: [255, 220, 120] }, // pale gold
+    { tempF: 70,  rgb: [255, 180, 50] },  // amber
+    { tempF: 80,  rgb: [255, 130, 20] },  // orange
+    { tempF: 90,  rgb: [255, 60, 10] },   // red-orange
     { tempF: 100, rgb: [255, 0, 0] },     // red
+    { tempF: 110, rgb: [255, 0, 90] },    // hot magenta-red (extreme heat)
 ];
 
 // WMO weather codes: drizzle, freezing drizzle, rain, freezing rain, showers, thunderstorms
