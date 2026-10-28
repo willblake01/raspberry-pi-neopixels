@@ -10,22 +10,48 @@ jest.mock('prompts', () => ({
   __esModule: true,
   default: jest.fn(),
 }));
+
 jest.mock('./EffectManager.js');
+
 jest.mock('./prompts/index.js', () => ({
   promptsConfig: [{ name: 'command' }],
   normalizeAnswers: jest.fn(),
 }));
+
 jest.mock('./effects/utils/index.js', () => ({
   RULES: [],
 }));
+
 jest.mock('./effects/index.js', () => ({
   TurnOff: jest.fn(function MockTurnOff() {}),
   SolidCustom: jest.fn(function MockSolidCustom() {})
 }));
+
 jest.mock('./utils/index.js', () => ({
   once: (fn: unknown) => fn,
   randomNumber: jest.fn((min: number, max: number) => Math.floor((min + max) / 2)),
 }));
+
+const getMocks = () => {
+  const { default: promptsMock } = jest.requireMock('prompts') as {
+    default: jest.MockedFunction<typeof prompts>;
+  };
+  const {
+    normalizeAnswers: normalizeAnswersMock,
+    promptsConfig: mockedPromptsConfig,
+  } = jest.requireMock('./prompts/index.js') as {
+    normalizeAnswers: jest.MockedFunction<typeof normalizeAnswers>;
+    promptsConfig: typeof promptsConfig;
+  };
+  const { EffectManager: EffectManagerMock } = jest.requireMock('./EffectManager.js') as {
+    EffectManager: jest.MockedClass<typeof EffectManager>;
+  };
+  const { RULES: mockedRules } = jest.requireMock('./effects/utils/index.js') as {
+    RULES: typeof RULES;
+  };
+
+  return { promptsMock, normalizeAnswersMock, mockedPromptsConfig, EffectManagerMock, mockedRules };
+};
 
 describe('index entrypoint', () => {
   beforeEach(() => {
@@ -33,22 +59,7 @@ describe('index entrypoint', () => {
   });
 
   test('drives prompts and starts effect manager with selected effect', async () => {
-    const { default: promptsMock } = jest.requireMock('prompts') as {
-      default: jest.MockedFunction<typeof prompts>;
-    };
-    const {
-      normalizeAnswers: normalizeAnswersMock,
-      promptsConfig: mockedPromptsConfig,
-    } = jest.requireMock('./prompts/index.js') as {
-      normalizeAnswers: jest.MockedFunction<typeof normalizeAnswers>;
-      promptsConfig: typeof promptsConfig;
-    };
-    const { EffectManager: EffectManagerMock } = jest.requireMock('./EffectManager.js') as {
-      EffectManager: jest.MockedClass<typeof EffectManager>;
-    };
-    const { RULES: mockedRules } = jest.requireMock('./effects/utils/index.js') as {
-      RULES: typeof RULES;
-    };
+    const { promptsMock, normalizeAnswersMock, EffectManagerMock, mockedPromptsConfig, mockedRules } = getMocks();
 
     promptsMock.mockResolvedValue({} as any);
     normalizeAnswersMock.mockReturnValue({
@@ -85,7 +96,11 @@ describe('index entrypoint', () => {
     // Wait for main to finish anything pending after the delay
     await mainPromise;
 
-    expect(promptsMock).toHaveBeenCalledWith(mockedPromptsConfig);
+    expect(promptsMock).toHaveBeenCalledWith(
+      mockedPromptsConfig,
+      expect.objectContaining({ onCancel: expect.any(Function) })
+    );
+
     expect(normalizeAnswersMock).toHaveBeenCalled();
     expect(EffectManagerMock).toHaveBeenCalledWith({
       leds: 100,
@@ -96,5 +111,26 @@ describe('index entrypoint', () => {
       stripType: 'rgb',
     });
     expect(startMock).toHaveBeenCalled();
+  });
+
+  test('Ctrl+C during prompts exits without starting the LEDs', async () => {
+    const { promptsMock, normalizeAnswersMock, EffectManagerMock } = getMocks();
+
+    const exitSpy = jest
+        .spyOn(process, 'exit')
+        .mockImplementation((() => undefined) as never);
+
+    promptsMock.mockImplementation(async (_questions, options) => {
+      options?.onCancel?.({} as any, {});   // simulate Ctrl+C on the first prompt
+      return { command: 1 };                // prompts still resolves with partial answers
+    });
+
+    await main();
+
+    expect(exitSpy).toHaveBeenCalledWith(130);
+    expect(normalizeAnswersMock).not.toHaveBeenCalled();
+    expect(EffectManagerMock).not.toHaveBeenCalled();
+
+    exitSpy.mockRestore();
   });
 });

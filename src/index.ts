@@ -15,6 +15,9 @@ interface DelayProps {
 
 const delayInMs = 1000;
 
+/** Exit code convention for "terminated by Ctrl+C" (128 + SIGINT). */
+export const EXIT_CANCELLED = 130;
+
 const delay: DelayProps = (ms) =>
   new Promise<void>((resolve) => setTimeout(resolve, ms));
 
@@ -26,7 +29,20 @@ const selectEffect = (options: Options) => {
 };
 
 export const main = async () => {
-  const answers = await prompts(promptsConfig);
+  let cancelled = false;
+
+  const answers = await prompts(promptsConfig, {
+    onCancel: () => {
+      cancelled = true;
+      return false;  //Stop asking questions
+    }
+  });
+
+  if (cancelled) {
+    console.log('❌ Operation cancelled by user.');
+    return process.exit(EXIT_CANCELLED);
+  }
+
   const options: Options = normalizeAnswers(answers);
 
   const config: Config = {
