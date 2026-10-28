@@ -194,6 +194,7 @@ export const promptsConfig: PromptObject[] = [
   // Effect (only when turning on)
   promptSelect('effect', 'Select effect', EFFECT_CHOICES, isOn),
 
+  // Weather -> location mode
   promptSelect(
       'weatherLocationMode',
       'Weather location',
@@ -202,34 +203,6 @@ export const promptsConfig: PromptObject[] = [
         { title: 'Enter a city', value: 'manual' },
       ],
       and(isOn, effectEquals(EFFECTS.WEATHER)),
-  ),
-  promptSelect(
-      'weatherLocationMode',
-      'Weather location',
-      [
-        { title: 'Detect from my internet connection', value: 'auto' },
-        { title: 'Enter a city', value: 'manual' },
-      ],
-      and(isOn, effectEquals(EFFECTS.WEATHER)),
-  ),
-  promptText(
-      'weatherLocation',
-      'Enter city name',
-      and(isOn, (v) => v.effect === EFFECTS.WEATHER && v.weatherLocationMode === 'manual'),
-  ),
-  promptSelect(
-      'weatherLocationMode',
-      'Weather location',
-      [
-        { title: 'Detect from my internet connection', value: 'auto' },
-        { title: 'Enter a city', value: 'manual' },
-      ],
-      and(isOn, effectEquals(EFFECTS.WEATHER)),
-  ),
-  promptText(
-      'weatherLocation',
-      'Enter city name',
-      and(isOn, (v) => v.effect === EFFECTS.WEATHER && v.weatherLocationMode === 'manual'),
   ),
   promptText(
       'weatherLocation',
