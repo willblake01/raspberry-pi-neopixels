@@ -43,6 +43,9 @@ export const main = async () => {
     return process.exit(EXIT_CANCELLED);
   }
 
+  // Add a blank line before the effect starts, so the prompt doesn't look like part of the effect output
+  console.log();
+
   const options: Options = normalizeAnswers(answers);
 
   const config: Config = {
