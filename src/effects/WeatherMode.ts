@@ -48,7 +48,7 @@ export class WeatherMode implements Effect {
 
             safeRender(fillSolid(this.leds, weatherToColor(weather)));
             log(
-                `\n, 🌡️ ${this.location.name}: ${Math.round(weather.temperatureF)}°F` +
+                `\n 🌡️ ${this.location.name}: ${Math.round(weather.temperatureF)}°F` +
                 (isRaining(weather) ? ', raining' : ''),
             );
         } catch (err) {
