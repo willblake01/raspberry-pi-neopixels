@@ -79,6 +79,11 @@ export interface Options {
   isMotionDetectionEnabled: boolean;
   isMotionCustomColorMode: boolean;
   isMotionRandomColorMode: boolean;
+
+  // Weather mode
+  weatherLocationMode?: 'auto' | 'manual';
+  weatherLocation?: string;
+  isWeather: boolean;
 }
 
 export type Config = Ws281xConfig;

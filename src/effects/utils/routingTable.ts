@@ -1,5 +1,6 @@
 import { CheckerboardCustom, CheckerboardCustomShift, CheckerboardRandomShift, CheckerboardRandom, BlinkCustom, BlinkRandomChange, BlinkRandomStatic, BreatheCustom, BreatheRandom, Change, GrowingBarCustom, GrowingBarRandomChangePixel, GrowingBarRandomChangeLoop, GrowingBarRandomStatic, SolidCustom, SolidRandom, WalkPixelOffCustomStatic, WalkPixelOffRandomStatic, WalkPixelOffRandomChangeLoop, WalkPixelOffRandomChangePixel, WalkPixelOnCustom, WalkPixelOnRandomChangePixel, WalkPixelOnRandomChangeLoop, WalkPixelOnRandomStatic, Wheel, TurnOff } from '../index.js';
 import { Effect, Options } from '../../types/index.js';
+import {createWeatherMode} from "../WeatherMode.js";
 
 interface Rule {
   name: string;
@@ -149,6 +150,13 @@ export const RULES: Rule[] = [
     name: 'walk-pixel-off-random-change-every-loop',
     when: options => options.isWalkPixel && !options.isPixelOn && options.isRandomColorMode && options.isEveryLoopColorChangeInterval,
     make: options => new WalkPixelOffRandomChangeLoop(options.leds, options.interval)
+  },
+
+  // --- WEATHER ---
+  {
+    name: 'weather',
+    when: (o: Options) => o.isOn && o.isWeather,
+    make: (o: Options) => createWeatherMode(o.leds, o.weatherLocationMode, o.weatherLocation),
   },
 
   // --- TURN OFF (explicit command) ---

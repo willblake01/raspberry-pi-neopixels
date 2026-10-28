@@ -45,6 +45,7 @@ const EFFECT_CHOICES: SelectChoice<EffectName>[] = [
   { title: 'Growing Bar', value: EFFECTS.GROWING_BAR },
   { title: 'Wheel', value: EFFECTS.WHEEL },
   { title: 'Walk Pixel', value: EFFECTS.WALK_PIXEL },
+  { title: 'Weather', value: EFFECTS.WEATHER },
 ];
 
 // Capabilities
@@ -147,6 +148,13 @@ const promptNumber = (
   validate: float ? numberBetween(min, max) : integerBetween(min, max),
 });
 
+const promptText = (name: string, message: string, when?: Predicate): PromptObject => ({
+  type: show('text', when ?? (() => true)),
+  name,
+  message,
+  validate: (v: string) => (v?.trim().length ?? 0) >= 2 || 'Enter at least 2 characters',
+});
+
 // -----------------------------------------------------------------------------
 // final prompts config
 // -----------------------------------------------------------------------------
@@ -185,6 +193,49 @@ export const promptsConfig: PromptObject[] = [
 
   // Effect (only when turning on)
   promptSelect('effect', 'Select effect', EFFECT_CHOICES, isOn),
+
+  promptSelect(
+      'weatherLocationMode',
+      'Weather location',
+      [
+        { title: 'Detect from my internet connection', value: 'auto' },
+        { title: 'Enter a city', value: 'manual' },
+      ],
+      and(isOn, effectEquals(EFFECTS.WEATHER)),
+  ),
+  promptSelect(
+      'weatherLocationMode',
+      'Weather location',
+      [
+        { title: 'Detect from my internet connection', value: 'auto' },
+        { title: 'Enter a city', value: 'manual' },
+      ],
+      and(isOn, effectEquals(EFFECTS.WEATHER)),
+  ),
+  promptText(
+      'weatherLocation',
+      'Enter city name',
+      and(isOn, (v) => v.effect === EFFECTS.WEATHER && v.weatherLocationMode === 'manual'),
+  ),
+  promptSelect(
+      'weatherLocationMode',
+      'Weather location',
+      [
+        { title: 'Detect from my internet connection', value: 'auto' },
+        { title: 'Enter a city', value: 'manual' },
+      ],
+      and(isOn, effectEquals(EFFECTS.WEATHER)),
+  ),
+  promptText(
+      'weatherLocation',
+      'Enter city name',
+      and(isOn, (v) => v.effect === EFFECTS.WEATHER && v.weatherLocationMode === 'manual'),
+  ),
+  promptText(
+      'weatherLocation',
+      'Enter city name',
+      and(isOn, (v) => v.effect === EFFECTS.WEATHER && v.weatherLocationMode === 'manual'),
+  ),
 
   // Walk Pixel -> pixel state
   promptSelect(

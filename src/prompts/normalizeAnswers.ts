@@ -78,5 +78,8 @@ export const normalizeAnswers = (response: Answers<string>): Options => {
       useMotionDetection === 1 && motionColorMode === 'custom',
     isMotionRandomColorMode:
       useMotionDetection === 1 && motionColorMode === 'random',
+    isWeather: effect === EFFECTS.WEATHER,
+    weatherLocationMode: response.weatherLocationMode,
+    weatherLocation: response.weatherLocation
   };
 };
