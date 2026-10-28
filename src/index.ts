@@ -39,7 +39,7 @@ export const main = async () => {
   });
 
   if (cancelled) {
-    console.log('❌ Operation cancelled by user.');
+    console.log('\n', '❌ Operation cancelled by user.');
     return process.exit(EXIT_CANCELLED);
   }
 
