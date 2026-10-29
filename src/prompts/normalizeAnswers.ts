@@ -52,6 +52,10 @@ export const normalizeAnswers = (response: Answers<string>): Options => {
     motionRed,
     motionGreen,
     motionBlue,
+    weatherLocationMode: response.weatherLocationMode,
+    weatherLocation: response.weatherLocation,
+    weatherAlerts: response.weatherAlerts === 1 ? 1 : 0,
+    pixels: response.pixels,
 
     // Flags
     isOn: command === 1,
@@ -78,9 +82,6 @@ export const normalizeAnswers = (response: Answers<string>): Options => {
     isMotionRandomColorMode:
       useMotionDetection === 1 && motionColorMode === 'random',
     isWeather: effect === EFFECTS.WEATHER,
-    weatherLocationMode: response.weatherLocationMode,
-    weatherLocation: response.weatherLocation,
-    weatherAlerts: response.weatherAlerts === 1 ? 1 : 0,
     isWeatherAlertsEnabled: response.weatherAlerts === 1
   };
 };
