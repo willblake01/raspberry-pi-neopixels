@@ -4,7 +4,18 @@ import { normalizeAnswers, promptsConfig } from './prompts/index.js';
 import { RULES } from './effects/utils/index.js';
 import { main } from './index.js';
 
+let logSpy: jest.SpyInstance;
+
 jest.useFakeTimers();
+
+beforeEach(() => {
+  jest.clearAllMocks();
+  logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+});
+
+afterEach(() => {
+  logSpy.mockRestore();
+});
 
 jest.mock('prompts', () => ({
   __esModule: true,
@@ -130,6 +141,7 @@ describe('index entrypoint', () => {
     expect(exitSpy).toHaveBeenCalledWith(130);
     expect(normalizeAnswersMock).not.toHaveBeenCalled();
     expect(EffectManagerMock).not.toHaveBeenCalled();
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining('cancelled'));
 
     exitSpy.mockRestore();
   });

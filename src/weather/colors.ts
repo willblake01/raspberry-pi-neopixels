@@ -5,6 +5,27 @@ export type RGB = readonly [number, number, number];
 
 export const RAIN_COLOR: RGB = [0, 0, 255];
 
+const RAIN_COLORS: Record<number, RGB> = {
+    // light
+    51: [0, 0, 120], 56: [0, 0, 120], 61: [0, 0, 120], 66: [0, 0, 120], 80: [0, 0, 120],
+
+    // moderate
+    53: [0, 0, 190], 63: [0, 0, 190], 81: [0, 0, 190],
+
+    // heavy
+    55: RAIN_COLOR, 57: RAIN_COLOR, 65: RAIN_COLOR, 67: RAIN_COLOR, 82: RAIN_COLOR,
+
+    // thunderstorm
+    95: [90, 0, 255], 96: [90, 0, 255], 99: [90, 0, 255],
+};
+
+/** Blue that reflects rain intensity. Rain detected only from the amount uses moderate. */
+export const rainColor = (weatherCode: number): RGB =>
+    RAIN_COLORS[weatherCode] ?? [0, 0, 190];
+
+export const weatherToColor = (weather: CurrentWeather): number =>
+    packRGB(...(isRaining(weather) ? rainColor(weather.weatherCode) : temperatureToRGB(weather.temperatureF)));
+
 /**
  * Cold → hot gradient. Colder is a pale icy white (distinct from rain blue),
  * warming through soft white and amber to red. Temperatures outside the
@@ -48,6 +69,3 @@ export const temperatureToRGB = (
 
     return [lerp(lo.rgb[0], hi.rgb[0], t), lerp(lo.rgb[1], hi.rgb[1], t), lerp(lo.rgb[2], hi.rgb[2], t)];
 };
-
-export const weatherToColor = (weather: CurrentWeather): number =>
-    packRGB(...(isRaining(weather) ? RAIN_COLOR : temperatureToRGB(weather.temperatureF)));

@@ -1,4 +1,5 @@
 import { WeatherMode, type WeatherModeDeps } from './WeatherMode.js';
+import { weatherToColor } from '../weather/colors.js';
 import type { CurrentWeather, Location } from '../weather/api.js';
 import {
     colorFromRGB,
@@ -45,8 +46,8 @@ test('switches to blue when it starts raining', async () => {
     await jest.advanceTimersByTimeAsync(POLL);
 
     expect(renderedFrames()).toEqual([
-        solid(3, colorFromRGB(255, 0, 0)),
-        solid(3, colorFromRGB(0, 0, 255)),
+        solid(3, weatherToColor(HOT)),
+        solid(3, weatherToColor(RAIN)),
     ]);
     effect.stop();
 });

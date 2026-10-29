@@ -1,4 +1,4 @@
-import { temperatureToRGB, isRaining, weatherToColor, RAIN_COLOR, TEMPERATURE_STOPS } from './colors.js';
+import { temperatureToRGB, isRaining, weatherToColor, RAIN_COLOR, TEMPERATURE_STOPS, rainColor } from './colors.js';
 import { packRGB } from '../effects/utils/color.js';
 
 const dry = { precipitationIn: 0, weatherCode: 0 };
@@ -45,12 +45,32 @@ describe('isRaining', () => {
 });
 
 describe('weatherToColor', () => {
-    test('rain overrides temperature with pure blue', () => {
-        expect(weatherToColor({ temperatureF: 100, precipitationIn: 0.1, weatherCode: 63 }))
+    test('heavy rain overrides temperature with pure blue', () => {
+        expect(weatherToColor({ temperatureF: 100, precipitationIn: 0.1, weatherCode: 65 }))
             .toBe(packRGB(...RAIN_COLOR));
+    });
+
+    test('rain color follows intensity', () => {
+        expect(weatherToColor({ temperatureF: 100, precipitationIn: 0.1, weatherCode: 63 }))
+            .toBe(packRGB(...rainColor(63)));
     });
 
     test('dry weather uses the temperature color', () => {
         expect(weatherToColor({ ...dry, temperatureF: 100 })).toBe(packRGB(255, 0, 0));
+    });
+});
+
+describe('rainColor', () => {
+    test('heavier rain is brighter blue', () => {
+        expect(rainColor(61)[2]).toBeLessThan(rainColor(63)[2]);
+        expect(rainColor(63)[2]).toBeLessThan(rainColor(65)[2]);
+    });
+
+    test('thunderstorms are violet', () => {
+        expect(rainColor(95)).toEqual([90, 0, 255]);
+    });
+
+    test('unknown codes fall back to moderate blue', () => {
+        expect(rainColor(3)).toEqual([0, 0, 190]);
     });
 });
