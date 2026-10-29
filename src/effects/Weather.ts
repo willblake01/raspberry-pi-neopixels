@@ -27,7 +27,7 @@ export interface WeatherModeDeps {
     log?: (message: string) => void;
 }
 
-export class WeatherMode implements Effect {
+export class Weather implements Effect {
     private locationPromise: Promise<Location> | null = null;
     private weather: CurrentWeather | null = null;
     private style: AlertStyle | null = null;
@@ -149,13 +149,13 @@ export class WeatherMode implements Effect {
     }
 }
 
-export const createWeatherMode = (
+export const createWeather = (
     leds: number,
     mode: 'auto' | 'manual' = 'auto',
     query?: string,
     alertsEnabled = false,
 ) =>
-    new WeatherMode(leds, {
+    new Weather(leds, {
         locate: mode === 'manual' && query ? () => locateByName(query) : locateByIp,
         fetchWeather: fetchCurrentWeather,
         fetchAlerts: alertsEnabled ? fetchActiveAlerts : undefined,

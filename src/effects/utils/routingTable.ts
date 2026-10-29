@@ -1,8 +1,8 @@
 import { CheckerboardCustom, CheckerboardCustomShift, CheckerboardRandomShift, CheckerboardRandom, BlinkCustom, BlinkRandomChange, BlinkRandomStatic, BreatheCustom, BreatheRandom, Change, GrowingBarCustom, GrowingBarRandomChangePixel, GrowingBarRandomChangeLoop, GrowingBarRandomStatic, SolidCustom, SolidRandom, WalkPixelOffCustomStatic, WalkPixelOffRandomStatic, WalkPixelOffRandomChangeLoop, WalkPixelOffRandomChangePixel, WalkPixelOnCustom, WalkPixelOnRandomChangePixel, WalkPixelOnRandomChangeLoop, WalkPixelOnRandomStatic, Wheel, TurnOff } from '../index.js';
 import { Effect, Options } from '../../types/index.js';
-import { createWeatherMode } from "../WeatherMode.js";
+import { createWeather } from "../Weather.js";
 import { EFFECTS } from "../../constants/index.js";
-import { CustomPixels } from "../CustomPixels.js";
+import { createSunriseSunset, CustomPixels } from "../index.js";
 
 interface Rule {
   name: string;
@@ -159,7 +159,13 @@ export const RULES: Rule[] = [
     name: 'weather',
     when: (o: Options) => o.isOn && o.isWeather,
     make: (o: Options) =>
-        createWeatherMode(o.leds, o.weatherLocationMode, o.weatherLocation, o.weatherAlerts === 1),
+        createWeather(o.leds, o.weatherLocationMode, o.weatherLocation, o.weatherAlerts === 1),
+  },
+
+  {
+    name: 'sunrise_sunset',
+    when: (o: Options) => o.isOn && o.effect === EFFECTS.SUNRISE_SUNSET,
+    make: (o: Options) => createSunriseSunset(o.leds, o.weatherLocationMode, o.weatherLocation),
   },
 
   // --- CUSTOM PIXELS ---

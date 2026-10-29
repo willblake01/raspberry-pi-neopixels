@@ -46,6 +46,7 @@ const EFFECT_CHOICES: SelectChoice<EffectName>[] = [
   { title: 'Wheel', value: EFFECTS.WHEEL },
   { title: 'Walk Pixel', value: EFFECTS.WALK_PIXEL },
   { title: 'Weather', value: EFFECTS.WEATHER },
+  { title: 'Sunrise/Sunset', value: EFFECTS.SUNRISE_SUNSET },
   { title: 'Custom Pixels', value: EFFECTS.CUSTOM_PIXELS },
 ];
 
@@ -71,6 +72,11 @@ const EFFECT_ALLOWS_CUSTOM: ReadonlySet<EffectName> = new Set<EffectName>([
 const EFFECT_NEEDS_SHIFTING: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.CHECKERBOARD
 ])
+
+const EFFECT_NEEDS_LOCATION: ReadonlySet<EffectName> = new Set<EffectName>([
+  EFFECTS.WEATHER,
+  EFFECTS.SUNRISE_SUNSET,
+]);
 
 // Random color is *not allowed for Change or Wheel
 const EFFECT_ALLOWS_RANDOM: ReadonlySet<EffectName> = new Set<EffectName>([
@@ -118,6 +124,8 @@ const motionCustom: Predicate = (v) => v.useMotionDetection === 1 && v.motionCol
 /** Wraps a predicate into a dynamic `type` function that `prompts` accepts. */
 const show = (type: PromptType, pred: Predicate): PromptTypeFn =>
   (_prev, values) => (pred(values) ? type : null);
+
+const needsLocation: Predicate = (v) => EFFECT_NEEDS_LOCATION.has(v.effect as EffectName);
 
 // -----------------------------------------------------------------------------
 // Small factories
@@ -197,18 +205,18 @@ export const promptsConfig: PromptObject[] = [
 
   // Weather -> location mode
   promptSelect(
-      'weatherLocationMode',
-      'Weather location',
+      'weatherLocation',
+      'Location',
       [
         { title: 'Detect from my internet connection', value: 'auto' },
         { title: 'Enter a city', value: 'manual' },
       ],
-      and(isOn, effectEquals(EFFECTS.WEATHER)),
+      and(isOn, needsLocation),
   ),
   promptText(
       'weatherLocation',
       'Enter city name',
-      and(isOn, (v) => v.effect === EFFECTS.WEATHER && v.weatherLocationMode === 'manual'),
+      and(isOn, (v) => needsLocation(v) && v.weatherLocation === 'manual'),
   ),
 
   // Weather -> severe weather alerts

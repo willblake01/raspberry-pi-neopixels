@@ -6,4 +6,7 @@ export { GrowingBarCustom, GrowingBarRandomChangePixel, GrowingBarRandomChangeLo
 export { SolidCustom, SolidRandom } from './Solid.js';
 export { WalkPixelOffCustomStatic, WalkPixelOffRandomChangePixel, WalkPixelOffRandomChangeLoop, WalkPixelOffRandomStatic, WalkPixelOnCustom, WalkPixelOnRandomChangePixel, WalkPixelOnRandomChangeLoop, WalkPixelOnRandomStatic } from './WalkPixel.js';
 export { Wheel } from './Wheel.js';
+export { Weather } from './Weather.js';
+export { createSunriseSunset, SunriseSunset } from './SunriseSunset.js';
+export { CustomPixels } from './CustomPixels.js';
 export { TurnOff } from './TurnOff.js';

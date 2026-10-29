@@ -1,4 +1,4 @@
-import { WeatherMode, type WeatherModeDeps } from './WeatherMode.js';
+import { Weather, type WeatherModeDeps } from './Weather.js';
 import { weatherToColor } from '../weather/colors.js';
 import type { CurrentWeather, Location } from '../weather/api.js';
 import {
@@ -32,7 +32,7 @@ const solid = (leds: number, color: number) => Array(leds).fill(color);
 const fakeAlertEffect = () => ({ run: jest.fn(), stop: jest.fn() });
 
 test('renders the temperature color right away', async () => {
-    const effect = new WeatherMode(3, makeDeps(HOT), POLL);
+    const effect = new Weather(3, makeDeps(HOT), POLL);
 
     effect.run();
     await jest.advanceTimersByTimeAsync(0);
@@ -42,7 +42,7 @@ test('renders the temperature color right away', async () => {
 });
 
 test('switches to blue when it starts raining', async () => {
-    const effect = new WeatherMode(3, makeDeps(HOT, RAIN), POLL);
+    const effect = new Weather(3, makeDeps(HOT, RAIN), POLL);
 
     effect.run();
     await jest.advanceTimersByTimeAsync(POLL);
@@ -56,7 +56,7 @@ test('switches to blue when it starts raining', async () => {
 
 test('looks up the location once, then reuses it', async () => {
     const deps = makeDeps(HOT, HOT, HOT);
-    const effect = new WeatherMode(3, deps, POLL);
+    const effect = new Weather(3, deps, POLL);
 
     effect.run();
     await jest.advanceTimersByTimeAsync(POLL * 2);
@@ -69,7 +69,7 @@ test('looks up the location once, then reuses it', async () => {
 test('keeps the last color when an update fails', async () => {
     const deps = makeDeps(HOT);
     deps.fetchWeather.mockRejectedValueOnce(new Error('offline'));
-    const effect = new WeatherMode(3, deps, POLL);
+    const effect = new Weather(3, deps, POLL);
 
     effect.run();
     await jest.advanceTimersByTimeAsync(POLL);
@@ -82,7 +82,7 @@ test('does not render if stopped before the response arrives', async () => {
     let resolve!: (w: CurrentWeather) => void;
     const deps = makeDeps();
     deps.fetchWeather.mockReturnValueOnce(new Promise((r) => { resolve = r; }));
-    const effect = new WeatherMode(3, deps, POLL);
+    const effect = new Weather(3, deps, POLL);
 
     effect.run();
     await jest.advanceTimersByTimeAsync(0);
@@ -100,7 +100,7 @@ test('an active warning replaces the weather color with the alert effect', async
         fetchAlerts: jest.fn().mockResolvedValue([{ event: 'Tornado Warning', severity: 'Extreme' }]),
         makeAlertEffect: jest.fn(() => alertEffect),
     };
-    const effect = new WeatherMode(3, deps, POLL, POLL);
+    const effect = new Weather(3, deps, POLL, POLL);
 
     effect.run();
     await jest.advanceTimersByTimeAsync(0);
@@ -120,7 +120,7 @@ test('returns to the weather color when the alert clears', async () => {
             .mockResolvedValueOnce([]),
         makeAlertEffect: jest.fn(() => alertEffect),
     };
-    const effect = new WeatherMode(3, deps, POLL * 10, POLL);
+    const effect = new Weather(3, deps, POLL * 10, POLL);
 
     effect.run();
     await jest.advanceTimersByTimeAsync(POLL);

@@ -10,6 +10,11 @@ export interface CurrentWeather {
     weatherCode: number; // WMO code
 }
 
+export interface SunDay {
+    sunrise: number; // epoch ms
+    sunset: number;  // epoch ms
+}
+
 const TIMEOUT_MS = 10_000;
 
 const getJson = async (url: URL | string, init?: RequestInit): Promise<unknown> => {
@@ -103,4 +108,25 @@ export const fetchActiveAlerts = async ({ latitude, longitude }: Location): Prom
         event: f.properties?.event ?? '',
         severity: f.properties?.severity ?? 'Unknown',
     }));
+};
+
+/** Today's and tomorrow's sunrise/sunset. Unix timestamps avoid time zone parsing. */
+export const fetchSunTimes = async ({ latitude, longitude }: Location): Promise<SunDay[]> => {
+    const url = new URL('https://api.open-meteo.com/v1/forecast');
+    url.searchParams.set('latitude', String(latitude));
+    url.searchParams.set('longitude', String(longitude));
+    url.searchParams.set('daily', 'sunrise,sunset');
+    url.searchParams.set('timeformat', 'unixtime');
+    url.searchParams.set('timezone', 'auto');
+    url.searchParams.set('forecast_days', '2');
+
+    const data = (await getJson(url)) as { daily?: { sunrise?: number[]; sunset?: number[] } };
+    const sunrise = data.daily?.sunrise ?? [];
+    const sunset = data.daily?.sunset ?? [];
+
+    if (sunrise.length === 0 || sunrise.length !== sunset.length) {
+        throw new Error('Sunrise/sunset missing from response');
+    }
+
+    return sunrise.map((rise, i) => ({ sunrise: rise * 1000, sunset: sunset[i] * 1000 }));
 };
