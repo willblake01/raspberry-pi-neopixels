@@ -1,13 +1,13 @@
 import prompts from 'prompts';
 import { EffectManager } from './EffectManager.js';
-import { normalizeAnswers, promptsConfig } from './prompts/index.js';
+import {collectPixelSegments, normalizeAnswers, promptsConfig} from './prompts/index.js';
 import { TurnOff } from './effects/index.js';
 import { CameraMotion, randomNumber } from './utils/index.js';
 import { SolidCustom } from './effects/index.js';
 import { RULES } from './effects/utils/index.js';
 import { once } from './utils/index.js';
-import { Config, Options } from './types/index.js';
-import { GAMMA } from "./constants/index.js";
+import {Config, Options, PixelSegment} from './types/index.js';
+import { EFFECTS, GAMMA } from "./constants/index.js";
 
 interface DelayProps {
   (ms: number): Promise<void>;
@@ -17,6 +17,11 @@ const delayInMs = 1000;
 
 /** Exit code convention for "terminated by Ctrl+C" (128 + SIGINT). */
 export const EXIT_CANCELLED = 130;
+
+const exitCancelled = () => {
+  console.log('❌ Operation cancelled by user.');
+  return process.exit(EXIT_CANCELLED);
+};
 
 const delay: DelayProps = (ms) =>
   new Promise<void>((resolve) => setTimeout(resolve, ms));
@@ -30,23 +35,36 @@ const selectEffect = (options: Options) => {
 
 export const main = async () => {
   let cancelled = false;
+  let pixelSegments: PixelSegment[] | undefined;
 
   const answers = await prompts(promptsConfig, {
     onCancel: () => {
       cancelled = true;
-      return false;  //Stop asking questions
-    }
+      return false;
+    },
+    // Runs after each answer; start the segment loop as soon as Custom Pixels is chosen
+    onSubmit: async (question, answer, values) => {
+      if (question.name === 'effect' && answer === EFFECTS.CUSTOM_PIXELS) {
+        const { leds } = values as unknown as { leds: number };
+        const segments = await collectPixelSegments(leds);
+        if (!segments) {
+          cancelled = true; // Ctrl+C inside the loop
+          return true;      // stop asking further questions
+        }
+        pixelSegments = segments;
+      }
+      return false; // continue with the next prompt
+    },
   });
 
   if (cancelled) {
-    console.log( '❌ Operation cancelled by user.');
-    return process.exit(EXIT_CANCELLED);
+    return exitCancelled();
   }
 
   // Add a blank line before the effect starts, so the prompt doesn't look like part of the effect output
   console.log();
 
-  const options: Options = normalizeAnswers(answers);
+  const options: Options = { ...normalizeAnswers(answers), pixelSegments };
 
   const config: Config = {
     leds: options.leds,

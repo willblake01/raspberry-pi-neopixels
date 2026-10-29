@@ -11,9 +11,14 @@ export type ColorMode = 'custom' | 'random';
 export type RandomColorMode = 'static' | 'change';
 export type ColorChangeInterval = 'everyPixel' | 'everyLoop';
 
+export interface PixelSegment {
+  start: number; // 0-based, inclusive
+  end: number;   // 0-based, inclusive
+  color: number;
+}
+
 export interface Options {
   // Base config
-  pixels?: string;
   weatherAlerts: number;
   command: number;
   leds: number;
@@ -84,8 +89,13 @@ export interface Options {
   // Weather mode
   weatherLocationMode?: 'auto' | 'manual';
   weatherLocation?: string;
+
+  // Weather flags
   isWeather: boolean;
   isWeatherAlertsEnabled: boolean;
+
+  // Custom Pixels mode
+  pixelSegments?: PixelSegment[];
 }
 
 export type Config = Ws281xConfig;

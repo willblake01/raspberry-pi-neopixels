@@ -1,8 +1,8 @@
 import { CheckerboardCustom, CheckerboardCustomShift, CheckerboardRandomShift, CheckerboardRandom, BlinkCustom, BlinkRandomChange, BlinkRandomStatic, BreatheCustom, BreatheRandom, Change, GrowingBarCustom, GrowingBarRandomChangePixel, GrowingBarRandomChangeLoop, GrowingBarRandomStatic, SolidCustom, SolidRandom, WalkPixelOffCustomStatic, WalkPixelOffRandomStatic, WalkPixelOffRandomChangeLoop, WalkPixelOffRandomChangePixel, WalkPixelOnCustom, WalkPixelOnRandomChangePixel, WalkPixelOnRandomChangeLoop, WalkPixelOnRandomStatic, Wheel, TurnOff } from '../index.js';
 import { Effect, Options } from '../../types/index.js';
-import {createWeatherMode} from "../WeatherMode.js";
-import {EFFECTS} from "../../constants/index.js";
-import {CustomPixels} from "../CustomPixels.js";
+import { createWeatherMode } from "../WeatherMode.js";
+import { EFFECTS } from "../../constants/index.js";
+import { CustomPixels } from "../CustomPixels.js";
 
 interface Rule {
   name: string;
@@ -166,7 +166,7 @@ export const RULES: Rule[] = [
   {
     name: 'customPixels',
     when: (o: Options) => o.isOn && o.effect === EFFECTS.CUSTOM_PIXELS,
-    make: (o: Options) => new CustomPixels(o.leds, o.pixels ?? ''),
+    make: (o: Options) => new CustomPixels(o.leds, o.pixelSegments ?? []),
   },
 
   // --- TURN OFF (explicit command) ---

@@ -1,18 +1,5 @@
 import { safeRender } from '../ledRuntime.js';
-import { packRGB } from './utils/color.js';
-import type { Effect } from '../types/index.js';
-
-export interface PixelSpec {
-    start: number; // 0-based, inclusive
-    end: number;   // 0-based, inclusive
-    color: number;
-}
-
-const channel = (raw: string, name: string): number => {
-    const n = Number(raw);
-    if (!Number.isInteger(n) || n < 0 || n > 255) throw new Error(`${name} must be 0–255, got "${raw}"`);
-    return n;
-};
+import type { Effect, PixelSegment } from '../types/index.js';
 
 const pixelNumber = (raw: string, leds: number): number => {
     const n = Number(raw);
@@ -20,39 +7,29 @@ const pixelNumber = (raw: string, leds: number): number => {
     return n - 1; // to 0-based
 };
 
-/** Parses "target, r, g, b; ..." where target is N, N-M or "all". Throws with a readable message. */
-export const parsePixelSpecs = (input: string, leds: number): PixelSpec[] => {
-    const entries = input.split(';').map((e) => e.trim()).filter(Boolean);
-    if (entries.length === 0) throw new Error('Enter at least one entry, e.g. "99, 255, 255, 255"');
+/** Parses "5" or "10-20" (1-based) into a 0-based inclusive range. */
+export const parsePixelTarget = (raw: string, leds: number): { start: number; end: number } => {
+    const target = raw.trim();
+    if (!target) throw new Error('Enter a pixel like "5" or a range like "10-20"');
 
-    return entries.map((entry, i) => {
-        const parts = entry.split(',').map((p) => p.trim());
-        if (parts.length !== 4) {
-            throw new Error(`Entry ${i + 1} ("${entry}") needs 4 values: pixel, red, green, blue`);
-        }
-
-        const [target, r, g, b] = parts;
-        const color = packRGB(channel(r, 'Red'), channel(g, 'Green'), channel(b, 'Blue'));
-
-        if (target.toLowerCase() === 'all') return { start: 0, end: leds - 1, color };
-
-        const range = target.split('-');
-        if (range.length === 2) {
-            const start = pixelNumber(range[0], leds);
-            const end = pixelNumber(range[1], leds);
-            if (start > end) throw new Error(`Range "${target}" must go low to high`);
-            return { start, end, color };
-        }
-
-        const index = pixelNumber(target, leds);
-        return { start: index, end: index, color };
-    });
+    const parts = target.split('-').map((p) => p.trim());
+    if (parts.length === 1) {
+        const index = pixelNumber(parts[0], leds);
+        return { start: index, end: index };
+    }
+    if (parts.length === 2) {
+        const start = pixelNumber(parts[0], leds);
+        const end = pixelNumber(parts[1], leds);
+        if (start > end) throw new Error(`Range "${target}" must go low to high`);
+        return { start, end };
+    }
+    throw new Error('Enter a pixel like "5" or a range like "10-20"');
 };
 
-/** Pure: applies specs in order, so later entries override earlier ones. */
-export const buildCustomPixels = (leds: number, specs: PixelSpec[]): Uint32Array => {
+/** Pure: applies segments in order, so later segments override earlier ones. */
+export const buildCustomPixels = (leds: number, segments: PixelSegment[]): Uint32Array => {
     const pixels = new Uint32Array(leds);
-    for (const { start, end, color } of specs) {
+    for (const { start, end, color } of segments) {
         pixels.fill(color, start, end + 1);
     }
     return pixels;
@@ -62,8 +39,8 @@ export const buildCustomPixels = (leds: number, specs: PixelSpec[]): Uint32Array
 export class CustomPixels implements Effect {
     private readonly frame: Uint32Array;
 
-    constructor(leds: number, input: string) {
-        this.frame = buildCustomPixels(leds, parsePixelSpecs(input, leds));
+    constructor(leds: number, segments: PixelSegment[]) {
+        this.frame = buildCustomPixels(leds, segments);
     }
 
     run() {

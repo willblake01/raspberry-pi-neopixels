@@ -27,6 +27,7 @@ jest.mock('./EffectManager.js');
 jest.mock('./prompts/index.js', () => ({
   promptsConfig: [{ name: 'command' }],
   normalizeAnswers: jest.fn(),
+  collectPixelSegments: jest.fn(),
 }));
 
 jest.mock('./effects/utils/index.js', () => ({

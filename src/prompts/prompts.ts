@@ -1,9 +1,8 @@
 import type { Answers, PromptObject, PromptType } from 'prompts';
-import { EFFECTS } from '../constants/index.js';
+import {EFFECTS, LEDS} from '../constants/index.js';
 import { and, integerBetween, numberBetween } from '../utils/index.js';
 import type { EffectName } from '../types/index.js';
 import { GAMMA } from '../constants/index.js';
-import { parsePixelSpecs } from '../effects/CustomPixels.js';
 
 /**
  * Raw answer shape while prompts is running.
@@ -32,8 +31,6 @@ export type PromptTypeFn = (
   prev: AnswersShape,
   values: AnswersShape
 ) => PromptType | null;
-
-const MAX_LEDS = 100;
 
 // -----------------------------------------------------------------------------
 // Effect capabilities
@@ -171,10 +168,10 @@ export const promptsConfig: PromptObject[] = [
   ]),
 
   // LED count (always asked)
-  promptNumber('leds', 'Enter number of LEDs (0-100)', {
-    min: 0,
-    max: 100,
-    initial: 100,
+  promptNumber('leds', `Enter number of LEDs (${LEDS.MIN}-${LEDS.MAX})`, {
+    min: LEDS.MIN,
+    max: LEDS.MAX,
+    initial: LEDS.DEFAULT,
   }),
 
   // Gamma Correction (only when turning on)
@@ -197,20 +194,6 @@ export const promptsConfig: PromptObject[] = [
 
   // Effect (only when turning on)
   promptSelect('effect', 'Select effect', EFFECT_CHOICES, isOn),
-
-  {
-    type: show('text', and(isOn, effectEquals(EFFECTS.CUSTOM_PIXELS))),
-    name: 'pixels',
-    message: 'Pixels (pixel, r, g, b; ...)  e.g. "all, 0, 0, 20; 99, 255, 255, 255"',
-    validate: (v: string) => {
-      try {
-        parsePixelSpecs(v ?? '', MAX_LEDS);
-        return true;
-      } catch (err) {
-        return (err as Error).message;
-      }
-    },
-  },
 
   // Weather -> location mode
   promptSelect(
