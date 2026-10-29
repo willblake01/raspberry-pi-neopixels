@@ -230,6 +230,17 @@ export const promptsConfig: PromptObject[] = [
       and(isOn, effectEquals(EFFECTS.WEATHER)),
   ),
 
+  // Sunrise/Sunset -> moon phase at night
+  promptSelect(
+      'showMoon',
+      'Enable moon phase',
+      [
+        { title: 'No', value: 0 },
+        { title: 'Yes', value: 1 },
+      ],
+      and(isOn, effectEquals(EFFECTS.SUNRISE_SUNSET)),
+  ),
+
   // Walk Pixel -> pixel state
   promptSelect(
     'pixelState',

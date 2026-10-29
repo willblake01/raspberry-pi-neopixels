@@ -1,7 +1,15 @@
 import { safeRender } from '../ledRuntime.js';
-import { fillSolid, packRGB } from './utils/color.js';
+import { fillSolid, framesEqual, mixColors, packRGB } from './utils/color.js';
 import { IntervalRunner } from './utils/index.js';
-import { daylightRGB } from '../weather/daylight.js';
+import { daylightRGB, nightDepth } from '../weather/daylight.js';
+import {
+    MOON_COLOR,
+    buildMoonFrame,
+    isWaxing,
+    moonIllumination,
+    moonPhase,
+    moonPhaseName,
+} from '../astronomy/moon.js';
 import {
     locateByIp,
     locateByName,
@@ -18,6 +26,8 @@ const MIN_REFETCH_GAP_MS = 60 * 60 * 1000;        // skip re-fetching on quick r
 export interface SunriseSunsetDeps {
     locate: () => Promise<Location>;
     fetchSunTimes: (location: Location) => Promise<SunDay[]>;
+    /** Show the moon phase at night. */
+    showMoon?: boolean;
     now?: () => number;
     log?: (message: string) => void;
 }
@@ -29,7 +39,7 @@ export class SunriseSunset implements Effect {
     private locationPromise: Promise<Location> | null = null;
     private days: SunDay[] | null = null;
     private fetchedAt = 0;
-    private lastColor: number | null = null;
+    private lastFrame: Uint32Array | null = null;
     private active = false;
     private refreshing = false;
     private readonly refreshRunner: IntervalRunner;
@@ -74,6 +84,12 @@ export class SunriseSunset implements Effect {
 
             const today = this.days[0];
             this.log(`🌅 ${location.name}: sunrise ${formatTime(today.sunrise)}, sunset ${formatTime(today.sunset)}`);
+
+            if (this.deps.showMoon) {
+                const phase = moonPhase(this.now());
+                this.log(`🌙 ${moonPhaseName(phase)}, ${Math.round(moonIllumination(phase) * 100)}% illuminated`);
+            }
+
             this.render();
         } catch (err) {
             // Keep the previous sun times; try again next refresh
@@ -83,19 +99,37 @@ export class SunriseSunset implements Effect {
         }
     }
 
+    /** Daylight color, blended with the moon at night when enabled. */
+    private buildFrame(now: number, days: SunDay[]): Uint32Array {
+        const sky = fillSolid(this.leds, packRGB(...daylightRGB(now, days)));
+        if (!this.deps.showMoon) return sky;
+
+        const depth = nightDepth(now, days);
+        if (depth === 0) return sky;
+
+        const phase = moonPhase(now);
+        const moon = buildMoonFrame(
+            this.leds,
+            moonIllumination(phase),
+            isWaxing(phase),
+            packRGB(...MOON_COLOR),
+        );
+        return moon.map((m, i) => mixColors(sky[i], m, depth));
+    }
+
     private render() {
         if (!this.active || !this.days) return;
 
-        const color = packRGB(...daylightRGB(this.now(), this.days));
-        if (color === this.lastColor) return; // no visible change this minute
+        const frame = this.buildFrame(this.now(), this.days);
+        if (this.lastFrame && framesEqual(frame, this.lastFrame)) return;
 
-        this.lastColor = color;
-        safeRender(fillSolid(this.leds, color));
+        this.lastFrame = frame;
+        safeRender(frame);
     }
 
     run() {
         this.active = true;
-        this.lastColor = null; // always draw on (re)start
+        this.lastFrame = null; // always draw on (re)start
         this.refreshRunner.start();
         this.tickRunner.start();
     }
@@ -107,8 +141,14 @@ export class SunriseSunset implements Effect {
     }
 }
 
-export const createSunriseSunset = (leds: number, mode: 'auto' | 'manual' = 'auto', query?: string) =>
+export const createSunriseSunset = (
+    leds: number,
+    mode: 'auto' | 'manual' = 'auto',
+    query?: string,
+    showMoon = false,
+) =>
     new SunriseSunset(leds, {
         locate: mode === 'manual' && query ? () => locateByName(query) : locateByIp,
         fetchSunTimes,
+        showMoon,
     });

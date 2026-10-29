@@ -56,6 +56,7 @@ export const normalizeAnswers = (response: Answers<string>): Options => {
     weatherLocation: response.weatherLocation,
     weatherAlerts: response.weatherAlerts === 1 ? 1 : 0,
     pixelSegments: response.pixelSegments ?? [],
+    showMoon: response.showMoon,
 
     // Flags
     isOn: command === 1,

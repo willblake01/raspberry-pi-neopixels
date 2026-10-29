@@ -86,13 +86,16 @@ export interface Options {
   isMotionCustomColorMode: boolean;
   isMotionRandomColorMode: boolean;
 
-  // Weather mode
+  // Weather location
   weatherLocationMode?: 'auto' | 'manual';
   weatherLocation?: string;
 
   // Weather flags
   isWeather: boolean;
   isWeatherAlertsEnabled: boolean;
+
+  // Moon phase
+  showMoon?: 0 | 1;
 
   // Custom Pixels mode
   pixelSegments?: PixelSegment[];

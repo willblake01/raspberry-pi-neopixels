@@ -16,13 +16,18 @@ interface Keyframe {
     rgb: RGB;
 }
 
+/** Twilight extends this far before sunrise and after sunset. */
+export const TWILIGHT_MS = 45 * MIN;
+/** How long the moon takes to fade in after dusk and out before dawn. */
+export const NIGHT_FADE_MS = 30 * MIN;
+
 /** Color keyframes for one day, relative to its sunrise and sunset. */
 export const dayKeyframes = ({ sunrise, sunset }: SunDay): Keyframe[] => {
     const { NIGHT, DAWN, GOLD, WARM, DAY } = SUN_COLORS;
     const midday = (sunrise + sunset) / 2;
 
     return [
-        { at: sunrise - 45 * MIN, rgb: NIGHT },
+        { at: sunrise - TWILIGHT_MS, rgb: NIGHT },
         { at: sunrise - 15 * MIN, rgb: DAWN },
         { at: sunrise + 15 * MIN, rgb: GOLD },
         { at: sunrise + 75 * MIN, rgb: WARM },
@@ -32,7 +37,7 @@ export const dayKeyframes = ({ sunrise, sunset }: SunDay): Keyframe[] => {
         { at: sunset - 60 * MIN, rgb: WARM },
         { at: sunset - 15 * MIN, rgb: GOLD },
         { at: sunset + 15 * MIN, rgb: DAWN },
-        { at: sunset + 45 * MIN, rgb: NIGHT },
+        { at: sunset + TWILIGHT_MS, rgb: NIGHT },
     ];
 };
 
@@ -51,4 +56,22 @@ export const daylightRGB = (now: number, days: SunDay[]): RGB => {
     const span = hi.at - lo.at;
 
     return span <= 0 ? hi.rgb : mixRGB(lo.rgb, hi.rgb, (now - lo.at) / span);
+};
+
+/**
+ * 0 during the day and twilight, rising to 1 within NIGHT_FADE_MS of full night.
+ * Used to fade the moon in after dusk and out before dawn.
+ */
+export const nightDepth = (now: number, days: SunDay[]): number => {
+    const windows = days.map(({ sunrise, sunset }) => ({
+        start: sunrise - TWILIGHT_MS,
+        end: sunset + TWILIGHT_MS,
+    }));
+
+    if (windows.some((w) => now > w.start && now < w.end)) return 0;
+
+    const distance = Math.min(
+        ...windows.flatMap((w) => [Math.abs(now - w.start), Math.abs(now - w.end)]),
+    );
+    return Math.min(1, distance / NIGHT_FADE_MS);
 };

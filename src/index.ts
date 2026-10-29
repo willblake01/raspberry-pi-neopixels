@@ -19,6 +19,7 @@ const delayInMs = 1000;
 export const EXIT_CANCELLED = 130;
 
 const exitCancelled = () => {
+  console.log();
   console.log('❌ Operation cancelled by user.');
   return process.exit(EXIT_CANCELLED);
 };

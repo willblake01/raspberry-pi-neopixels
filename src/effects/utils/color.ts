@@ -16,3 +16,13 @@ export const scaleColor = (color: number, scale: number): number => {
 /** A strip filled with one color. */
 export const fillSolid = (leds: number, color: number): Uint32Array =>
     new Uint32Array(leds).fill(color);
+
+/** Blend two packed colors; t = 0 gives a, t = 1 gives b. */
+export const mixColors = (a: number, b: number, t: number): number => {
+    const ch = (shift: number) =>
+        Math.round(((a >> shift) & 0xff) * (1 - t) + ((b >> shift) & 0xff) * t);
+    return packRGB(ch(16), ch(8), ch(0));
+};
+
+export const framesEqual = (a: Uint32Array, b: Uint32Array): boolean =>
+    a.length === b.length && a.every((v, i) => v === b[i]);
