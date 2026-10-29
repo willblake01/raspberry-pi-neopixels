@@ -210,6 +210,17 @@ export const promptsConfig: PromptObject[] = [
       and(isOn, (v) => v.effect === EFFECTS.WEATHER && v.weatherLocationMode === 'manual'),
   ),
 
+  // Weather -> severe weather alerts
+  promptSelect(
+      'weatherAlerts',
+      'Enable alerts',
+      [
+        { title: 'No', value: 0 },
+        { title: 'Yes', value: 1 },
+      ],
+      and(isOn, effectEquals(EFFECTS.WEATHER)),
+  ),
+
   // Walk Pixel -> pixel state
   promptSelect(
     'pixelState',

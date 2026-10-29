@@ -12,7 +12,6 @@ export type RandomColorMode = 'static' | 'change';
 export type ColorChangeInterval = 'everyPixel' | 'everyLoop';
 
 export interface Options {
-
   // Base config
   weatherAlerts: number;
   command: number;
@@ -85,6 +84,7 @@ export interface Options {
   weatherLocationMode?: 'auto' | 'manual';
   weatherLocation?: string;
   isWeather: boolean;
+  isWeatherAlertsEnabled: boolean;
 }
 
 export type Config = Ws281xConfig;

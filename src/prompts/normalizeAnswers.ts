@@ -25,7 +25,7 @@ export const normalizeAnswers = (response: Answers<string>): Options => {
     motionColorMode,
     motionRed,
     motionGreen,
-    motionBlue
+    motionBlue,
   } = response;
 
   return {
@@ -81,6 +81,7 @@ export const normalizeAnswers = (response: Answers<string>): Options => {
     isWeather: effect === EFFECTS.WEATHER,
     weatherLocationMode: response.weatherLocationMode,
     weatherLocation: response.weatherLocation,
-    weatherAlerts: response.weatherAlerts,
+    weatherAlerts: response.weatherAlerts === 1 ? 1 : 0,
+    isWeatherAlertsEnabled: response.weatherAlerts === 1,
   };
 };
