@@ -12,8 +12,8 @@ export interface CurrentWeather {
 
 const TIMEOUT_MS = 10_000;
 
-const getJson = async (url: URL | string): Promise<unknown> => {
-    const res = await fetch(url, { signal: AbortSignal.timeout(TIMEOUT_MS) });
+const getJson = async (url: URL | string, init?: RequestInit): Promise<unknown> => {
+    const res = await fetch(url, { ...init, signal: AbortSignal.timeout(TIMEOUT_MS) });
     if (!res.ok) throw new Error(`HTTP ${res.status} from ${new URL(url).host}`);
     return res.json();
 };
@@ -82,4 +82,25 @@ export const fetchCurrentWeather = async ({ latitude, longitude }: Location): Pr
         precipitationIn: c.precipitation ?? 0,
         weatherCode: c.weather_code,
     };
+};
+
+export interface WeatherAlert {
+    event: string;    // e.g. "Tornado Warning", "Flood Watch"
+    severity: string; // "Extreme" | "Severe" | "Moderate" | "Minor" | "Unknown"
+}
+
+const NWS_USER_AGENT = 'raspberry-pi-neopixels (github.com/willblake01/raspberry-pi-neopixels)';
+
+export const fetchActiveAlerts = async ({ latitude, longitude }: Location): Promise<WeatherAlert[]> => {
+    const url = new URL('https://api.weather.gov/alerts/active');
+    url.searchParams.set('point', `${latitude.toFixed(4)},${longitude.toFixed(4)}`);
+
+    const data = (await getJson(url, {
+        headers: { 'User-Agent': NWS_USER_AGENT, Accept: 'application/geo+json' },
+    })) as { features?: { properties?: { event?: string; severity?: string } }[] };
+
+    return (data.features ?? []).map((f) => ({
+        event: f.properties?.event ?? '',
+        severity: f.properties?.severity ?? 'Unknown',
+    }));
 };

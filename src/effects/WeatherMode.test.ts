@@ -29,6 +29,8 @@ const makeDeps = (...weather: CurrentWeather[]): WeatherModeDeps & {
 
 const solid = (leds: number, color: number) => Array(leds).fill(color);
 
+const fakeAlertEffect = () => ({ run: jest.fn(), stop: jest.fn() });
+
 test('renders the temperature color right away', async () => {
     const effect = new WeatherMode(3, makeDeps(HOT), POLL);
 
@@ -89,4 +91,43 @@ test('does not render if stopped before the response arrives', async () => {
     await jest.advanceTimersByTimeAsync(0);
 
     expect(safeRenderMock).not.toHaveBeenCalled();
+});
+
+test('an active warning replaces the weather color with the alert effect', async () => {
+    const alertEffect = fakeAlertEffect();
+    const deps = {
+        ...makeDeps(HOT),
+        fetchAlerts: jest.fn().mockResolvedValue([{ event: 'Tornado Warning', severity: 'Extreme' }]),
+        makeAlertEffect: jest.fn(() => alertEffect),
+    };
+    const effect = new WeatherMode(3, deps, POLL, POLL);
+
+    effect.run();
+    await jest.advanceTimersByTimeAsync(0);
+
+    expect(alertEffect.run).toHaveBeenCalled();
+    effect.stop();
+    expect(alertEffect.stop).toHaveBeenCalled();
+});
+
+test('returns to the weather color when the alert clears', async () => {
+    const alertEffect = fakeAlertEffect();
+    const deps = {
+        ...makeDeps(HOT, HOT),
+        fetchAlerts: jest
+            .fn()
+            .mockResolvedValueOnce([{ event: 'Flood Watch', severity: 'Moderate' }])
+            .mockResolvedValueOnce([]),
+        makeAlertEffect: jest.fn(() => alertEffect),
+    };
+    const effect = new WeatherMode(3, deps, POLL * 10, POLL);
+
+    effect.run();
+    await jest.advanceTimersByTimeAsync(POLL);
+
+    const frames = renderedFrames();
+
+    expect(alertEffect.stop).toHaveBeenCalled();
+    expect(frames[frames.length - 1]).toEqual(solid(3, weatherToColor(HOT)));
+    effect.stop();
 });

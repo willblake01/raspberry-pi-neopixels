@@ -156,7 +156,8 @@ export const RULES: Rule[] = [
   {
     name: 'weather',
     when: (o: Options) => o.isOn && o.isWeather,
-    make: (o: Options) => createWeatherMode(o.leds, o.weatherLocationMode, o.weatherLocation),
+    make: (o: Options) =>
+        createWeatherMode(o.leds, o.weatherLocationMode, o.weatherLocation, o.weatherAlerts === 1),
   },
 
   // --- TURN OFF (explicit command) ---
