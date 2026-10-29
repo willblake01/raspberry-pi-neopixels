@@ -84,7 +84,6 @@ describe('index entrypoint', () => {
     const disposeMock = jest.fn();
 
     EffectManagerMock.mockImplementation(() => ({
-      config: { leds: 100, dma: 10, gamma: 2.2, brightness: 128, gpio: 18, stripType: 'rgb' },
       start: startMock,
       dispose: disposeMock,
     }) as any);
@@ -98,11 +97,8 @@ describe('index entrypoint', () => {
     // Kick off main but don't await it yet
     const mainPromise = main();
 
-    // Let the prompts() promise resolve
-    await Promise.resolve();
-
     // Fast-forward the 1s delay
-    jest.advanceTimersByTime(1000);
+    await jest.advanceTimersByTimeAsync(1000);
 
     // Wait for main to finish anything pending after the delay
     await mainPromise;
@@ -122,6 +118,7 @@ describe('index entrypoint', () => {
       stripType: 'rgb',
     });
     expect(startMock).toHaveBeenCalled();
+    expect(logSpy).toHaveBeenCalledWith();
   });
 
   test('Ctrl+C during prompts exits without starting the LEDs', async () => {
