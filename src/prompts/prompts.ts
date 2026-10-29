@@ -3,6 +3,7 @@ import { EFFECTS } from '../constants/index.js';
 import { and, integerBetween, numberBetween } from '../utils/index.js';
 import type { EffectName } from '../types/index.js';
 import { GAMMA } from '../constants/index.js';
+import { parsePixelSpecs } from '../effects/CustomPixels.js';
 
 /**
  * Raw answer shape while prompts is running.
@@ -32,6 +33,8 @@ export type PromptTypeFn = (
   values: AnswersShape
 ) => PromptType | null;
 
+const MAX_LEDS = 100;
+
 // -----------------------------------------------------------------------------
 // Effect capabilities
 // -----------------------------------------------------------------------------
@@ -46,6 +49,7 @@ const EFFECT_CHOICES: SelectChoice<EffectName>[] = [
   { title: 'Wheel', value: EFFECTS.WHEEL },
   { title: 'Walk Pixel', value: EFFECTS.WALK_PIXEL },
   { title: 'Weather', value: EFFECTS.WEATHER },
+  { title: 'Custom Pixels', value: EFFECTS.CUSTOM_PIXELS },
 ];
 
 // Capabilities
@@ -193,6 +197,20 @@ export const promptsConfig: PromptObject[] = [
 
   // Effect (only when turning on)
   promptSelect('effect', 'Select effect', EFFECT_CHOICES, isOn),
+
+  {
+    type: show('text', and(isOn, effectEquals(EFFECTS.CUSTOM_PIXELS))),
+    name: 'pixels',
+    message: 'Pixels (pixel, r, g, b; ...)  e.g. "all, 0, 0, 20; 99, 255, 255, 255"',
+    validate: (v: string) => {
+      try {
+        parsePixelSpecs(v ?? '', MAX_LEDS);
+        return true;
+      } catch (err) {
+        return (err as Error).message;
+      }
+    },
+  },
 
   // Weather -> location mode
   promptSelect(

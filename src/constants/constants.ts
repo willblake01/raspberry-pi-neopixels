@@ -8,6 +8,7 @@ export const EFFECTS = {
     WHEEL: 'wheel',
     WALK_PIXEL: 'walk pixel',
     WEATHER: 'weather',
+    CUSTOM_PIXELS: 'custom_pixels'
   } as const;
 
 // 1.0 - Off (no correction), 2.2 - sRGB (matches screen color), 2.5 - Middle ground, 2.8 (Adafruit's NeoPixel default), 3.0 - Upper practical limit (beyond which color is distorted)

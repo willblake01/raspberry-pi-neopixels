@@ -13,6 +13,7 @@ export type ColorChangeInterval = 'everyPixel' | 'everyLoop';
 
 export interface Options {
   // Base config
+  pixels?: string;
   weatherAlerts: number;
   command: number;
   leds: number;

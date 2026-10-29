@@ -29,7 +29,6 @@ export const normalizeAnswers = (response: Answers<string>): Options => {
   } = response;
 
   return {
-
     // Values
     command,
     leds,
@@ -82,6 +81,6 @@ export const normalizeAnswers = (response: Answers<string>): Options => {
     weatherLocationMode: response.weatherLocationMode,
     weatherLocation: response.weatherLocation,
     weatherAlerts: response.weatherAlerts === 1 ? 1 : 0,
-    isWeatherAlertsEnabled: response.weatherAlerts === 1,
+    isWeatherAlertsEnabled: response.weatherAlerts === 1
   };
 };
