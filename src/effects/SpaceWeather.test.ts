@@ -1,4 +1,4 @@
-import { PolledLocationEffect, type PolledLocationEffectConfig } from './utils/index.js';
+import { PolledLocationEffect } from './utils/index.js';
 import { spaceWeatherConfig } from './SpaceWeather.js';
 import { KP_STYLES } from '../weather/spaceWeather.js';
 import { packRGB } from './utils/color.js';
