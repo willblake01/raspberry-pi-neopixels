@@ -15,6 +15,16 @@ export interface SunDay {
     sunset: number;  // epoch ms
 }
 
+export interface UvHour {
+    time: number; // epoch ms, start of the hour
+    uv: number;
+}
+
+export interface UvForecast {
+    hours: UvHour[];
+    maxToday: number | null;
+}
+
 const TIMEOUT_MS = 10_000;
 
 const getJson = async (url: URL | string, init?: RequestInit): Promise<unknown> => {
@@ -129,4 +139,32 @@ export const fetchSunTimes = async ({ latitude, longitude }: Location): Promise<
     }
 
     return sunrise.map((rise, i) => ({ sunrise: rise * 1000, sunset: sunset[i] * 1000 }));
+};
+
+/** Hourly UV index for today and tomorrow, plus today's peak. */
+export const fetchUvIndex = async ({ latitude, longitude }: Location): Promise<UvForecast> => {
+    const url = new URL('https://api.open-meteo.com/v1/forecast');
+    url.searchParams.set('latitude', String(latitude));
+    url.searchParams.set('longitude', String(longitude));
+    url.searchParams.set('hourly', 'uv_index');
+    url.searchParams.set('daily', 'uv_index_max');
+    url.searchParams.set('timeformat', 'unixtime');
+    url.searchParams.set('timezone', 'auto');
+    url.searchParams.set('forecast_days', '2');
+
+    const data = (await getJson(url)) as {
+        hourly?: { time?: number[]; uv_index?: (number | null)[] };
+        daily?: { uv_index_max?: (number | null)[] };
+    };
+
+    const times = data.hourly?.time ?? [];
+    const values = data.hourly?.uv_index ?? [];
+    if (times.length === 0 || times.length !== values.length) {
+        throw new Error('UV index missing from response');
+    }
+
+    return {
+        hours: times.map((t, i) => ({ time: t * 1000, uv: values[i] ?? 0 })),
+        maxToday: data.daily?.uv_index_max?.[0] ?? null,
+    };
 };

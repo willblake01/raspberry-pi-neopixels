@@ -6,10 +6,11 @@ export const EFFECTS = {
     BREATHE: 'breathe',
     GROWING_BAR: 'growing_bar',
     WHEEL: 'wheel',
-    WALK_PIXEL: 'walk pixel',
+    WALK_PIXEL: 'walk_pixel',
     WEATHER: 'weather',
+    SUNRISE_SUNSET: 'sunrise_sunset',
+    UV_INDEX: 'uv_index',
     CUSTOM_PIXELS: 'custom_pixels',
-    SUNRISE_SUNSET: 'sunrise_sunset'
 } as const;
 
 // 1.0 - Off (no correction), 2.2 - sRGB (matches screen color), 2.5 - Middle ground, 2.8 (Adafruit's NeoPixel default), 3.0 - Upper practical limit (beyond which color is distorted)

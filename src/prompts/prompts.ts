@@ -45,8 +45,9 @@ const EFFECT_CHOICES: SelectChoice<EffectName>[] = [
   { title: 'Growing Bar', value: EFFECTS.GROWING_BAR },
   { title: 'Wheel', value: EFFECTS.WHEEL },
   { title: 'Walk Pixel', value: EFFECTS.WALK_PIXEL },
-  { title: 'Weather', value: EFFECTS.WEATHER },
   { title: 'Sunrise/Sunset', value: EFFECTS.SUNRISE_SUNSET },
+  { title: 'Weather', value: EFFECTS.WEATHER },
+  { title: 'UV Index', value: EFFECTS.UV_INDEX },
   { title: 'Custom Pixels', value: EFFECTS.CUSTOM_PIXELS },
 ];
 
@@ -76,6 +77,7 @@ const EFFECT_NEEDS_SHIFTING: ReadonlySet<EffectName> = new Set<EffectName>([
 const EFFECT_NEEDS_LOCATION: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.WEATHER,
   EFFECTS.SUNRISE_SUNSET,
+  EFFECTS.UV_INDEX,
 ]);
 
 // Random color is *not allowed for Change or Wheel

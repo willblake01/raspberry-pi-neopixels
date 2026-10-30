@@ -3,6 +3,7 @@ import { Effect, Options } from '../../types/index.js';
 import { createWeather } from "../Weather.js";
 import { EFFECTS } from "../../constants/index.js";
 import { createSunriseSunset, CustomPixels } from "../index.js";
+import {createUvIndex} from "../UvIndex.js";
 
 interface Rule {
   name: string;
@@ -162,9 +163,16 @@ export const RULES: Rule[] = [
         createWeather(o.leds, o.locationType, o.location, o.weatherAlerts === 1),
   },
 
+  // --- UV INDEX ---
+  {
+    name: 'uv-index',
+    when: (o: Options) => o.isOn && o.effect === EFFECTS.UV_INDEX,
+    make: (o: Options) => createUvIndex(o.leds, o.locationType, o.location),
+  },
+
   // --- SUNRISE/SUNSET ---
   {
-    name: 'sunrise_sunset',
+    name: 'sunrise-sunset',
     when: (o: Options) => o.isOn && o.effect === EFFECTS.SUNRISE_SUNSET,
     make: (o: Options) =>
         createSunriseSunset(o.leds, o.locationType, o.location, o.showMoon === 1),
@@ -172,7 +180,7 @@ export const RULES: Rule[] = [
 
   // --- CUSTOM PIXELS ---
   {
-    name: 'customPixels',
+    name: 'custom-pixels',
     when: (o: Options) => o.isOn && o.effect === EFFECTS.CUSTOM_PIXELS,
     make: (o: Options) => new CustomPixels(o.leds, o.pixelSegments ?? []),
   },
