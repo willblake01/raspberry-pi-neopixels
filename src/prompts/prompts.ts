@@ -124,7 +124,7 @@ const allowsRandomColorChangeInterval: Predicate = (v) =>
 // Motion override enabled?
 const motionEnabled: Predicate = (v) => v.useMotionDetection === 1;
 
-const motionCustom: Predicate = (v) => v.useMotionDetection === 1 && v.motionColorMode === 'custom';
+const motionCustom: Predicate = (v) => v.useMotionDetection === 1 && v.motionColorType === 'custom';
 
 /** Wraps a predicate into a dynamic `type` function that `prompts` accepts. */
 const show = (type: PromptType, pred: Predicate): PromptTypeFn =>
@@ -275,8 +275,8 @@ export const promptsConfig: PromptObject[] = [
     and(isOn, effectEquals(EFFECTS.WALK_PIXEL))
   ),
 
-  // Shift mode (only when turning on and needs shifting)
-  promptSelect('shiftMode', 'Enable shift mode', [
+  // Shift (only when turning on and needs shifting)
+  promptSelect('shift', 'Enable pixel shift', [
     { title: 'No', value: 0 },
     { title: 'Yes', value: 1 }
   ], and(isOn, (v) => needsShifting(v))),
@@ -288,11 +288,11 @@ export const promptsConfig: PromptObject[] = [
     initial: 250,
     when: and(
       isOn,
-      (v) => needsInterval(v) || v.shiftMode === 1
+      (v) => needsInterval(v) || v.shift === 1
     ),
   }),
 
-  // Color mode (disallowed for change & wheel)
+  // Color type (disallowed for change & wheel)
   promptSelect(
     'colorType',
     'Select color type',
@@ -317,7 +317,7 @@ export const promptsConfig: PromptObject[] = [
     and(
       isOn,
       (v) =>
-        v.colortype === 'random' &&
+        v.colorType === 'random' &&
         v.effect !== EFFECTS.SOLID &&
         v.effect !== EFFECTS.CHANGE
     )
@@ -334,7 +334,7 @@ export const promptsConfig: PromptObject[] = [
     and(
       isOn,
       (v) =>
-        v.colortype === 'random' &&
+        v.colorType === 'random' &&
         v.randomColorMode === 'change' &&
         v.effect !== EFFECTS.BLINK &&
         allowsRandomColorChangeInterval(v)
@@ -348,7 +348,7 @@ export const promptsConfig: PromptObject[] = [
     initial: 0,
     when: and(
       isOn,
-      (v) => v.colortype === 'custom' && allowsCustom(v)
+      (v) => v.colorType === 'custom' && allowsCustom(v)
     ),
   }),
   promptNumber('green', 'Enter green value (0-255)', {
@@ -357,7 +357,7 @@ export const promptsConfig: PromptObject[] = [
     initial: 0,
     when: and(
       isOn,
-      (v) => v.colortype === 'custom' && allowsCustom(v)
+      (v) => v.colorType === 'custom' && allowsCustom(v)
     ),
   }),
   promptNumber('blue', 'Enter blue value (0-255)', {
@@ -366,7 +366,7 @@ export const promptsConfig: PromptObject[] = [
     initial: 0,
     when: and(
       isOn,
-      (v) => v.colortype === 'custom' && allowsCustom(v)
+      (v) => v.colorType === 'custom' && allowsCustom(v)
     ),
   }),
 
@@ -377,7 +377,7 @@ export const promptsConfig: PromptObject[] = [
     initial: 0,
     when: and(
       isOn,
-      (v) => v.colortype === 'custom' && allowsCustom(v) && needsShifting(v)
+      (v) => v.colorType === 'custom' && allowsCustom(v) && needsShifting(v)
     ),
   }),
   promptNumber('green2', 'Enter second color green value (0-255)', {
@@ -386,7 +386,7 @@ export const promptsConfig: PromptObject[] = [
     initial: 0,
     when: and(
       isOn,
-      (v) => v.colortype === 'custom' && allowsCustom(v) && needsShifting(v)
+      (v) => v.colorType === 'custom' && allowsCustom(v) && needsShifting(v)
     ),
   }),
   promptNumber('blue2', 'Enter second color blue value (0-255)', {
@@ -395,7 +395,7 @@ export const promptsConfig: PromptObject[] = [
     initial: 0,
     when: and(
       isOn,
-      (v) => v.colortype === 'custom' && allowsCustom(v) && needsShifting(v)
+      (v) => v.colorType === 'custom' && allowsCustom(v) && needsShifting(v)
     ),
   }),
 
@@ -414,8 +414,8 @@ export const promptsConfig: PromptObject[] = [
     isOn
   ),
   promptSelect(
-    'motionColorMode',
-    'Select motion color mode',
+    'motionColorType',
+    'Select motion color type',
     [
       { title: 'Custom', value: 'custom' },
       { title: 'Random', value: 'random' }

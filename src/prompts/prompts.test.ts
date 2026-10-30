@@ -32,6 +32,11 @@ const getPrompt = (name: string) => {
   return p!;
 };
 
+const shownPrompts = (answers: Record<string, unknown>) =>
+    promptsConfig
+        .filter((p) => typeof p.type !== 'function' || (p.type as Function)(undefined, answers, p) !== null)
+        .map((p) => p.name);
+
 describe('prompts configuration', () => {
   test('command prompt is always shown and offers on/off options', () => {
     const commandPrompt = getPrompt('command');
@@ -70,17 +75,17 @@ describe('prompts configuration', () => {
     expect(evalType(intervalPrompt, { command: 0, effect: EFFECTS.BLINK })).toBeNull();
   });
 
-  test('colorMode prompt only shows when an effect supports custom or random', () => {
-    const colorModePrompt = getPrompt('colorMode');
+  test('colorType prompt only shows when an effect supports custom or random', () => {
+    const colorTypePrompt = getPrompt('colorType');
 
-    // Solid supports color mode -> shown
-    expect(evalType(colorModePrompt, { command: 1, effect: EFFECTS.SOLID })).toBe('select');
+    // Solid supports color type -> shown
+    expect(evalType(colorTypePrompt, { command: 1, effect: EFFECTS.SOLID })).toBe('select');
 
-    // Wheel does NOT allow colorMode -> hidden
-    expect(evalType(colorModePrompt, { command: 1, effect: EFFECTS.WHEEL })).toBeNull();
+    // Wheel does NOT allow colorType -> hidden
+    expect(evalType(colorTypePrompt, { command: 1, effect: EFFECTS.WHEEL })).toBeNull();
 
     // Off -> hidden
-    expect(evalType(colorModePrompt, { command: 0, effect: EFFECTS.SOLID })).toBeNull();
+    expect(evalType(colorTypePrompt, { command: 0, effect: EFFECTS.SOLID })).toBeNull();
   });
 
   test('randomColorMode prompt is only shown for random-capable effects (non-solid/change)', () => {
@@ -88,17 +93,17 @@ describe('prompts configuration', () => {
 
     // Random + creep (allowed) -> shown
     expect(
-      evalType(randomModePrompt, { command: 1, colorMode: 'random', effect: EFFECTS.GROWING_BAR })
+      evalType(randomModePrompt, { command: 1, colorType: 'random', effect: EFFECTS.GROWING_BAR })
     ).toBe('select');
 
     // Random + solid -> hidden per config
     expect(
-      evalType(randomModePrompt, { command: 1, colorMode: 'random', effect: EFFECTS.SOLID })
+      evalType(randomModePrompt, { command: 1, colorType: 'random', effect: EFFECTS.SOLID })
     ).toBeNull();
 
     // Random + change -> hidden per config
     expect(
-      evalType(randomModePrompt, { command: 1, colorMode: 'random', effect: EFFECTS.CHANGE })
+      evalType(randomModePrompt, { command: 1, colorType: 'random', effect: EFFECTS.CHANGE })
     ).toBeNull();
   });
 
@@ -109,7 +114,7 @@ describe('prompts configuration', () => {
     expect(
       evalType(colorChangeIntervalPrompt, {
         command: 1,
-        colorMode: 'random',
+        colorType: 'random',
         randomColorMode: 'change',
         effect: EFFECTS.GROWING_BAR,
       })
@@ -119,7 +124,7 @@ describe('prompts configuration', () => {
     expect(
       evalType(colorChangeIntervalPrompt, {
         command: 1,
-        colorMode: 'random',
+        colorType: 'random',
         randomColorMode: 'change',
         effect: EFFECTS.BLINK,
       })
@@ -129,29 +134,29 @@ describe('prompts configuration', () => {
     expect(
       evalType(colorChangeIntervalPrompt, {
         command: 1,
-        colorMode: 'random',
+        colorType: 'random',
         randomColorMode: 'static',
         effect: EFFECTS.GROWING_BAR,
       })
     ).toBeNull();
   });
 
-  test('custom RGB prompts only appear when custom colorMode is selected and effect allows custom', () => {
+  test('custom RGB prompts only appear when custom colorType is selected and effect allows custom', () => {
     const redPrompt = getPrompt('red');
     const greenPrompt = getPrompt('green');
     const bluePrompt = getPrompt('blue');
 
     for (const p of [redPrompt, greenPrompt, bluePrompt]) {
       // Custom + solid -> shown
-      expect(evalType(p, { command: 1, colorMode: 'custom', effect: EFFECTS.SOLID })).toBe(
+      expect(evalType(p, { command: 1, colorType: 'custom', effect: EFFECTS.SOLID })).toBe(
         'number'
       );
 
       // Random -> hidden
-      expect(evalType(p, { command: 1, colorMode: 'random', effect: EFFECTS.SOLID })).toBeNull();
+      expect(evalType(p, { command: 1, colorType: 'random', effect: EFFECTS.SOLID })).toBeNull();
 
       // Effect that doesn't allow custom (wheel) -> hidden
-      expect(evalType(p, { command: 1, colorMode: 'custom', effect: EFFECTS.WHEEL })).toBeNull();
+      expect(evalType(p, { command: 1, colorType: 'custom', effect: EFFECTS.WHEEL })).toBeNull();
     }
   });
 
@@ -178,8 +183,8 @@ describe('prompts configuration', () => {
     ]);
   });
 
-  test('motionColorMode prompt appears only when motion override is enabled', () => {
-    const motionColorModePrompt = getPrompt('motionColorMode');
+  test('motionColorType prompt appears only when motion override is enabled', () => {
+    const motionColorModePrompt = getPrompt('motionColorType');
 
     // Not enabled -> hidden
     expect(
@@ -192,7 +197,7 @@ describe('prompts configuration', () => {
     ).toBe('select');
   });
 
-  test('motion RGB prompts appear only for custom motionColorMode AND when enabled', () => {
+  test('motion RGB prompts appear only for custom motionColorType AND when enabled', () => {
     const motionRedPrompt = getPrompt('motionRed');
     const motionGreenPrompt = getPrompt('motionGreen');
     const motionBluePrompt = getPrompt('motionBlue');
@@ -203,7 +208,7 @@ describe('prompts configuration', () => {
         evalType(p, {
           command: 1,
           useMotionDetection: 1,
-          motionColorMode: 'custom',
+          motionColorType: 'custom',
         })
       ).toBe('number');
 
@@ -212,7 +217,7 @@ describe('prompts configuration', () => {
         evalType(p, {
           command: 1,
           useMotionDetection: 1,
-          motionColorMode: 'random',
+          motionColorType: 'random',
         })
       ).toBeNull();
 
@@ -221,9 +226,29 @@ describe('prompts configuration', () => {
         evalType(p, {
           command: 1,
           useMotionDetection: 0,
-          motionColorMode: 'custom',
+          motionColorType: 'custom',
         })
       ).toBeNull();
     }
+  });
+
+  test('custom colors ask for red, green and blue', () => {
+    const names = shownPrompts({ command: 1, effect: EFFECTS.SOLID, colorType: 'custom' });
+    expect(names).toEqual(expect.arrayContaining(['red', 'green', 'blue']));
+  });
+
+  test('checkerboard with custom colors asks for a second color', () => {
+    const names = shownPrompts({ command: 1, effect: EFFECTS.CHECKERBOARD, colorType: 'custom' });
+    expect(names).toEqual(expect.arrayContaining(['red2', 'green2', 'blue2']));
+  });
+
+  test('shift mode asks for an interval', () => {
+    const names = shownPrompts({ command: 1, effect: EFFECTS.CHECKERBOARD, shift: 1 });
+    expect(names).toContain('interval');
+  });
+
+  test('custom motion color asks for motion RGB', () => {
+    const names = shownPrompts({ command: 1, useMotionDetection: 1, motionColorType: 'custom' });
+    expect(names).toEqual(expect.arrayContaining(['motionRed', 'motionGreen', 'motionBlue']));
   });
 });
