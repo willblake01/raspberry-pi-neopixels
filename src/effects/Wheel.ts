@@ -1,89 +1,46 @@
 import { safeRender } from '../ledRuntime.js';
-import { randomNumber } from '../utils/index.js';
+import { randomColor } from './utils/color.js';
+import { IntervalRunner } from './utils/index.js';
 import type { Effect, Options } from '../types/index.js';
 
-export class Wheel implements Effect {
-  public leds: Options['leds'];
-  public interval: Options['interval'];
-  private _red1: Options['red']
-  private _green1: Options['green'];
-  private _blue1: Options['blue'];
-  private readonly _red2: Options['red']
-  private readonly _green2: Options['green'];
-  private readonly _blue2: Options['blue'];
-  private _offset: number;
-  private _intervalID: NodeJS.Timeout | null;
-  private _stopped: boolean;
+/** Pure: the new color fills pixels 0 through `offset`; the previous color fills the rest. */
+export const buildWheel = (leds: number, offset: number, color: number, previous: number): Uint32Array => {
+  const pixels = new Uint32Array(leds).fill(previous);
+  pixels.fill(color, 0, offset + 1);
+  return pixels;
+};
 
-  constructor(leds: Options['leds'], interval: Options['interval']) {
-    this.leds = leds;
-    this.interval = interval;
-    this._red1 = randomNumber(255);
-    this._green1 = randomNumber(255);
-    this._blue1 = randomNumber(255);
-    this._red2 = 0;
-    this._green2 = 0;
-    this._blue2 = 0;
-    this._offset = 0;
-    this._intervalID = null;
-    this._stopped = false;
+/** A new random color sweeps down the strip over the previous one, every revolution. */
+export class Wheel implements Effect {
+  private offset = 0;
+  private color = randomColor();
+  private previous = 0; // the first pass sweeps over a dark strip
+  private readonly runner: IntervalRunner;
+
+  constructor(
+      private readonly leds: Options['leds'],
+      interval: Options['interval'],
+  ) {
+    this.runner = new IntervalRunner(interval, () => this.step());
   }
 
-  loop() {
-    if (this._stopped) return;
+  private step() {
+    safeRender(buildWheel(this.leds, this.offset, this.color, this.previous));
 
-    let color1 = (this._red1 << 16) | (this._green1 << 8) | this._blue1;
-    let color2 = (this._red2 << 16) | (this._green2 << 8) | this._blue2;
+    if (this.leds === 0) return;
+    this.offset = (this.offset + 1) % this.leds;
 
-    const pixels = new Uint32Array(this.leds);
-
-    // Set pixels up to and including offset to color1
-    for (let i = 0; i <= this._offset; i++) {
-      pixels[i] = color1;
+    if (this.offset === 0) {
+      this.previous = this.color; // the finished color becomes the background
+      this.color = randomColor();
     }
-
-    // Set rest of strand to color2
-    for (let i = this._offset + 1; i < this.leds; i++) {
-      pixels[i] = color2;
-    }
-
-    const setNextState = () => {
-      this._offset = (this._offset + 1) % this.leds;
-
-      if (this._offset === 0) {
-        color2 = color1;
-
-        // Change color every loop
-        this._red1 = randomNumber(255);
-        this._green1 = randomNumber(255);
-        this._blue1 = randomNumber(255);
-      }
-    }
-
-    safeRender(pixels);
-    setNextState();
   }
 
   run() {
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    }
-
-    this._stopped = false;
-
-    this.loop();
-    this._intervalID = setInterval(() => this.loop(), this.interval);
+    this.runner.start();
   }
 
   stop() {
-    if (this._stopped) return;
-
-    this._stopped = true;
-    
-    if (this._intervalID) {
-      clearInterval(this._intervalID);
-      this._intervalID = null;
-    }
+    this.runner.stop();
   }
 }
