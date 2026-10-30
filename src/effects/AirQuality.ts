@@ -1,4 +1,4 @@
-import { PolledLocationEffect, type PolledLocationEffectConfig } from './utils/PolledLocationEffect.js';
+import { PolledLocationEffect, type PolledLocationEffectConfig } from './utils/index.js';
 import { fillSolid, packRGB } from './utils/color.js';
 import { AQI_LABELS, aqiLevel, aqiToRGB } from '../weather/airQuality.js';
 import {
