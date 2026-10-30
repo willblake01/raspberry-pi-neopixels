@@ -35,6 +35,11 @@ export interface UVForecast {
     maxToday: number | null;
 }
 
+export interface SpaceWeatherReading {
+    kp: number;
+    time: string; // UTC timestamp from NOAA
+}
+
 const TIMEOUT_MS = 10_000;
 
 const getJson = async (url: URL | string, init?: RequestInit): Promise<unknown> => {
@@ -189,4 +194,17 @@ export const fetchAirQuality = async ({ latitude, longitude }: Location): Promis
     if (typeof usAqi !== 'number') throw new Error('US AQI missing from response');
 
     return { usAqi, pm25: data.current?.pm2_5 ?? null };
+};
+
+/** Latest 1-minute estimated planetary K-index from NOAA SWPC. */
+export const fetchKp = async (): Promise<SpaceWeatherReading> => {
+    const data = (await getJson(
+        'https://services.swpc.noaa.gov/json/planetary_k_index_1m.json',
+    )) as { time_tag?: string; estimated_kp?: number; kp_index?: number }[];
+
+    const latest = Array.isArray(data) ? data[data.length - 1] : undefined;
+    const kp = latest?.estimated_kp ?? latest?.kp_index;
+
+    if (typeof kp !== 'number') throw new Error('Kp index missing from response');
+    return { kp, time: latest?.time_tag ?? '' };
 };

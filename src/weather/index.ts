@@ -10,6 +10,7 @@ export type {
     AirQualityReading,
     UVHour,
     UVForecast,
+    SpaceWeatherReading
 } from './api.js';
 export { locateByIp, locateByName, fetchCurrentWeather } from './api.js';
 export { type RGB } from './colors.js';

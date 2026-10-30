@@ -7,6 +7,7 @@ export { CustomPixels } from './CustomPixels.js';
 export { GrowingBarCustom, GrowingBarRandomChangePixel, GrowingBarRandomChangeLoop, GrowingBarRandomStatic } from './GrowingBar.js';
 export { Pomodoro } from './Pomodoro.js';
 export { SolidCustom, SolidRandom } from './Solid.js';
+export { createSpaceWeather } from './SpaceWeather.js';
 export { createSunriseSunset, SunriseSunset } from './SunriseSunset.js';
 export { TurnOff } from './TurnOff.js';
 export { createUVIndex } from './UVIndex.js';

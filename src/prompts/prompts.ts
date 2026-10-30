@@ -1,8 +1,7 @@
 import type { Answers, PromptObject, PromptType } from 'prompts';
-import {EFFECTS, LEDS} from '../constants/index.js';
+import { EFFECTS, GAMMA, LEDS } from '../constants/index.js';
 import { and, integerBetween, numberBetween } from '../utils/index.js';
 import type { EffectName } from '../types/index.js';
-import { GAMMA } from '../constants/index.js';
 
 /**
  * Raw answer shape while prompts is running.
@@ -50,6 +49,7 @@ const EFFECT_CHOICES: SelectChoice<EffectName>[] = [
   { title: 'Weather', value: EFFECTS.WEATHER },
   { title: 'Air Quality', value: EFFECTS.AIR_QUALITY },
   { title: 'UV Index', value: EFFECTS.UV_INDEX },
+  { title: 'Space Weather', value: EFFECTS.SPACE_WEATHER },
   { title: 'Custom Pixels', value: EFFECTS.CUSTOM_PIXELS },
 ];
 

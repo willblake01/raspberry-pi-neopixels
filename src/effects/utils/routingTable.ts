@@ -1,6 +1,40 @@
 import { Effect, Options } from '../../types/index.js';
 import { EFFECTS } from "../../constants/index.js";
-import { createAirQuality, BlinkCustom, BlinkRandomChange, BlinkRandomStatic, BreatheCustom, BreatheRandom, Change, CheckerboardCustom, CheckerboardCustomShift, CheckerboardRandomShift, CheckerboardRandom, createSunriseSunset, CustomPixels, GrowingBarCustom, GrowingBarRandomChangePixel, GrowingBarRandomChangeLoop, GrowingBarRandomStatic, Pomodoro, SolidCustom, SolidRandom, TurnOff, createUVIndex, WalkPixelOffCustomStatic, WalkPixelOffRandomStatic, WalkPixelOffRandomChangeLoop, WalkPixelOffRandomChangePixel, WalkPixelOnCustom, WalkPixelOnRandomChangePixel, WalkPixelOnRandomChangeLoop, WalkPixelOnRandomStatic, createWeather, Wheel } from '../index.js';
+import {
+  createAirQuality,
+  BlinkCustom,
+  BlinkRandomChange,
+  BlinkRandomStatic,
+  BreatheCustom,
+  BreatheRandom,
+  Change,
+  CheckerboardCustom,
+  CheckerboardCustomShift,
+  CheckerboardRandomShift,
+  CheckerboardRandom,
+  createSunriseSunset,
+  CustomPixels,
+  GrowingBarCustom,
+  GrowingBarRandomChangePixel,
+  GrowingBarRandomChangeLoop,
+  GrowingBarRandomStatic,
+  Pomodoro,
+  SolidCustom,
+  SolidRandom,
+  TurnOff,
+  createUVIndex,
+  WalkPixelOffCustomStatic,
+  WalkPixelOffRandomStatic,
+  WalkPixelOffRandomChangeLoop,
+  WalkPixelOffRandomChangePixel,
+  WalkPixelOnCustom,
+  WalkPixelOnRandomChangePixel,
+  WalkPixelOnRandomChangeLoop,
+  WalkPixelOnRandomStatic,
+  Wheel,
+  createWeather,
+  createSpaceWeather
+} from '../index.js';
 
 interface Rule {
   name: string;
@@ -192,6 +226,13 @@ export const RULES: Rule[] = [
     name: 'uv-index',
     when: (o: Options) => o.isOn && o.effect === EFFECTS.UV_INDEX,
     make: (o: Options) => createUVIndex(o.leds, o.locationType, o.location),
+  },
+
+  // --- SPACE WEATHER ---
+  {
+    name: 'spaceWeather',
+    when: (o: Options) => o.isOn && o.effect === EFFECTS.SPACE_WEATHER,
+    make: (o: Options) => createSpaceWeather(o.leds),
   },
 
   // --- CUSTOM PIXELS ---

@@ -12,6 +12,7 @@ export const EFFECTS = {
     WEATHER: 'weather',
     AIR_QUALITY: 'air_quality',
     UV_INDEX: 'uv_index',
+    SPACE_WEATHER: 'space_weather',
     CUSTOM_PIXELS: 'custom_pixels',
 } as const;
 
