@@ -6,8 +6,8 @@ import type { Ws281xConfig } from '../hardware/ws281x.js';
 // Types for the raw answers coming in
 export type EffectName = (typeof EFFECTS) [keyof typeof EFFECTS];
 
-export type ShiftMode = 0 | 1;
-export type ColorMode = 'custom' | 'random';
+export type Shift = 0 | 1;
+export type ColorType = 'custom' | 'random';
 export type RandomColorMode = 'static' | 'change';
 export type ColorChangeInterval = 'everyPixel' | 'everyLoop';
 
@@ -47,18 +47,18 @@ export interface Options {
   isWheel: boolean;
   isWalkPixel: boolean;
 
-  // Shift mode
-  shiftMode?: ShiftMode;
+  // Shift
+  shift?: Shift;
 
-  // Shift mode flags
-  isShiftMode: boolean;
+  // Shift flags
+  isShift: boolean;
 
-  // Color mode
-  colorMode?: ColorMode;
+  // Color
+  colorType?: ColorType;
   randomColorMode?: RandomColorMode;
   colorChangeInterval?: ColorChangeInterval;
 
-  // Color mode flags
+  // Color flags
   isEveryPixelColorChangeInterval: boolean;
   isEveryLoopColorChangeInterval: boolean;
 
@@ -76,7 +76,7 @@ export interface Options {
 
   // Motion detection
   useMotionDetection?: 0 | 1;
-  motionColorMode?: ColorMode;
+  motionColorType?: ColorType;
   motionRed?: number;
   motionGreen?: number;
   motionBlue?: number;
@@ -85,6 +85,12 @@ export interface Options {
   isMotionDetectionEnabled: boolean;
   isMotionCustomColorMode: boolean;
   isMotionRandomColorMode: boolean;
+
+  // Pomodoro timer
+  pomodoroWorkMinutes?: number;
+  pomodoroShortBreakMinutes?: number;
+  pomodoroLongBreakMinutes?: number;
+  pomodoroRounds?: number;
 
   // Location
   locationType?: 'auto' | 'manual';

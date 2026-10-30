@@ -45,6 +45,7 @@ const EFFECT_CHOICES: SelectChoice<EffectName>[] = [
   { title: 'Growing Bar', value: EFFECTS.GROWING_BAR },
   { title: 'Wheel', value: EFFECTS.WHEEL },
   { title: 'Walk Pixel', value: EFFECTS.WALK_PIXEL },
+  { title: 'Pomodoro Timer', value: EFFECTS.POMODORO },
   { title: 'Sunrise/Sunset', value: EFFECTS.SUNRISE_SUNSET },
   { title: 'Weather', value: EFFECTS.WEATHER },
   { title: 'Air Quality', value: EFFECTS.AIR_QUALITY },
@@ -60,6 +61,7 @@ const EFFECT_NEEDS_INTERVAL: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.GROWING_BAR,
   EFFECTS.WHEEL,
   EFFECTS.WALK_PIXEL,
+  EFFECTS.POMODORO,
 ]);
 
 const EFFECT_ALLOWS_CUSTOM: ReadonlySet<EffectName> = new Set<EffectName>([
@@ -69,6 +71,7 @@ const EFFECT_ALLOWS_CUSTOM: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.BREATHE,
   EFFECTS.GROWING_BAR,
   EFFECTS.WALK_PIXEL,
+  EFFECTS.POMODORO,
 ]);
 
 const EFFECT_NEEDS_SHIFTING: ReadonlySet<EffectName> = new Set<EffectName>([
@@ -89,6 +92,7 @@ const EFFECT_ALLOWS_RANDOM: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.BLINK,
   EFFECTS.GROWING_BAR,
   EFFECTS.WALK_PIXEL,
+  EFFECTS.POMODORO,
 ]);
 
 // For random 'change' (interval choice), exclude Blink
@@ -206,6 +210,24 @@ export const promptsConfig: PromptObject[] = [
 
   // Effect (only when turning on)
   promptSelect('effect', 'Select effect', EFFECT_CHOICES, isOn),
+
+  // Pomodoro -> durations
+  promptNumber('pomodoroWorkMinutes', 'Focus minutes (1-120)', {
+    min: 1, max: 120, initial: 25,
+    when: and(isOn, effectEquals(EFFECTS.POMODORO)),
+  }),
+  promptNumber('pomodoroShortBreakMinutes', 'Short break minutes (1-60)', {
+    min: 1, max: 60, initial: 5,
+    when: and(isOn, effectEquals(EFFECTS.POMODORO)),
+  }),
+  promptNumber('pomodoroLongBreakMinutes', 'Long break minutes (1-60)', {
+    min: 1, max: 60, initial: 15,
+    when: and(isOn, effectEquals(EFFECTS.POMODORO)),
+  }),
+  promptNumber('pomodoroRounds', 'Focus sessions before a long break (1-10)', {
+    min: 1, max: 10, initial: 4,
+    when: and(isOn, effectEquals(EFFECTS.POMODORO)),
+  }),
 
   // Sunrise/Sunset -> moon phase at night
   promptSelect(

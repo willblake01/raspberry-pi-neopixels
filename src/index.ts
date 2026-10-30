@@ -127,7 +127,7 @@ export const main = async () => {
     let switching = false;
 
     const makeMotionEffect = () => {
-      const [red = 255, green = 255, blue = 255] = options.motionColorMode === 'custom' ? [options.motionRed, options.motionGreen, options.motionBlue] : [randomNumber(255), randomNumber(255), randomNumber(255)];
+      const [red = 255, green = 255, blue = 255] = options.motionColorType === 'custom' ? [options.motionRed, options.motionGreen, options.motionBlue] : [randomNumber(255), randomNumber(255), randomNumber(255)];
 
       return new SolidCustom(config.leds, red, green, blue);
     };

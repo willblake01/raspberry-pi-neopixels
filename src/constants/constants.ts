@@ -7,6 +7,7 @@ export const EFFECTS = {
     GROWING_BAR: 'growing_bar',
     WHEEL: 'wheel',
     WALK_PIXEL: 'walk_pixel',
+    POMODORO: 'pomodoro',
     SUNRISE_SUNSET: 'sunrise_sunset',
     WEATHER: 'weather',
     AIR_QUALITY: 'air_quality',

@@ -1,10 +1,6 @@
-import { CheckerboardCustom, CheckerboardCustomShift, CheckerboardRandomShift, CheckerboardRandom, BlinkCustom, BlinkRandomChange, BlinkRandomStatic, BreatheCustom, BreatheRandom, Change, GrowingBarCustom, GrowingBarRandomChangePixel, GrowingBarRandomChangeLoop, GrowingBarRandomStatic, SolidCustom, SolidRandom, WalkPixelOffCustomStatic, WalkPixelOffRandomStatic, WalkPixelOffRandomChangeLoop, WalkPixelOffRandomChangePixel, WalkPixelOnCustom, WalkPixelOnRandomChangePixel, WalkPixelOnRandomChangeLoop, WalkPixelOnRandomStatic, Wheel, TurnOff } from '../index.js';
 import { Effect, Options } from '../../types/index.js';
-import { createWeather } from "../Weather.js";
 import { EFFECTS } from "../../constants/index.js";
-import { createSunriseSunset, CustomPixels } from "../index.js";
-import { createUVIndex } from "../UVIndex.js";
-import { createAirQuality } from "../AirQuality.js";
+import { createAirQuality, BlinkCustom, BlinkRandomChange, BlinkRandomStatic, BreatheCustom, BreatheRandom, Change, CheckerboardCustom, CheckerboardCustomShift, CheckerboardRandomShift, CheckerboardRandom, createSunriseSunset, CustomPixels, GrowingBarCustom, GrowingBarRandomChangePixel, GrowingBarRandomChangeLoop, GrowingBarRandomStatic, Pomodoro, SolidCustom, SolidRandom, TurnOff, createUVIndex, WalkPixelOffCustomStatic, WalkPixelOffRandomStatic, WalkPixelOffRandomChangeLoop, WalkPixelOffRandomChangePixel, WalkPixelOnCustom, WalkPixelOnRandomChangePixel, WalkPixelOnRandomChangeLoop, WalkPixelOnRandomStatic, createWeather, Wheel } from '../index.js';
 
 interface Rule {
   name: string;
@@ -28,22 +24,22 @@ export const RULES: Rule[] = [
   // --- CHECKERBOARD ---
   {
     name: 'checkerboard-custom',
-    when: options => options.isCheckerboard && options.isCustomColorMode && !options.isShiftMode,
+    when: options => options.isCheckerboard && options.isCustomColorMode && !options.isShift,
     make: options => new CheckerboardCustom(options.leds, options.red, options.green, options.blue, options.red2, options.green2, options.blue2)
   },
   {
     name: 'checkerboard-custom-shift',
-    when: options => options.isCheckerboard && options.isCustomColorMode && options.isShiftMode,
+    when: options => options.isCheckerboard && options.isCustomColorMode && options.isShift,
     make: options => new CheckerboardCustomShift(options.leds, options.interval, options.red, options.green, options.blue, options.red2, options.green2, options.blue2)
   },
   {
     name: 'checkerboard-random',
-    when: options => options.isCheckerboard && options.isRandomColorMode && !options.isShiftMode,
+    when: options => options.isCheckerboard && options.isRandomColorMode && !options.isShift,
     make: options => new CheckerboardRandom(options.leds)
   },
   {
     name: 'checkerboard-random-shift',
-    when: options => options.isCheckerboard && options.isRandomColorMode && options.isShiftMode,
+    when: options => options.isCheckerboard && options.isRandomColorMode && options.isShift,
     make: options => new CheckerboardRandomShift(options.leds, options.interval),
   },
 
@@ -154,6 +150,19 @@ export const RULES: Rule[] = [
     name: 'walk-pixel-off-random-change-every-loop',
     when: options => options.isWalkPixel && !options.isPixelOn && options.isRandomColorMode && options.isEveryLoopColorChangeInterval,
     make: options => new WalkPixelOffRandomChangeLoop(options.leds, options.interval)
+  },
+
+  // Pomodoro timer
+  {
+    name: 'pomodoro',
+    when: (o: Options) => o.isOn && o.effect === EFFECTS.POMODORO,
+    make: (o: Options) =>
+        new Pomodoro(o.leds, {
+          workMs: (o.pomodoroWorkMinutes ?? 25) * 60_000,
+          shortBreakMs: (o.pomodoroShortBreakMinutes ?? 5) * 60_000,
+          longBreakMs: (o.pomodoroLongBreakMinutes ?? 15) * 60_000,
+          rounds: o.pomodoroRounds ?? 4,
+        }),
   },
 
   // --- SUNRISE/SUNSET ---
