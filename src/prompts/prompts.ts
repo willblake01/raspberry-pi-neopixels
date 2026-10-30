@@ -203,9 +203,20 @@ export const promptsConfig: PromptObject[] = [
   // Effect (only when turning on)
   promptSelect('effect', 'Select effect', EFFECT_CHOICES, isOn),
 
-  // Weather -> location mode
+  // Sunrise/Sunset -> moon phase at night
   promptSelect(
-      'weatherLocation',
+      'showMoon',
+      'Enable moon phase',
+      [
+        { title: 'No', value: 0 },
+        { title: 'Yes', value: 1 },
+      ],
+      and(isOn, effectEquals(EFFECTS.SUNRISE_SUNSET)),
+  ),
+
+  // Location type (auto vs manual) and city name (only when manual)
+  promptSelect(
+      'locationType',
       'Location',
       [
         { title: 'Detect from my internet connection', value: 'auto' },
@@ -214,9 +225,9 @@ export const promptsConfig: PromptObject[] = [
       and(isOn, needsLocation),
   ),
   promptText(
-      'weatherLocation',
+      'location',
       'Enter city name',
-      and(isOn, (v) => needsLocation(v) && v.weatherLocation === 'manual'),
+      and(isOn, (v) => needsLocation(v) && v.locationType === 'manual'),
   ),
 
   // Weather -> severe weather alerts
@@ -228,17 +239,6 @@ export const promptsConfig: PromptObject[] = [
         { title: 'Yes', value: 1 },
       ],
       and(isOn, effectEquals(EFFECTS.WEATHER)),
-  ),
-
-  // Sunrise/Sunset -> moon phase at night
-  promptSelect(
-      'showMoon',
-      'Enable moon phase',
-      [
-        { title: 'No', value: 0 },
-        { title: 'Yes', value: 1 },
-      ],
-      and(isOn, effectEquals(EFFECTS.SUNRISE_SUNSET)),
   ),
 
   // Walk Pixel -> pixel state

@@ -159,7 +159,7 @@ export const RULES: Rule[] = [
     name: 'weather',
     when: (o: Options) => o.isOn && o.isWeather,
     make: (o: Options) =>
-        createWeather(o.leds, o.weatherLocationMode, o.weatherLocation, o.weatherAlerts === 1),
+        createWeather(o.leds, o.locationType, o.location, o.weatherAlerts === 1),
   },
 
   // --- SUNRISE/SUNSET ---
@@ -167,7 +167,7 @@ export const RULES: Rule[] = [
     name: 'sunrise_sunset',
     when: (o: Options) => o.isOn && o.effect === EFFECTS.SUNRISE_SUNSET,
     make: (o: Options) =>
-        createSunriseSunset(o.leds, o.weatherLocationMode, o.weatherLocation, o.showMoon === 1),
+        createSunriseSunset(o.leds, o.locationType, o.location, o.showMoon === 1),
   },
 
   // --- CUSTOM PIXELS ---

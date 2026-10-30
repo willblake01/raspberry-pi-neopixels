@@ -86,9 +86,9 @@ export interface Options {
   isMotionCustomColorMode: boolean;
   isMotionRandomColorMode: boolean;
 
-  // Weather location
-  weatherLocationMode?: 'auto' | 'manual';
-  weatherLocation?: string;
+  // Location
+  locationType?: 'auto' | 'manual';
+  location?: string;
 
   // Weather flags
   isWeather: boolean;
