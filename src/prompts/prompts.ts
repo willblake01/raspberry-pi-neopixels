@@ -61,7 +61,6 @@ const EFFECT_NEEDS_INTERVAL: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.GROWING_BAR,
   EFFECTS.WHEEL,
   EFFECTS.WALK_PIXEL,
-  EFFECTS.POMODORO,
 ]);
 
 const EFFECT_ALLOWS_CUSTOM: ReadonlySet<EffectName> = new Set<EffectName>([
@@ -71,7 +70,6 @@ const EFFECT_ALLOWS_CUSTOM: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.BREATHE,
   EFFECTS.GROWING_BAR,
   EFFECTS.WALK_PIXEL,
-  EFFECTS.POMODORO,
 ]);
 
 const EFFECT_NEEDS_SHIFTING: ReadonlySet<EffectName> = new Set<EffectName>([
@@ -92,7 +90,6 @@ const EFFECT_ALLOWS_RANDOM: ReadonlySet<EffectName> = new Set<EffectName>([
   EFFECTS.BLINK,
   EFFECTS.GROWING_BAR,
   EFFECTS.WALK_PIXEL,
-  EFFECTS.POMODORO,
 ]);
 
 // For random 'change' (interval choice), exclude Blink
