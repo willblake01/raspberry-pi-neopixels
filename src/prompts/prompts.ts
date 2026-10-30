@@ -187,6 +187,14 @@ export const promptsConfig: PromptObject[] = [
     initial: LEDS.DEFAULT,
   }),
 
+  // Brightness (only when turning on)
+  promptNumber('brightness', 'Enter brightness (0-255)', {
+    min: 0,
+    max: 255,
+    initial: 128,
+    when: isOn,
+  }),
+
   // Gamma Correction (only when turning on)
   promptNumber('gamma', 'Enter gamma correction (1-3)', {
     min: GAMMA.MIN,
@@ -194,14 +202,6 @@ export const promptsConfig: PromptObject[] = [
     initial: GAMMA.DEFAULT,
     float: true,
     round: 1,
-    when: isOn,
-  }),
-
-  // Brightness (only when turning on)
-  promptNumber('brightness', 'Enter brightness (0-255)', {
-    min: 0,
-    max: 255,
-    initial: 128,
     when: isOn,
   }),
 
