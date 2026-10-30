@@ -1,5 +1,5 @@
 import type { RGB } from './colors.js';
-import type { UvHour } from './api.js';
+import type { UVHour } from './api.js';
 
 export type UvLevel = 'none' | 'low' | 'moderate' | 'high' | 'veryHigh' | 'extreme';
 
@@ -36,8 +36,8 @@ export const uvLevel = (uv: number): UvLevel => {
 export const uvToRGB = (uv: number): RGB => UV_COLORS[uvLevel(uv)];
 
 /** UV for the hour containing `now` (the latest reading at or before now). */
-export const uvAt = (now: number, hours: UvHour[]): number | null => {
-    let current: UvHour | null = null;
+export const uvAt = (now: number, hours: UVHour[]): number | null => {
+    let current: UVHour | null = null;
     for (const hour of hours) {
         if (hour.time > now) break;
         current = hour;

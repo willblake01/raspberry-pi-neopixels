@@ -1,5 +1,5 @@
 import { mixRGB, type RGB } from './colors.js';
-import type { SunDay } from './api.js';
+import type { DiurnalCycle } from './api.js';
 
 export const SUN_COLORS: Record<'NIGHT' | 'DAWN' | 'GOLD' | 'WARM' | 'DAY', RGB> = {
     NIGHT: [40, 12, 0],    // very dim amber
@@ -22,7 +22,7 @@ export const TWILIGHT_MS = 45 * MIN;
 export const NIGHT_FADE_MS = 30 * MIN;
 
 /** Color keyframes for one day, relative to its sunrise and sunset. */
-export const dayKeyframes = ({ sunrise, sunset }: SunDay): Keyframe[] => {
+export const dayKeyframes = ({ sunrise, sunset }: DiurnalCycle): Keyframe[] => {
     const { NIGHT, DAWN, GOLD, WARM, DAY } = SUN_COLORS;
     const midday = (sunrise + sunset) / 2;
 
@@ -42,7 +42,7 @@ export const dayKeyframes = ({ sunrise, sunset }: SunDay): Keyframe[] => {
 };
 
 /** Color for a moment in time, blended between the surrounding keyframes. */
-export const daylightRGB = (now: number, days: SunDay[]): RGB => {
+export const daylightRGB = (now: number, days: DiurnalCycle[]): RGB => {
     const frames = days.flatMap(dayKeyframes).sort((a, b) => a.at - b.at);
     const last = frames[frames.length - 1];
 
@@ -62,7 +62,7 @@ export const daylightRGB = (now: number, days: SunDay[]): RGB => {
  * 0 during the day and twilight, rising to 1 within NIGHT_FADE_MS of full night.
  * Used to fade the moon in after dusk and out before dawn.
  */
-export const nightDepth = (now: number, days: SunDay[]): number => {
+export const nightDepth = (now: number, days: DiurnalCycle[]): number => {
     const windows = days.map(({ sunrise, sunset }) => ({
         start: sunrise - TWILIGHT_MS,
         end: sunset + TWILIGHT_MS,

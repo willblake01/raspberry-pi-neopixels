@@ -7,7 +7,7 @@ import {
     locateByIp,
     locateByName,
     type Location,
-    type UvForecast,
+    type UVForecast,
 } from '../weather/api.js';
 import type { Effect } from '../types/index.js';
 
@@ -17,14 +17,14 @@ const MIN_REFETCH_GAP_MS = 30 * 60 * 1000;        // skip re-fetching on quick r
 
 export interface UVIndexDeps {
     locate: () => Promise<Location>;
-    fetchUv: (location: Location) => Promise<UvForecast>;
+    fetchUv: (location: Location) => Promise<UVForecast>;
     now?: () => number;
     log?: (message: string) => void;
 }
 
 export class UVIndex implements Effect {
     private locationPromise: Promise<Location> | null = null;
-    private forecast: UvForecast | null = null;
+    private forecast: UVForecast | null = null;
     private fetchedAt = 0;
     private lastColor: number | null = null;
     private lastLevel: UvLevel | null = null;

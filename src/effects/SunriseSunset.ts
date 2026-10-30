@@ -15,7 +15,7 @@ import {
     locateByName,
     fetchSunTimes,
     type Location,
-    type SunDay,
+    type DiurnalCycle,
 } from '../weather/api.js';
 import type { Effect } from '../types/index.js';
 
@@ -25,7 +25,7 @@ const MIN_REFETCH_GAP_MS = 60 * 60 * 1000;        // skip re-fetching on quick r
 
 export interface SunriseSunsetDeps {
     locate: () => Promise<Location>;
-    fetchSunTimes: (location: Location) => Promise<SunDay[]>;
+    fetchSunTimes: (location: Location) => Promise<DiurnalCycle[]>;
     /** Show the moon phase at night. */
     showMoon?: boolean;
     now?: () => number;
@@ -37,7 +37,7 @@ const formatTime = (ms: number) =>
 
 export class SunriseSunset implements Effect {
     private locationPromise: Promise<Location> | null = null;
-    private days: SunDay[] | null = null;
+    private days: DiurnalCycle[] | null = null;
     private fetchedAt = 0;
     private lastFrame: Uint32Array | null = null;
     private active = false;
@@ -100,7 +100,7 @@ export class SunriseSunset implements Effect {
     }
 
     /** Daylight color, blended with the moon at night when enabled. */
-    private buildFrame(now: number, days: SunDay[]): Uint32Array {
+    private buildFrame(now: number, days: DiurnalCycle[]): Uint32Array {
         const sky = fillSolid(this.leds, packRGB(...daylightRGB(now, days)));
         if (!this.deps.showMoon) return sky;
 

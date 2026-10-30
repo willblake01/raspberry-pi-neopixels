@@ -4,30 +4,35 @@ export interface Location {
     name: string;
 }
 
+export interface DiurnalCycle {
+    sunrise: number; // epoch ms
+    sunset: number;  // epoch ms
+}
+
 export interface CurrentWeather {
     temperatureF: number;
     precipitationIn: number;
     weatherCode: number; // WMO code
 }
 
-export interface SunDay {
-    sunrise: number; // epoch ms
-    sunset: number;  // epoch ms
-}
-
-export interface UvHour {
-    time: number; // epoch ms, start of the hour
-    uv: number;
-}
-
-export interface UvForecast {
-    hours: UvHour[];
-    maxToday: number | null;
+export interface WeatherAlert {
+    event: string;    // e.g. "Tornado Warning", "Flood Watch"
+    severity: string; // "Extreme" | "Severe" | "Moderate" | "Minor" | "Unknown"
 }
 
 export interface AirQualityReading {
     usAqi: number;
     pm25: number | null; // µg/m³
+}
+
+export interface UVHour {
+    time: number; // epoch ms, start of the hour
+    uv: number;
+}
+
+export interface UVForecast {
+    hours: UVHour[];
+    maxToday: number | null;
 }
 
 const TIMEOUT_MS = 10_000;
@@ -104,11 +109,6 @@ export const fetchCurrentWeather = async ({ latitude, longitude }: Location): Pr
     };
 };
 
-export interface WeatherAlert {
-    event: string;    // e.g. "Tornado Warning", "Flood Watch"
-    severity: string; // "Extreme" | "Severe" | "Moderate" | "Minor" | "Unknown"
-}
-
 const NWS_USER_AGENT = 'raspberry-pi-neopixels (github.com/willblake01/raspberry-pi-neopixels)';
 
 export const fetchActiveAlerts = async ({ latitude, longitude }: Location): Promise<WeatherAlert[]> => {
@@ -126,7 +126,7 @@ export const fetchActiveAlerts = async ({ latitude, longitude }: Location): Prom
 };
 
 /** Today's and tomorrow's sunrise/sunset. Unix timestamps avoid time zone parsing. */
-export const fetchSunTimes = async ({ latitude, longitude }: Location): Promise<SunDay[]> => {
+export const fetchSunTimes = async ({ latitude, longitude }: Location): Promise<DiurnalCycle[]> => {
     const url = new URL('https://api.open-meteo.com/v1/forecast');
     url.searchParams.set('latitude', String(latitude));
     url.searchParams.set('longitude', String(longitude));
@@ -147,7 +147,7 @@ export const fetchSunTimes = async ({ latitude, longitude }: Location): Promise<
 };
 
 /** Hourly UV index for today and tomorrow, plus today's peak. */
-export const fetchUvIndex = async ({ latitude, longitude }: Location): Promise<UvForecast> => {
+export const fetchUvIndex = async ({ latitude, longitude }: Location): Promise<UVForecast> => {
     const url = new URL('https://api.open-meteo.com/v1/forecast');
     url.searchParams.set('latitude', String(latitude));
     url.searchParams.set('longitude', String(longitude));
