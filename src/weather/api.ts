@@ -25,6 +25,11 @@ export interface UvForecast {
     maxToday: number | null;
 }
 
+export interface AirQualityReading {
+    usAqi: number;
+    pm25: number | null; // µg/m³
+}
+
 const TIMEOUT_MS = 10_000;
 
 const getJson = async (url: URL | string, init?: RequestInit): Promise<unknown> => {
@@ -167,4 +172,21 @@ export const fetchUvIndex = async ({ latitude, longitude }: Location): Promise<U
         hours: times.map((t, i) => ({ time: t * 1000, uv: values[i] ?? 0 })),
         maxToday: data.daily?.uv_index_max?.[0] ?? null,
     };
+};
+
+export const fetchAirQuality = async ({ latitude, longitude }: Location): Promise<AirQualityReading> => {
+    const url = new URL('https://air-quality-api.open-meteo.com/v1/air-quality');
+    url.searchParams.set('latitude', String(latitude));
+    url.searchParams.set('longitude', String(longitude));
+    url.searchParams.set('current', 'us_aqi,pm2_5');
+    url.searchParams.set('timezone', 'auto');
+
+    const data = (await getJson(url)) as {
+        current?: { us_aqi?: number | null; pm2_5?: number | null };
+    };
+
+    const usAqi = data.current?.us_aqi;
+    if (typeof usAqi !== 'number') throw new Error('US AQI missing from response');
+
+    return { usAqi, pm25: data.current?.pm2_5 ?? null };
 };

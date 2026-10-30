@@ -15,14 +15,14 @@ export const UV_REFRESH_MS = 3 * 60 * 60 * 1000; // re-fetch hourly data every 3
 export const UV_TICK_MS = 5 * 60 * 1000;         // pick up the new hour within 5 minutes
 const MIN_REFETCH_GAP_MS = 30 * 60 * 1000;        // skip re-fetching on quick restarts
 
-export interface UvIndexDeps {
+export interface UVIndexDeps {
     locate: () => Promise<Location>;
     fetchUv: (location: Location) => Promise<UvForecast>;
     now?: () => number;
     log?: (message: string) => void;
 }
 
-export class UvIndex implements Effect {
+export class UVIndex implements Effect {
     private locationPromise: Promise<Location> | null = null;
     private forecast: UvForecast | null = null;
     private fetchedAt = 0;
@@ -35,7 +35,7 @@ export class UvIndex implements Effect {
 
     constructor(
         private readonly leds: number,
-        private readonly deps: UvIndexDeps,
+        private readonly deps: UVIndexDeps,
         refreshMs = UV_REFRESH_MS,
         tickMs = UV_TICK_MS,
     ) {
@@ -113,8 +113,8 @@ export class UvIndex implements Effect {
     }
 }
 
-export const createUvIndex = (leds: number, mode: 'auto' | 'manual' = 'auto', query?: string) =>
-    new UvIndex(leds, {
+export const createUVIndex = (leds: number, mode: 'auto' | 'manual' = 'auto', query?: string) =>
+    new UVIndex(leds, {
         locate: mode === 'manual' && query ? () => locateByName(query) : locateByIp,
         fetchUv: fetchUvIndex,
     });

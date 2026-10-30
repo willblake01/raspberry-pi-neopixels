@@ -3,7 +3,8 @@ import { Effect, Options } from '../../types/index.js';
 import { createWeather } from "../Weather.js";
 import { EFFECTS } from "../../constants/index.js";
 import { createSunriseSunset, CustomPixels } from "../index.js";
-import {createUvIndex} from "../UvIndex.js";
+import { createUVIndex } from "../UVIndex.js";
+import { createAirQuality } from "../AirQuality.js";
 
 interface Rule {
   name: string;
@@ -155,27 +156,33 @@ export const RULES: Rule[] = [
     make: options => new WalkPixelOffRandomChangeLoop(options.leds, options.interval)
   },
 
-  // --- WEATHER ---
-  {
-    name: 'weather',
-    when: (o: Options) => o.isOn && o.isWeather,
-    make: (o: Options) =>
-        createWeather(o.leds, o.locationType, o.location, o.weatherAlerts === 1),
-  },
-
-  // --- UV INDEX ---
-  {
-    name: 'uv-index',
-    when: (o: Options) => o.isOn && o.effect === EFFECTS.UV_INDEX,
-    make: (o: Options) => createUvIndex(o.leds, o.locationType, o.location),
-  },
-
   // --- SUNRISE/SUNSET ---
   {
     name: 'sunrise-sunset',
     when: (o: Options) => o.isOn && o.effect === EFFECTS.SUNRISE_SUNSET,
     make: (o: Options) =>
         createSunriseSunset(o.leds, o.locationType, o.location, o.showMoon === 1),
+  },
+
+  // --- WEATHER ---
+  {
+    name: 'weather',
+    when: (o: Options) => o.isOn && o.effect === EFFECTS.WEATHER,
+    make: (o: Options) =>
+        createWeather(o.leds, o.locationType, o.location, o.weatherAlerts === 1),
+  },
+
+  {
+    name: 'air-quality',
+    when: (o: Options) => o.isOn && o.effect === EFFECTS.AIR_QUALITY,
+    make: (o: Options) => createAirQuality(o.leds, o.locationType, o.location),
+  },
+
+  // --- UV INDEX ---
+  {
+    name: 'uv-index',
+    when: (o: Options) => o.isOn && o.effect === EFFECTS.UV_INDEX,
+    make: (o: Options) => createUVIndex(o.leds, o.locationType, o.location),
   },
 
   // --- CUSTOM PIXELS ---

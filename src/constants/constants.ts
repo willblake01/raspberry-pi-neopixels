@@ -7,8 +7,9 @@ export const EFFECTS = {
     GROWING_BAR: 'growing_bar',
     WHEEL: 'wheel',
     WALK_PIXEL: 'walk_pixel',
-    WEATHER: 'weather',
     SUNRISE_SUNSET: 'sunrise_sunset',
+    WEATHER: 'weather',
+    AIR_QUALITY: 'air_quality',
     UV_INDEX: 'uv_index',
     CUSTOM_PIXELS: 'custom_pixels',
 } as const;
