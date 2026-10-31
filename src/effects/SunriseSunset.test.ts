@@ -1,7 +1,7 @@
 import { SunriseSunset, type SunriseSunsetDeps } from './SunriseSunset.js';
 import { SUN_COLORS, TWILIGHT_MS, NIGHT_FADE_MS } from '../weather/daylight.js';
 import { KNOWN_NEW_MOON, SYNODIC_MONTH_DAYS, MOON_COLOR } from '../astronomy/moon.js';
-import { mixColors, packRGB } from './utils/color.js';
+import { packRGB, scaleColor } from './utils/color.js';
 import { renderedFrames, setupEffectTest } from '../test-utils/effectHelpers.js';
 
 jest.mock('../ledRuntime.js', () => ({ safeRender: jest.fn() }));
@@ -116,18 +116,44 @@ describe('SunriseSunset with moon phase', () => {
         effect.stop();
     });
 
-    test('the moon fades in after dusk', async () => {
-        // Halfway through the fade-in after twilight ends
-        const sunset = FULL_MOON - TWILIGHT_MS - NIGHT_FADE_MS / 2;
+    test('the night color dims evenly before the moon appears', async () => {
+        // A quarter of the way into the fade: night color at half brightness, no moon yet
+        const sunset = FULL_MOON - TWILIGHT_MS - NIGHT_FADE_MS / 4;
         const days = [{ sunrise: sunset - 11 * H, sunset }];
-        const clock = { now: FULL_MOON };
-        const effect = new SunriseSunset(3, moonDeps(clock, days), 6 * H, TICK);
+        const effect = new SunriseSunset(3, moonDeps({ now: FULL_MOON }, days), 6 * H, TICK);
 
         effect.run();
         await jest.advanceTimersByTimeAsync(0);
 
-        const halfway = mixColors(packRGB(...SUN_COLORS.NIGHT), packRGB(...MOON_COLOR), 0.5);
-        expect(renderedFrames()).toEqual([Array(3).fill(halfway)]);
+        const halfNight = scaleColor(packRGB(...SUN_COLORS.NIGHT), 0.5);
+        expect(renderedFrames()).toEqual([Array(3).fill(halfNight)]);
+        effect.stop();
+    });
+
+    test('the moon fades in from black', async () => {
+        // Three quarters of the way into the fade: moon at half brightness
+        const sunset = FULL_MOON - TWILIGHT_MS - (NIGHT_FADE_MS * 3) / 4;
+        const days = [{ sunrise: sunset - 11 * H, sunset }];
+        const effect = new SunriseSunset(3, moonDeps({ now: FULL_MOON }, days), 6 * H, TICK);
+
+        effect.run();
+        await jest.advanceTimersByTimeAsync(0);
+
+        const halfMoon = scaleColor(packRGB(...MOON_COLOR), 0.5);
+        expect(renderedFrames()).toEqual([Array(3).fill(halfMoon)]); // full moon: every pixel lit
+        effect.stop();
+    });
+
+    test('the strip is fully dark between the night fade and the moon', async () => {
+        // Exactly halfway: night color gone, moon not yet visible
+        const sunset = FULL_MOON - TWILIGHT_MS - NIGHT_FADE_MS / 2;
+        const days = [{ sunrise: sunset - 11 * H, sunset }];
+        const effect = new SunriseSunset(3, moonDeps({ now: FULL_MOON }, days), 6 * H, TICK);
+
+        effect.run();
+        await jest.advanceTimersByTimeAsync(0);
+
+        expect(renderedFrames()).toEqual([[0, 0, 0]]);
         effect.stop();
     });
 

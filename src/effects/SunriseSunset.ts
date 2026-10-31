@@ -1,5 +1,5 @@
 import { safeRender } from '../ledRuntime.js';
-import { fillSolid, framesEqual, mixColors, packRGB } from './utils/color.js';
+import { fillSolid, framesEqual, packRGB, scaleColor } from './utils/color.js';
 import { IntervalRunner } from './utils/index.js';
 import { daylightRGB, nightDepth } from '../weather/daylight.js';
 import {
@@ -99,7 +99,11 @@ export class SunriseSunset implements Effect {
         }
     }
 
-    /** Daylight color, blended with the moon at night when enabled. */
+    /**
+     * Daylight colors, with the moon at night when enabled.
+     * The night sky and the moon never mix: the night color dims evenly
+     * to off, then the moon fades in from black (reversed before dawn).
+     */
     private buildFrame(now: number, days: DiurnalCycle[]): Uint32Array {
         const sky = fillSolid(this.leds, packRGB(...daylightRGB(now, days)));
         if (!this.deps.showMoon) return sky;
@@ -107,6 +111,13 @@ export class SunriseSunset implements Effect {
         const depth = nightDepth(now, days);
         if (depth === 0) return sky;
 
+        // First half of the fade: the night sky dims evenly to off
+        if (depth < 0.5) {
+            const level = 1 - depth * 2;
+            return sky.map((c) => scaleColor(c, level));
+        }
+
+        // Second half: the moon fades in from black
         const phase = moonPhase(now);
         const moon = buildMoonFrame(
             this.leds,
@@ -114,7 +125,8 @@ export class SunriseSunset implements Effect {
             isWaxing(phase),
             packRGB(...MOON_COLOR),
         );
-        return moon.map((m, i) => mixColors(sky[i], m, depth));
+        const level = (depth - 0.5) * 2;
+        return moon.map((m) => scaleColor(m, level));
     }
 
     private render() {
