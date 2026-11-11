@@ -9,6 +9,7 @@ export { Pomodoro } from './Pomodoro.js';
 export { SolidCustom, SolidRandom } from './Solid.js';
 export { createSpaceWeather } from './SpaceWeather.js';
 export { createSunriseSunset, SunriseSunset } from './SunriseSunset.js';
+export { createTrainTime } from './TrainTime.js';
 export { TurnOff } from './TurnOff.js';
 export { createUVIndex } from './UVIndex.js';
 export { WalkPixelOffCustomStatic, WalkPixelOffRandomChangePixel, WalkPixelOffRandomChangeLoop, WalkPixelOffRandomStatic, WalkPixelOnCustom, WalkPixelOnRandomChangePixel, WalkPixelOnRandomChangeLoop, WalkPixelOnRandomStatic } from './WalkPixel.js';

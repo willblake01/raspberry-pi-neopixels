@@ -14,6 +14,7 @@ export const EFFECTS = {
     UV_INDEX: 'uv_index',
     SPACE_WEATHER: 'space_weather',
     CUSTOM_PIXELS: 'custom_pixels',
+    TRAIN_TIME: 'train_time',
 } as const;
 
 // 1.0 - Off (no correction), 2.2 - sRGB (matches screen color), 2.5 - Middle ground, 2.8 (Adafruit's NeoPixel default), 3.0 - Upper practical limit (beyond which color is distorted)

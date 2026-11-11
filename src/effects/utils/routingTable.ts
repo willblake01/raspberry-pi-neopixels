@@ -33,7 +33,8 @@ import {
   WalkPixelOnRandomStatic,
   Wheel,
   createWeather,
-  createSpaceWeather
+  createSpaceWeather,
+  createTrainTime
 } from '../index.js';
 
 interface Rule {
@@ -226,6 +227,13 @@ export const RULES: Rule[] = [
     name: 'uv-index',
     when: (o: Options) => o.isOn && o.effect === EFFECTS.UV_INDEX,
     make: (o: Options) => createUVIndex(o.leds, o.locationType, o.location),
+  },
+
+  // --- TRAIN TIME ---
+  {
+    name: 'train-time',
+    when: (o: Options) => o.isOn && o.effect === EFFECTS.TRAIN_TIME,
+    make: (o: Options) => createTrainTime(o.leds, o.trainTimeToken, o.trainTravelMinutes),
   },
 
   // --- SPACE WEATHER ---

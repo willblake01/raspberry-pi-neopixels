@@ -103,6 +103,10 @@ export interface Options {
   // Moon phase
   showMoon?: 0 | 1;
 
+  // Train Time
+  trainTimeToken?: string;
+  trainTravelMinutes?: number;
+
   // Custom Pixels mode
   pixelSegments?: PixelSegment[];
 }

@@ -50,6 +50,7 @@ const EFFECT_CHOICES: SelectChoice<EffectName>[] = [
   { title: 'Air Quality', value: EFFECTS.AIR_QUALITY },
   { title: 'UV Index', value: EFFECTS.UV_INDEX },
   { title: 'Space Weather', value: EFFECTS.SPACE_WEATHER },
+  { title: 'Train Time', value: EFFECTS.TRAIN_TIME },
   { title: 'Custom Pixels', value: EFFECTS.CUSTOM_PIXELS },
 ];
 
@@ -252,6 +253,18 @@ export const promptsConfig: PromptObject[] = [
       'Enter city name',
       and(isOn, (v) => needsLocation(v) && v.locationType === 'manual'),
   ),
+
+  // Train Time -> device token (skipped when TRAIN_TIME_TOKEN is set) and travel time
+  {
+    type: show('password', and(isOn, (v) => v.effect === EFFECTS.TRAIN_TIME && !process.env.TRAIN_TIME_TOKEN)),
+    name: 'trainTimeToken',
+    message: 'Train Time device token (My Trips → Linked devices)',
+    validate: (v: string) => /^[A-Za-z0-9_-]{43}$/.test(v?.trim() ?? '') || 'Paste the 43-character token from Train Time',
+  },
+  promptNumber('trainTravelMinutes', 'Minutes to get to the station (0-180)', {
+    min: 0, max: 180, initial: 20,
+    when: and(isOn, effectEquals(EFFECTS.TRAIN_TIME)),
+  }),
 
   // Weather -> severe weather alerts
   promptSelect(

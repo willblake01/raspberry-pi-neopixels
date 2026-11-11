@@ -61,6 +61,8 @@ export const normalizeAnswers = (response: Answers<string>): Options => {
     weatherAlerts: response.weatherAlerts === 1 ? 1 : 0,
     pixelSegments: response.pixelSegments ?? [],
     showMoon: response.showMoon,
+    trainTimeToken: response.trainTimeToken,
+    trainTravelMinutes: response.trainTravelMinutes,
 
     // Flags
     isOn: command === 1,
